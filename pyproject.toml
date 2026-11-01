@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "Evaluate Jev on ML compiler optimization decisions."
 readme = "README.md"
 requires-python = ">=3.11,<3.12"
-dependencies = []
+dependencies = ["pyyaml>=6.0,<7"]
 
 [dependency-groups]
 dev = [
