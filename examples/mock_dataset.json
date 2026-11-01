@@ -1,0 +1,78 @@
+{
+  "dataset": "mock",
+  "workloads": [
+    {
+      "workload_id": "mock_matmul_001",
+      "context": {
+        "operation": "matmul",
+        "input_shapes": [
+          [128, 256],
+          [256, 64]
+        ],
+        "dtype": "float32"
+      },
+      "candidates": [
+        {
+          "candidate_id": "tile_8x8",
+          "configuration": {
+            "tile_m": 8,
+            "tile_n": 8
+          },
+          "runtime_ms": 2.4
+        },
+        {
+          "candidate_id": "tile_16x16",
+          "configuration": {
+            "tile_m": 16,
+            "tile_n": 16
+          },
+          "runtime_ms": 1.2
+        },
+        {
+          "candidate_id": "tile_32x8",
+          "configuration": {
+            "tile_m": 32,
+            "tile_n": 8
+          },
+          "runtime_ms": 1.7
+        }
+      ]
+    },
+    {
+      "workload_id": "mock_conv2d_001",
+      "context": {
+        "operation": "conv2d",
+        "input_shape": [1, 56, 56, 64],
+        "filter_shape": [3, 3, 64, 128],
+        "strides": [1, 1],
+        "dtype": "float32"
+      },
+      "candidates": [
+        {
+          "candidate_id": "channels_8",
+          "configuration": {
+            "channel_tile": 8,
+            "spatial_tile": 4
+          },
+          "runtime_ms": 4.8
+        },
+        {
+          "candidate_id": "channels_16",
+          "configuration": {
+            "channel_tile": 16,
+            "spatial_tile": 4
+          },
+          "runtime_ms": 3.1
+        },
+        {
+          "candidate_id": "channels_32",
+          "configuration": {
+            "channel_tile": 32,
+            "spatial_tile": 2
+          },
+          "runtime_ms": 3.6
+        }
+      ]
+    }
+  ]
+}
