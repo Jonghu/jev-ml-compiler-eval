@@ -29,3 +29,6 @@ class BaseDecisionModel(ABC):
         candidates: Sequence[Candidate],
     ) -> DecisionResult:
         """Rank candidates for one workload."""
+
+    def close(self) -> None:
+        """Release resources held by the model."""

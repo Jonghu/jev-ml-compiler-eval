@@ -1,13 +1,59 @@
 import csv
 import json
+from collections.abc import Sequence
 from pathlib import Path
 
 import pytest
 
 from jev_compiler_eval.evaluation import run_experiment
+from jev_compiler_eval.models import BaseDecisionModel, register_model
+from jev_compiler_eval.types import Candidate, DecisionResult, Workload
 
 PROJECT_ROOT = Path(__file__).parent.parent
 MOCK_DATASET_PATH = PROJECT_ROOT / "examples" / "mock_dataset.json"
+
+
+class ClosingTestModel(BaseDecisionModel):
+    closed = False
+
+    @property
+    def model_type(self) -> str:
+        return "closing-test-model"
+
+    def validate_config(self) -> None:
+        pass
+
+    def rank(
+        self,
+        workload: Workload,
+        candidates: Sequence[Candidate],
+    ) -> DecisionResult:
+        return DecisionResult(
+            ranked_candidate_ids=tuple(
+                candidate.candidate_id for candidate in candidates
+            ),
+            decision_latency_ms=0.0,
+        )
+
+    def close(self) -> None:
+        self.__class__.closed = True
+
+
+class FailingClosingTestModel(ClosingTestModel):
+    @property
+    def model_type(self) -> str:
+        return "failing-closing-test-model"
+
+    def rank(
+        self,
+        workload: Workload,
+        candidates: Sequence[Candidate],
+    ) -> DecisionResult:
+        raise RuntimeError("test model failure")
+
+
+register_model("closing-test-model", ClosingTestModel)
+register_model("failing-closing-test-model", FailingClosingTestModel)
 
 
 def experiment_yaml(
@@ -112,6 +158,34 @@ def test_refuses_to_overwrite_existing_results(tmp_path: Path) -> None:
         run_experiment(config_path)
 
     assert marker.read_text(encoding="utf-8") == "keep"
+
+
+def test_runner_closes_model_after_evaluation(tmp_path: Path) -> None:
+    ClosingTestModel.closed = False
+    output_dir = tmp_path / "results"
+    config_path = write_experiment(
+        tmp_path,
+        experiment_yaml(output_dir, model_type="closing-test-model"),
+    )
+
+    run_experiment(config_path)
+
+    assert ClosingTestModel.closed is True
+
+
+def test_runner_closes_model_after_evaluation_failure(tmp_path: Path) -> None:
+    FailingClosingTestModel.closed = False
+    output_dir = tmp_path / "results"
+    config_path = write_experiment(
+        tmp_path,
+        experiment_yaml(output_dir, model_type="failing-closing-test-model"),
+    )
+
+    with pytest.raises(RuntimeError, match="test model failure"):
+        run_experiment(config_path)
+
+    assert FailingClosingTestModel.closed is True
+    assert not output_dir.exists()
 
 
 def test_rejects_fail_fast_false(tmp_path: Path) -> None:

@@ -89,42 +89,47 @@ def _evaluate_model(
     predictions: list[dict[str, object]] = []
     metric_values = {name: [] for name in metrics}
     latencies: list[float] = []
-    for case in cases:
-        result = model.rank(case.workload, case.candidates)
-        _validate_ranking(case, result)
+    try:
+        for case in cases:
+            result = model.rank(case.workload, case.candidates)
+            _validate_ranking(case, result)
 
-        runtimes = {
-            runtime.candidate_id: runtime.runtime_ms for runtime in case.runtimes
-        }
-        optimal_runtime = min(runtimes.values())
-        optimal_candidate_ids = [
-            candidate_id
-            for candidate_id, runtime in runtimes.items()
-            if runtime == optimal_runtime
-        ]
-        case_metrics = {name: metric(case, result) for name, metric in metrics.items()}
-        for name, value in case_metrics.items():
-            metric_values[name].append(value)
-        latencies.append(result.decision_latency_ms)
-
-        predictions.append(
-            {
-                "model_id": model_id,
-                "model_type": model_type,
-                "workload_id": case.workload.workload_id,
-                "candidate_ids": [
-                    candidate.candidate_id for candidate in case.candidates
-                ],
-                "predicted_ranking": list(result.ranked_candidate_ids),
-                "selected_candidate_id": result.selected_candidate_id,
-                "selected_runtime_ms": runtimes[result.selected_candidate_id],
-                "optimal_candidate_ids": optimal_candidate_ids,
-                "optimal_runtime_ms": optimal_runtime,
-                "metrics": case_metrics,
-                "decision_latency_ms": result.decision_latency_ms,
-                "metadata": dict(result.metadata),
+            runtimes = {
+                runtime.candidate_id: runtime.runtime_ms for runtime in case.runtimes
             }
-        )
+            optimal_runtime = min(runtimes.values())
+            optimal_candidate_ids = [
+                candidate_id
+                for candidate_id, runtime in runtimes.items()
+                if runtime == optimal_runtime
+            ]
+            case_metrics = {
+                name: metric(case, result) for name, metric in metrics.items()
+            }
+            for name, value in case_metrics.items():
+                metric_values[name].append(value)
+            latencies.append(result.decision_latency_ms)
+
+            predictions.append(
+                {
+                    "model_id": model_id,
+                    "model_type": model_type,
+                    "workload_id": case.workload.workload_id,
+                    "candidate_ids": [
+                        candidate.candidate_id for candidate in case.candidates
+                    ],
+                    "predicted_ranking": list(result.ranked_candidate_ids),
+                    "selected_candidate_id": result.selected_candidate_id,
+                    "selected_runtime_ms": runtimes[result.selected_candidate_id],
+                    "optimal_candidate_ids": optimal_candidate_ids,
+                    "optimal_runtime_ms": optimal_runtime,
+                    "metrics": case_metrics,
+                    "decision_latency_ms": result.decision_latency_ms,
+                    "metadata": dict(result.metadata),
+                }
+            )
+    finally:
+        model.close()
 
     summary = ModelSummary(
         model_id=model_id,
