@@ -1,0 +1,36 @@
+schema_version: 1
+
+experiment:
+  name: mock-random-vs-jev
+  description: Compare Random and Jev on the committed mock dataset
+  seed: 42
+  output_dir: results/mock/random-vs-jev
+
+dataset:
+  type: mock
+  config:
+    path: examples/mock_dataset.json
+
+candidate_selection:
+  strategy: all
+
+models:
+  - id: random
+    type: random
+    config:
+      seed: 42
+
+  - id: jev-1.14.0
+    type: jev
+    config:
+      model: jev-1.14.0
+      cache_dir: .cache/jev
+      max_retries: 3
+      request_timeout_seconds: 30.0
+
+metrics:
+  - runtime_regret
+  - top_1_accuracy
+
+execution:
+  fail_fast: true

@@ -1,11 +1,16 @@
 """Run an experiment from a version-controlled YAML configuration."""
 
 import argparse
+from pathlib import Path
 
+from jev_compiler_eval.config.environment import load_cli_environment
 from jev_compiler_eval.evaluation import run_experiment
+
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
 
 def main() -> None:
+    load_cli_environment(PROJECT_ROOT / ".env")
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--config", required=True, help="Path to experiment YAML")
     args = parser.parse_args()
