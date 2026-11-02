@@ -1,0 +1,28 @@
+schema_version: 1
+
+experiment:
+  name: mock-random-smoke-test
+  description: Run the reproducible Random baseline on the mock dataset
+  seed: 42
+  output_dir: results/mock/random-smoke-test
+
+dataset:
+  type: mock
+  config:
+    path: examples/mock_dataset.json
+
+candidate_selection:
+  strategy: all
+
+models:
+  - id: random
+    type: random
+    config:
+      seed: 42
+
+metrics:
+  - runtime_regret
+  - top_1_accuracy
+
+execution:
+  fail_fast: true
