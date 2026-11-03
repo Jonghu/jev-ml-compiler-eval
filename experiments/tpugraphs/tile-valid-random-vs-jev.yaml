@@ -1,0 +1,37 @@
+schema_version: 1
+
+experiment:
+  name: tpugraphs-tile-valid-random-vs-jev
+  description: Compare Random and Jev on tile:xla validation kernels with at most 50 configs
+  seed: 42
+  output_dir: results/tpugraphs/tile-valid-random-vs-jev
+
+dataset:
+  type: tpugraphs-tile
+  config:
+    path: data/tpugraphs/npz/tile/xla/valid
+    max_candidates: 50
+
+candidate_selection:
+  strategy: all
+
+models:
+  - id: random
+    type: random
+    config:
+      seed: 42
+
+  - id: jev-1.14.0
+    type: jev
+    config:
+      model: jev-1.14.0
+      cache_dir: .cache/jev
+      max_retries: 3
+      request_timeout_seconds: 30.0
+
+metrics:
+  - runtime_regret
+  - top_1_accuracy
+
+execution:
+  fail_fast: true

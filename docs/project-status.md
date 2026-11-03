@@ -103,21 +103,21 @@ remaining plans for the TenSet and TpuGraphs benchmark workstreams.
 
 ### Dataset preparation
 
-- [ ] Download and set up TpuGraphs.
-- [ ] Explore graph representations, candidate configurations, and runtime
+- [x] Download and set up TpuGraphs.
+- [x] Explore graph representations, candidate configurations, and runtime
   labels.
-- [ ] Start with the `tile:xla` collection.
+- [x] Start with the `tile:xla` collection.
 - [ ] Expand to layout configurations only if time and feasibility permit.
-- [ ] Extract graph features, configuration parameters, and runtime labels.
-- [ ] Use and document the official dataset splits.
+- [x] Extract graph features, configuration parameters, and runtime labels.
+- [x] Use and document the official dataset splits.
 
 ### Graph serialization
 
-- [ ] Represent operation types, graph connectivity, tensor shapes, and tile
+- [x] Represent operation types, graph connectivity, tensor shapes, and tile
   sizes in `Workload.context` and `Candidate.configuration`.
 - [ ] Develop a compact summary for graphs that exceed Jev input limits.
 - [ ] Validate serialized representations against source data.
-- [ ] Verify that measured runtimes never appear in model-visible data.
+- [x] Verify that measured runtimes never appear in model-visible data.
 - [ ] Analyze the effect of serialization and input size on decisions.
 
 ### GNN baseline
