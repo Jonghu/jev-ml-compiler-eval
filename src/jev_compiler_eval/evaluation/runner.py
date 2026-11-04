@@ -1,9 +1,12 @@
 """Run configured evaluations across datasets and decision models."""
 
+import hashlib
+import json
 import platform
 import subprocess
 from dataclasses import dataclass
 from datetime import datetime, timezone
+from importlib.metadata import PackageNotFoundError, version
 from pathlib import Path
 from statistics import mean
 from typing import Mapping
@@ -72,6 +75,34 @@ def _git_commit() -> str | None:
     return completed.stdout.strip() or None
 
 
+def _package_versions() -> dict[str, str]:
+    """Record the installed packages relevant to reproducible evaluations."""
+
+    versions = {}
+    for package in ("jev-ml-compiler-eval", "typesafe-sdk", "numpy", "matplotlib"):
+        try:
+            versions[package] = version(package)
+        except PackageNotFoundError:
+            continue
+    return versions
+
+
+def _model_input(case: EvaluationCase) -> bytes:
+    """Fingerprint model-visible data independently of hidden runtime labels."""
+
+    payload = {
+        "workload_id": case.workload.workload_id,
+        "context": dict(case.workload.context),
+        "candidates": {
+            candidate.candidate_id: dict(candidate.configuration)
+            for candidate in case.candidates
+        },
+    }
+    return json.dumps(
+        payload, sort_keys=True, separators=(",", ":"), allow_nan=False
+    ).encode("utf-8")
+
+
 def _evaluate_model(
     *,
     model_id: str,
@@ -109,6 +140,7 @@ def _evaluate_model(
             for name, value in case_metrics.items():
                 metric_values[name].append(value)
             latencies.append(result.decision_latency_ms)
+            model_input = _model_input(case)
 
             predictions.append(
                 {
@@ -123,6 +155,9 @@ def _evaluate_model(
                     "selected_runtime_ms": runtimes[result.selected_candidate_id],
                     "optimal_candidate_ids": optimal_candidate_ids,
                     "optimal_runtime_ms": optimal_runtime,
+                    "runtime_by_candidate_ms": runtimes,
+                    "model_input_sha256": hashlib.sha256(model_input).hexdigest(),
+                    "model_input_bytes": len(model_input),
                     "metrics": case_metrics,
                     "decision_latency_ms": result.decision_latency_ms,
                     "metadata": dict(result.metadata),
@@ -176,7 +211,11 @@ def run_experiment(path: str | Path) -> ExperimentRunResult:
         "created_at_utc": datetime.now(timezone.utc).isoformat(),
         "python_version": platform.python_version(),
         "git_commit": _git_commit(),
+        "package_versions": _package_versions(),
     }
+    dataset_metadata = getattr(dataset, "manifest_metadata", None)
+    if dataset_metadata is not None:
+        manifest["dataset_provenance"] = dict(dataset_metadata())
     write_results(
         output_dir=output_dir,
         experiment_yaml=config_path.read_text(encoding="utf-8"),

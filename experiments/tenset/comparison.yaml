@@ -1,0 +1,44 @@
+schema_version: 1
+experiment:
+  name: tenset-e5-2673-comparison-c32-s42
+  description: RQ1 held-out tensor programs on identical sampled candidate sets
+  seed: 42
+  output_dir: results/tenset/comparison-c32-s42
+dataset:
+  type: tenset
+  config:
+    path: data/tenset/prepared.json
+    split: test
+    candidate_limit: 32
+    seed: 42
+    max_input_bytes: 262144
+candidate_selection:
+  strategy: all
+models:
+  - id: random-42
+    type: random
+    config:
+      seed: 42
+  - id: xgb-tvm-42
+    type: tenset_xgb
+    config:
+      prepared_path: data/tenset/prepared.json
+      checkpoint_path: data/tenset/xgb.pkl
+      task_registry_path: data/tenset/raw/network_info/all_tasks.pkl
+      python_executable: .venv-tenset/bin/python
+      worker_timeout_seconds: 300
+  - id: jev-1.14.0
+    type: jev
+    config:
+      model: jev-1.14.0
+      cache_dir: .cache/jev
+      max_retries: 3
+      request_timeout_seconds: 30.0
+metrics:
+  - top_1_score
+  - top_5_score
+  - pairwise_accuracy
+  - pairwise_accuracy_tie_aware
+  - runtime_regret
+execution:
+  fail_fast: true

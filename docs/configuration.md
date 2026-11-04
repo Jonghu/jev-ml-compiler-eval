@@ -69,7 +69,9 @@ loader.
 ### `candidate_selection`
 
 Only `strategy: all` is currently implemented. Candidate sampling strategies
-must be added before large benchmark runs.
+for TenSet are applied once in its dataset adapter before the common runner
+passes the resulting fixed cases to every model. See [TenSet](tenset.md) for
+its candidate limits, seeds, input budgets, and workload budgets.
 
 ### `models`
 
@@ -82,9 +84,11 @@ and `request_timeout_seconds`.
 
 ### `metrics`
 
-The current shared metrics are `runtime_regret` and `top_1_accuracy`. These are
-mock-framework metrics, not substitutes for the benchmark-specific Top-1
-Score, Top-1 Error, Pairwise Accuracy, or Kendall's Tau definitions.
+The shared metrics include `runtime_regret` and mock `top_1_accuracy`. TenSet adds
+`top_1_score`, `top_5_score`, and official `pairwise_accuracy`, plus a separately
+named `pairwise_accuracy_tie_aware` diagnostic. Its Top-5 score averages the best
+normalized throughput reached at each prefix. See [RQ1](rq1-report.md) for exact
+formulas and aggregation. TpuGraphs metrics remain to be implemented.
 
 ### `execution`
 

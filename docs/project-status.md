@@ -57,47 +57,53 @@ remaining plans for the TenSet and TpuGraphs benchmark workstreams.
 
 ## RQ1: TVM TenSet — Person B
 
+Implementation is available; full experimental results remain pending the
+official CPU archive, a built legacy TVM environment, and Jev credentials.
+See [setup and execution](tenset.md) and the [RQ1 report section](rq1-report.md).
+
 ### Dataset preparation
 
 - [ ] Download and set up TenSet.
 - [ ] Explore tensor workloads, candidate schedules, and measured runtimes.
 - [ ] Select representative workloads and a target hardware platform.
-- [ ] Extract workload metadata, schedule configurations, and runtime labels.
-- [ ] Define reproducible evaluation subsets and train/test splits.
+- [x] Implement workload metadata, schedule configuration, and runtime extraction.
+- [x] Define reproducible evaluation subsets and train/test splits.
 
 ### Workload serialization
 
-- [ ] Represent tensor shapes, operation types, loop structures, and scheduling
+- [x] Represent tensor shapes, operation types, loop structures, and scheduling
   transformations in `Workload.context` and `Candidate.configuration`.
-- [ ] Validate that serialization preserves relevant optimization information.
-- [ ] Verify that measured runtimes never appear in model-visible data.
-- [ ] Measure serialized input sizes against Jev API limits.
+- [x] Validate serialization against real TVM record structure and focused fixtures.
+- [x] Verify that measured runtimes never appear in model-visible data.
+- [x] Measure serialized input bytes and enforce a configurable local budget.
+- [ ] Verify actual service limits and full-dataset serialization coverage.
 
 ### XGBoost baseline
 
-- [ ] Reuse the paper or official TVM XGBoost cost-model implementation where
+- [x] Reuse the paper or official TVM XGBoost cost-model implementation where
   feasible.
 - [ ] Train or load the model with an explicitly documented training split.
 - [ ] Generate candidate rankings.
-- [ ] Integrate XGBoost through `BaseDecisionModel`.
+- [x] Integrate XGBoost through `BaseDecisionModel` with a persistent legacy worker.
 
 ### Experiments and analysis
 
 - [ ] Evaluate Jev, Random, and XGBoost on identical candidate sets.
-- [ ] Implement and compute official Top-1 Score.
-- [ ] Implement and compute Top-5 Score and Pairwise Accuracy.
+- [x] Implement official Top-1/Top-5 Score and Pairwise Accuracy with parity tests.
+- [ ] Compute benchmark Top-1/Top-5 Score and Pairwise Accuracy.
 - [ ] Compute runtime regret.
 - [ ] Compare workload types and candidate-set sizes.
 - [ ] Identify Jev success and failure cases.
-- [ ] Export per-workload predictions and aggregate results.
-- [ ] Write the RQ1 results and discussion section.
+- [x] Implement per-workload exports, aggregate analysis, and comparison plots.
+- [x] Write the RQ1 methodology and explicitly pending results/discussion section.
+- [ ] Complete the RQ1 results and discussion with real benchmark evidence.
 
 ### RQ1 deliverables
 
-- [ ] TenSet preprocessing and serialization pipeline.
-- [ ] XGBoost cost-model baseline.
+- [x] TenSet preprocessing and serialization pipeline.
+- [x] Official XGBoost cost-model baseline integration (legacy execution pending).
 - [ ] TenSet result tables and plots.
-- [ ] RQ1 report section.
+- [x] RQ1 report section with methodology, references, and explicit pending results.
 
 ## RQ2: XLA TpuGraphs — Person C
 

@@ -1,6 +1,8 @@
 """Shared evaluation metrics."""
 
-from collections.abc import Callable, Iterable
+from collections.abc import Callable, Iterable, Mapping
+from itertools import combinations
+from math import isfinite
 
 from jev_compiler_eval.types import DecisionResult, EvaluationCase
 
@@ -28,9 +30,143 @@ def top_1_accuracy(case: EvaluationCase, result: DecisionResult) -> float:
     return float(selected_runtime == min(runtimes.values()))
 
 
+def _validate_complete_ranking(
+    case: EvaluationCase, result: DecisionResult
+) -> dict[str, float]:
+    runtimes = _runtime_by_candidate(case)
+    if set(result.ranked_candidate_ids) != set(runtimes):
+        raise ValueError("metric requires a complete candidate ranking")
+    return runtimes
+
+
+def top_k_score(case: EvaluationCase, result: DecisionResult, k: int) -> float:
+    """Return TenSet's mean prefix-best normalized throughput over top k.
+
+    This is the single-task ``peak_score`` used by the TenSet cost-model
+    evaluation (``python/tvm/auto_scheduler/cost_model/metric.py`` in
+    https://github.com/tlc-pack/tenset). For each prefix j=1..min(k,n), compute
+    oracle_runtime / best_runtime_in_prefix_j, then average those ratios.
+    It is not the endpoint best-of-k score or a hit rate. The oracle is
+    restricted to this case's candidate set. The shared runner macro-averages
+    workloads; TenSet's training script instead weights by candidate count.
+    """
+
+    if isinstance(k, bool) or not isinstance(k, int) or k < 1:
+        raise ValueError("k must be a positive integer")
+    runtimes = _validate_complete_ranking(case, result)
+    optimal = min(runtimes.values())
+    best = float("inf")
+    scores = []
+    for item in result.ranked_candidate_ids[:k]:
+        best = min(best, runtimes[item])
+        scores.append(optimal / best)
+    return sum(scores) / len(scores)
+
+
+def best_of_top_k_score(case: EvaluationCase, result: DecisionResult, k: int) -> float:
+    """Return endpoint best-of-k ratio; this is not TenSet's average peak score."""
+
+    if isinstance(k, bool) or not isinstance(k, int) or k < 1:
+        raise ValueError("k must be a positive integer")
+    runtimes = _validate_complete_ranking(case, result)
+    return min(runtimes.values()) / min(
+        runtimes[item] for item in result.ranked_candidate_ids[:k]
+    )
+
+
+def top_1_score(case: EvaluationCase, result: DecisionResult) -> float:
+    """Return the TenSet Top-1 performance score in (0, 1]."""
+
+    return top_k_score(case, result, 1)
+
+
+def top_5_score(case: EvaluationCase, result: DecisionResult) -> float:
+    """Return the TenSet Top-5 performance score in (0, 1]."""
+
+    return top_k_score(case, result, 5)
+
+
+def _prediction_scores(
+    result: DecisionResult, candidate_ids: set[str]
+) -> Mapping[str, float] | None:
+    # Jev exposes probabilities; the TVM baseline exposes higher-is-better scores.
+    for key in ("scores", "probabilities"):
+        values = result.metadata.get(key)
+        if values is None:
+            continue
+        if not isinstance(values, Mapping) or set(values) != candidate_ids:
+            raise ValueError(f"{key} must match all evaluation candidate IDs")
+        if any(
+            isinstance(value, bool)
+            or not isinstance(value, (int, float))
+            or not isfinite(value)
+            for value in values.values()
+        ):
+            raise ValueError(f"{key} must contain finite numeric scores")
+        ordered = [values[item] for item in result.ranked_candidate_ids]
+        if any(left < right for left, right in zip(ordered, ordered[1:])):
+            raise ValueError(f"ranking must agree with higher-is-better {key}")
+        return values
+    return None
+
+
+def pairwise_accuracy(case: EvaluationCase, result: DecisionResult) -> float:
+    """Match TenSet's ``metric_pairwise_comp_accuracy`` strict comparisons.
+
+    Compare higher predicted score and lower measured runtime for every pair
+    in the original candidate order. Strict comparison treats ties as False,
+    including measured ties; therefore tied cases can depend on input order.
+    Scores or probabilities preserve model ties; otherwise use the ranking.
+    The official single-candidate convention is 0.5.
+    """
+
+    runtimes = _validate_complete_ranking(case, result)
+    scores = _prediction_scores(result, set(runtimes))
+    if scores is None:
+        scores = {item: -rank for rank, item in enumerate(result.ranked_candidate_ids)}
+    candidate_ids = [candidate.candidate_id for candidate in case.candidates]
+    comparable = len(candidate_ids) * (len(candidate_ids) - 1) // 2
+    if comparable == 0:
+        return 0.5
+    correct = sum(
+        (scores[left] > scores[right]) == (runtimes[left] < runtimes[right])
+        for left, right in combinations(candidate_ids, 2)
+    )
+    return correct / comparable
+
+
+def pairwise_accuracy_tie_aware(case: EvaluationCase, result: DecisionResult) -> float:
+    """Return a separately named, order-independent pairwise diagnostic.
+
+    Predicted ties receive half credit when model scores or probabilities are
+    supplied. Otherwise the returned ranking is the prediction. Measured ties
+    are excluded; a workload with no comparable pairs returns neutral 0.5.
+    These tie conventions are explicit project extensions of pairwise accuracy.
+    """
+
+    runtimes = _validate_complete_ranking(case, result)
+    scores = _prediction_scores(result, set(runtimes))
+    positions = {item: rank for rank, item in enumerate(result.ranked_candidate_ids)}
+    correct = 0.0
+    comparable = 0
+    for left, right in combinations(runtimes, 2):
+        if runtimes[left] == runtimes[right]:
+            continue
+        comparable += 1
+        if scores is not None and scores[left] == scores[right]:
+            correct += 0.5
+        elif (positions[left] < positions[right]) == (runtimes[left] < runtimes[right]):
+            correct += 1
+    return correct / comparable if comparable else 0.5
+
+
 _METRICS: dict[str, MetricFunction] = {
     "runtime_regret": runtime_regret,
     "top_1_accuracy": top_1_accuracy,
+    "top_1_score": top_1_score,
+    "top_5_score": top_5_score,
+    "pairwise_accuracy": pairwise_accuracy,
+    "pairwise_accuracy_tie_aware": pairwise_accuracy_tie_aware,
 }
 
 

@@ -26,8 +26,11 @@ performance model.
 ## Current status
 
 The shared evaluation framework, YAML experiment configuration, mock dataset,
-Random baseline, and Jev integration are implemented. TenSet and TpuGraphs
-workstreams remain to be implemented.
+Random baseline, and Jev integration are implemented. The TenSet workstream now
+includes record preparation, label-free serialization, a bridge to the official
+TVM XGBoost baseline, benchmark metrics, and comparison plots. Full TenSet
+experiments require the official dataset, legacy TVM runtime, and Jev credentials.
+The TpuGraphs workstream remains to be implemented.
 
 See [Project status](docs/project-status.md) for the completed-work checklist
 and the remaining tasks for each benchmark.
@@ -109,3 +112,5 @@ docs/                     Interfaces, configuration, protocol, and status
 - [Extension interfaces](docs/interfaces.md)
 - [Experiment protocol](docs/experiment-protocol.md)
 - [Project status and remaining work](docs/project-status.md)
+- [TenSet setup, training, evaluation, and analysis](docs/tenset.md)
+- [RQ1 methodology and experimental status](docs/rq1-report.md)
