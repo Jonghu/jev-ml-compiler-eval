@@ -32,6 +32,10 @@ models:
 metrics:
   - runtime_regret
   - top_1_accuracy
+  - top_1_error
+  - top_5_error
+  - top_10_error
+  - kendall_tau
 
 execution:
   fail_fast: true

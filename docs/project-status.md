@@ -130,8 +130,8 @@ remaining plans for the TenSet and TpuGraphs benchmark workstreams.
 ### Experiments and analysis
 
 - [ ] Evaluate Jev, Random, and GNN on identical candidate sets.
-- [ ] Implement and compute official Top-1 Error.
-- [ ] Implement and compute Top-5/10 Error and Kendall's Tau.
+- [x] Implement official Top-1 Error.
+- [x] Implement Top-5/10 Error and Kendall's Tau.
 - [ ] Compute runtime regret.
 - [ ] Compare graph sizes, configuration types, and candidate-set sizes.
 - [ ] Investigate Jev success and failure cases.

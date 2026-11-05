@@ -82,9 +82,21 @@ and `request_timeout_seconds`.
 
 ### `metrics`
 
-The current shared metrics are `runtime_regret` and `top_1_accuracy`. These are
-mock-framework metrics, not substitutes for the benchmark-specific Top-1
-Score, Top-1 Error, Pairwise Accuracy, or Kendall's Tau definitions.
+Each metric is computed per workload and averaged across workloads. Every
+model must rank all candidates, so ranking metrics see the full ranking.
+
+| Name | Definition |
+|---|---|
+| `runtime_regret` | Selected runtime divided by optimal runtime, minus one. |
+| `top_1_accuracy` | One when the selected candidate ties for the optimal runtime. |
+| `top_1_error`, `top_5_error`, `top_10_error` | Fastest runtime among the K highest-ranked candidates divided by optimal runtime, minus one. Zero when a workload has at most K candidates. |
+| `kendall_tau` | Kendall's tau-b between ranking positions and runtimes; one means the ranking is ordered from fastest to slowest. |
+
+`top_1_error` equals `runtime_regret`. The Top-K errors and Kendall's tau
+follow the TpuGraphs definitions (Phothilimthana et al., arXiv:2308.13490).
+`kendall_tau` raises an error for workloads with fewer than two candidates or
+identical runtimes, where it is undefined. TenSet Top-1 Score, Top-5 Score,
+and Pairwise Accuracy are not yet implemented.
 
 ### `execution`
 
