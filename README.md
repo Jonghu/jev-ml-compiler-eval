@@ -19,9 +19,10 @@ University of Illinois Urbana-Champaign.
 - **RQ2:** Can Jev make competitive layout and tiling configuration decisions
   on XLA workloads?
 
-The RQ1 evaluation uses TenSet and compares Jev with Random and an XGBoost cost
-model. The RQ2 evaluation uses TpuGraphs and compares Jev with Random and a GNN
-performance model.
+The RQ1 evaluation uses TenSet to compare Jev with Random, with published
+XGBoost results cited as external references. A local XGBoost adapter is also
+available for a future matched comparison. The RQ2 evaluation uses TpuGraphs
+and plans to compare Jev with Random and a GNN performance model.
 
 ## Current status
 
@@ -32,7 +33,10 @@ TVM XGBoost baseline, benchmark metrics, and comparison plots. Full TenSet
 experiments require the official dataset and Jev credentials. Program metadata
 can be exported in portable Python; legacy TVM is needed only for the optional
 local XGBoost baseline.
-The TpuGraphs workstream remains to be implemented.
+A one-workload, eight-candidate Random-versus-Jev pilot has completed on the
+user's MacBook Air. Larger experiments and the final RQ1 analysis remain pending.
+The TpuGraphs implementation is on the separate `tpu-graph` branch and awaits
+integration.
 
 See [Project status](docs/project-status.md) for the completed-work checklist
 and the remaining tasks for each benchmark.
@@ -114,5 +118,6 @@ docs/                     Interfaces, configuration, protocol, and status
 - [Extension interfaces](docs/interfaces.md)
 - [Experiment protocol](docs/experiment-protocol.md)
 - [Project status and remaining work](docs/project-status.md)
+- [Run the TenSet pilot on macOS](docs/run-tenset-on-macos.md)
 - [TenSet setup, training, evaluation, and analysis](docs/tenset.md)
 - [RQ1 methodology and experimental status](docs/rq1-report.md)

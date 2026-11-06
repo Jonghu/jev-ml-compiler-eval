@@ -1,7 +1,8 @@
 # Project status
 
-This checklist distinguishes completed shared infrastructure from the original
-remaining plans for the TenSet and TpuGraphs benchmark workstreams.
+This checklist separates implemented software, the user-reported Mac pilot,
+and the benchmark evidence still needed for the final report. See the
+[macOS TenSet guide](run-tenset-on-macos.md) for the current execution workflow.
 
 ## Shared repository and infrastructure — Person A
 
@@ -30,7 +31,9 @@ remaining plans for the TenSet and TpuGraphs benchmark workstreams.
 - [x] Convert Choice probabilities into complete candidate rankings.
 - [x] Record resolved model, confidence, probabilities, token usage, request ID,
   cache status, and latency.
-- [ ] Add candidate-count and input-size policies for TypeSafe API limits.
+- [x] Add configurable TenSet candidate/workload budgets and a local input-byte
+  guard.
+- [ ] Validate TypeSafe service limits and agree on policies across datasets.
 - [ ] Add candidate batching or staged selection if a benchmark exceeds those
   limits.
 
@@ -41,15 +44,19 @@ remaining plans for the TenSet and TpuGraphs benchmark workstreams.
 - [x] Measure per-decision and aggregate latency.
 - [x] Record API token usage and cache status.
 - [x] Run multiple models on identical candidate sets.
-- [ ] Implement benchmark-specific Top-K and ranking metrics.
+- [x] Implement and test the TenSet Top-1/Top-5 Score and Pairwise Accuracy
+  definitions.
+- [ ] Integrate and validate TpuGraphs metrics in the shared main branch.
 - [ ] Convert token usage into monetary cost using a recorded pricing snapshot.
-- [ ] Add configurable candidate sampling strategies and evaluation budgets.
+- [x] Add deterministic TenSet candidate sampling and evaluation budgets.
+- [ ] Agree on candidate sampling and budgets across both benchmarks.
 - [ ] Support `fail_fast: false` with explicit partial-result semantics.
-- [ ] Generate cross-model comparison tables and plots.
+- [x] Implement TenSet comparison tables and plots from saved result bundles.
+- [ ] Generate reviewed benchmark comparison tables and plots across datasets.
 
 ### Integration and final analysis
 
-- [ ] Review and merge the TenSet workstream.
+- [x] Review and merge the TenSet workstream into main.
 - [ ] Review and merge the TpuGraphs workstream.
 - [ ] Verify reproducibility across both benchmark pipelines.
 - [ ] Analyze the overall performance-cost tradeoff.
@@ -57,16 +64,40 @@ remaining plans for the TenSet and TpuGraphs benchmark workstreams.
 
 ## RQ1: TVM TenSet — Person B
 
-Implementation is available; full experimental results remain pending real-data
-and live Jev execution. Portable Python metadata export removes native TVM from
-the Jev/Random setup; legacy TVM remains optional for the local XGBoost baseline.
-See [setup and execution](tenset.md) and the [RQ1 report section](rq1-report.md).
+The portable dataset and metadata pipeline is implemented. The user reports a
+successful Jev-versus-Random pilot on the Mac using one workload and eight
+schedules. Full benchmark results remain pending. The primary experiment is
+Jev versus Random; published XGBoost results are an external literature
+reference, with their protocol differences stated explicitly. The optional
+local XGBoost implementation does not block this experiment.
+
+See the [macOS run guide](run-tenset-on-macos.md), [implementation reference](tenset.md),
+and [RQ1 report section](rq1-report.md).
+
+### User-reported Mac pilot
+
+The console output from `experiments/tenset/jev-vs-random.yaml` reports:
+
+| Model | Workloads | Schedules | Top-1 Score | Top-5 Score | Pairwise Accuracy | Runtime regret | Mean decision latency (ms) |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| Random | 1 | 8 | 1.0 | 1.0 | 0.821429 | 0.0 | 0.0355 |
+| Jev `jev-1.14.0` | 1 | 8 | 1.0 | 1.0 | 0.571429 | 0.0 | 555.784792 |
+
+Both selected a fastest schedule in this candidate pool. This is a setup pilot
+using `split: all`, not the held-out benchmark or evidence of overall model
+competitiveness. The raw result bundle, resolved API model, cache status, token
+usage, and monetary cost have not been independently inspected. The latency
+values are reported console measurements and have not been validated as
+uncached API latency.
 
 ### Dataset preparation
 
-- [ ] Download and set up TenSet.
-- [ ] Explore tensor workloads, candidate schedules, and measured runtimes.
-- [ ] Select representative workloads and a target hardware platform.
+- [x] Download, prepare, and run TenSet on the user's Mac, as demonstrated by
+  the user-reported pilot.
+- [x] Implement extraction of tensor workloads, candidate schedules, and
+  measured runtimes, with fixture validation and a user-reported real-data pilot.
+- [x] Select Intel E5-2673 v4 as the initial recorded hardware target.
+- [ ] Establish a representative benchmark workload set and report its coverage.
 - [x] Implement workload metadata, schedule configuration, and runtime extraction.
 - [x] Define reproducible evaluation subsets and train/test splits.
 
@@ -80,22 +111,34 @@ See [setup and execution](tenset.md) and the [RQ1 report section](rq1-report.md)
 - [x] Measure serialized input bytes and enforce a configurable local budget.
 - [ ] Verify actual service limits and full-dataset serialization coverage.
 
-### XGBoost baseline
+### Optional local XGBoost baseline
+
+The implementation is retained for a future matched comparison. Training and
+running it locally are optional; current experiments use Jev and Random.
 
 - [x] Reuse the paper or official TVM XGBoost cost-model implementation where
   feasible.
-- [ ] Train or load the model with an explicitly documented training split.
-- [ ] Generate candidate rankings.
+- [ ] Optionally train or load the model with a documented training split.
+- [ ] Optionally generate and validate rankings on the same held-out candidates.
 - [x] Integrate XGBoost through `BaseDecisionModel` with a persistent legacy worker.
 
 ### Experiments and analysis
 
-- [ ] Evaluate Jev, Random, and XGBoost on identical candidate sets.
+- [x] Run the user-reported Jev-versus-Random setup pilot on one workload and
+  eight shared candidates.
+- [ ] Run the larger Jev-versus-Random evaluation on held-out workloads.
+- [ ] Select and verify published XGBoost results for a separately cited
+  literature comparison, without treating them as paired measurements.
+- [ ] Optionally evaluate the local XGBoost baseline on identical candidates.
 - [x] Implement official Top-1/Top-5 Score and Pairwise Accuracy with parity tests.
-- [ ] Compute benchmark Top-1/Top-5 Score and Pairwise Accuracy.
-- [ ] Compute runtime regret.
+- [x] Obtain user-reported Top-1/Top-5 Score, Pairwise Accuracy, and runtime
+  regret for the one-workload pilot.
+- [ ] Independently inspect the pilot's saved predictions and provenance.
+- [ ] Compute benchmark metrics and regret over the full agreed evaluation set.
 - [ ] Compare workload types and candidate-set sizes.
 - [ ] Identify Jev success and failure cases.
+- [ ] Analyze variation across workloads and seeds with appropriate statistics.
+- [ ] Validate live/cached decision latency, API usage, and monetary cost.
 - [x] Implement per-workload exports, aggregate analysis, and comparison plots.
 - [x] Write the RQ1 methodology and explicitly pending results/discussion section.
 - [ ] Complete the RQ1 results and discussion with real benchmark evidence.
@@ -108,6 +151,14 @@ See [setup and execution](tenset.md) and the [RQ1 report section](rq1-report.md)
 - [x] RQ1 report section with methodology, references, and explicit pending results.
 
 ## RQ2: XLA TpuGraphs — Person C
+
+The separate [TpuGraphs branch](https://github.com/Jonghu/jev-ml-compiler-eval/tree/tpu-graph)
+at `031371e` contains a `tile:xla` downloader, graph/configuration serialization,
+official-validation-split experiment profiles, and Top-K Error/Kendall's Tau
+implementations. That work has not been merged into main. The unchecked items
+below remain main-branch integration or experiment deliverables; they do not
+mean that the separate branch has no implementation. The GraphSAGE baseline
+and final RQ2 results remain pending.
 
 ### Dataset preparation
 
@@ -161,7 +212,9 @@ See [setup and execution](tenset.md) and the [RQ1 report section](rq1-report.md)
 - [x] Ensure models receive identical candidate sets within an experiment.
 - [ ] Agree on candidate sampling strategies, evaluation budgets, and random
   seeds for both benchmarks.
-- [ ] Confirm the exact official metric formulas and references.
+- [x] Confirm TenSet's official metric formulas and references with parity tests.
+- [ ] Complete the cross-dataset metric and reporting agreement, including the
+  different TenSet Top-5 Score and TpuGraphs Top-5 Error definitions.
 
 ### During benchmark experiments
 

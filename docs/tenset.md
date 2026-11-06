@@ -4,6 +4,8 @@ This workstream extends the shared runner with `dataset.type: tenset`, the
 `tenset_xgb` model, official TenSet metrics, and result analysis. The existing
 Jev and Random models consume the same prepared cases. See
 [RQ1 report section](rq1-report.md) for methodology, references, and result status.
+For a complete first run on a Mac, follow the
+[macOS pilot guide](run-tenset-on-macos.md).
 
 ## Environment and data
 

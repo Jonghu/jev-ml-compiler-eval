@@ -5,12 +5,17 @@
 Can Jev select competitive tensor schedules using serialized program and schedule
 information, compared with Random and a specialized XGBoost cost model?
 
-This branch implements the TenSet experiment pipeline. Full benchmark results
-are **pending**. The dataset has been downloaded on the user's Mac, but real
-archive conversion and live Jev calls have not yet been verified there. Portable
-Python metadata export reads the supplied registry without installing TVM on
-that Mac. Native-generated fixtures validate format compatibility; their values
-are not experimental evidence about TenSet or Jev.
+The repository implements the TenSet experiment pipeline. Full benchmark results
+are **pending**. A user-reported pilot completed on a MacBook Air using one real
+TenSet workload and eight candidate schedules. Both Random and Jev selected a
+sampled optimum with zero regret; Random had higher pairwise accuracy on that
+case. This verifies the setup path, not general competitiveness. Saved artifacts,
+cache status, token usage, and costs have not been independently inspected.
+See [project status](project-status.md) for the reported pilot output.
+
+Portable Python metadata export reads the supplied registry without installing
+TVM on the Mac. Native-generated fixtures validate format compatibility; their
+values are not experimental evidence about TenSet or Jev.
 
 ## Dataset and experimental unit
 
