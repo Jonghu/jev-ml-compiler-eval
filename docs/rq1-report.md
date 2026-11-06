@@ -6,11 +6,11 @@ Can Jev select competitive tensor schedules using serialized program and schedul
 information, compared with Random and a specialized XGBoost cost model?
 
 This branch implements the TenSet experiment pipeline. Full benchmark results
-are **pending**. The execution environment has neither the official CPU archive
-nor a TypeSafe API key, and its allowed download destinations exclude Google
-Drive, where the official archive is hosted. The legacy TVM runtime must also
-be built separately. Synthetic fixtures validate the software; their values are
-not experimental evidence about TenSet or Jev.
+are **pending**. The dataset has been downloaded on the user's Mac, but real
+archive conversion and live Jev calls have not yet been verified there. Portable
+Python metadata export reads the supplied registry without installing TVM on
+that Mac. Native-generated fixtures validate format compatibility; their values
+are not experimental evidence about TenSet or Jev.
 
 ## Dataset and experimental unit
 
@@ -33,9 +33,10 @@ source hashes, and preparation settings are recorded for inspection.
 The split is assigned by a seeded hash of the original workload key: approximately
 70% training, 10% validation, and 20% testing. This is a project-defined split
 by workload, distinct from the default within-task split in TenSet's training
-script. No tensor program crosses splits. XGBoost training uses only training
-workloads; validation is reserved for development and test labels are evaluated
-after predictions. This evaluates generalization to unseen tensor programs.
+script. No tensor program crosses splits. Validation is reserved for development
+and final test labels are evaluated after predictions. Jev and Random receive
+no project-specific training. The optional local XGBoost adapter uses only
+training workloads if a matched baseline is run in the future.
 
 Within each test workload, candidates are ordered by a seeded hash independent
 of runtime. Taking prefixes produces nested candidate sets. The planned sizes
@@ -47,19 +48,24 @@ the fastest measured candidates or report different pools as a paired comparison
 ## Representations and models
 
 The workload representation includes the exact target, workload key, available
-tensor shapes and operation metadata, and compute-DAG/loop descriptions exported
-from the official task registry. A hash-based workload key alone is insufficient
+tensor shapes and operation metadata, and complete tensor-expression graphs and
+loop descriptions decoded from the official task registry. A hash-based key alone is insufficient
 to identify program semantics; metadata coverage must be reported. The schedule
 representation preserves initial state and every scheduling transformation's
 code, name, and positional arguments. Measured runtime, measurement status,
 timestamps, and source-record indices never enter model-visible inputs.
 
 Jev uses the existing shared decision interface and pinned model version.
-Random uses the shared seeded baseline. XGBoost calls the official TenSet TVM
-`XGBModel`: per-store features, normalized-throughput labels, and the pack-sum
-RMSE objective [2]. A persistent subprocess isolates the legacy runtime from
-the Python 3.11 evaluator. Checkpoint and training-split provenance guard against
-evaluation on training workloads. There is no substitute feature model.
+Random uses the shared seeded baseline. Our measured comparison is Jev versus
+Random. Published TenSet XGBoost results will be cited as an external reference
+with their hardware, split, candidate pool, and aggregation protocol; they must
+not be presented as a paired comparison with our sampled candidates.
+
+The optional specialized adapter calls the official TenSet TVM `XGBModel`:
+per-store features, normalized-throughput labels, and the pack-sum RMSE objective
+[2]. Its persistent subprocess and checkpoint/split provenance remain available
+for a future matched baseline. Local XGBoost training is not a prerequisite for
+the current Jev experiment.
 
 ## Metrics and aggregation
 
@@ -116,8 +122,9 @@ schedules evaluates selection among valid candidates rather than prediction of
 compilability. Sampling bounds input size but changes the oracle. The configured
 byte cap is a local experiment budget, not a verified TypeSafe service limit.
 Serialization retains scheduling transformations but may lack low-level compiler
-features seen by the specialized baseline. The legacy runtime and real API path
-require integration verification before publishing benchmark claims.
+features seen by the specialized baseline. The real archive and API path require
+integration verification before publishing benchmark claims. The portable reader
+rejects unsupported registry formats and tensor nodes instead of dropping semantics.
 
 ## References
 

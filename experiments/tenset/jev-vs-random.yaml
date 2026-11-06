@@ -1,0 +1,38 @@
+schema_version: 1
+experiment:
+  name: tenset-e5-2673-random-vs-jev-c8-s42
+  description: One-workload pilot with full tensor-program metadata
+  seed: 42
+  output_dir: results/tenset/random-vs-jev-c8-s42
+dataset:
+  type: tenset
+  config:
+    path: data/tenset/prepared-metadata.json
+    split: all
+    candidate_limit: 8
+    max_workloads: 1
+    seed: 42
+    max_input_bytes: 262144
+    require_program_metadata: true
+candidate_selection:
+  strategy: all
+models:
+  - id: random-42
+    type: random
+    config:
+      seed: 42
+  - id: jev-1.14.0
+    type: jev
+    config:
+      model: jev-1.14.0
+      cache_dir: .cache/jev
+      max_retries: 0
+      request_timeout_seconds: 30.0
+metrics:
+  - top_1_score
+  - top_5_score
+  - pairwise_accuracy
+  - pairwise_accuracy_tie_aware
+  - runtime_regret
+execution:
+  fail_fast: true

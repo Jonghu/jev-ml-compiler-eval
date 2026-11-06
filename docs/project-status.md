@@ -57,8 +57,9 @@ remaining plans for the TenSet and TpuGraphs benchmark workstreams.
 
 ## RQ1: TVM TenSet — Person B
 
-Implementation is available; full experimental results remain pending the
-official CPU archive, a built legacy TVM environment, and Jev credentials.
+Implementation is available; full experimental results remain pending real-data
+and live Jev execution. Portable Python metadata export removes native TVM from
+the Jev/Random setup; legacy TVM remains optional for the local XGBoost baseline.
 See [setup and execution](tenset.md) and the [RQ1 report section](rq1-report.md).
 
 ### Dataset preparation
@@ -75,6 +76,7 @@ See [setup and execution](tenset.md) and the [RQ1 report section](rq1-report.md)
   transformations in `Workload.context` and `Candidate.configuration`.
 - [x] Validate serialization against real TVM record structure and focused fixtures.
 - [x] Verify that measured runtimes never appear in model-visible data.
+- [x] Export semantic program metadata with portable Python and native format fixtures.
 - [x] Measure serialized input bytes and enforce a configurable local budget.
 - [ ] Verify actual service limits and full-dataset serialization coverage.
 

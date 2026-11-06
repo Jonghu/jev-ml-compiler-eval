@@ -29,7 +29,9 @@ The shared evaluation framework, YAML experiment configuration, mock dataset,
 Random baseline, and Jev integration are implemented. The TenSet workstream now
 includes record preparation, label-free serialization, a bridge to the official
 TVM XGBoost baseline, benchmark metrics, and comparison plots. Full TenSet
-experiments require the official dataset, legacy TVM runtime, and Jev credentials.
+experiments require the official dataset and Jev credentials. Program metadata
+can be exported in portable Python; legacy TVM is needed only for the optional
+local XGBoost baseline.
 The TpuGraphs workstream remains to be implemented.
 
 See [Project status](docs/project-status.md) for the completed-work checklist

@@ -1,0 +1,902 @@
+{
+  "cases": [
+    {
+      "name": "matmul",
+      "stages": [
+        {
+          "name": "a",
+          "reduction": [],
+          "spatial": [],
+          "type": "PlaceholderOp"
+        },
+        {
+          "name": "b",
+          "reduction": [],
+          "spatial": [],
+          "type": "PlaceholderOp"
+        },
+        {
+          "name": "matmul",
+          "reduction": [
+            {
+              "extent": 8,
+              "min": 0,
+              "variable": "k"
+            }
+          ],
+          "spatial": [
+            {
+              "extent": 4,
+              "min": 0,
+              "variable": "i"
+            },
+            {
+              "extent": 6,
+              "min": 0,
+              "variable": "j"
+            }
+          ],
+          "type": "ComputeOp"
+        }
+      ],
+      "tensor_graph_sha256": "e6f5d94931400646470cef522312e8506e02577873107bac3ab2b8d5615fd161",
+      "tensors": [
+        {
+          "dtype": "float32",
+          "name": "a",
+          "shape": [
+            4,
+            8
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "b",
+          "shape": [
+            8,
+            6
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "matmul",
+          "shape": [
+            4,
+            6
+          ]
+        }
+      ],
+      "workload_key": "[\"e187ad6827183766974b6299640fd468\", 4, 8, 8, 6, 4, 6]"
+    },
+    {
+      "name": "add",
+      "stages": [
+        {
+          "name": "left",
+          "reduction": [],
+          "spatial": [],
+          "type": "PlaceholderOp"
+        },
+        {
+          "name": "right",
+          "reduction": [],
+          "spatial": [],
+          "type": "PlaceholderOp"
+        },
+        {
+          "name": "same_name",
+          "reduction": [],
+          "spatial": [
+            {
+              "extent": 4,
+              "min": 0,
+              "variable": "i"
+            },
+            {
+              "extent": 4,
+              "min": 0,
+              "variable": "j"
+            }
+          ],
+          "type": "ComputeOp"
+        }
+      ],
+      "tensor_graph_sha256": "5794f42867d82fa629dfc8b0893ccda575e4ee48c4227672f77de906aecc9b1a",
+      "tensors": [
+        {
+          "dtype": "float32",
+          "name": "left",
+          "shape": [
+            4,
+            4
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "right",
+          "shape": [
+            4,
+            4
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "same_name",
+          "shape": [
+            4,
+            4
+          ]
+        }
+      ],
+      "workload_key": "[\"71e47aaad2eb0666824120814d7323c9\", 4, 4, 4, 4, 4, 4]"
+    },
+    {
+      "name": "multiply",
+      "stages": [
+        {
+          "name": "left",
+          "reduction": [],
+          "spatial": [],
+          "type": "PlaceholderOp"
+        },
+        {
+          "name": "right",
+          "reduction": [],
+          "spatial": [],
+          "type": "PlaceholderOp"
+        },
+        {
+          "name": "same_name",
+          "reduction": [],
+          "spatial": [
+            {
+              "extent": 4,
+              "min": 0,
+              "variable": "i"
+            },
+            {
+              "extent": 4,
+              "min": 0,
+              "variable": "j"
+            }
+          ],
+          "type": "ComputeOp"
+        }
+      ],
+      "tensor_graph_sha256": "2fa3b47822826e8c25782d8ea1fb0bf667032c5a76c63b5fbf0e1d5dceb6ba0c",
+      "tensors": [
+        {
+          "dtype": "float32",
+          "name": "left",
+          "shape": [
+            4,
+            4
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "right",
+          "shape": [
+            4,
+            4
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "same_name",
+          "shape": [
+            4,
+            4
+          ]
+        }
+      ],
+      "workload_key": "[\"6850b8a2f1329f7ef068c5c111a2fc5f\", 4, 4, 4, 4, 4, 4]"
+    },
+    {
+      "name": "padded_conv",
+      "stages": [
+        {
+          "name": "image",
+          "reduction": [],
+          "spatial": [],
+          "type": "PlaceholderOp"
+        },
+        {
+          "name": "padding",
+          "reduction": [],
+          "spatial": [
+            {
+              "extent": 1,
+              "min": 0,
+              "variable": "n"
+            },
+            {
+              "extent": 3,
+              "min": 0,
+              "variable": "c"
+            },
+            {
+              "extent": 7,
+              "min": 0,
+              "variable": "y"
+            },
+            {
+              "extent": 7,
+              "min": 0,
+              "variable": "x"
+            }
+          ],
+          "type": "ComputeOp"
+        },
+        {
+          "name": "weight",
+          "reduction": [],
+          "spatial": [],
+          "type": "PlaceholderOp"
+        },
+        {
+          "name": "conv2d",
+          "reduction": [
+            {
+              "extent": 3,
+              "min": 0,
+              "variable": "rc"
+            },
+            {
+              "extent": 3,
+              "min": 0,
+              "variable": "ry"
+            },
+            {
+              "extent": 3,
+              "min": 0,
+              "variable": "rx"
+            }
+          ],
+          "spatial": [
+            {
+              "extent": 1,
+              "min": 0,
+              "variable": "n"
+            },
+            {
+              "extent": 4,
+              "min": 0,
+              "variable": "c"
+            },
+            {
+              "extent": 5,
+              "min": 0,
+              "variable": "y"
+            },
+            {
+              "extent": 5,
+              "min": 0,
+              "variable": "x"
+            }
+          ],
+          "type": "ComputeOp"
+        },
+        {
+          "name": "bias",
+          "reduction": [],
+          "spatial": [],
+          "type": "PlaceholderOp"
+        },
+        {
+          "name": "bias_relu",
+          "reduction": [],
+          "spatial": [
+            {
+              "extent": 1,
+              "min": 0,
+              "variable": "n"
+            },
+            {
+              "extent": 4,
+              "min": 0,
+              "variable": "c"
+            },
+            {
+              "extent": 5,
+              "min": 0,
+              "variable": "y"
+            },
+            {
+              "extent": 5,
+              "min": 0,
+              "variable": "x"
+            }
+          ],
+          "type": "ComputeOp"
+        }
+      ],
+      "tensor_graph_sha256": "30bcea03d9694cf610a4d170e303248f616ca49f1066f6a09e28160d52bca71d",
+      "tensors": [
+        {
+          "dtype": "float32",
+          "name": "image",
+          "shape": [
+            1,
+            3,
+            5,
+            5
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "weight",
+          "shape": [
+            4,
+            3,
+            3,
+            3
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "bias",
+          "shape": [
+            4
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "bias_relu",
+          "shape": [
+            1,
+            4,
+            5,
+            5
+          ]
+        }
+      ],
+      "workload_key": "[\"995bb8c66c5dba8660e42453d82ab9fe\", 1, 3, 5, 5, 4, 3, 3, 3, 4, 1, 4, 5, 5]"
+    },
+    {
+      "name": "softmax",
+      "stages": [
+        {
+          "name": "input",
+          "reduction": [],
+          "spatial": [],
+          "type": "PlaceholderOp"
+        },
+        {
+          "name": "row_max",
+          "reduction": [
+            {
+              "extent": 5,
+              "min": 0,
+              "variable": "rmax"
+            }
+          ],
+          "spatial": [
+            {
+              "extent": 3,
+              "min": 0,
+              "variable": "i"
+            }
+          ],
+          "type": "ComputeOp"
+        },
+        {
+          "name": "exponent",
+          "reduction": [],
+          "spatial": [
+            {
+              "extent": 3,
+              "min": 0,
+              "variable": "i"
+            },
+            {
+              "extent": 5,
+              "min": 0,
+              "variable": "j"
+            }
+          ],
+          "type": "ComputeOp"
+        },
+        {
+          "name": "row_sum",
+          "reduction": [
+            {
+              "extent": 5,
+              "min": 0,
+              "variable": "rsum"
+            }
+          ],
+          "spatial": [
+            {
+              "extent": 3,
+              "min": 0,
+              "variable": "i"
+            }
+          ],
+          "type": "ComputeOp"
+        },
+        {
+          "name": "softmax",
+          "reduction": [],
+          "spatial": [
+            {
+              "extent": 3,
+              "min": 0,
+              "variable": "i"
+            },
+            {
+              "extent": 5,
+              "min": 0,
+              "variable": "j"
+            }
+          ],
+          "type": "ComputeOp"
+        }
+      ],
+      "tensor_graph_sha256": "5a1ff7bddec76329a7cda4a29da7c9f54783ba54a5f0c418a20301f2fe0bae78",
+      "tensors": [
+        {
+          "dtype": "float32",
+          "name": "input",
+          "shape": [
+            3,
+            5
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "softmax",
+          "shape": [
+            3,
+            5
+          ]
+        }
+      ],
+      "workload_key": "[\"39cff38c4ea4b43157f14b063d2c1beb\", 3, 5, 3, 5]"
+    },
+    {
+      "name": "reshape",
+      "stages": [
+        {
+          "name": "input",
+          "reduction": [],
+          "spatial": [],
+          "type": "PlaceholderOp"
+        },
+        {
+          "name": "reshape",
+          "reduction": [],
+          "spatial": [
+            {
+              "extent": 6,
+              "min": 0,
+              "variable": "i"
+            },
+            {
+              "extent": 4,
+              "min": 0,
+              "variable": "j"
+            }
+          ],
+          "type": "ComputeOp"
+        }
+      ],
+      "tensor_graph_sha256": "d565cdf72072debe13e040d0114d60ba9335f460e8daabae6fb40931e843d286",
+      "tensors": [
+        {
+          "dtype": "float32",
+          "name": "input",
+          "shape": [
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "reshape",
+          "shape": [
+            6,
+            4
+          ]
+        }
+      ],
+      "workload_key": "[\"898812badbbccd677024d1eca9e93e95\", 2, 3, 4, 6, 4]"
+    },
+    {
+      "name": "shared_branch",
+      "stages": [
+        {
+          "name": "input",
+          "reduction": [],
+          "spatial": [],
+          "type": "PlaceholderOp"
+        },
+        {
+          "name": "shared",
+          "reduction": [],
+          "spatial": [
+            {
+              "extent": 4,
+              "min": 0,
+              "variable": "i"
+            },
+            {
+              "extent": 4,
+              "min": 0,
+              "variable": "j"
+            }
+          ],
+          "type": "ComputeOp"
+        },
+        {
+          "name": "left",
+          "reduction": [],
+          "spatial": [
+            {
+              "extent": 4,
+              "min": 0,
+              "variable": "i"
+            },
+            {
+              "extent": 4,
+              "min": 0,
+              "variable": "j"
+            }
+          ],
+          "type": "ComputeOp"
+        },
+        {
+          "name": "right",
+          "reduction": [],
+          "spatial": [
+            {
+              "extent": 4,
+              "min": 0,
+              "variable": "i"
+            },
+            {
+              "extent": 4,
+              "min": 0,
+              "variable": "j"
+            }
+          ],
+          "type": "ComputeOp"
+        },
+        {
+          "name": "merge",
+          "reduction": [],
+          "spatial": [
+            {
+              "extent": 4,
+              "min": 0,
+              "variable": "i"
+            },
+            {
+              "extent": 4,
+              "min": 0,
+              "variable": "j"
+            }
+          ],
+          "type": "ComputeOp"
+        }
+      ],
+      "tensor_graph_sha256": "426e8a2c5ec9d8af55fdc355ad5cda2e96730f4dfb3ad08c2ed723fcd7962c54",
+      "tensors": [
+        {
+          "dtype": "float32",
+          "name": "input",
+          "shape": [
+            4,
+            4
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "merge",
+          "shape": [
+            4,
+            4
+          ]
+        }
+      ],
+      "workload_key": "[\"18c8c8f720101a10507d8f5a053d473d\", 4, 4, 4, 4]"
+    },
+    {
+      "name": "multiple_outputs",
+      "stages": [
+        {
+          "name": "input",
+          "reduction": [],
+          "spatial": [],
+          "type": "PlaceholderOp"
+        },
+        {
+          "name": "shared",
+          "reduction": [],
+          "spatial": [
+            {
+              "extent": 4,
+              "min": 0,
+              "variable": "i"
+            },
+            {
+              "extent": 4,
+              "min": 0,
+              "variable": "j"
+            }
+          ],
+          "type": "ComputeOp"
+        },
+        {
+          "name": "right",
+          "reduction": [],
+          "spatial": [
+            {
+              "extent": 4,
+              "min": 0,
+              "variable": "i"
+            },
+            {
+              "extent": 4,
+              "min": 0,
+              "variable": "j"
+            }
+          ],
+          "type": "ComputeOp"
+        },
+        {
+          "name": "left",
+          "reduction": [],
+          "spatial": [
+            {
+              "extent": 4,
+              "min": 0,
+              "variable": "i"
+            },
+            {
+              "extent": 4,
+              "min": 0,
+              "variable": "j"
+            }
+          ],
+          "type": "ComputeOp"
+        }
+      ],
+      "tensor_graph_sha256": "3f765cc443076c43423a42840356905f6ca69810bd8742489acd00b2bd1da923",
+      "tensors": [
+        {
+          "dtype": "float32",
+          "name": "input",
+          "shape": [
+            4,
+            4
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "right",
+          "shape": [
+            4,
+            4
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "left",
+          "shape": [
+            4,
+            4
+          ]
+        }
+      ],
+      "workload_key": "[\"a53fe75e4edd1717de04e79dd010e2de\", 4, 4, 4, 4, 4, 4]"
+    },
+    {
+      "name": "mixed_precision",
+      "stages": [
+        {
+          "name": "half_input",
+          "reduction": [],
+          "spatial": [],
+          "type": "PlaceholderOp"
+        },
+        {
+          "name": "accumulate",
+          "reduction": [
+            {
+              "extent": 4,
+              "min": 0,
+              "variable": "k"
+            }
+          ],
+          "spatial": [
+            {
+              "extent": 3,
+              "min": 0,
+              "variable": "i"
+            }
+          ],
+          "type": "ComputeOp"
+        }
+      ],
+      "tensor_graph_sha256": "8c5325d8a1d6a97ab54992f8f18feaa59045fecb7c84943ef7baf0bb5e30a8e7",
+      "tensors": [
+        {
+          "dtype": "float16",
+          "name": "half_input",
+          "shape": [
+            3,
+            4
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "accumulate",
+          "shape": [
+            3
+          ]
+        }
+      ],
+      "workload_key": "[\"9f0d29a1ad3da90cdce10a5a4512d155\", 3, 4, 3]"
+    },
+    {
+      "name": "nonzero_axis_min",
+      "stages": [
+        {
+          "name": "input",
+          "reduction": [],
+          "spatial": [],
+          "type": "PlaceholderOp"
+        },
+        {
+          "name": "slice_sum",
+          "reduction": [
+            {
+              "extent": 3,
+              "min": 1,
+              "variable": "slice_k"
+            }
+          ],
+          "spatial": [],
+          "type": "ComputeOp"
+        }
+      ],
+      "tensor_graph_sha256": "720520405a433259e262ea6e8114a63efa496e94acb0bbe198ee2ebc904a024d",
+      "tensors": [
+        {
+          "dtype": "float32",
+          "name": "input",
+          "shape": [
+            5
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "slice_sum",
+          "shape": []
+        }
+      ],
+      "workload_key": "[\"2bdc3517e82fad1c88de952205f2932d\", 5]"
+    },
+    {
+      "name": "scalar_constant",
+      "stages": [
+        {
+          "name": "scalar",
+          "reduction": [],
+          "spatial": [],
+          "type": "ComputeOp"
+        }
+      ],
+      "tensor_graph_sha256": "653a0689789d2e60dfe7af6d5fc1b2b880cd4db368465d502777ad6252d33fe0",
+      "tensors": [
+        {
+          "dtype": "float32",
+          "name": "scalar",
+          "shape": []
+        }
+      ],
+      "workload_key": "[\"c1f713f520716ee9c60c0cab3c5d1209\"]"
+    },
+    {
+      "name": "unicode",
+      "stages": [
+        {
+          "name": "input_\u03bb",
+          "reduction": [],
+          "spatial": [],
+          "type": "PlaceholderOp"
+        },
+        {
+          "name": "compute_\u03bb",
+          "reduction": [],
+          "spatial": [
+            {
+              "extent": 2,
+              "min": 0,
+              "variable": "i"
+            }
+          ],
+          "type": "ComputeOp"
+        }
+      ],
+      "tensor_graph_sha256": "38e1994a20dc4f7d47dd711c97865d627926f3ef45574a9a5193356f55174cd4",
+      "tensors": [
+        {
+          "dtype": "float32",
+          "name": "input_\u03bb",
+          "shape": [
+            2
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "compute_\u03bb",
+          "shape": [
+            2
+          ]
+        }
+      ],
+      "workload_key": "[\"b19aab8266c5606bf663cd297c79790b\", 2, 2]"
+    },
+    {
+      "name": "tuple_reducer",
+      "stages": [
+        {
+          "name": "input",
+          "reduction": [],
+          "spatial": [],
+          "type": "PlaceholderOp"
+        },
+        {
+          "name": "tuple_sum",
+          "reduction": [
+            {
+              "extent": 4,
+              "min": 0,
+              "variable": "k"
+            }
+          ],
+          "spatial": [
+            {
+              "extent": 2,
+              "min": 0,
+              "variable": "i"
+            }
+          ],
+          "type": "ComputeOp"
+        }
+      ],
+      "tensor_graph_sha256": "da8f549d07f93e11e182ed657ce4f16a69f16d1a2c4437e9ce3eff0d396d7280",
+      "tensors": [
+        {
+          "dtype": "float32",
+          "name": "input",
+          "shape": [
+            2,
+            4
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "tuple_sum.v0",
+          "shape": [
+            2
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "tuple_sum.v1",
+          "shape": [
+            2
+          ]
+        }
+      ],
+      "workload_key": "[\"4858c155d618efcee4054417509382fe\", 2, 4, 2, 2]"
+    }
+  ],
+  "source": "synthetic TE programs generated by original TenSet TVM",
+  "source_commit": "35774ed373f9693cc6efcbe83f5703141e8ab0c8",
+  "tvm_version": "0.8.dev0"
+}

@@ -39,6 +39,11 @@ checksum. Data and generated artifacts are excluded from Git.
 
 ## Official TVM/XGBoost runtime
 
+This section is optional for Jev evaluation. The default metadata exporter now
+runs in the main Python 3.11 environment without native TVM, Docker, or XGBoost.
+The legacy runtime below is needed only to train/run the specialized baseline
+or regenerate native reference fixtures.
+
 The original TenSet TVM fork uses historical Python, NumPy, and XGBoost APIs.
 Current `apache-tvm` wheels are not a compatible replacement. Keep the evaluator
 on Python 3.11 and build a separate Python 3.8 environment:
@@ -70,18 +75,53 @@ checkpoints. A persistent worker loads them once and closes with the shared
 model lifecycle. The first decision includes startup; worker initialization
 and feature/prediction time are also reported separately.
 
-## Export semantic metadata and prepare records
+## Export semantic metadata on macOS and prepare records
 
-TenSet's workload keys are usually opaque hashes. Export tensor shapes,
-operation names, loop extents, and compute DAGs from the official registry before
-preparing Jev inputs:
+TenSet's workload keys are usually opaque hashes. The CPU archive already
+contains their tensor programs in `network_info/all_tasks.pkl`. The portable
+exporter reads stored TVM SaveJSON graphs into inert data containers and extracts
+tensor shapes, operation names, loop extents, complete expression graphs, and
+initial scheduling-stage order. No source pickle constructors or TVM code run.
+Unsupported globals or graph schemas fail explicitly instead of silently
+omitting program information.
 
 ```bash
 uv run python scripts/export_tenset_metadata.py \
   --task-registry data/tenset/raw/network_info/all_tasks.pkl \
-  --output data/tenset/metadata.json \
-  --python-executable .venv-tenset/bin/python
+  --output data/tenset/metadata.json
 ```
+
+This uses the main environment on Intel and Apple silicon Macs; no separate
+dataset is downloaded. The output is keyed by the original workload key and has
+a `metadata.json.manifest.json` sidecar with registry/output hashes and exporter
+provenance. The reader supports pickle protocols 2–5 and known TVM object states.
+Its default registry-size limit is 512 MiB, adjustable with `--max-registry-mib`.
+
+If a prepared pilot already exists, export only its tensor programs and attach
+the metadata without changing workloads, candidates, splits, or labels:
+
+```bash
+uv run python scripts/export_tenset_metadata.py \
+  --task-registry data/tenset/raw/network_info/all_tasks.pkl \
+  --prepared data/tenset/prepared-pilot.json \
+  --output data/tenset/metadata.json
+
+uv run python scripts/enrich_tenset.py \
+  --prepared data/tenset/prepared-pilot.json \
+  --metadata data/tenset/metadata.json \
+  --output data/tenset/prepared-metadata.json
+```
+
+Enrichment requires complete metadata coverage, preserves the parent artifact,
+and records parent-data and metadata hashes. It refuses output overwrites.
+Expression-graph node IDs are separate from schedule-stage indices;
+`compute_dag.stage_order` maps the initial stages, while later transformations
+can change them. The representation preserves expressions instead of inferring
+program descriptions from workload hashes.
+
+For native reference comparison use `--backend tvm` together with
+`--python-executable .venv-tenset/bin/python`. Existing commands that explicitly
+supply `--python-executable` retain their native-backend behavior.
 
 Inspect the exact target strings in the extracted raw records. Pass one exact
 string to the preparation command; `llvm` alone is not interchangeable with a
@@ -124,6 +164,25 @@ runtime aggregation, split settings, and split counts are retained.
 
 ## Train and evaluate
 
+The current primary experiment compares Random and Jev; published XGBoost
+results are a separately cited literature reference. They are not paired
+measurements on this repository's chosen split and candidate pools.
+
+After enriching a prepared pilot and setting `TYPESAFE_API_KEY` in `.env`:
+
+```bash
+uv run python scripts/run_experiment.py \
+  --config experiments/tenset/jev-vs-random.yaml
+```
+
+This profile requires complete program metadata and uses one workload, eight
+candidates, and zero retries. `split: all` makes it a setup pilot, not the final
+held-out evaluation. For formal runs, prepare a sufficiently large subset,
+change the profile to `split: test`, set agreed workload/candidate budgets, and
+choose a new experiment name/output directory. No XGBoost checkpoint is loaded.
+
+### Optional local specialized baseline
+
 Train the official baseline on all and only the prepared training workloads:
 
 ```bash
@@ -164,6 +223,7 @@ models, so `candidate_selection.strategy` remains `all`. Its config supports:
 | `seed` | `42` | Candidate and workload ordering seed |
 | `max_input_bytes` | `262144` | Fail if serialized Jev state/questions exceed local budget |
 | `max_workloads` | `null` | Optional evaluation workload budget |
+| `require_program_metadata` | `false` | Fail before model calls if program semantics are missing |
 
 Cases with fewer schedules use all available candidates. Prepare with
 `--min-candidates 32` for fixed-size 8/16/32 comparisons. The input byte check
@@ -212,8 +272,11 @@ uv run pre-commit run --all-files
 Tests cover raw-record handling, unit conversion and duplicate aggregation,
 label isolation, disjoint splits, nested candidate sets, official metric parity,
 artifact integrity, subprocess protocol/lifecycle, archive extraction, and
-analysis outputs. An actual legacy TVM build, the official archive, and live
-Jev credentials are required for the final integration and reported experiment.
+analysis outputs. Portable metadata parsing is checked against 13 tensor
+programs serialized by the pinned native TenSet TVM build, including reductions,
+fused convolution, branching, multiple outputs, scalar computes, and Unicode
+names. The official archive and live Jev credentials are required for the final
+integration and reported experiment; native TVM is optional for Jev runs.
 Do not present synthetic smoke outputs as the RQ1 results.
 
 The raw parser was also checked against the pinned upstream file

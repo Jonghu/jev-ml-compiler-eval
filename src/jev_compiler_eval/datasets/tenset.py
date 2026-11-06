@@ -411,6 +411,7 @@ class TenSetDataset(BaseDataset):
             "seed",
             "max_input_bytes",
             "max_workloads",
+            "require_program_metadata",
         }
         if "path" not in self.config or set(self.config) - allowed:
             raise ValueError(
@@ -426,6 +427,8 @@ class TenSetDataset(BaseDataset):
         }:
             raise ValueError("TenSet split must be train, validation, test, or all")
         _integer(self.config.get("seed", 42), "seed")
+        if not isinstance(self.config.get("require_program_metadata", False), bool):
+            raise ValueError("require_program_metadata must be a boolean")
         for field, default in (
             ("candidate_limit", 32),
             ("max_input_bytes", 262144),
@@ -471,6 +474,25 @@ class TenSetDataset(BaseDataset):
             if not isinstance(context, Mapping) or set(context) - _CONTEXT_FIELDS:
                 raise ValueError("unsupported or label-bearing TenSet context fields")
             _reject_label_keys(context)
+            if self.config.get("require_program_metadata", False):
+                tensors = context.get("tensors")
+                if (
+                    context.get("operation") in (None, "", "unknown")
+                    or not isinstance(tensors, list)
+                    or not tensors
+                    or any(
+                        not isinstance(tensor, Mapping)
+                        or "shape" not in tensor
+                        or not tensor.get("dtype")
+                        for tensor in tensors
+                    )
+                    or not context.get("compute_dag")
+                    or not isinstance(context.get("loop_structure"), list)
+                ):
+                    raise ValueError(
+                        f"{workload_id}: complete program metadata is required; "
+                        "export metadata and enrich the prepared artifact first"
+                    )
             workload = Workload(workload_id, context)
             entries = data.get("candidates")
             if not isinstance(entries, list) or not entries:
@@ -529,6 +551,9 @@ class TenSetDataset(BaseDataset):
             "candidate_limit": limit,
             "max_workloads": max_workloads,
             "max_input_bytes": byte_limit,
+            "require_program_metadata": self.config.get(
+                "require_program_metadata", False
+            ),
             "realized_cases": [
                 {
                     "workload_id": case.workload.workload_id,

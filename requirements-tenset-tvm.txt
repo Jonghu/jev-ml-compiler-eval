@@ -8,3 +8,5 @@ attrs==23.2.0
 psutil==5.9.8
 cloudpickle==2.2.1
 tornado==6.4.2
+# The historical fork imports neural cost-model modules during auto_scheduler import.
+torch==1.13.1
