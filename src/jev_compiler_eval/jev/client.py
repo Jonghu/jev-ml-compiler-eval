@@ -51,8 +51,11 @@ class JevClientConfig:
     max_retries: int = 3
     request_timeout_seconds: float = 30.0
     base_url: str = "https://api.typesafe.ai"
+    long_context: bool = False
 
     def __post_init__(self) -> None:
+        if not isinstance(self.long_context, bool):
+            raise ValueError("Jev long_context must be a boolean")
         if not self.model.strip():
             raise ValueError("Jev model must not be empty")
         if isinstance(self.max_retries, bool) or not isinstance(self.max_retries, int):
@@ -134,10 +137,16 @@ class JevApiClient:
         if cache_path.exists():
             return self._read_cache(cache_path, cache_key, started_at)
 
+        extra = (
+            {"extra_headers": {"TypeSafe-Danger-Zone-Long-Context": "true"}}
+            if self.config.long_context
+            else {}
+        )
         try:
             response = self._sdk_client.system_one(
                 state=state,  # type: ignore[arg-type]
                 questions=questions,  # type: ignore[arg-type]
+                **extra,
             )
         except TypeSafeAPITimeoutError as error:
             raise JevClientError("Jev API request timed out") from error
@@ -170,6 +179,8 @@ class JevApiClient:
             "state": state,
             "questions": questions,
         }
+        if self.config.long_context:
+            request["long_context"] = True
         try:
             encoded = json.dumps(
                 request,

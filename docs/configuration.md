@@ -82,7 +82,17 @@ and implementation-specific `config`. Multiple entries may use the same type
 with different configurations.
 
 Random accepts only `seed`. Jev requires `model`, `cache_dir`, `max_retries`,
-and `request_timeout_seconds`.
+and `request_timeout_seconds`. It also accepts the optional boolean
+`long_context` (default `false`). When enabled, the client sends
+`TypeSafe-Danger-Zone-Long-Context: true`, separates its cache from default-mode
+requests, and records `long_context: true` in prediction metadata.
+
+[TypeSafe's model documentation](https://docs.typesafe.ai/models#long-context)
+lists default limits of 64k tokens per request and 32k per question, including
+the shared state. The long-context header raises both limits to 262k tokens.
+TypeSafe documents slower and less accurate behavior at longer contexts, with
+the same price per input token. Record the mode as an experiment condition.
+The dataset's `max_input_bytes` is a local byte budget, not a token count.
 
 ### `metrics`
 

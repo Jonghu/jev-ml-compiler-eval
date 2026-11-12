@@ -1,4 +1,6 @@
+import hashlib
 import json
+from dataclasses import replace
 from pathlib import Path
 
 import httpx2
@@ -22,9 +24,13 @@ class FakeSdkClient:
     def __init__(self) -> None:
         self.calls = 0
         self.closed = False
+        self.request_options: list[dict[str, object]] = []
 
-    def system_one(self, state: object, questions: object) -> SystemOneResponse:
+    def system_one(
+        self, state: object, questions: object, **kwargs: object
+    ) -> SystemOneResponse:
         self.calls += 1
+        self.request_options.append(kwargs)
         return SystemOneResponse.model_validate(
             {
                 "model": "jev-1.13.0",
@@ -106,6 +112,99 @@ def test_calls_sdk_and_caches_successful_response(tmp_path: Path) -> None:
     assert first.output_tokens == 10
     assert second.answers == first.answers
     assert len(list(make_config(tmp_path).cache_dir.glob("*.json"))) == 1
+
+
+@pytest.mark.parametrize("long_context", [False, True])
+def test_long_context_header_requires_explicit_opt_in(
+    tmp_path: Path, long_context: bool
+) -> None:
+    sdk_client = FakeSdkClient()
+    client = JevApiClient(
+        replace(make_config(tmp_path), long_context=long_context),
+        sdk_client=sdk_client,  # type: ignore[arg-type]
+    )
+
+    client.decide(**request())  # type: ignore[arg-type]
+
+    expected = (
+        {"extra_headers": {"TypeSafe-Danger-Zone-Long-Context": "true"}}
+        if long_context
+        else {}
+    )
+    assert sdk_client.request_options == [expected]
+
+
+def test_default_request_and_cache_key_preserve_existing_behavior(
+    tmp_path: Path,
+) -> None:
+    sdk_client = FakeSdkClient()
+    config = make_config(tmp_path)
+    client = JevApiClient(config, sdk_client=sdk_client)  # type: ignore[arg-type]
+    values = request()
+    legacy_request = {
+        "base_url": config.base_url,
+        "model": config.model,
+        **values,
+    }
+    legacy_key = hashlib.sha256(
+        json.dumps(
+            legacy_request,
+            allow_nan=False,
+            ensure_ascii=False,
+            separators=(",", ":"),
+            sort_keys=True,
+        ).encode()
+    ).hexdigest()
+
+    client.decide(**values)  # type: ignore[arg-type]
+    explicit_default = JevApiClient(
+        replace(config, long_context=False),
+        sdk_client=sdk_client,  # type: ignore[arg-type]
+    )
+    cached = explicit_default.decide(**values)  # type: ignore[arg-type]
+
+    assert config.long_context is False
+    assert sdk_client.request_options == [{}]
+    assert cached.cache_hit is True
+    assert sdk_client.calls == 1
+    assert (config.cache_dir / f"{legacy_key}.json").is_file()
+
+
+def test_long_context_and_default_responses_use_separate_cache_entries(
+    tmp_path: Path,
+) -> None:
+    sdk_client = FakeSdkClient()
+    config = make_config(tmp_path)
+    default_client = JevApiClient(
+        config,
+        sdk_client=sdk_client,  # type: ignore[arg-type]
+    )
+    long_client = JevApiClient(
+        replace(config, long_context=True),
+        sdk_client=sdk_client,  # type: ignore[arg-type]
+    )
+
+    default_first = default_client.decide(**request())  # type: ignore[arg-type]
+    long_first = long_client.decide(**request())  # type: ignore[arg-type]
+    default_cached = default_client.decide(**request())  # type: ignore[arg-type]
+    long_cached = long_client.decide(**request())  # type: ignore[arg-type]
+
+    assert default_first.cache_hit is False
+    assert long_first.cache_hit is False
+    assert default_cached.cache_hit is True
+    assert long_cached.cache_hit is True
+    assert sdk_client.calls == 2
+    assert len(list(config.cache_dir.glob("*.json"))) == 2
+    assert sdk_client.request_options == [
+        {},
+        {"extra_headers": {"TypeSafe-Danger-Zone-Long-Context": "true"}},
+    ]
+
+
+@pytest.mark.parametrize("value", [None, 0, 1, "true", "false", [], {}])
+def test_rejects_non_boolean_long_context_config(tmp_path: Path, value: object) -> None:
+    with pytest.raises(ValueError, match="long_context.*boolean"):
+        replace(make_config(tmp_path), long_context=value)
 
 
 def test_configures_official_sdk_retry_and_timeout(

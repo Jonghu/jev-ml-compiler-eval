@@ -29,6 +29,7 @@ class JevModel(BaseDecisionModel):
                 request_timeout_seconds=cast(
                     float, self.config["request_timeout_seconds"]
                 ),
+                long_context=cast(bool, self.config.get("long_context", False)),
             )
         )
 
@@ -43,11 +44,16 @@ class JevModel(BaseDecisionModel):
             "max_retries",
             "request_timeout_seconds",
         }
-        if set(self.config) != expected:
+        if not expected <= set(self.config) or set(self.config) - expected - {
+            "long_context"
+        }:
             raise ValueError(
                 "Jev model config must contain model, cache_dir, max_retries, "
-                "and request_timeout_seconds"
+                "and request_timeout_seconds, with optional long_context"
             )
+
+        if not isinstance(self.config.get("long_context", False), bool):
+            raise ValueError("Jev long_context must be a boolean")
 
         model = self.config["model"]
         if not isinstance(model, str) or not model.strip():
@@ -127,6 +133,7 @@ class JevModel(BaseDecisionModel):
                 "request_id": response.request_id,
                 "cache_hit": response.cache_hit,
                 "api_latency_ms": response.request_latency_ms,
+                **({"long_context": True} if self.config.get("long_context") else {}),
             },
         )
 
