@@ -1,10 +1,9 @@
 """Shared evaluation metrics."""
 
 from collections.abc import Callable, Iterable, Mapping
-from itertools import combinations
-from math import isfinite
 from functools import partial
-from math import sqrt
+from itertools import combinations
+from math import isfinite, sqrt
 
 import numpy as np
 
