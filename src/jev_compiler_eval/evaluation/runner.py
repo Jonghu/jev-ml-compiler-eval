@@ -15,6 +15,7 @@ from jev_compiler_eval.config import ExperimentConfig, load_experiment_config
 from jev_compiler_eval.datasets import BaseDataset, get_dataset_class
 from jev_compiler_eval.metrics import MetricFunction, resolve_metrics
 from jev_compiler_eval.models import get_model_class
+from jev_compiler_eval.models.base import BaseDecisionModel
 from jev_compiler_eval.results import ModelSummary, write_results
 from jev_compiler_eval.types import DecisionResult, EvaluationCase
 
@@ -110,12 +111,15 @@ def _evaluate_model(
     model_config: Mapping[str, object],
     cases: tuple[EvaluationCase, ...],
     metrics: Mapping[str, MetricFunction],
+    model_instance: BaseDecisionModel | None = None,
 ) -> tuple[list[dict[str, object]], ModelSummary]:
     try:
         model_class = get_model_class(model_type)
     except KeyError as error:
         raise ValueError(f'unknown model type "{model_type}"') from error
-    model = model_class(model_config)
+    model = model_instance if model_instance is not None else model_class(model_config)
+    if model.model_type != model_type or model.config != dict(model_config):
+        raise ValueError("provided model instance does not match experiment settings")
 
     predictions: list[dict[str, object]] = []
     metric_values = {name: [] for name in metrics}
@@ -164,7 +168,8 @@ def _evaluate_model(
                 }
             )
     finally:
-        model.close()
+        if model_instance is None:
+            model.close()
 
     summary = ModelSummary(
         model_id=model_id,
@@ -176,11 +181,27 @@ def _evaluate_model(
     return predictions, summary
 
 
-def run_experiment(path: str | Path) -> ExperimentRunResult:
+def run_experiment(
+    path: str | Path,
+    *,
+    model_pool: Mapping[str, BaseDecisionModel] | None = None,
+) -> ExperimentRunResult:
     """Run one YAML experiment and write its complete result bundle."""
 
     config_path = Path(path)
     config = load_experiment_config(config_path)
+    if any(model.model_type == "jev-tournament" for model in config.models) and {
+        "pairwise_accuracy",
+        "pairwise_accuracy_tie_aware",
+    } & set(config.metrics):
+        raise ValueError(
+            "tournament profiles must use selection metrics; probabilities "
+            "from different questions are not globally comparable"
+        )
+    if model_pool is not None and set(model_pool) != {
+        model.model_id for model in config.models
+    }:
+        raise ValueError("provided model pool must match experiment model IDs")
     output_dir = Path(config.experiment.output_dir)
     _validate_execution(config, output_dir)
     metrics = resolve_metrics(config.metrics)
@@ -198,6 +219,9 @@ def run_experiment(path: str | Path) -> ExperimentRunResult:
             model_config=model_spec.config,
             cases=cases,
             metrics=metrics,
+            model_instance=None
+            if model_pool is None
+            else model_pool[model_spec.model_id],
         )
         predictions.extend(model_predictions)
         summaries.append(summary)

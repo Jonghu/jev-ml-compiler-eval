@@ -44,6 +44,7 @@ _CONTEXT_FIELDS = {
     "task_input_names",
     "compute_dag",
     "loop_structure",
+    "configuration_fields",
 }
 _CONFIG_FIELDS = {"initial_state", "transformations"}
 _METADATA_FIELDS = {"operation", "tensors", "compute_dag", "loop_structure"}
@@ -412,6 +413,7 @@ class TenSetDataset(BaseDataset):
             "max_input_bytes",
             "max_workloads",
             "require_program_metadata",
+            "describe_config_fields",
         }
         if "path" not in self.config or set(self.config) - allowed:
             raise ValueError(
@@ -429,6 +431,8 @@ class TenSetDataset(BaseDataset):
         _integer(self.config.get("seed", 42), "seed")
         if not isinstance(self.config.get("require_program_metadata", False), bool):
             raise ValueError("require_program_metadata must be a boolean")
+        if not isinstance(self.config.get("describe_config_fields", False), bool):
+            raise ValueError("describe_config_fields must be a boolean")
         for field, default in (
             ("candidate_limit", 32),
             ("max_input_bytes", 262144),
@@ -473,6 +477,19 @@ class TenSetDataset(BaseDataset):
             context = data.get("context")
             if not isinstance(context, Mapping) or set(context) - _CONTEXT_FIELDS:
                 raise ValueError("unsupported or label-bearing TenSet context fields")
+            if self.config.get("describe_config_fields", False):
+                from jev_compiler_eval.datasets.tenset_descriptions import (
+                    tenset_configuration_fields,
+                )
+
+                context = {
+                    "configuration_fields": tenset_configuration_fields(),
+                    **{
+                        key: value
+                        for key, value in context.items()
+                        if key != "configuration_fields"
+                    },
+                }
             _reject_label_keys(context)
             if self.config.get("require_program_metadata", False):
                 tensors = context.get("tensors")
@@ -554,6 +571,7 @@ class TenSetDataset(BaseDataset):
             "require_program_metadata": self.config.get(
                 "require_program_metadata", False
             ),
+            "describe_config_fields": self.config.get("describe_config_fields", False),
             "realized_cases": [
                 {
                     "workload_id": case.workload.workload_id,

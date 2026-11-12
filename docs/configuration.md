@@ -94,6 +94,29 @@ TypeSafe documents slower and less accurate behavior at longer contexts, with
 the same price per input token. Record the mode as an experiment condition.
 The dataset's `max_input_bytes` is a local byte budget, not a token count.
 
+Jev also accepts `include_context` (boolean, default `true`) and
+`candidate_order` (`original` or `shuffled`, default `original`). A shuffled
+order requires an integer `order_seed`; an original order rejects an unused
+order seed. The shuffle is deterministic per workload. Cache schema v3 hashes
+the exact request order and retains the sent body; old cache files are not
+automatically migrated. Use a new cache directory for these controls.
+
+`type: jev-tournament` groups candidates into token-budgeted Choice questions,
+advances each group's top candidates, and repeats until one final question.
+It accepts long context explicitly and records probabilities per question,
+alongside request usage and cache references. Its eliminated-candidate tail is
+a deterministic bookkeeping order rather than a globally scored ranking.
+Use selection metrics instead of global Pairwise Accuracy for this model.
+The committed [TenSet follow-up profiles](run-tenset-followup-experiments.md)
+provide complete settings, offline preflight, and collection execution commands.
+
+TenSet additionally accepts the boolean dataset setting
+`describe_config_fields` (default `false`). It adds the pinned TVM syntax and
+argument definitions to the workload context without changing IDs, sampling,
+schedule configurations, or measured values. Full-candidate collections use
+`scripts/run_tenset_collection.py` with a completed collection index instead of
+loading all candidate pools through the ordinary runner at once.
+
 ### `metrics`
 
 The shared metrics include `runtime_regret` and mock `top_1_accuracy`. TenSet adds

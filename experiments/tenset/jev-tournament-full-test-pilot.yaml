@@ -1,0 +1,48 @@
+schema_version: 1
+experiment:
+  name: tenset-jev-tournament-full-test-pilot
+  description: All valid distinct schedules of the prepared held-out collection; long-context
+    tournament with field definitions; run with scripts/run_tenset_collection.py
+  seed: 42
+  output_dir: results/tenset/jev-tournament-full-test-pilot
+dataset:
+  type: tenset
+  config:
+    path: data/tenset/full-test/index.json
+    split: test
+    candidate_limit: null
+    max_workloads: 3
+    seed: 42
+    max_input_bytes: null
+    require_program_metadata: true
+    describe_config_fields: true
+candidate_selection:
+  strategy: all
+models:
+- id: random-42
+  type: random
+  config:
+    seed: 42
+- id: jev-1.14.0-tournament255-fields-long-context
+  type: jev-tournament
+  config:
+    model: jev-1.14.0
+    cache_dir: .cache/jev-tenset-v3-long-context
+    max_retries: 3
+    request_timeout_seconds: 120.0
+    long_context: true
+    order_seed: 42
+    candidate_ids: opaque
+    max_options: 255
+    advance_per_question: 5
+    max_request_tokens: 200000
+    max_state_question_tokens: 180000
+    chars_per_token: 1.4
+    max_requests_per_minute: 960
+    max_tokens_per_second: 200000
+metrics:
+- top_1_score
+- top_5_score
+- runtime_regret
+execution:
+  fail_fast: true

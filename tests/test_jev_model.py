@@ -1,5 +1,6 @@
 from collections.abc import Mapping
 from pathlib import Path
+from typing import cast
 
 import pytest
 
@@ -254,6 +255,103 @@ def test_rejects_invalid_model_config(
 ) -> None:
     config = model_config(tmp_path)
     config[override] = value
+
+    with pytest.raises(ValueError, match=message):
+        JevModel(config)
+
+
+def test_defaults_keep_the_original_request_shape(tmp_path: Path) -> None:
+    model = JevModel(model_config(tmp_path))
+
+    result = model.rank(Workload("workload-1", {"op": "add"}), candidates())
+
+    call = FakeJevClient.instances[0].calls[0]
+    assert call["state"] == {"workload_id": "workload-1", "context": {"op": "add"}}
+    criteria = call["questions"]["decision"]["criteria"]  # type: ignore[index]
+    assert list(criteria) == ["candidate-a", "candidate-b", "candidate-c"]
+    assert "presented_candidate_ids" not in result.metadata
+
+
+def test_can_omit_workload_context(tmp_path: Path) -> None:
+    config = model_config(tmp_path)
+    config["include_context"] = False
+    model = JevModel(config)
+
+    model.rank(Workload("workload-1", {"op": "add"}), candidates())
+
+    assert FakeJevClient.instances[0].calls[0]["state"] == {"workload_id": "workload-1"}
+
+
+def test_shuffles_candidates_reproducibly_per_workload(tmp_path: Path) -> None:
+    many = tuple(Candidate(f"candidate-{i}", {"tile": i}) for i in range(12))
+
+    def presented(seed: int, workload_id: str) -> list[str]:
+        config = model_config(tmp_path)
+        config["candidate_order"] = "shuffled"
+        config["order_seed"] = seed
+        model = JevModel(config)
+        client = FakeJevClient.instances[-1]
+
+        def respond(**kwargs: object) -> JevApiResult:
+            questions = cast(Mapping[str, Mapping[str, object]], kwargs["questions"])
+            ids = list(cast(Mapping[str, object], questions["decision"]["criteria"]))
+            client.calls.append({"criteria_order": ids})
+            return JevApiResult(
+                model="jev-1.14.0",
+                answers={
+                    "decision": {
+                        "type": "choice",
+                        "choice": ids[0],
+                        "confidence": 0.5,
+                        "probabilities": {
+                            cid: (0.5 if cid == ids[0] else 0.0) for cid in ids
+                        },
+                    }
+                },
+                input_tokens=None,
+                output_tokens=None,
+                request_id=None,
+                cache_hit=False,
+                request_latency_ms=1.0,
+            )
+
+        client.decide = respond  # type: ignore[method-assign]
+        result = model.rank(Workload(workload_id, {}), many)
+        order = cast(list[str], client.calls[-1]["criteria_order"])
+        assert result.metadata["presented_candidate_ids"] == order
+        assert sorted(result.ranked_candidate_ids) == sorted(order)
+        return order
+
+    original = [c.candidate_id for c in many]
+    first = presented(42, "workload-1")
+    assert first != original
+    assert sorted(first) == sorted(original)
+    assert presented(42, "workload-1") == first
+    assert presented(42, "workload-2") != first
+    assert presented(7, "workload-1") != first
+
+
+@pytest.mark.parametrize(
+    ("overrides", "message"),
+    [
+        ({"include_context": "no"}, "include_context must be a boolean"),
+        ({"candidate_order": "reversed"}, "candidate_order must be"),
+        ({"candidate_order": "shuffled"}, "requires order_seed"),
+        ({"order_seed": 1}, 'order_seed requires candidate_order "shuffled"'),
+        (
+            {"candidate_order": "shuffled", "order_seed": True},
+            "order_seed must be an integer",
+        ),
+        ({"temperature": 0}, "unknown Jev model config keys"),
+    ],
+)
+def test_rejects_invalid_order_and_context_settings(
+    tmp_path: Path,
+    overrides: dict[str, object],
+    message: str,
+) -> None:
+    config = model_config(tmp_path)
+    config.update(overrides)
 
     with pytest.raises(ValueError, match=message):
         JevModel(config)

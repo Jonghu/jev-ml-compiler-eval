@@ -188,6 +188,43 @@ def test_runner_closes_model_after_evaluation_failure(tmp_path: Path) -> None:
     assert not output_dir.exists()
 
 
+def test_shared_model_pool_is_reused_and_closed_by_its_owner(tmp_path: Path) -> None:
+    ClosingTestModel.closed = False
+    pool = {
+        "random-42": ClosingTestModel({"seed": 42}),
+        "random-7": ClosingTestModel({"seed": 7}),
+    }
+    for name in ("first", "second"):
+        config_path = write_experiment(
+            tmp_path,
+            experiment_yaml(tmp_path / name, model_type="closing-test-model"),
+        )
+        result = run_experiment(config_path, model_pool=pool)
+        assert len(result.summaries) == 2
+        assert ClosingTestModel.closed is False
+    for model in pool.values():
+        model.close()
+    assert ClosingTestModel.closed is True
+
+
+def test_shared_model_pool_rejects_mismatched_identity_or_config(
+    tmp_path: Path,
+) -> None:
+    config_path = write_experiment(
+        tmp_path,
+        experiment_yaml(tmp_path / "results", model_type="closing-test-model"),
+    )
+    with pytest.raises(ValueError, match="model pool.*model IDs"):
+        run_experiment(config_path, model_pool={})
+    pool = {
+        "random-42": ClosingTestModel({"seed": 999}),
+        "random-7": ClosingTestModel({"seed": 7}),
+    }
+    with pytest.raises(ValueError, match="model instance.*settings"):
+        run_experiment(config_path, model_pool=pool)
+    assert not (tmp_path / "results").exists()
+
+
 def test_rejects_fail_fast_false(tmp_path: Path) -> None:
     output_dir = tmp_path / "results"
     config_path = write_experiment(

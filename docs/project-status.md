@@ -1,6 +1,6 @@
 # Project status
 
-This checklist separates implemented software, the user-reported Mac pilot,
+This checklist separates implemented software, audited TenSet experiments,
 and the benchmark evidence still needed for the final report. See the
 [macOS TenSet guide](run-tenset-on-macos.md) for the current execution workflow.
 
@@ -64,9 +64,10 @@ and the benchmark evidence still needed for the final report. See the
 
 ## RQ1: TVM TenSet — Person B
 
-The portable dataset and metadata pipeline is implemented. The user reports a
-successful Jev-versus-Random pilot on the Mac using one workload and eight
-schedules. Full benchmark results remain pending. The primary experiment is
+The portable dataset and metadata pipeline is implemented. The Mac pilot and
+a 120-test-workload, 50-schedule long-context comparison have completed. The
+uploaded results of both runs were independently audited. The full held-out,
+all-candidate experiment and the follow-up ablations remain pending. The primary experiment is
 Jev versus Random; published XGBoost results are an external literature
 reference, with their protocol differences stated explicitly. The optional
 local XGBoost implementation does not block this experiment.
@@ -85,10 +86,37 @@ The console output from `experiments/tenset/jev-vs-random.yaml` reports:
 
 Both selected a fastest schedule in this candidate pool. This is a setup pilot
 using `split: all`, not the held-out benchmark or evidence of overall model
-competitiveness. The raw result bundle, resolved API model, cache status, token
-usage, and monetary cost have not been independently inspected. The latency
-values are reported console measurements and have not been validated as
-uncached API latency.
+competitiveness. The subsequently uploaded pilot bundle was inspected: both
+models selected the unique sampled optimum, Jev used the requested model, and
+its request was uncached. The saved metric values recomputed correctly.
+
+### Audited 120-workload comparison
+
+The run at commit `6a4fe91` uses 120 project-test workloads, 50 identical sampled
+schedules per workload, seed 42, full program metadata, and experimental Jev
+long-context mode. All 240 prediction rows agree with the manifest and the
+reported metric definitions. Random rankings reproduce from their recorded seed.
+
+| Model | Top-1 Score | Top-5 Score | Pairwise Accuracy | Runtime regret |
+|---|---:|---:|---:|---:|
+| Random-42 | 0.332440 | 0.498775 | 0.491959 | 6.058854 |
+| Jev 1.14 long context | 0.336867 | 0.512829 | 0.519456 | 5.081011 |
+
+Jev selects a faster schedule on 58 workloads, a slower one on 60, and ties
+on two; both models select the sampled optimum on five workloads. Exploratory
+paired confidence intervals include no improvement for Top-1, Top-5, and mean
+regret against the observed Random-42 ranking. The modest Pairwise Accuracy
+gain remains positive in workload and DAG-hash-family resampling. Exact uniform
+Random expectation, a separate analytical reference, has mean regret 6.762689.
+
+There are 110 live and ten cached Jev responses. Mean live total decision
+latency is 465.156 ms; the 426.488 ms console mean mixes both. Long context and
+these accounting distinctions must be explicit in the report. Raw measurements
+and actual request payloads were not part of the uploaded audit bundle.
+
+The [follow-up guide](run-tenset-followup-experiments.md) provides field-definition,
+context/order, forced-group tournament, and resumable all-candidate workflows.
+These are prepared execution profiles, not completed experimental results.
 
 ### Dataset preparation
 
@@ -126,14 +154,16 @@ running it locally are optional; current experiments use Jev and Random.
 
 - [x] Run the user-reported Jev-versus-Random setup pilot on one workload and
   eight shared candidates.
-- [ ] Run the larger Jev-versus-Random evaluation on held-out workloads.
+- [x] Run and audit the 120 x 50 Jev-versus-Random evaluation on held-out workloads.
+- [ ] Run field-definition and context/order ablations.
+- [ ] Run the all-candidate tournament on the full eligible test collection.
 - [ ] Select and verify published XGBoost results for a separately cited
   literature comparison, without treating them as paired measurements.
 - [ ] Optionally evaluate the local XGBoost baseline on identical candidates.
 - [x] Implement official Top-1/Top-5 Score and Pairwise Accuracy with parity tests.
 - [x] Obtain user-reported Top-1/Top-5 Score, Pairwise Accuracy, and runtime
   regret for the one-workload pilot.
-- [ ] Independently inspect the pilot's saved predictions and provenance.
+- [x] Independently inspect the pilot and 120 x 50 predictions and provenance.
 - [ ] Compute benchmark metrics and regret over the full agreed evaluation set.
 - [ ] Compare workload types and candidate-set sizes.
 - [ ] Identify Jev success and failure cases.

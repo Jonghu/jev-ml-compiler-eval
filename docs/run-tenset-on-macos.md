@@ -5,6 +5,10 @@ Downloads folder. It runs Random and Jev on the same measured CPU schedules,
 with program metadata exported by the portable Python reader. You do not need a
 GPU, TVM installation, Docker, or an XGBoost checkpoint for this workflow.
 
+After the completed 120 x 50 comparison, use the
+[follow-up experiment guide](run-tenset-followup-experiments.md) for field
+definitions, context/order controls, and a resumable full-candidate tournament.
+
 The first run evaluates one workload with eight candidate schedules. Treat it
 as a pipeline pilot. A larger experiment and a complete report are separate
 steps. All commands below run in Terminal from the repository root unless a

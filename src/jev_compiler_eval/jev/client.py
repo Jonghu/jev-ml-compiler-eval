@@ -3,7 +3,7 @@
 import hashlib
 import json
 from collections.abc import Mapping
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from math import isfinite
 from pathlib import Path
 from time import perf_counter_ns
@@ -20,7 +20,7 @@ from typesafe_sdk import (
     TypeSafeError,
 )
 
-CACHE_SCHEMA_VERSION = 1
+CACHE_SCHEMA_VERSION = 3
 
 
 class JevClientError(RuntimeError):
@@ -84,10 +84,21 @@ class JevApiResult:
     request_id: str | None
     cache_hit: bool
     request_latency_ms: float
+    request_sha256: str | None = None
+    cache_path: str | None = None
 
 
 class JevApiClient:
-    """Call Jev through the official SDK and cache successful responses."""
+    """Call Jev through the official SDK and cache successful responses.
+
+    Each cache file stores the request body next to the response so that the
+    exact model input can be inspected later. The request body never contains
+    API credentials.
+
+    The cache key hashes the request in the exact key order that is sent to
+    Jev. Order is part of the model input: Choice candidates presented in a
+    different order are a different request and must not share a response.
+    """
 
     def __init__(
         self,
@@ -132,7 +143,8 @@ class JevApiClient:
         """Return one typed Jev decision response, using the cache when present."""
 
         started_at = perf_counter_ns()
-        cache_key = self._cache_key(state=state, questions=questions)
+        cache_request = self._cache_request(state=state, questions=questions)
+        cache_key = self._cache_key(cache_request)
         cache_path = self.config.cache_dir / f"{cache_key}.json"
         if cache_path.exists():
             return self._read_cache(cache_path, cache_key, started_at)
@@ -163,16 +175,20 @@ class JevApiClient:
 
         if not isinstance(response, SystemOneResponse):
             raise JevClientError("Jev API returned an unexpected response type")
-        result = self._result_from_response(response, started_at)
-        self._write_cache(cache_path, cache_key, result)
+        result = replace(
+            self._result_from_response(response, started_at),
+            request_sha256=cache_key,
+            cache_path=str(cache_path),
+        )
+        self._write_cache(cache_path, cache_key, cache_request, result)
         return result
 
-    def _cache_key(
+    def _cache_request(
         self,
         *,
         state: object,
         questions: Mapping[str, Mapping[str, object]],
-    ) -> str:
+    ) -> dict[str, object]:
         request = {
             "base_url": self.config.base_url,
             "model": self.config.model,
@@ -181,13 +197,16 @@ class JevApiClient:
         }
         if self.config.long_context:
             request["long_context"] = True
+        return request
+
+    @staticmethod
+    def _cache_key(request: Mapping[str, object]) -> str:
         try:
             encoded = json.dumps(
                 request,
                 allow_nan=False,
                 ensure_ascii=False,
                 separators=(",", ":"),
-                sort_keys=True,
             ).encode()
         except (TypeError, ValueError) as error:
             raise JevClientError(
@@ -232,6 +251,11 @@ class JevApiClient:
                 raise ValueError("cache schema version does not match")
             if value.get("request_sha256") != expected_key:
                 raise ValueError("cache request hash does not match")
+            cached_request = value["request"]
+            if not isinstance(cached_request, dict):
+                raise ValueError("cached request must be an object")
+            if self._cache_key(cached_request) != expected_key:
+                raise ValueError("cached request does not match its hash")
             response = value["response"]
             if not isinstance(response, dict):
                 raise ValueError("cached response must be an object")
@@ -256,7 +280,7 @@ class JevApiClient:
                 raise ValueError("cached output_tokens must be an integer or null")
             if request_id is not None and not isinstance(request_id, str):
                 raise ValueError("cached request_id must be a string or null")
-        except (OSError, KeyError, TypeError, ValueError) as error:
+        except (OSError, KeyError, TypeError, ValueError, JevClientError) as error:
             raise JevCacheError(f'failed to read Jev cache file "{path}"') from error
 
         return JevApiResult(
@@ -267,17 +291,21 @@ class JevApiClient:
             request_id=request_id,
             cache_hit=True,
             request_latency_ms=(perf_counter_ns() - started_at) / 1_000_000,
+            request_sha256=expected_key,
+            cache_path=str(path),
         )
 
     def _write_cache(
         self,
         path: Path,
         request_key: str,
+        request: Mapping[str, object],
         result: JevApiResult,
     ) -> None:
         payload = {
             "schema_version": CACHE_SCHEMA_VERSION,
             "request_sha256": request_key,
+            "request": request,
             "response": {
                 "model": result.model,
                 "answers": result.answers,
