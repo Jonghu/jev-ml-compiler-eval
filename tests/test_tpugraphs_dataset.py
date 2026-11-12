@@ -5,6 +5,7 @@ import numpy as np
 import pytest
 
 from jev_compiler_eval.datasets import TpuGraphsTileDataset, get_dataset_class
+from jev_compiler_eval.datasets.tpugraphs import CONFIG_FIELD_DESCRIPTIONS
 from jev_compiler_eval.datasets.tpugraphs_features import (
     HLO_OPCODE_NAMES,
     NODE_FEATURE_NAMES,
@@ -225,3 +226,49 @@ def test_missing_directory_raises_file_not_found(tmp_path: Path) -> None:
 def test_rejects_directory_without_npz_files(tmp_path: Path) -> None:
     with pytest.raises(ValueError, match=r"no \.npz files found"):
         _dataset(tmp_path).load()
+
+
+def test_omits_config_field_descriptions_by_default(tmp_path: Path) -> None:
+    _write_graph(tmp_path / "graph_1.npz", configs=[[1], [2]], runtimes=[2, 1])
+
+    (case,) = _dataset(tmp_path).load()
+
+    assert "configuration_fields" not in case.workload.context
+    assert list(case.workload.context) == [
+        "collection",
+        "program",
+        "num_nodes",
+        "num_edges",
+        "nodes",
+    ]
+
+
+def test_adds_config_field_descriptions_before_nodes(tmp_path: Path) -> None:
+    _write_graph(tmp_path / "graph_1.npz", configs=[[1], [2]], runtimes=[2, 1])
+
+    (case,) = TpuGraphsTileDataset(
+        {"path": str(tmp_path), "max_candidates": 100, "describe_config_fields": True}
+    ).load()
+
+    context = case.workload.context
+    assert context["configuration_fields"] == CONFIG_FIELD_DESCRIPTIONS
+    assert list(context).index("configuration_fields") < list(context).index("nodes")
+    assert all(
+        "runtime" not in text.lower() for text in CONFIG_FIELD_DESCRIPTIONS.values()
+    )
+
+
+@pytest.mark.parametrize(
+    ("extra", "message"),
+    [
+        ({"describe_config_fields": "yes"}, "describe_config_fields must be a boolean"),
+        ({"shuffle": True}, "unknown tpugraphs-tile dataset config keys"),
+    ],
+)
+def test_rejects_invalid_optional_config(
+    tmp_path: Path,
+    extra: dict[str, object],
+    message: str,
+) -> None:
+    with pytest.raises(ValueError, match=message):
+        TpuGraphsTileDataset({"path": str(tmp_path), "max_candidates": 10, **extra})

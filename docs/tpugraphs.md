@@ -89,6 +89,16 @@ rank is inferred by stripping trailing zeros.
 `output_bounds`, and `input_bounds` lists. Runtimes and normalizers are never
 part of model-visible data.
 
+The optional dataset setting `describe_config_fields: true` adds a
+`configuration_fields` object to the context, before `nodes`. It restates the
+official README definitions of the three bound groups and the tile size
+selection task from the TpuGraphs paper. It does not state units, because the
+official sources do not, and it does not say which tile sizes tend to be
+faster. The default (`false`) leaves the context unchanged, so earlier
+requests and their cache entries remain valid. The setting lives in the
+dataset adapter rather than in the shared Jev model, so other benchmarks are
+unaffected.
+
 ## Experiments
 
 ```bash

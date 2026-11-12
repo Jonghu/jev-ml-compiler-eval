@@ -21,6 +21,34 @@ from jev_compiler_eval.types import (
 )
 
 NANOSECONDS_PER_MILLISECOND = 1_000_000
+REQUIRED_CONFIG_KEYS = frozenset({"path", "max_candidates"})
+OPTIONAL_CONFIG_KEYS = frozenset({"describe_config_fields"})
+
+# Field descriptions added to the context when describe_config_fields is true.
+# They restate the official TpuGraphs README definitions and the task
+# description from the TpuGraphs paper (arXiv:2308.13490, Section 2). They
+# deliberately state neither units nor which tile sizes tend to be faster.
+CONFIG_FIELD_DESCRIPTIONS: dict[str, str] = {
+    "candidates": (
+        "Each candidate is a tile configuration for the whole fused kernel, "
+        "not for one node."
+    ),
+    "output_bounds": (
+        "Output tile sizes, one value per dimension of the kernel's output tensor."
+    ),
+    "kernel_bounds": (
+        "Tile sizes of the convolution kernel; present only for convolutions."
+    ),
+    "input_bounds": (
+        "Input tile sizes; usually omitted because the compiler infers them from "
+        "output_bounds and kernel_bounds."
+    ),
+    "tile_size_selection": (
+        "Tile size selection chooses the shape of an output tile to maximize "
+        "hardware compute efficiency while the required input, output, and "
+        "intermediate data fit in local memory."
+    ),
+}
 MAX_CONVOLUTION_SPATIAL_DIMS = 4
 EXPECTED_KEYS = {
     "node_feat",
@@ -114,6 +142,8 @@ class TpuGraphsTileDataset(BaseDataset):
     Each kernel becomes one workload. Identical tile configurations are merged
     into one candidate that keeps the fastest normalized runtime, and kernels
     with more distinct configurations than ``max_candidates`` are skipped.
+    When ``describe_config_fields`` is true, the context also carries
+    ``CONFIG_FIELD_DESCRIPTIONS`` as ``configuration_fields``.
     """
 
     @property
@@ -121,10 +151,18 @@ class TpuGraphsTileDataset(BaseDataset):
         return "tpugraphs-tile"
 
     def validate_config(self) -> None:
-        if set(self.config) != {"path", "max_candidates"}:
+        keys = set(self.config)
+        if not REQUIRED_CONFIG_KEYS <= keys:
             raise ValueError(
                 "tpugraphs-tile dataset config must contain path and max_candidates"
             )
+        unknown = keys - REQUIRED_CONFIG_KEYS - OPTIONAL_CONFIG_KEYS
+        if unknown:
+            raise ValueError(
+                f"unknown tpugraphs-tile dataset config keys: {sorted(unknown)}"
+            )
+        if not isinstance(self.config.get("describe_config_fields", False), bool):
+            raise ValueError("tpugraphs-tile describe_config_fields must be a boolean")
         path = self.config["path"]
         if not isinstance(path, str) or not path.strip():
             raise ValueError("tpugraphs-tile dataset path must be a non-empty string")
@@ -260,13 +298,18 @@ class TpuGraphsTileDataset(BaseDataset):
                 zip(arrays["node_opcode"].tolist(), node_rows, strict=True)
             )
         ]
-        return {
+        context: dict[str, object] = {
             "collection": "tile:xla",
             "program": _program_name(workload_id),
-            "num_nodes": len(nodes),
-            "num_edges": int(arrays["edge_index"].shape[0]),
-            "nodes": nodes,
         }
+        if self.config.get("describe_config_fields", False):
+            context["configuration_fields"] = dict(CONFIG_FIELD_DESCRIPTIONS)
+        context.update(
+            num_nodes=len(nodes),
+            num_edges=int(arrays["edge_index"].shape[0]),
+            nodes=nodes,
+        )
+        return context
 
     def _serialize_node(
         self,

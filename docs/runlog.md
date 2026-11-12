@@ -265,10 +265,142 @@ Observations:
   the 26 and 31 changed picks may be noise; the Top-1 error difference between
   R4 and shuffled (4.24 versus 3.69) is not yet significant.
 
+### R6 — Jev with configuration field descriptions
+
+- Date: 2026-11-11 · Commit: `9504919` plus uncommitted changes (optional
+  `describe_config_fields` TpuGraphs dataset setting)
+- Config: `experiments/tpugraphs/tile-valid-jev-field-descriptions.yaml`
+- Output: `results/tpugraphs/tile-valid-jev-field-descriptions/` (not in Git)
+- Model: `jev-1.14.0` (resolved `jev-1.14.0` for all 120)
+- Same 120 kernels, candidate order, and Jev settings as R4. The only change
+  is a `configuration_fields` object in the context (about 390 tokens) that
+  restates the official README definitions of `output_bounds`,
+  `kernel_bounds`, and `input_bounds`, plus the tile size selection task
+  sentence from the TpuGraphs paper. It states neither units nor which tile
+  sizes tend to be faster.
+- Jev calls: 120 live · Input/output tokens: 338,950 / 27,422 · Cost ≈ $0.014
+- Mean API latency: 98 ms (max 204 ms)
+
+| Model | Kernels | Top-1 acc | Top-1 err | Top-5 err | Top-10 err | Kendall τ |
+|---|---|---|---|---|---|---|
+| Compiler default (offline) | 120 | 0.383 | 0.021 | — | — | — |
+| Random (R4) | 120 | 0.100 | 0.766 | 0.101 | 0.042 | 0.001 |
+| Jev (R4) | 120 | 0.008 | 4.237 | 0.145 | 0.009 | −0.269 |
+| Jev with field descriptions | 120 | 0.158 | 0.904 | 0.012 | 0.005 | +0.143 |
+
+| Check | R4 | R6 |
+|---|---|---|
+| Picks the smallest tile | 96 | 11 |
+| Picks the largest tile | 2 | 40 |
+| Picks `config_0` | 3 | 41 |
+| Optimal pick | 1 | 19 |
+| Mean size percentile of the pick | 0.05 | 0.74 |
+| Median rank percentile of `config_0` | 0.19 | 0.04 |
+| Size coefficient (pooled regression) | −0.893 | +1.483 |
+| Position coefficient (pooled regression) | −0.526 | −0.949 |
+| Mean confidence | 0.372 | 0.153 |
+| Spearman(confidence, Top-1 error) | +0.18 | −0.20 |
+| Kernels with tied probabilities | 111 | 107 |
+
+Per kernel, R6 beats R4 in 103 and loses in 2, beats Random in 79 and loses
+in 31, and beats the compiler default in 7, ties in 41, and loses in 72.
+
+Per program (mean Top-1 error):
+
+| Program | Kernels | Jev R4 | Jev R6 | Jev R6 τ |
+|---|---|---|---|---|
+| `inception_v3_batch_128_train` | 92 | 4.027 | 0.546 | +0.166 |
+| `bert_pretraining.4x4.fp16` | 12 | 2.887 | 0.283 | +0.176 |
+| `resnet50.4x4.fp16` | 8 | 9.985 | 6.635 | +0.034 |
+| `tf2_bert_pretrain_dynamic_batch_size` | 5 | 1.489 | 0.257 | −0.070 |
+| `mlperf_bert_batch_24_2x2` | 3 | 5.338 | 0.180 | −0.066 |
+
+Observations:
+
+- Describing the fields reverses the size preference: Jev now favors large
+  tiles (size coefficient −0.89 → +1.48), and Top-1 error drops from 4.24 to
+  0.90 (median 0.063). The change is far larger than the R3/R5 variation, so
+  it is unlikely to be noise. The small-tile preference in R4 came from the
+  missing field semantics.
+- The mean Top-1 error is still above Random's because of outliers (maximum
+  13.6; `resnet50.4x4.fp16` mean 6.6). Per kernel, Jev beats Random in 79 of
+  120.
+- Jev is still far from the compiler default (0.90 versus 0.021). Its best
+  case is matching the default: 41 of its 120 picks are `config_0`.
+- Jev now ranks `config_0` first or near the top in most kernels (median rank
+  percentile 0.04), and the position coefficient grew. Because `config_0` is
+  first in the original order and usually large, this run cannot separate a
+  size preference from a preference for the first or default-looking
+  candidate.
+- The descriptions are a bundle. The tile size selection sentence ("maximize
+  hardware compute efficiency while ... data fit in local memory") may drive
+  most of the effect, and it can be read as favoring larger tiles. Which part
+  matters is not yet tested.
+- Confidence is lower on average and now weakly calibrated in the right
+  direction.
+
+### A3 — R6 versus the paper reference values (no experiment run)
+
+Compares R6 with the TpuGraphs paper (arXiv:2308.13490). The values are
+**not directly comparable**: R6 covers 120 of 676 `valid` kernels with at most
+50 candidates each, while the paper evaluates all kernels with all
+configurations (median 593, maximum 9,988 per kernel). Errors here are
+percentages to match the paper.
+
+Paper model: a GNN performance model trained on the `train` split (5,709
+kernels) with measured runtimes. Opcode embeddings and node features feed a
+GraphSAGE or GCN. In the early-join variant, the 24 tile configuration
+features are copied onto every node. Pooled node embeddings pass through a
+feedforward layer to one score per configuration, and configurations are
+ranked by that score. Training uses ListMLE or MSE, and the paper reports the
+median of three training runs. Jev is not trained on TpuGraphs.
+
+Overall (`valid`, mean over kernels):
+
+| Model | Scope | Top-1 err | Top-5 err | Top-10 err |
+|---|---|---|---|---|
+| Paper EarlySAGE, ListMLE (best; Table 2) | 676 kernels, all configs | 10.5 | 3.0 | 1.8 |
+| Paper EarlyGCN, ListMLE (Table 8) | 676, all | 11.5 | 3.6 | 2.4 |
+| Paper MLP, ListMLE (Table 8) | 676, all | 84.5 | 39.7 | 25.6 |
+| Jev R6 | 120, candidates ≤ 50 | 90.4 (median 6.3) | 1.2 | 0.5 |
+| Random (R4) | 120, candidates ≤ 50 | 76.6 | 10.1 | 4.2 |
+| Random (A1) | 676, all | 268.4 | 57.6 | 35.1 |
+
+Per program (Top-1 / Top-5 err; paper Table 9, ListMLE EarlySAGE):
+
+| Program | Paper (kernels) | Jev R6 (kernels) | Random, R6 subset |
+|---|---|---|---|
+| `inception_v3_batch_128_train` | 6 / 1 (264) | 54.6 / 1.0 (92) | 87.3 / 12.3 |
+| `bert_pretraining.4x4.fp16` | 6 / 1 (56) | 28.3 / 1.4 (12) | 48.3 / 2.2 |
+| `resnet50.4x4.fp16` | 15 / 4 (103) | 663.5 / 1.3 (8) | 29.1 / 1.7 |
+| `tf2_bert_pretrain_dynamic_batch_size` | 5 / 2 (60) | 25.7 / 5.0 (5) | 42.1 / 5.5 |
+| `mlperf_bert_batch_24_2x2` | 15 / 4 (75) | 18.0 / 2.6 (3) | 46.4 / 1.8 |
+| `resnet_v1_50_official_batch_128_bf16` | 13 / 4 (108) | not in subset | — |
+| `unet_3d.4x4.bf16` | 48 / 6 (10) | not in subset | — |
+
+Observations:
+
+- Top-1: Jev R6 (90.4) is far behind the best paper model (10.5), near the
+  graph-free paper MLP (84.5), and behind Random on the same subset (76.6).
+  It is behind the paper in every program it covers.
+- Top-5 and Top-10: R6 looks better than the paper, but the subset makes these
+  metrics much easier. Random's Top-10 error is 4.2 on the subset and 35.1 on
+  all 676 kernels, because ten picks cover at least a fifth of every subset
+  kernel's candidates.
+- Moving to all 676 kernels is expected to make every Jev metric worse, since
+  kernels with many candidates are harder. This is an expectation, not a
+  measurement.
+- The compiler default (always `config_0`) is not a paper baseline. It is a
+  project reference for interpretation only. Its Top-1 error on all 676
+  kernels (2.4, A1) is below the paper's 10.5; the reason has not been
+  checked, and a Jev result that beats the paper mainly by picking `config_0`
+  would not show model ability.
+
 ## Findings so far
 
-1. The compiler default is a far stronger reference than Random. Jev must be
-   compared against it, not only against Random.
+1. The compiler default is a far stronger reference than Random. It is a
+   project reference for interpretation, not the research comparison, which
+   is the paper's learned models (see finding 7).
 2. With the current serialization and question, Jev performs worse than
    Random on 120 kernels (Top-1 error 4.24 versus 0.77) because it
    systematically prefers small tiles, which are slow in this data.
@@ -279,6 +411,12 @@ Observations:
 5. The small-tile preference is the dominant failure. It survives shuffled
    candidate order and removal of the graph context (R5), and the
    configuration fields reach Jev without meaning or units (A2).
+6. Describing the configuration fields fixes the direction of that
+   preference (R6: Top-1 error 4.24 → 0.90, Kendall τ −0.27 → +0.14), but Jev
+   remains far behind the compiler default and leans heavily on `config_0`.
+7. The research comparison is against the paper's learned models, not the
+   compiler default (A3). On Top-1, Jev R6 is at the level of the paper's
+   graph-free MLP and far behind its best GNN, even on an easier subset.
 
 ## TODO
 
@@ -296,8 +434,13 @@ Observations:
 - [x] Test whether Jev uses the graph context (R5).
 - [ ] Test whether the `config_0` ID name drives its high rank by renaming
       candidate IDs.
-- [ ] Test prompt and serialization variants that explain what tile fields
-      mean; keep R4 as the unchanged baseline.
+- [x] Test prompt and serialization variants that explain what tile fields
+      mean; keep R4 as the unchanged baseline (R6, official definitions).
+- [ ] Split the R6 descriptions: field definitions only versus the tile size
+      selection sentence only.
+- [ ] Repeat R6 with shuffled candidate order to separate the size preference
+      from the `config_0` and first-position preference.
+- [ ] Inspect the `resnet50.4x4.fp16` outliers in R6.
 - [ ] Measure response variance by repeating identical requests.
 - [ ] Confirm the meaning of Jev `confidence` versus the maximum probability.
 - [ ] Verify the Jev context limit and choose candidate sampling to cover
