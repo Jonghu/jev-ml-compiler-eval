@@ -1,0 +1,3050 @@
+{
+  "method": {
+    "reference": "Exact expectation over all 50! uniformly random rankings of each fixed candidate pool; no API calls or simulated approximation for expected metrics",
+    "top_1_formula": "mean(t_min / t_i)",
+    "regret_formula": "mean(t_i / t_min - 1)",
+    "top_5_formula": "mean over k=1..5 of sum_i[(t_min/t_i) * comb(n-i-1,k-1)/comb(n,k)], timings sorted ascending, i zero-based from 0..n-k",
+    "bootstrap_unit": "resample 120 workload pairs with replacement; deterministic expected-Random value travels with same workload as Jev result",
+    "bootstrap_replicates": 50000,
+    "bootstrap_seed": 20261112,
+    "ci": "percentile 2.5 and 97.5; unadjusted; conditional on candidate pool and Jev choices; workload dependence not modeled",
+    "artifact_policy": "Observed random-42 result is retained unchanged; expected_random is a separately named analytical reference"
+  },
+  "metrics": {
+    "top_1_score": {
+      "expected_uniform_random_macro_mean": 0.31845947065311137,
+      "observed_random_42_macro_mean": 0.332439916160719,
+      "jev_macro_mean": 0.3368666100730691,
+      "mean_paired_jev_minus_expected_random": 0.01840713941995774,
+      "paired_workload_bootstrap_95ci": [
+        -0.023603946086394042,
+        0.06296795600209489
+      ],
+      "median_paired_jev_minus_expected_random": -0.045493032886067736
+    },
+    "top_5_score": {
+      "expected_uniform_random_macro_mean": 0.4940985295841673,
+      "observed_random_42_macro_mean": 0.4987746998271794,
+      "jev_macro_mean": 0.5128292812182336,
+      "mean_paired_jev_minus_expected_random": 0.018730751634066255,
+      "paired_workload_bootstrap_95ci": [
+        -0.014489124595501517,
+        0.05354370604609694
+      ],
+      "median_paired_jev_minus_expected_random": -0.016951433735341526
+    },
+    "runtime_regret": {
+      "expected_uniform_random_macro_mean": 6.762688642913474,
+      "observed_random_42_macro_mean": 6.058853797630898,
+      "jev_macro_mean": 5.081010615176732,
+      "mean_paired_jev_minus_expected_random": -1.6816780277367414,
+      "paired_workload_bootstrap_95ci": [
+        -2.731087851197959,
+        -0.5561150610029983
+      ],
+      "median_paired_jev_minus_expected_random": -1.5426184317549394
+    }
+  },
+  "per_workload": [
+    {
+      "workload_id": "tenset-006a0e3b0b43c66259010c87",
+      "expected_random": {
+        "top_1_score": 0.20847063942797064,
+        "top_5_score": 0.37572389430374376,
+        "runtime_regret": 18.81940446744872
+      },
+      "jev": {
+        "top_1_score": 1.0,
+        "top_5_score": 1.0,
+        "runtime_regret": 0.0
+      },
+      "observed_random_42": {
+        "top_1_score": 1.0,
+        "top_5_score": 1.0,
+        "runtime_regret": 0.0
+      },
+      "expected_prefix_scores": [
+        0.20847063942797067,
+        0.3203818119514432,
+        0.3967615317376291,
+        0.45393054772950087,
+        0.4990749406721748
+      ]
+    },
+    {
+      "workload_id": "tenset-03080621599410bd1568e462",
+      "expected_random": {
+        "top_1_score": 0.27241457792050516,
+        "top_5_score": 0.4649872640750151,
+        "runtime_regret": 5.06446002482563
+      },
+      "jev": {
+        "top_1_score": 0.23850507870047302,
+        "top_5_score": 0.5603288265754376,
+        "runtime_regret": 3.1927828348504548
+      },
+      "observed_random_42": {
+        "top_1_score": 0.7539215686274511,
+        "top_5_score": 0.8416915422885575,
+        "runtime_regret": 0.32639791937581264
+      },
+      "expected_prefix_scores": [
+        0.2724145779205052,
+        0.39150083661226653,
+        0.48415131145921675,
+        0.5583348383353539,
+        0.6185347560477331
+      ]
+    },
+    {
+      "workload_id": "tenset-093ee18e2bc242708bb4770d",
+      "expected_random": {
+        "top_1_score": 0.37806735746117776,
+        "top_5_score": 0.5711058228184224,
+        "runtime_regret": 3.9850475520224817
+      },
+      "jev": {
+        "top_1_score": 0.26998016662670327,
+        "top_5_score": 0.35518036056881985,
+        "runtime_regret": 2.7039757864239045
+      },
+      "observed_random_42": {
+        "top_1_score": 0.28356258870772316,
+        "top_5_score": 0.4607522181509435,
+        "runtime_regret": 2.526558297260896
+      },
+      "expected_prefix_scores": [
+        0.3780673574611781,
+        0.5136260485851804,
+        0.5981668962101128,
+        0.659324607132588,
+        0.7063442047030528
+      ]
+    },
+    {
+      "workload_id": "tenset-09fe40890a98477917f1cd85",
+      "expected_random": {
+        "top_1_score": 0.3534509819914453,
+        "top_5_score": 0.5554560071170296,
+        "runtime_regret": 4.522354412922271
+      },
+      "jev": {
+        "top_1_score": 0.8561577769408386,
+        "top_5_score": 0.8561577769408386,
+        "runtime_regret": 0.16800901298021031
+      },
+      "observed_random_42": {
+        "top_1_score": 0.1523195941776471,
+        "top_5_score": 0.5569532213095996,
+        "runtime_regret": 5.565143541767327
+      },
+      "expected_prefix_scores": [
+        0.35345098199144515,
+        0.49922453689559554,
+        0.5873999060085089,
+        0.6470299735442012,
+        0.6901746371453972
+      ]
+    },
+    {
+      "workload_id": "tenset-0b59f27e417cf9effd85b214",
+      "expected_random": {
+        "top_1_score": 0.3451273105139503,
+        "top_5_score": 0.5532032273193332,
+        "runtime_regret": 4.54470795123244
+      },
+      "jev": {
+        "top_1_score": 0.20129068605108366,
+        "top_5_score": 0.20337525449639374,
+        "runtime_regret": 3.9679397473275015
+      },
+      "observed_random_42": {
+        "top_1_score": 0.8772378516624043,
+        "top_5_score": 0.8772378516624043,
+        "runtime_regret": 0.13994169096209874
+      },
+      "expected_prefix_scores": [
+        0.3451273105139501,
+        0.4918386054095184,
+        0.5848369957460321,
+        0.6488126483378294,
+        0.6954005765893362
+      ]
+    },
+    {
+      "workload_id": "tenset-0baf83e047ce853188730e10",
+      "expected_random": {
+        "top_1_score": 0.35830510898873774,
+        "top_5_score": 0.5551351636863636,
+        "runtime_regret": 6.0185840479206805
+      },
+      "jev": {
+        "top_1_score": 0.4207528256820254,
+        "top_5_score": 0.5388614093909367,
+        "runtime_regret": 1.3766922976192388
+      },
+      "observed_random_42": {
+        "top_1_score": 0.16499766498970475,
+        "top_5_score": 0.5031492219556833,
+        "runtime_regret": 5.060691828956466
+      },
+      "expected_prefix_scores": [
+        0.3583051089887377,
+        0.5063396767357571,
+        0.5894203064557976,
+        0.642355849494345,
+        0.6792548767571808
+      ]
+    },
+    {
+      "workload_id": "tenset-0dc8d7972c9050391a256bdb",
+      "expected_random": {
+        "top_1_score": 0.23136678095444502,
+        "top_5_score": 0.361803468718048,
+        "runtime_regret": 7.727960712196091
+      },
+      "jev": {
+        "top_1_score": 0.12086640978639034,
+        "top_5_score": 0.2434097645226843,
+        "runtime_regret": 7.2735972861882825
+      },
+      "observed_random_42": {
+        "top_1_score": 0.1289103753194237,
+        "top_5_score": 0.24779601150576838,
+        "runtime_regret": 6.757327503873336
+      },
+      "expected_prefix_scores": [
+        0.23136678095444493,
+        0.32276618858731515,
+        0.37986460704498615,
+        0.4212712337820309,
+        0.45374853322146297
+      ]
+    },
+    {
+      "workload_id": "tenset-0e761c111a604dc0731479bf",
+      "expected_random": {
+        "top_1_score": 0.49616200692775064,
+        "top_5_score": 0.7064209581197646,
+        "runtime_regret": 5.793289971962345
+      },
+      "jev": {
+        "top_1_score": 0.6686515439089844,
+        "top_5_score": 0.7247940977758658,
+        "runtime_regret": 0.49554728334870646
+      },
+      "observed_random_42": {
+        "top_1_score": 0.4726066852454422,
+        "top_5_score": 0.794179931958263,
+        "runtime_regret": 1.1159243642113585
+      },
+      "expected_prefix_scores": [
+        0.4961620069277506,
+        0.6635674939548439,
+        0.7467632181758713,
+        0.796320837075436,
+        0.8292912344649213
+      ]
+    },
+    {
+      "workload_id": "tenset-107579e1e938604a05b91442",
+      "expected_random": {
+        "top_1_score": 0.178711503577899,
+        "top_5_score": 0.28151414221439425,
+        "runtime_regret": 10.389662396111977
+      },
+      "jev": {
+        "top_1_score": 0.460023733025956,
+        "top_5_score": 0.460023733025956,
+        "runtime_regret": 1.1738008894066705
+      },
+      "observed_random_42": {
+        "top_1_score": 0.061310342689287554,
+        "top_5_score": 0.14815039275819003,
+        "runtime_regret": 15.310461761205012
+      },
+      "expected_prefix_scores": [
+        0.178711503577899,
+        0.24764879952224456,
+        0.29368550310217745,
+        0.32909597917239153,
+        0.35842892569725876
+      ]
+    },
+    {
+      "workload_id": "tenset-126ef63ec265508a028ca3f1",
+      "expected_random": {
+        "top_1_score": 0.2860102977203009,
+        "top_5_score": 0.47116095419579535,
+        "runtime_regret": 11.870198667604425
+      },
+      "jev": {
+        "top_1_score": 0.06604790040555729,
+        "top_5_score": 0.5411384139623724,
+        "runtime_regret": 14.140526706521312
+      },
+      "observed_random_42": {
+        "top_1_score": 0.40838535952927096,
+        "top_5_score": 0.4721492483311981,
+        "runtime_regret": 1.4486676044230844
+      },
+      "expected_prefix_scores": [
+        0.28601029772030107,
+        0.4174505761694589,
+        0.49845101441343415,
+        0.5552400095251994,
+        0.5986528731505832
+      ]
+    },
+    {
+      "workload_id": "tenset-144e26872d47c6189bf795a7",
+      "expected_random": {
+        "top_1_score": 0.293036316589972,
+        "top_5_score": 0.48689117554718975,
+        "runtime_regret": 6.708978162137093
+      },
+      "jev": {
+        "top_1_score": 0.08448860094141925,
+        "top_5_score": 0.40066634843493365,
+        "runtime_regret": 10.83591619292355
+      },
+      "observed_random_42": {
+        "top_1_score": 0.18755157730893948,
+        "top_5_score": 0.18755157730893948,
+        "runtime_regret": 4.331866648888673
+      },
+      "expected_prefix_scores": [
+        0.29303631658997203,
+        0.4235937826991884,
+        0.511493350951723,
+        0.5773108821998916,
+        0.6290215452951738
+      ]
+    },
+    {
+      "workload_id": "tenset-16d6f553355caefc86d440ac",
+      "expected_random": {
+        "top_1_score": 0.33693783239238345,
+        "top_5_score": 0.49175878708036364,
+        "runtime_regret": 3.4350737887582734
+      },
+      "jev": {
+        "top_1_score": 0.3201959718945478,
+        "top_5_score": 0.728078388757819,
+        "runtime_regret": 2.1230873832770656
+      },
+      "observed_random_42": {
+        "top_1_score": 0.6147641905350962,
+        "top_5_score": 0.6147641905350962,
+        "runtime_regret": 0.6266399627629435
+      },
+      "expected_prefix_scores": [
+        0.3369378323923836,
+        0.44367403515826564,
+        0.5115866447791508,
+        0.5627448612633908,
+        0.6038505618086273
+      ]
+    },
+    {
+      "workload_id": "tenset-1730cf1f3646150cda11acd7",
+      "expected_random": {
+        "top_1_score": 0.2927112890977732,
+        "top_5_score": 0.4949358155483292,
+        "runtime_regret": 7.1942906631809524
+      },
+      "jev": {
+        "top_1_score": 0.10360365931332839,
+        "top_5_score": 0.2908585046904732,
+        "runtime_regret": 8.652168722879773
+      },
+      "observed_random_42": {
+        "top_1_score": 0.22635524564409937,
+        "top_5_score": 0.31325213787329126,
+        "runtime_regret": 3.417834440525006
+      },
+      "expected_prefix_scores": [
+        0.29271128909777333,
+        0.43087019269792926,
+        0.5220419738153151,
+        0.5887389111366774,
+        0.6403167109939508
+      ]
+    },
+    {
+      "workload_id": "tenset-19173a9e314d24b638068029",
+      "expected_random": {
+        "top_1_score": 0.26864594925333946,
+        "top_5_score": 0.43251507606769835,
+        "runtime_regret": 12.613138123703582
+      },
+      "jev": {
+        "top_1_score": 0.448357231608777,
+        "top_5_score": 0.5222888822808681,
+        "runtime_regret": 1.2303643824631556
+      },
+      "observed_random_42": {
+        "top_1_score": 0.1867815656898418,
+        "top_5_score": 0.27856347788894337,
+        "runtime_regret": 4.353847400875414
+      },
+      "expected_prefix_scores": [
+        0.26864594925333934,
+        0.38522008291016846,
+        0.4562662282787463,
+        0.5066928583239889,
+        0.5457502615722485
+      ]
+    },
+    {
+      "workload_id": "tenset-1a66347ec8fb594bdd2bcd45",
+      "expected_random": {
+        "top_1_score": 0.3944441741500158,
+        "top_5_score": 0.546195606842893,
+        "runtime_regret": 2.8355432411615182
+      },
+      "jev": {
+        "top_1_score": 0.4326702401911469,
+        "top_5_score": 0.45851812348216214,
+        "runtime_regret": 1.3112289848227503
+      },
+      "observed_random_42": {
+        "top_1_score": 0.39181417661335666,
+        "top_5_score": 0.4513951494517417,
+        "runtime_regret": 1.5522302654883333
+      },
+      "expected_prefix_scores": [
+        0.39444417415001576,
+        0.508942068290821,
+        0.5705190865482938,
+        0.6123987798583316,
+        0.6446739253670031
+      ]
+    },
+    {
+      "workload_id": "tenset-1b8bb7ea70083e2af62f1857",
+      "expected_random": {
+        "top_1_score": 0.2474953094702641,
+        "top_5_score": 0.41636735629937177,
+        "runtime_regret": 8.274507366899467
+      },
+      "jev": {
+        "top_1_score": 0.21090353892868188,
+        "top_5_score": 0.5162080840101847,
+        "runtime_regret": 3.741504125913009
+      },
+      "observed_random_42": {
+        "top_1_score": 0.5882269498713574,
+        "top_5_score": 0.5914185419569951,
+        "runtime_regret": 0.7000241152138569
+      },
+      "expected_prefix_scores": [
+        0.24749530947026413,
+        0.36208686876678237,
+        0.43828863743467666,
+        0.49478213732796084,
+        0.5391838284971749
+      ]
+    },
+    {
+      "workload_id": "tenset-1c06dd347db18aa8ffcdc91b",
+      "expected_random": {
+        "top_1_score": 0.33551595756277736,
+        "top_5_score": 0.5242565497972336,
+        "runtime_regret": 5.513027423622766
+      },
+      "jev": {
+        "top_1_score": 0.20093990581822735,
+        "top_5_score": 0.5543073580022966,
+        "runtime_regret": 3.976612265881184
+      },
+      "observed_random_42": {
+        "top_1_score": 1.0,
+        "top_5_score": 1.0,
+        "runtime_regret": 0.0
+      },
+      "expected_prefix_scores": [
+        0.3355159575627774,
+        0.469215076942715,
+        0.5517443679405883,
+        0.6102024093939299,
+        0.654604937146157
+      ]
+    },
+    {
+      "workload_id": "tenset-1d5e75a221131c568dcb1bcf",
+      "expected_random": {
+        "top_1_score": 0.3071185081159561,
+        "top_5_score": 0.49967438670817066,
+        "runtime_regret": 5.192757219054669
+      },
+      "jev": {
+        "top_1_score": 0.24633075859652415,
+        "top_5_score": 0.37337774901378906,
+        "runtime_regret": 3.0595823505660675
+      },
+      "observed_random_42": {
+        "top_1_score": 0.372521556777134,
+        "top_5_score": 0.372521556777134,
+        "runtime_regret": 1.6844084102178907
+      },
+      "expected_prefix_scores": [
+        0.307118508115956,
+        0.4403679445403422,
+        0.5269073143659985,
+        0.5886810478424723,
+        0.6352971186760843
+      ]
+    },
+    {
+      "workload_id": "tenset-218874f0ed0a9123e5f45364",
+      "expected_random": {
+        "top_1_score": 0.27399825844415837,
+        "top_5_score": 0.4655987280674586,
+        "runtime_regret": 8.846103363549293
+      },
+      "jev": {
+        "top_1_score": 0.0657608469501372,
+        "top_5_score": 0.37439203694168904,
+        "runtime_regret": 14.206616799784292
+      },
+      "observed_random_42": {
+        "top_1_score": 0.5548216239955742,
+        "top_5_score": 0.5548216239955742,
+        "runtime_regret": 0.8023810838489902
+      },
+      "expected_prefix_scores": [
+        0.2739982584441583,
+        0.4070020312962812,
+        0.4932993776406916,
+        0.554213256025849,
+        0.5994807169303131
+      ]
+    },
+    {
+      "workload_id": "tenset-2291af69d2513ee9d5fc9ee5",
+      "expected_random": {
+        "top_1_score": 0.3968500960027706,
+        "top_5_score": 0.6086281604348358,
+        "runtime_regret": 3.81737627439512
+      },
+      "jev": {
+        "top_1_score": 0.19834876415307,
+        "top_5_score": 0.7127432199080375,
+        "runtime_regret": 4.041624555967883
+      },
+      "observed_random_42": {
+        "top_1_score": 0.7038660322957858,
+        "top_5_score": 0.7038660322957858,
+        "runtime_regret": 0.4207249023487041
+      },
+      "expected_prefix_scores": [
+        0.39685009600277044,
+        0.5497939999812236,
+        0.6415385818213805,
+        0.7044885470920611,
+        0.7504695772767435
+      ]
+    },
+    {
+      "workload_id": "tenset-29287dba7fddc56fab608c73",
+      "expected_random": {
+        "top_1_score": 0.4817299372951239,
+        "top_5_score": 0.6398274664580805,
+        "runtime_regret": 1.6289434079350462
+      },
+      "jev": {
+        "top_1_score": 0.6400471503649736,
+        "top_5_score": 0.6400471503649736,
+        "runtime_regret": 0.5623848952843093
+      },
+      "observed_random_42": {
+        "top_1_score": 0.4538741081447261,
+        "top_5_score": 0.8907748216289452,
+        "runtime_regret": 1.2032541227955034
+      },
+      "expected_prefix_scores": [
+        0.48172993729512376,
+        0.5995818588166406,
+        0.6648710182017071,
+        0.7096013079906134,
+        0.7433532099863182
+      ]
+    },
+    {
+      "workload_id": "tenset-2c060f83f2a87ace4db5ea48",
+      "expected_random": {
+        "top_1_score": 0.2536462232672705,
+        "top_5_score": 0.41361000322963315,
+        "runtime_regret": 7.81146713081046
+      },
+      "jev": {
+        "top_1_score": 0.24827257345731402,
+        "top_5_score": 0.40195612548406706,
+        "runtime_regret": 3.0278311296109877
+      },
+      "observed_random_42": {
+        "top_1_score": 0.1567445518676718,
+        "top_5_score": 0.42613601650178917,
+        "runtime_regret": 5.379807068791957
+      },
+      "expected_prefix_scores": [
+        0.25364622326727054,
+        0.3649679333339559,
+        0.4357670418712569,
+        0.4869731922497341,
+        0.5266956254259483
+      ]
+    },
+    {
+      "workload_id": "tenset-2f1b34217165f1d2ba31463e",
+      "expected_random": {
+        "top_1_score": 0.3455471553706805,
+        "top_5_score": 0.5391178879719155,
+        "runtime_regret": 5.270604065185106
+      },
+      "jev": {
+        "top_1_score": 0.49012731401860726,
+        "top_5_score": 0.5388567049813041,
+        "runtime_regret": 1.0402862101295498
+      },
+      "observed_random_42": {
+        "top_1_score": 0.18898528077925375,
+        "top_5_score": 0.6499770761453019,
+        "runtime_regret": 4.291417383812344
+      },
+      "expected_prefix_scores": [
+        0.3455471553706806,
+        0.48576424858750644,
+        0.5690397133758679,
+        0.6262310385695972,
+        0.6690072839559256
+      ]
+    },
+    {
+      "workload_id": "tenset-36be4fa74a940924f755d1e7",
+      "expected_random": {
+        "top_1_score": 0.25261542582838825,
+        "top_5_score": 0.41807072516338606,
+        "runtime_regret": 9.26271181544383
+      },
+      "jev": {
+        "top_1_score": 0.1825342982558637,
+        "top_5_score": 0.5781669256691777,
+        "runtime_regret": 4.478422463915633
+      },
+      "observed_random_42": {
+        "top_1_score": 0.1077358465805687,
+        "top_5_score": 0.2566775222919871,
+        "runtime_regret": 8.28196168442566
+      },
+      "expected_prefix_scores": [
+        0.25261542582838825,
+        0.36608175671278836,
+        0.43969418920580267,
+        0.49426492411800504,
+        0.5376973299519457
+      ]
+    },
+    {
+      "workload_id": "tenset-37433fa026016fa6acffca19",
+      "expected_random": {
+        "top_1_score": 0.2466389384391927,
+        "top_5_score": 0.40045964345311136,
+        "runtime_regret": 7.044403269223296
+      },
+      "jev": {
+        "top_1_score": 0.07969295335458766,
+        "top_5_score": 0.2728034996775114,
+        "runtime_regret": 11.548160883818385
+      },
+      "observed_random_42": {
+        "top_1_score": 0.07254264332042826,
+        "top_5_score": 0.35893674126798525,
+        "runtime_regret": 12.78499533829913
+      },
+      "expected_prefix_scores": [
+        0.24663893843919266,
+        0.3534438605429736,
+        0.4220511076703471,
+        0.47118159559172657,
+        0.5089827150213168
+      ]
+    },
+    {
+      "workload_id": "tenset-37ea9606dad34388f43f6204",
+      "expected_random": {
+        "top_1_score": 0.24773459578184917,
+        "top_5_score": 0.389338094189968,
+        "runtime_regret": 6.857101524101661
+      },
+      "jev": {
+        "top_1_score": 0.16202423388295223,
+        "top_5_score": 0.347594086318474,
+        "runtime_regret": 5.171916237680896
+      },
+      "observed_random_42": {
+        "top_1_score": 0.1457636505258209,
+        "top_5_score": 0.3159968740688603,
+        "runtime_regret": 5.860420937542709
+      },
+      "expected_prefix_scores": [
+        0.24773459578184912,
+        0.3457615506894019,
+        0.40806292442460945,
+        0.4541560118855919,
+        0.4909753881683876
+      ]
+    },
+    {
+      "workload_id": "tenset-39aa9f958c7c0cfbe04d047d",
+      "expected_random": {
+        "top_1_score": 0.41515455140443086,
+        "top_5_score": 0.5953044862215713,
+        "runtime_regret": 3.1462881007222894
+      },
+      "jev": {
+        "top_1_score": 0.6358456435593901,
+        "top_5_score": 0.6358456435593901,
+        "runtime_regret": 0.572708738558176
+      },
+      "observed_random_42": {
+        "top_1_score": 0.42244029542983547,
+        "top_5_score": 0.4684349131046,
+        "runtime_regret": 1.36719842027024
+      },
+      "expected_prefix_scores": [
+        0.415154551404431,
+        0.5496777173350464,
+        0.6248466876679747,
+        0.6750389799697211,
+        0.711804494730683
+      ]
+    },
+    {
+      "workload_id": "tenset-39f0a1c98b244c3cc847d759",
+      "expected_random": {
+        "top_1_score": 0.24675311602890546,
+        "top_5_score": 0.3895203385945904,
+        "runtime_regret": 6.029776772216548
+      },
+      "jev": {
+        "top_1_score": 0.09013625766411382,
+        "top_5_score": 0.3703174074463002,
+        "runtime_regret": 10.094314606741573
+      },
+      "observed_random_42": {
+        "top_1_score": 0.1961149606267666,
+        "top_5_score": 0.21556077976582505,
+        "runtime_regret": 4.099050051072523
+      },
+      "expected_prefix_scores": [
+        0.24675311602890554,
+        0.34597178135813067,
+        0.4094308680114377,
+        0.45509756272778806,
+        0.49034836484668987
+      ]
+    },
+    {
+      "workload_id": "tenset-3a65b4582ed3ddf1a81b11d3",
+      "expected_random": {
+        "top_1_score": 0.3575336188735254,
+        "top_5_score": 0.5893871461934133,
+        "runtime_regret": 7.803837836372802
+      },
+      "jev": {
+        "top_1_score": 0.6049815357097773,
+        "top_5_score": 0.6049815357097773,
+        "runtime_regret": 0.6529430089577504
+      },
+      "observed_random_42": {
+        "top_1_score": 0.21549471497602898,
+        "top_5_score": 0.6528060726266789,
+        "runtime_regret": 3.6404850351491778
+      },
+      "expected_prefix_scores": [
+        0.3575336188735253,
+        0.524738562798017,
+        0.6264204084549524,
+        0.6947111870258829,
+        0.7435319538146885
+      ]
+    },
+    {
+      "workload_id": "tenset-3e1bd3050d4131b325aed460",
+      "expected_random": {
+        "top_1_score": 0.45845010596422414,
+        "top_5_score": 0.6902994720000513,
+        "runtime_regret": 3.760983384034648
+      },
+      "jev": {
+        "top_1_score": 0.6230594194782064,
+        "top_5_score": 0.6230594194782064,
+        "runtime_regret": 0.6049833591111904
+      },
+      "observed_random_42": {
+        "top_1_score": 0.06469482944990544,
+        "top_5_score": 0.45677410936049767,
+        "runtime_regret": 14.457185813810993
+      },
+      "expected_prefix_scores": [
+        0.458450105964224,
+        0.6351439524762462,
+        0.732433100932627,
+        0.7927318123671067,
+        0.8327383882600525
+      ]
+    },
+    {
+      "workload_id": "tenset-3fdc8598f5f484cc1a51c801",
+      "expected_random": {
+        "top_1_score": 0.23199071545749772,
+        "top_5_score": 0.3749252182996489,
+        "runtime_regret": 9.319792372192099
+      },
+      "jev": {
+        "top_1_score": 0.0735618118000681,
+        "top_5_score": 0.40875628267127917,
+        "runtime_regret": 12.594009928927202
+      },
+      "observed_random_42": {
+        "top_1_score": 0.18822517006907444,
+        "top_5_score": 0.25468899078928253,
+        "runtime_regret": 4.312785742911123
+      },
+      "expected_prefix_scores": [
+        0.23199071545749775,
+        0.33053743981771433,
+        0.3934489093555637,
+        0.4403223988345695,
+        0.47832662803289944
+      ]
+    },
+    {
+      "workload_id": "tenset-401261ae157993d3c35c1ad1",
+      "expected_random": {
+        "top_1_score": 0.21119924154479783,
+        "top_5_score": 0.34133476581096944,
+        "runtime_regret": 7.346326986322527
+      },
+      "jev": {
+        "top_1_score": 0.10182824762904048,
+        "top_5_score": 0.24888455364537582,
+        "runtime_regret": 8.820457714670612
+      },
+      "observed_random_42": {
+        "top_1_score": 0.08119592336452093,
+        "top_5_score": 0.19423223459048383,
+        "runtime_regret": 11.315889253584821
+      },
+      "expected_prefix_scores": [
+        0.2111992415447979,
+        0.2987914728255035,
+        0.3574260057982258,
+        0.4017292380248971,
+        0.4375278708614229
+      ]
+    },
+    {
+      "workload_id": "tenset-408995cd806e74ae08f4a9a0",
+      "expected_random": {
+        "top_1_score": 0.34484798657579474,
+        "top_5_score": 0.5145172979563433,
+        "runtime_regret": 3.834982857047921
+      },
+      "jev": {
+        "top_1_score": 0.4604382559933497,
+        "top_5_score": 0.4604382559933497,
+        "runtime_regret": 1.1718438617629623
+      },
+      "observed_random_42": {
+        "top_1_score": 0.36722395786807344,
+        "top_5_score": 0.5930755425374391,
+        "runtime_regret": 1.7231338766825601
+      },
+      "expected_prefix_scores": [
+        0.3448479865757949,
+        0.4686184373770516,
+        0.5411881495190483,
+        0.5905611667136608,
+        0.6273707495961608
+      ]
+    },
+    {
+      "workload_id": "tenset-40b14642425f0726c0e1a861",
+      "expected_random": {
+        "top_1_score": 0.21481403504472407,
+        "top_5_score": 0.37080607994537285,
+        "runtime_regret": 13.549082686235025
+      },
+      "jev": {
+        "top_1_score": 0.03373120888116053,
+        "top_5_score": 0.14008603953777313,
+        "runtime_regret": 28.6461358240415
+      },
+      "observed_random_42": {
+        "top_1_score": 0.11052796131118633,
+        "top_5_score": 0.33253032193949794,
+        "runtime_regret": 8.047484348187211
+      },
+      "expected_prefix_scores": [
+        0.2148140350447241,
+        0.31824571114525624,
+        0.3891790050377007,
+        0.443712936401222,
+        0.48807871209796116
+      ]
+    },
+    {
+      "workload_id": "tenset-419fec4831d60b67d10fa93f",
+      "expected_random": {
+        "top_1_score": 0.35397634474282585,
+        "top_5_score": 0.5462234373700945,
+        "runtime_regret": 4.910555387630829
+      },
+      "jev": {
+        "top_1_score": 0.791637976551208,
+        "top_5_score": 0.791637976551208,
+        "runtime_regret": 0.26320367342219564
+      },
+      "observed_random_42": {
+        "top_1_score": 0.663640314250016,
+        "top_5_score": 0.663640314250016,
+        "runtime_regret": 0.5068403448788461
+      },
+      "expected_prefix_scores": [
+        0.35397634474282563,
+        0.49753556952676714,
+        0.5793806524698673,
+        0.6318000515610239,
+        0.6684245685499882
+      ]
+    },
+    {
+      "workload_id": "tenset-42abf3f9a4802401baa9691b",
+      "expected_random": {
+        "top_1_score": 0.4594381010515839,
+        "top_5_score": 0.6104812354118875,
+        "runtime_regret": 1.543292532126344
+      },
+      "jev": {
+        "top_1_score": 0.22762370477924132,
+        "top_5_score": 0.5110320187468006,
+        "runtime_regret": 3.393215552702828
+      },
+      "observed_random_42": {
+        "top_1_score": 0.5675443270494334,
+        "top_5_score": 0.5880064548708264,
+        "runtime_regret": 0.7619769105945087
+      },
+      "expected_prefix_scores": [
+        0.4594381010515839,
+        0.5654473071727961,
+        0.6311807561033987,
+        0.6792086054029273,
+        0.7171314073287314
+      ]
+    },
+    {
+      "workload_id": "tenset-4999c172a645c5fa11fc89be",
+      "expected_random": {
+        "top_1_score": 0.6808736461191915,
+        "top_5_score": 0.8426759115883259,
+        "runtime_regret": 1.620312575779702
+      },
+      "jev": {
+        "top_1_score": 0.9332790675009257,
+        "top_5_score": 0.9332790675009257,
+        "runtime_regret": 0.07149087001140542
+      },
+      "observed_random_42": {
+        "top_1_score": 0.9087081848237433,
+        "top_5_score": 0.9173851418630476,
+        "runtime_regret": 0.1004632914074215
+      },
+      "expected_prefix_scores": [
+        0.6808736461191914,
+        0.8267709104686277,
+        0.8797042261168484,
+        0.905472232872849,
+        0.9205585423641128
+      ]
+    },
+    {
+      "workload_id": "tenset-49b0c0f2da212fa3d2ad2f4d",
+      "expected_random": {
+        "top_1_score": 0.24206572343391172,
+        "top_5_score": 0.42042354878950566,
+        "runtime_regret": 13.590526774612478
+      },
+      "jev": {
+        "top_1_score": 0.3436956446980483,
+        "top_5_score": 0.3436956446980483,
+        "runtime_regret": 1.9095509804278832
+      },
+      "observed_random_42": {
+        "top_1_score": 1.0,
+        "top_5_score": 1.0,
+        "runtime_regret": 0.0
+      },
+      "expected_prefix_scores": [
+        0.24206572343391178,
+        0.36177125861428716,
+        0.4422812211905,
+        0.5033466148814225,
+        0.5526529258274068
+      ]
+    },
+    {
+      "workload_id": "tenset-56998206c132a0fd7fbbec5a",
+      "expected_random": {
+        "top_1_score": 0.4280923060133573,
+        "top_5_score": 0.6060204881602103,
+        "runtime_regret": 2.590792391427673
+      },
+      "jev": {
+        "top_1_score": 0.8556887225427539,
+        "top_5_score": 0.9128510657569752,
+        "runtime_regret": 0.1686492688934973
+      },
+      "observed_random_42": {
+        "top_1_score": 0.44288413413850936,
+        "top_5_score": 0.4460970064477851,
+        "runtime_regret": 1.257926899876833
+      },
+      "expected_prefix_scores": [
+        0.428092306013357,
+        0.5611319340315493,
+        0.6349756405417845,
+        0.6845353649097456,
+        0.7213671953046149
+      ]
+    },
+    {
+      "workload_id": "tenset-5a90c3621266f9e4b5730e9d",
+      "expected_random": {
+        "top_1_score": 0.31583974183372343,
+        "top_5_score": 0.49688413305372076,
+        "runtime_regret": 13.601313232408991
+      },
+      "jev": {
+        "top_1_score": 0.3670854949684647,
+        "top_5_score": 0.46581916603759116,
+        "runtime_regret": 1.7241610298056238
+      },
+      "observed_random_42": {
+        "top_1_score": 0.016603810038365384,
+        "top_5_score": 0.16103393529500548,
+        "runtime_regret": 59.22714049903984
+      },
+      "expected_prefix_scores": [
+        0.31583974183372365,
+        0.4484277782666647,
+        0.524993660690776,
+        0.577621813430092,
+        0.6175376710473475
+      ]
+    },
+    {
+      "workload_id": "tenset-5c4c5bc280131376e40a6a35",
+      "expected_random": {
+        "top_1_score": 0.2946093216418158,
+        "top_5_score": 0.4765493408621634,
+        "runtime_regret": 6.895673821015696
+      },
+      "jev": {
+        "top_1_score": 0.13827455825739765,
+        "top_5_score": 0.45398848726899976,
+        "runtime_regret": 6.231988390362478
+      },
+      "observed_random_42": {
+        "top_1_score": 0.8119920644997888,
+        "top_5_score": 0.8324328800815701,
+        "runtime_regret": 0.23153912916135422
+      },
+      "expected_prefix_scores": [
+        0.29460932164181586,
+        0.41968859347029885,
+        0.5006581068599828,
+        0.5604510379749847,
+        0.6073396443637346
+      ]
+    },
+    {
+      "workload_id": "tenset-5fa63a945d8e2bb367b24924",
+      "expected_random": {
+        "top_1_score": 0.33222234784078175,
+        "top_5_score": 0.5153849886956148,
+        "runtime_regret": 5.646938455885658
+      },
+      "jev": {
+        "top_1_score": 0.46158262771195724,
+        "top_5_score": 0.4615826277119572,
+        "runtime_regret": 1.1664593508576169
+      },
+      "observed_random_42": {
+        "top_1_score": 0.08312432002566701,
+        "top_5_score": 0.4582182546136023,
+        "runtime_regret": 11.030173596502461
+      },
+      "expected_prefix_scores": [
+        0.3322223478407818,
+        0.46422513623006706,
+        0.543481626320104,
+        0.5981762656088221,
+        0.6388195674782987
+      ]
+    },
+    {
+      "workload_id": "tenset-5fe9581d7ef78bc11b236dec",
+      "expected_random": {
+        "top_1_score": 0.30148553826715185,
+        "top_5_score": 0.47229710349848747,
+        "runtime_regret": 5.0754591606060835
+      },
+      "jev": {
+        "top_1_score": 0.1462421978871227,
+        "top_5_score": 0.533431906737034,
+        "runtime_regret": 5.837971628215351
+      },
+      "observed_random_42": {
+        "top_1_score": 0.09797369503409804,
+        "top_5_score": 0.4470902818057459,
+        "runtime_regret": 9.206821327418215
+      },
+      "expected_prefix_scores": [
+        0.30148553826715185,
+        0.420987790050885,
+        0.4963832107813993,
+        0.5504853599146653,
+        0.5921436184783362
+      ]
+    },
+    {
+      "workload_id": "tenset-609089b7bf4e58390d74fb5b",
+      "expected_random": {
+        "top_1_score": 0.28242244143231576,
+        "top_5_score": 0.4487784416211652,
+        "runtime_regret": 5.6252851189451665
+      },
+      "jev": {
+        "top_1_score": 0.10989598036251398,
+        "top_5_score": 0.3136462496353163,
+        "runtime_regret": 8.09951389214873
+      },
+      "observed_random_42": {
+        "top_1_score": 0.12372517133232666,
+        "top_5_score": 0.3735387241511667,
+        "runtime_regret": 7.08242970473642
+      },
+      "expected_prefix_scores": [
+        0.2824224414323157,
+        0.3986269797039174,
+        0.4723433223786199,
+        0.5251170305222437,
+        0.5653824340687296
+      ]
+    },
+    {
+      "workload_id": "tenset-612e767d5f9076967c9384d4",
+      "expected_random": {
+        "top_1_score": 0.29240154602324997,
+        "top_5_score": 0.46973797140436513,
+        "runtime_regret": 5.072554832355177
+      },
+      "jev": {
+        "top_1_score": 0.16080201900093427,
+        "top_5_score": 0.30193583960434206,
+        "runtime_regret": 5.218827389189622
+      },
+      "observed_random_42": {
+        "top_1_score": 0.2824239677558217,
+        "top_5_score": 0.345307627891623,
+        "runtime_regret": 2.540775975729442
+      },
+      "expected_prefix_scores": [
+        0.29240154602324986,
+        0.41457304444596443,
+        0.4940473981358269,
+        0.5515656942241863,
+        0.5961021741925984
+      ]
+    },
+    {
+      "workload_id": "tenset-617776070c27dc65a03af81f",
+      "expected_random": {
+        "top_1_score": 0.3772868668616682,
+        "top_5_score": 0.5537495412149593,
+        "runtime_regret": 3.614251421207115
+      },
+      "jev": {
+        "top_1_score": 0.1242566307710582,
+        "top_5_score": 0.39872065469605156,
+        "runtime_regret": 7.047860253369429
+      },
+      "observed_random_42": {
+        "top_1_score": 0.4205378996090576,
+        "top_5_score": 0.8841075799218115,
+        "runtime_regret": 1.3779069637472028
+      },
+      "expected_prefix_scores": [
+        0.3772868668616683,
+        0.5038959378106621,
+        0.5797587727210117,
+        0.6333662307150455,
+        0.6744398979664091
+      ]
+    },
+    {
+      "workload_id": "tenset-6308af8976eb4fd2875dd49a",
+      "expected_random": {
+        "top_1_score": 0.2837982391360715,
+        "top_5_score": 0.4629164846824567,
+        "runtime_regret": 6.855421018900077
+      },
+      "jev": {
+        "top_1_score": 0.22220258126746503,
+        "top_5_score": 0.40448618252227214,
+        "runtime_regret": 3.5003977644899678
+      },
+      "observed_random_42": {
+        "top_1_score": 0.7484417510076602,
+        "top_5_score": 0.7484417510076602,
+        "runtime_regret": 0.3361093213381747
+      },
+      "expected_prefix_scores": [
+        0.2837982391360718,
+        0.4092154708436742,
+        0.4885979198887082,
+        0.5450103402909284,
+        0.5879604532529008
+      ]
+    },
+    {
+      "workload_id": "tenset-6671773214713fc571a8bf12",
+      "expected_random": {
+        "top_1_score": 0.2644267045153915,
+        "top_5_score": 0.43933093594064354,
+        "runtime_regret": 7.18860706495427
+      },
+      "jev": {
+        "top_1_score": 0.24845329922248852,
+        "top_5_score": 0.29922895783652714,
+        "runtime_regret": 3.0249012717054153
+      },
+      "observed_random_42": {
+        "top_1_score": 0.5023315922926818,
+        "top_5_score": 0.6018652738341455,
+        "runtime_regret": 0.9907169195469461
+      },
+      "expected_prefix_scores": [
+        0.2644267045153915,
+        0.38294378960843917,
+        0.461613919417977,
+        0.5204435291258349,
+        0.5672267370355752
+      ]
+    },
+    {
+      "workload_id": "tenset-6a22d07a9bee5cba3e6f51db",
+      "expected_random": {
+        "top_1_score": 0.3470742791255704,
+        "top_5_score": 0.5742549806067092,
+        "runtime_regret": 9.278658983619483
+      },
+      "jev": {
+        "top_1_score": 0.9267629337256607,
+        "top_5_score": 0.9267629337256607,
+        "runtime_regret": 0.07902459583695332
+      },
+      "observed_random_42": {
+        "top_1_score": 0.3008732763820505,
+        "top_5_score": 0.3008732763820505,
+        "runtime_regret": 2.3236584253172237
+      },
+      "expected_prefix_scores": [
+        0.34707427912557043,
+        0.5061550653599066,
+        0.6071429830731696,
+        0.6787095581569451,
+        0.7321930173179548
+      ]
+    },
+    {
+      "workload_id": "tenset-6b9e8b89f02589b1fbba9e2f",
+      "expected_random": {
+        "top_1_score": 0.2441469384447337,
+        "top_5_score": 0.41428049719260346,
+        "runtime_regret": 9.730950151316167
+      },
+      "jev": {
+        "top_1_score": 0.03715584256291086,
+        "top_5_score": 0.35396315401011447,
+        "runtime_regret": 25.91366770399132
+      },
+      "observed_random_42": {
+        "top_1_score": 0.12831446679122246,
+        "top_5_score": 0.29411316970005164,
+        "runtime_regret": 6.793353508822019
+      },
+      "expected_prefix_scores": [
+        0.24414693844473376,
+        0.3609651868763482,
+        0.4372441060406002,
+        0.4928383357332286,
+        0.5362079188681067
+      ]
+    },
+    {
+      "workload_id": "tenset-6cc74337ee072cd3c2941fdc",
+      "expected_random": {
+        "top_1_score": 0.25005317133482113,
+        "top_5_score": 0.41355595126399197,
+        "runtime_regret": 6.737695243025367
+      },
+      "jev": {
+        "top_1_score": 0.15733680871679198,
+        "top_5_score": 0.285627958568692,
+        "runtime_regret": 5.355791808387389
+      },
+      "observed_random_42": {
+        "top_1_score": 0.636926916119745,
+        "top_5_score": 0.7032741509729588,
+        "runtime_regret": 0.570038845417542
+      },
+      "expected_prefix_scores": [
+        0.2500531713348213,
+        0.36173734774625477,
+        0.4357302724944382,
+        0.4894379121348853,
+        0.5308210526095603
+      ]
+    },
+    {
+      "workload_id": "tenset-7014dc30fe9421a269244607",
+      "expected_random": {
+        "top_1_score": 0.22935161154853514,
+        "top_5_score": 0.38724985553080443,
+        "runtime_regret": 6.937442948059209
+      },
+      "jev": {
+        "top_1_score": 0.5257518933589467,
+        "top_5_score": 0.5257518933589467,
+        "runtime_regret": 0.9020378483302387
+      },
+      "observed_random_42": {
+        "top_1_score": 0.11693949808800852,
+        "top_5_score": 0.4627398225630456,
+        "runtime_regret": 7.551430580345071
+      },
+      "expected_prefix_scores": [
+        0.22935161154853517,
+        0.3327632072375118,
+        0.4059159592281693,
+        0.4618526551215227,
+        0.5063658445182831
+      ]
+    },
+    {
+      "workload_id": "tenset-705c3ede939935929217450f",
+      "expected_random": {
+        "top_1_score": 0.21403676954665862,
+        "top_5_score": 0.3628118070443471,
+        "runtime_regret": 15.657696588155462
+      },
+      "jev": {
+        "top_1_score": 0.057385146849150005,
+        "top_5_score": 0.20780596666165066,
+        "runtime_regret": 16.426112067443672
+      },
+      "observed_random_42": {
+        "top_1_score": 0.02444483766205622,
+        "top_5_score": 0.39158265674622383,
+        "runtime_regret": 39.90843284888001
+      },
+      "expected_prefix_scores": [
+        0.21403676954665865,
+        0.3174116327329718,
+        0.38335050286917954,
+        0.43097360235287563,
+        0.4682865277200502
+      ]
+    },
+    {
+      "workload_id": "tenset-707ed54343f56850e86e4069",
+      "expected_random": {
+        "top_1_score": 0.30495343243528944,
+        "top_5_score": 0.49905760161145274,
+        "runtime_regret": 7.520760532840184
+      },
+      "jev": {
+        "top_1_score": 0.37412748901945575,
+        "top_5_score": 0.4733750101998707,
+        "runtime_regret": 1.67288565889901
+      },
+      "observed_random_42": {
+        "top_1_score": 0.17278232389836184,
+        "top_5_score": 0.24655766382275385,
+        "runtime_regret": 4.787629066664504
+      },
+      "expected_prefix_scores": [
+        0.3049534324352894,
+        0.4416395603994725,
+        0.5270306906872301,
+        0.5876807934116227,
+        0.6339835311236486
+      ]
+    },
+    {
+      "workload_id": "tenset-77da9bfdaab1deb713268ecc",
+      "expected_random": {
+        "top_1_score": 0.27300443944838393,
+        "top_5_score": 0.4109057108405768,
+        "runtime_regret": 5.860847930433488
+      },
+      "jev": {
+        "top_1_score": 0.16396278213945523,
+        "top_5_score": 0.348580844573807,
+        "runtime_regret": 5.098945059065112
+      },
+      "observed_random_42": {
+        "top_1_score": 0.09686783494311958,
+        "top_5_score": 0.6387471339772478,
+        "runtime_regret": 9.3233441790786
+      },
+      "expected_prefix_scores": [
+        0.2730044394483841,
+        0.37507171180145477,
+        0.43332827039988164,
+        0.4721847662293008,
+        0.5009393663238626
+      ]
+    },
+    {
+      "workload_id": "tenset-780acd6a0e90cdad12877b48",
+      "expected_random": {
+        "top_1_score": 0.3266191440075883,
+        "top_5_score": 0.5096131197201217,
+        "runtime_regret": 4.62346817251518
+      },
+      "jev": {
+        "top_1_score": 0.24430974447413806,
+        "top_5_score": 0.6083815533034181,
+        "runtime_regret": 3.093164610165016
+      },
+      "observed_random_42": {
+        "top_1_score": 0.1128065737533721,
+        "top_5_score": 0.4341010918499483,
+        "runtime_regret": 7.864731608516806
+      },
+      "expected_prefix_scores": [
+        0.3266191440075884,
+        0.4572537802742096,
+        0.5373676095360445,
+        0.5928323271503645,
+        0.6339927376324013
+      ]
+    },
+    {
+      "workload_id": "tenset-7e38f99ebfdb0ea3ec0ca4c7",
+      "expected_random": {
+        "top_1_score": 0.3251608161668084,
+        "top_5_score": 0.5122926914616459,
+        "runtime_regret": 6.5032111223936395
+      },
+      "jev": {
+        "top_1_score": 0.27768154317033245,
+        "top_5_score": 0.5289544802364855,
+        "runtime_regret": 2.6012476327481036
+      },
+      "observed_random_42": {
+        "top_1_score": 0.15143947053086507,
+        "top_5_score": 0.2065070922484586,
+        "runtime_regret": 5.60329831116379
+      },
+      "expected_prefix_scores": [
+        0.3251608161668082,
+        0.4549290392349538,
+        0.5372785358021281,
+        0.5981027588916968,
+        0.6459923072126426
+      ]
+    },
+    {
+      "workload_id": "tenset-7e97e6e138ff7d07e428ec43",
+      "expected_random": {
+        "top_1_score": 0.2928533603637156,
+        "top_5_score": 0.4985570170738579,
+        "runtime_regret": 7.800888524015732
+      },
+      "jev": {
+        "top_1_score": 0.6470078985236416,
+        "top_5_score": 0.6470078985236416,
+        "runtime_regret": 0.5455761858268258
+      },
+      "observed_random_42": {
+        "top_1_score": 0.11983072008583483,
+        "top_5_score": 0.34021549064819473,
+        "runtime_regret": 7.345105489508027
+      },
+      "expected_prefix_scores": [
+        0.2928533603637158,
+        0.4350028644069787,
+        0.5276221166733241,
+        0.593730445888229,
+        0.6435762980370417
+      ]
+    },
+    {
+      "workload_id": "tenset-7fbb67e756acd29143eb208b",
+      "expected_random": {
+        "top_1_score": 0.3441545729537574,
+        "top_5_score": 0.5595344800173403,
+        "runtime_regret": 5.147683354286681
+      },
+      "jev": {
+        "top_1_score": 0.12501979349084455,
+        "top_5_score": 0.6725613260863958,
+        "runtime_regret": 6.998733417146718
+      },
+      "observed_random_42": {
+        "top_1_score": 0.3120983572763802,
+        "top_5_score": 0.6229063492744282,
+        "runtime_regret": 2.204118114323957
+      },
+      "expected_prefix_scores": [
+        0.34415457295375734,
+        0.4955496391946272,
+        0.5914184875580576,
+        0.658457858375886,
+        0.7080918420043735
+      ]
+    },
+    {
+      "workload_id": "tenset-8071f866d1b462ddb870185b",
+      "expected_random": {
+        "top_1_score": 0.2036226919493062,
+        "top_5_score": 0.3593300606235559,
+        "runtime_regret": 12.338301405327304
+      },
+      "jev": {
+        "top_1_score": 0.021308425115338165,
+        "top_5_score": 0.5093054593814086,
+        "runtime_regret": 45.92979394709856
+      },
+      "observed_random_42": {
+        "top_1_score": 0.5467276553799385,
+        "top_5_score": 0.5467276553799385,
+        "runtime_regret": 0.8290642336449361
+      },
+      "expected_prefix_scores": [
+        0.2036226919493061,
+        0.30448689759633685,
+        0.3761369578531424,
+        0.43275129142111224,
+        0.47965246429788194
+      ]
+    },
+    {
+      "workload_id": "tenset-82369931ee560e6125f084df",
+      "expected_random": {
+        "top_1_score": 0.2918479358377064,
+        "top_5_score": 0.49430066040053455,
+        "runtime_regret": 10.20219134030589
+      },
+      "jev": {
+        "top_1_score": 0.09082752011910451,
+        "top_5_score": 0.2897789982191316,
+        "runtime_regret": 10.00987892974149
+      },
+      "observed_random_42": {
+        "top_1_score": 0.08286874902490857,
+        "top_5_score": 0.6895944568941182,
+        "runtime_regret": 11.067275200442829
+      },
+      "expected_prefix_scores": [
+        0.2918479358377064,
+        0.4295498663075795,
+        0.5201828808912692,
+        0.5879891613969728,
+        0.6419334575691451
+      ]
+    },
+    {
+      "workload_id": "tenset-83826a6e43db39e2b0b8c43c",
+      "expected_random": {
+        "top_1_score": 0.18752515611748333,
+        "top_5_score": 0.32383249281995,
+        "runtime_regret": 9.914698777609606
+      },
+      "jev": {
+        "top_1_score": 0.48314373091838375,
+        "top_5_score": 0.4831437309183838,
+        "runtime_regret": 1.0697774513169196
+      },
+      "observed_random_42": {
+        "top_1_score": 0.10824517597139949,
+        "top_5_score": 0.18302932720009685,
+        "runtime_regret": 8.238286981622347
+      },
+      "expected_prefix_scores": [
+        0.18752515611748335,
+        0.27567329507962307,
+        0.3382023516430445,
+        0.38791504932289467,
+        0.42984661193670465
+      ]
+    },
+    {
+      "workload_id": "tenset-85c2867e668837d23ec414fd",
+      "expected_random": {
+        "top_1_score": 0.3092030456326981,
+        "top_5_score": 0.4450732203376253,
+        "runtime_regret": 3.8889569852356574
+      },
+      "jev": {
+        "top_1_score": 0.44716370493370783,
+        "top_5_score": 0.46398142607526677,
+        "runtime_regret": 1.236317458162778
+      },
+      "observed_random_42": {
+        "top_1_score": 0.5358873158379374,
+        "top_5_score": 0.5358873158379374,
+        "runtime_regret": 0.8660639474855927
+      },
+      "expected_prefix_scores": [
+        0.30920304563269807,
+        0.4100088502757841,
+        0.4670113919605402,
+        0.505253263766992,
+        0.533889550052112
+      ]
+    },
+    {
+      "workload_id": "tenset-8af951afa2f37592ceef86bb",
+      "expected_random": {
+        "top_1_score": 0.501333018094209,
+        "top_5_score": 0.6623269458034569,
+        "runtime_regret": 1.7830318423557145
+      },
+      "jev": {
+        "top_1_score": 1.0,
+        "top_5_score": 1.0,
+        "runtime_regret": 0.0
+      },
+      "observed_random_42": {
+        "top_1_score": 0.3688425338338706,
+        "top_5_score": 0.6449060859359447,
+        "runtime_regret": 1.7111840643910319
+      },
+      "expected_prefix_scores": [
+        0.501333018094209,
+        0.6292237629614659,
+        0.6919348603999618,
+        0.7307911783277738,
+        0.7583519092338742
+      ]
+    },
+    {
+      "workload_id": "tenset-8da014a5ca7b56a3c50d14fc",
+      "expected_random": {
+        "top_1_score": 0.2808744560654588,
+        "top_5_score": 0.45707270288013635,
+        "runtime_regret": 6.5938650386270545
+      },
+      "jev": {
+        "top_1_score": 0.190597290493477,
+        "top_5_score": 0.190597290493477,
+        "runtime_regret": 4.246664301527539
+      },
+      "observed_random_42": {
+        "top_1_score": 0.4354716026987498,
+        "top_5_score": 0.43547160269874985,
+        "runtime_regret": 1.2963609884150795
+      },
+      "expected_prefix_scores": [
+        0.2808744560654588,
+        0.4030959285694926,
+        0.48144598968145863,
+        0.5380525069565474,
+        0.5818946331277244
+      ]
+    },
+    {
+      "workload_id": "tenset-8fe4093576ea4d4a7fba0cae",
+      "expected_random": {
+        "top_1_score": 0.347576911855029,
+        "top_5_score": 0.5485636213013272,
+        "runtime_regret": 7.263514352421214
+      },
+      "jev": {
+        "top_1_score": 0.07060923220036847,
+        "top_5_score": 0.5027735040444561,
+        "runtime_regret": 13.162453957328
+      },
+      "observed_random_42": {
+        "top_1_score": 0.41096075828489326,
+        "top_5_score": 0.41583305541499194,
+        "runtime_regret": 1.4333223546048717
+      },
+      "expected_prefix_scores": [
+        0.34757691185502876,
+        0.4936410105918484,
+        0.579941883115374,
+        0.6389151852332853,
+        0.6827431157110995
+      ]
+    },
+    {
+      "workload_id": "tenset-8ff3572391bb0b1bceddce81",
+      "expected_random": {
+        "top_1_score": 0.3028241425339542,
+        "top_5_score": 0.497033637607171,
+        "runtime_regret": 5.558764054332773
+      },
+      "jev": {
+        "top_1_score": 0.2173636868570306,
+        "top_5_score": 0.46047953687819343,
+        "runtime_regret": 3.6005844603553427
+      },
+      "observed_random_42": {
+        "top_1_score": 1.0,
+        "top_5_score": 1.0,
+        "runtime_regret": 0.0
+      },
+      "expected_prefix_scores": [
+        0.3028241425339541,
+        0.43486601838416117,
+        0.5225165326702551,
+        0.5872284662816871,
+        0.6377330281657975
+      ]
+    },
+    {
+      "workload_id": "tenset-91ba2d3131eb0abba0d211bf",
+      "expected_random": {
+        "top_1_score": 0.3894295760859434,
+        "top_5_score": 0.6310105466272157,
+        "runtime_regret": 3.744216924241672
+      },
+      "jev": {
+        "top_1_score": 0.448643987020968,
+        "top_5_score": 0.702427423483661,
+        "runtime_regret": 1.228938822160707
+      },
+      "observed_random_42": {
+        "top_1_score": 0.9072318979787432,
+        "top_5_score": 0.9623651720399649,
+        "runtime_regret": 0.10225401270385048
+      },
+      "expected_prefix_scores": [
+        0.38942957608594353,
+        0.5570723564839268,
+        0.667670360271669,
+        0.7435701630366914,
+        0.7973102772578476
+      ]
+    },
+    {
+      "workload_id": "tenset-956a29560052e010542db92a",
+      "expected_random": {
+        "top_1_score": 0.34368608365696995,
+        "top_5_score": 0.5190335514342056,
+        "runtime_regret": 3.324783813866988
+      },
+      "jev": {
+        "top_1_score": 0.17798256036503618,
+        "top_5_score": 0.581445449512587,
+        "runtime_regret": 4.618528006053143
+      },
+      "observed_random_42": {
+        "top_1_score": 0.44157246766946606,
+        "top_5_score": 0.4494175336233585,
+        "runtime_regret": 1.2646339462190799
+      },
+      "expected_prefix_scores": [
+        0.3436860836569698,
+        0.46391385067987895,
+        0.5419192734239748,
+        0.5998812446940298,
+        0.6457673047161747
+      ]
+    },
+    {
+      "workload_id": "tenset-9a76b3a543c7bf842652e671",
+      "expected_random": {
+        "top_1_score": 0.36102160152346824,
+        "top_5_score": 0.5512500801051071,
+        "runtime_regret": 7.062239765105172
+      },
+      "jev": {
+        "top_1_score": 0.3968663966422693,
+        "top_5_score": 0.3968663966422693,
+        "runtime_regret": 1.51973966166097
+      },
+      "observed_random_42": {
+        "top_1_score": 0.22705514628519488,
+        "top_5_score": 0.5163612070541992,
+        "runtime_regret": 3.4042164045202483
+      },
+      "expected_prefix_scores": [
+        0.3610216015234683,
+        0.5000601924701343,
+        0.5815161610786753,
+        0.6365721637844234,
+        0.6770802816688342
+      ]
+    },
+    {
+      "workload_id": "tenset-9ad12b11192b7e455ff2a00a",
+      "expected_random": {
+        "top_1_score": 0.3310760748183632,
+        "top_5_score": 0.5093613559201772,
+        "runtime_regret": 5.27735571481903
+      },
+      "jev": {
+        "top_1_score": 0.1118496876317002,
+        "top_5_score": 0.4178237459004956,
+        "runtime_regret": 7.940570341982628
+      },
+      "observed_random_42": {
+        "top_1_score": 0.45066786464910097,
+        "top_5_score": 0.6587682748887359,
+        "runtime_regret": 1.218929012785547
+      },
+      "expected_prefix_scores": [
+        0.3310760748183633,
+        0.46040119710302785,
+        0.5362796078010458,
+        0.5891550453139344,
+        0.6298948545645144
+      ]
+    },
+    {
+      "workload_id": "tenset-9cf6f40e676715c0836f94fc",
+      "expected_random": {
+        "top_1_score": 0.26979926280158284,
+        "top_5_score": 0.45518851409759725,
+        "runtime_regret": 7.437019368514737
+      },
+      "jev": {
+        "top_1_score": 0.15737218254712776,
+        "top_5_score": 0.17481462212865448,
+        "runtime_regret": 5.354363165170777
+      },
+      "observed_random_42": {
+        "top_1_score": 0.17018979993702882,
+        "top_5_score": 0.3004517577255517,
+        "runtime_regret": 4.875792793516448
+      },
+      "expected_prefix_scores": [
+        0.269799262801583,
+        0.39509509012256494,
+        0.47891357398688733,
+        0.5414059173316367,
+        0.5907287262453145
+      ]
+    },
+    {
+      "workload_id": "tenset-9f08736863e043e0027570f7",
+      "expected_random": {
+        "top_1_score": 0.4111991102922588,
+        "top_5_score": 0.5946137668503642,
+        "runtime_regret": 2.3235789648624756
+      },
+      "jev": {
+        "top_1_score": 0.3682441597588545,
+        "top_5_score": 0.47645833261134873,
+        "runtime_regret": 1.715589571481194
+      },
+      "observed_random_42": {
+        "top_1_score": 0.63877959189009,
+        "top_5_score": 0.63877959189009,
+        "runtime_regret": 0.5654852044366225
+      },
+      "expected_prefix_scores": [
+        0.4111991102922587,
+        0.5423257412947204,
+        0.623511395663756,
+        0.6782745959827139,
+        0.7177579910183718
+      ]
+    },
+    {
+      "workload_id": "tenset-a09086b64a17b2acb759abab",
+      "expected_random": {
+        "top_1_score": 0.2993017871879014,
+        "top_5_score": 0.47489860040495674,
+        "runtime_regret": 5.588476147484576
+      },
+      "jev": {
+        "top_1_score": 0.07531090901154405,
+        "top_5_score": 0.6301243636046177,
+        "runtime_regret": 12.278288804703111
+      },
+      "observed_random_42": {
+        "top_1_score": 0.12280947252709215,
+        "top_5_score": 0.37979862481461646,
+        "runtime_regret": 7.1426943656923285
+      },
+      "expected_prefix_scores": [
+        0.2993017871879015,
+        0.4235039678205316,
+        0.5009284972848395,
+        0.5550800319793481,
+        0.5956787177521629
+      ]
+    },
+    {
+      "workload_id": "tenset-a1e1d5822c9c2e951070d7f9",
+      "expected_random": {
+        "top_1_score": 0.27697260119678047,
+        "top_5_score": 0.47445079019416686,
+        "runtime_regret": 17.435414613617485
+      },
+      "jev": {
+        "top_1_score": 0.4149623538416684,
+        "top_5_score": 0.710720231616966,
+        "runtime_regret": 1.4098571611186599
+      },
+      "observed_random_42": {
+        "top_1_score": 0.5220978933859081,
+        "top_5_score": 0.5220978933859081,
+        "runtime_regret": 0.915349616744864
+      },
+      "expected_prefix_scores": [
+        0.2769726011967805,
+        0.4082218044319368,
+        0.49851073692468084,
+        0.5670334746285385,
+        0.6215153337888972
+      ]
+    },
+    {
+      "workload_id": "tenset-a9e6bba7e6410e0450c3f66a",
+      "expected_random": {
+        "top_1_score": 0.4432838404366414,
+        "top_5_score": 0.5917945035080476,
+        "runtime_regret": 2.2408665204764473
+      },
+      "jev": {
+        "top_1_score": 0.5015766697719006,
+        "top_5_score": 0.90031533395438,
+        "runtime_regret": 0.9937131454993007
+      },
+      "observed_random_42": {
+        "top_1_score": 0.38504838523819135,
+        "top_5_score": 0.5498494415387138,
+        "runtime_regret": 1.5970762074002698
+      },
+      "expected_prefix_scores": [
+        0.4432838404366413,
+        0.5584789931184436,
+        0.617371081121253,
+        0.6557869073035082,
+        0.6840516955603921
+      ]
+    },
+    {
+      "workload_id": "tenset-aa4dcb43787385b12268d73f",
+      "expected_random": {
+        "top_1_score": 0.32512689034207326,
+        "top_5_score": 0.5168470752377523,
+        "runtime_regret": 6.950241835986526
+      },
+      "jev": {
+        "top_1_score": 0.08509863078361163,
+        "top_5_score": 0.3766848698722217,
+        "runtime_regret": 10.751070384937155
+      },
+      "observed_random_42": {
+        "top_1_score": 0.2733164720588334,
+        "top_5_score": 0.4623361807690963,
+        "runtime_regret": 2.658762285592295
+      },
+      "expected_prefix_scores": [
+        0.32512689034207337,
+        0.4632493488385207,
+        0.546191894757482,
+        0.6033626229449458,
+        0.6463046193057396
+      ]
+    },
+    {
+      "workload_id": "tenset-acb6180691e0888d4fa4d360",
+      "expected_random": {
+        "top_1_score": 0.562539094879415,
+        "top_5_score": 0.7212134270025913,
+        "runtime_regret": 1.0276412630240406
+      },
+      "jev": {
+        "top_1_score": 0.7810627038841733,
+        "top_5_score": 0.8804539838516776,
+        "runtime_regret": 0.28030693954155783
+      },
+      "observed_random_42": {
+        "top_1_score": 0.46985178167665764,
+        "top_5_score": 0.5429242640606687,
+        "runtime_regret": 1.1283307608870143
+      },
+      "expected_prefix_scores": [
+        0.5625390948794149,
+        0.6756030724075845,
+        0.7462669706834918,
+        0.7940542134748183,
+        0.8276037835676465
+      ]
+    },
+    {
+      "workload_id": "tenset-adc945681353d01ef3bbc3d1",
+      "expected_random": {
+        "top_1_score": 0.4191155941207556,
+        "top_5_score": 0.6107135345774098,
+        "runtime_regret": 3.0413364461669334
+      },
+      "jev": {
+        "top_1_score": 0.6410196364317612,
+        "top_5_score": 0.677524603795524,
+        "runtime_regret": 0.5600146129165475
+      },
+      "observed_random_42": {
+        "top_1_score": 0.22068922002671068,
+        "top_5_score": 0.49046667807900246,
+        "runtime_regret": 3.5312589345277807
+      },
+      "expected_prefix_scores": [
+        0.4191155941207554,
+        0.561824596309615,
+        0.6420800231681426,
+        0.695663292518676,
+        0.7348841667698603
+      ]
+    },
+    {
+      "workload_id": "tenset-af28a7bc0064e78e676de617",
+      "expected_random": {
+        "top_1_score": 0.2714236588995984,
+        "top_5_score": 0.44708810780112324,
+        "runtime_regret": 8.85888489526463
+      },
+      "jev": {
+        "top_1_score": 0.0919782269365609,
+        "top_5_score": 0.2892502312370575,
+        "runtime_regret": 9.872138258217552
+      },
+      "observed_random_42": {
+        "top_1_score": 0.793066380005375,
+        "top_5_score": 0.793066380005375,
+        "runtime_regret": 0.2609284988139613
+      },
+      "expected_prefix_scores": [
+        0.2714236588995986,
+        0.3900320019293011,
+        0.4693738763731534,
+        0.5287606637495847,
+        0.5758503380539784
+      ]
+    },
+    {
+      "workload_id": "tenset-b0bdadb20c008c3aa187e5e3",
+      "expected_random": {
+        "top_1_score": 0.21087169882087012,
+        "top_5_score": 0.3528813714577413,
+        "runtime_regret": 8.233359702343044
+      },
+      "jev": {
+        "top_1_score": 0.08692754307026689,
+        "top_5_score": 0.20649272580311973,
+        "runtime_regret": 10.503833706557904
+      },
+      "observed_random_42": {
+        "top_1_score": 0.49827939481679484,
+        "top_5_score": 0.49827939481679484,
+        "runtime_regret": 1.0069061863729596
+      },
+      "expected_prefix_scores": [
+        0.21087169882087003,
+        0.30563544865697,
+        0.3699876241262846,
+        0.418978053946352,
+        0.45893403173822966
+      ]
+    },
+    {
+      "workload_id": "tenset-b17085864f5cc316b95c3b92",
+      "expected_random": {
+        "top_1_score": 0.5405909391590351,
+        "top_5_score": 0.7096772331835501,
+        "runtime_regret": 1.494156518545767
+      },
+      "jev": {
+        "top_1_score": 0.7385375965489321,
+        "top_5_score": 0.7860354905466379,
+        "runtime_regret": 0.3540272081920266
+      },
+      "observed_random_42": {
+        "top_1_score": 0.4638404542534033,
+        "top_5_score": 0.8129409507054554,
+        "runtime_regret": 1.1559137216903559
+      },
+      "expected_prefix_scores": [
+        0.540590939159035,
+        0.6771234548217208,
+        0.7417893265224915,
+        0.780699448103314,
+        0.8081829973111893
+      ]
+    },
+    {
+      "workload_id": "tenset-b19e219f0e9c3245ecacdf59",
+      "expected_random": {
+        "top_1_score": 0.3292181077813781,
+        "top_5_score": 0.49404685278310045,
+        "runtime_regret": 4.660703966043133
+      },
+      "jev": {
+        "top_1_score": 0.1454329931551961,
+        "top_5_score": 0.20930684324607163,
+        "runtime_regret": 5.876018833861645
+      },
+      "observed_random_42": {
+        "top_1_score": 0.6487334682406255,
+        "top_5_score": 0.6487334682406255,
+        "runtime_regret": 0.5414650992371559
+      },
+      "expected_prefix_scores": [
+        0.32921810778137767,
+        0.446412115868199,
+        0.5174800082502332,
+        0.5685967089360962,
+        0.6085273230795962
+      ]
+    },
+    {
+      "workload_id": "tenset-b1bf1082ca47c1269d2b6580",
+      "expected_random": {
+        "top_1_score": 0.2753768106812589,
+        "top_5_score": 0.4449621658322112,
+        "runtime_regret": 6.5899337249436565
+      },
+      "jev": {
+        "top_1_score": 0.051810897134889095,
+        "top_5_score": 0.38885821528597575,
+        "runtime_regret": 18.30095897387206
+      },
+      "observed_random_42": {
+        "top_1_score": 0.1038937117280184,
+        "top_5_score": 0.354829894562946,
+        "runtime_regret": 8.625221617049194
+      },
+      "expected_prefix_scores": [
+        0.2753768106812588,
+        0.393547183083792,
+        0.46871581248615884,
+        0.5227370393310747,
+        0.5644339835787714
+      ]
+    },
+    {
+      "workload_id": "tenset-b23d871419294d2d5a529d0a",
+      "expected_random": {
+        "top_1_score": 0.22331611657683,
+        "top_5_score": 0.38671920825952616,
+        "runtime_regret": 9.25476869900447
+      },
+      "jev": {
+        "top_1_score": 0.710801645110964,
+        "top_5_score": 0.710801645110964,
+        "runtime_regret": 0.4068622475457113
+      },
+      "observed_random_42": {
+        "top_1_score": 0.057308123291229064,
+        "top_5_score": 0.21612825029313928,
+        "runtime_regret": 16.44953320000009
+      },
+      "expected_prefix_scores": [
+        0.22331611657683012,
+        0.3283717816937897,
+        0.40391461460977013,
+        0.46404620864357665,
+        0.513947319773664
+      ]
+    },
+    {
+      "workload_id": "tenset-b3d8fc42e72f69c14949fc65",
+      "expected_random": {
+        "top_1_score": 0.3107590616892075,
+        "top_5_score": 0.5190873306432795,
+        "runtime_regret": 7.640419821488067
+      },
+      "jev": {
+        "top_1_score": 0.5149986465338866,
+        "top_5_score": 0.5149986465338866,
+        "runtime_regret": 0.9417526759154322
+      },
+      "observed_random_42": {
+        "top_1_score": 0.20187384187770224,
+        "top_5_score": 0.5087184658689543,
+        "runtime_regret": 3.9535887894074593
+      },
+      "expected_prefix_scores": [
+        0.3107590616892076,
+        0.45366968153980175,
+        0.5475746772360345,
+        0.6156478019996608,
+        0.6677854307516925
+      ]
+    },
+    {
+      "workload_id": "tenset-b3da5219baee4e22c2274708",
+      "expected_random": {
+        "top_1_score": 0.22269093093583853,
+        "top_5_score": 0.3626067820037403,
+        "runtime_regret": 8.719115717414091
+      },
+      "jev": {
+        "top_1_score": 0.24569066678989188,
+        "top_5_score": 0.2911813189183886,
+        "runtime_regret": 3.07015867987844
+      },
+      "observed_random_42": {
+        "top_1_score": 0.30022482462045064,
+        "top_5_score": 0.6126027497471798,
+        "runtime_regret": 2.330837152671226
+      },
+      "expected_prefix_scores": [
+        0.22269093093583847,
+        0.31711699048667796,
+        0.37955745678403985,
+        0.4272606559014367,
+        0.46640787591070865
+      ]
+    },
+    {
+      "workload_id": "tenset-b6be07e6610d4ff9f53d0c64",
+      "expected_random": {
+        "top_1_score": 0.3137050616044675,
+        "top_5_score": 0.5076496870116345,
+        "runtime_regret": 5.23481522959962
+      },
+      "jev": {
+        "top_1_score": 0.2829523457430808,
+        "top_5_score": 0.3516661933391182,
+        "runtime_regret": 2.5341640210609686
+      },
+      "observed_random_42": {
+        "top_1_score": 0.07459939133030109,
+        "top_5_score": 0.4151790925130765,
+        "runtime_regret": 12.404935109622214
+      },
+      "expected_prefix_scores": [
+        0.31370506160446743,
+        0.44617418923442664,
+        0.5330125512710129,
+        0.5974282968899285,
+        0.6479283360583369
+      ]
+    },
+    {
+      "workload_id": "tenset-b742422b306341c69597bc21",
+      "expected_random": {
+        "top_1_score": 0.25013851013175203,
+        "top_5_score": 0.42121697568835426,
+        "runtime_regret": 8.335771609663144
+      },
+      "jev": {
+        "top_1_score": 0.4703444582131077,
+        "top_5_score": 0.5613909648980389,
+        "runtime_regret": 1.126101376423386
+      },
+      "observed_random_42": {
+        "top_1_score": 0.026347402113082126,
+        "top_5_score": 0.14938979154370396,
+        "runtime_regret": 36.95440611973944
+      },
+      "expected_prefix_scores": [
+        0.25013851013175203,
+        0.3667412727100606,
+        0.4439566652059466,
+        0.5006636366070893,
+        0.5445847937869227
+      ]
+    },
+    {
+      "workload_id": "tenset-bcee392de9e26abb7fde8006",
+      "expected_random": {
+        "top_1_score": 0.3558577219785201,
+        "top_5_score": 0.5310520736210798,
+        "runtime_regret": 3.907444916435029
+      },
+      "jev": {
+        "top_1_score": 0.2651000782415916,
+        "top_5_score": 0.37319953481267204,
+        "runtime_regret": 2.772160335194914
+      },
+      "observed_random_42": {
+        "top_1_score": 0.8174492103245614,
+        "top_5_score": 0.8174492103245614,
+        "runtime_regret": 0.2233175925424875
+      },
+      "expected_prefix_scores": [
+        0.3558577219785201,
+        0.4840724911062159,
+        0.5587705096535999,
+        0.6094691615641479,
+        0.6470904838029149
+      ]
+    },
+    {
+      "workload_id": "tenset-bdd3337a0943b34e9cbf79e3",
+      "expected_random": {
+        "top_1_score": 0.3228541934993807,
+        "top_5_score": 0.5043716173890228,
+        "runtime_regret": 4.797648956438724
+      },
+      "jev": {
+        "top_1_score": 0.12581661758584006,
+        "top_5_score": 0.37834990005316177,
+        "runtime_regret": 6.948075692924559
+      },
+      "observed_random_42": {
+        "top_1_score": 0.10275455088625256,
+        "top_5_score": 0.3660505128533848,
+        "runtime_regret": 8.731929061779288
+      },
+      "expected_prefix_scores": [
+        0.3228541934993807,
+        0.4505098284102355,
+        0.5301490843211454,
+        0.5871854549934575,
+        0.6311595257208948
+      ]
+    },
+    {
+      "workload_id": "tenset-c597b51283ced533b6ee0481",
+      "expected_random": {
+        "top_1_score": 0.32458395601476175,
+        "top_5_score": 0.5069805057401222,
+        "runtime_regret": 4.6494263875756126
+      },
+      "jev": {
+        "top_1_score": 0.29358527079137287,
+        "top_5_score": 0.5229834934287838,
+        "runtime_regret": 2.406165429568224
+      },
+      "observed_random_42": {
+        "top_1_score": 0.13562436407473422,
+        "top_5_score": 0.49338749966620943,
+        "runtime_regret": 6.373306461728085
+      },
+      "expected_prefix_scores": [
+        0.3245839560147618,
+        0.4538168651809787,
+        0.5337083591188554,
+        0.590039345716523,
+        0.6327540026694923
+      ]
+    },
+    {
+      "workload_id": "tenset-c60108949ea2c725ec7482ef",
+      "expected_random": {
+        "top_1_score": 0.3686786119692965,
+        "top_5_score": 0.5565452652143603,
+        "runtime_regret": 3.667871563965573
+      },
+      "jev": {
+        "top_1_score": 0.15742211980017357,
+        "top_5_score": 0.5038535242858726,
+        "runtime_regret": 5.352347441829439
+      },
+      "observed_random_42": {
+        "top_1_score": 0.4048263241953896,
+        "top_5_score": 0.40482632419538966,
+        "runtime_regret": 1.4701950941247328
+      },
+      "expected_prefix_scores": [
+        0.36867861196929624,
+        0.504919195278565,
+        0.5858857955307073,
+        0.6412113676894583,
+        0.6820313556037746
+      ]
+    },
+    {
+      "workload_id": "tenset-c894700f98ae3df214e8598e",
+      "expected_random": {
+        "top_1_score": 0.5233045481535036,
+        "top_5_score": 0.6443003212391429,
+        "runtime_regret": 1.1492883242845833
+      },
+      "jev": {
+        "top_1_score": 0.7985004821470129,
+        "top_5_score": 0.7985004821470129,
+        "runtime_regret": 0.25234739659917804
+      },
+      "observed_random_42": {
+        "top_1_score": 1.0,
+        "top_5_score": 1.0,
+        "runtime_regret": 0.0
+      },
+      "expected_prefix_scores": [
+        0.5233045481535034,
+        0.6143447705323982,
+        0.6628415557621047,
+        0.6970867374796172,
+        0.7239239942680913
+      ]
+    },
+    {
+      "workload_id": "tenset-cd04caf8b544a1d9308a0d0d",
+      "expected_random": {
+        "top_1_score": 0.2709481811927076,
+        "top_5_score": 0.45234231595486474,
+        "runtime_regret": 10.81196271329763
+      },
+      "jev": {
+        "top_1_score": 0.06260201408575039,
+        "top_5_score": 0.20150527376552968,
+        "runtime_regret": 14.973926951139777
+      },
+      "observed_random_42": {
+        "top_1_score": 0.10507877772090403,
+        "top_5_score": 0.6149957821423422,
+        "runtime_regret": 8.51666950919494
+      },
+      "expected_prefix_scores": [
+        0.2709481811927077,
+        0.3951224953509323,
+        0.47593020042354783,
+        0.5359784228562319,
+        0.583732279950904
+      ]
+    },
+    {
+      "workload_id": "tenset-cd2aac9bc3a338208471be92",
+      "expected_random": {
+        "top_1_score": 0.3473602680924248,
+        "top_5_score": 0.5378736775672752,
+        "runtime_regret": 4.100425324236277
+      },
+      "jev": {
+        "top_1_score": 0.13964686998394865,
+        "top_5_score": 0.5689836925908232,
+        "runtime_regret": 6.160919540229885
+      },
+      "observed_random_42": {
+        "top_1_score": 0.24360260537545858,
+        "top_5_score": 0.7587696209114257,
+        "runtime_regret": 3.1050464072776442
+      },
+      "expected_prefix_scores": [
+        0.34736026809242476,
+        0.48382746990627207,
+        0.5670376473126495,
+        0.6243303120380002,
+        0.6668126904870296
+      ]
+    },
+    {
+      "workload_id": "tenset-cda4177fbd8ef83624528817",
+      "expected_random": {
+        "top_1_score": 0.3040682815708117,
+        "top_5_score": 0.504420633238978,
+        "runtime_regret": 7.565713594690798
+      },
+      "jev": {
+        "top_1_score": 0.1015744920695958,
+        "top_5_score": 0.5988508750575103,
+        "runtime_regret": 8.844991391291723
+      },
+      "observed_random_42": {
+        "top_1_score": 0.2322888598489667,
+        "top_5_score": 0.42696788121569995,
+        "runtime_regret": 3.3049847532516026
+      },
+      "expected_prefix_scores": [
+        0.3040682815708117,
+        0.43999301097947946,
+        0.5299176356736164,
+        0.5972639105676002,
+        0.6508603274033818
+      ]
+    },
+    {
+      "workload_id": "tenset-cef3425d9e6981c1c45d2270",
+      "expected_random": {
+        "top_1_score": 0.32685919493891114,
+        "top_5_score": 0.5382872654139396,
+        "runtime_regret": 12.18441141376038
+      },
+      "jev": {
+        "top_1_score": 0.3146708249020863,
+        "top_5_score": 0.39578196474078375,
+        "runtime_regret": 2.177924106282056
+      },
+      "observed_random_42": {
+        "top_1_score": 0.037948591617143285,
+        "top_5_score": 0.20022249221104377,
+        "runtime_regret": 25.351439075495225
+      },
+      "expected_prefix_scores": [
+        0.326859194938911,
+        0.47747731669492716,
+        0.5696889848800585,
+        0.6342696136162003,
+        0.6831412169396007
+      ]
+    },
+    {
+      "workload_id": "tenset-d1b94181cbcd3c6a62dbe3f9",
+      "expected_random": {
+        "top_1_score": 0.44915525188739686,
+        "top_5_score": 0.6021306815334688,
+        "runtime_regret": 1.7077248954955797
+      },
+      "jev": {
+        "top_1_score": 0.43203916774862433,
+        "top_5_score": 0.4377819883342652,
+        "runtime_regret": 1.3146049586454054
+      },
+      "observed_random_42": {
+        "top_1_score": 0.3392570291459275,
+        "top_5_score": 0.6026493307043326,
+        "runtime_regret": 1.947617629375224
+      },
+      "expected_prefix_scores": [
+        0.449155251887397,
+        0.558713399670663,
+        0.6243992103743223,
+        0.6712399508210798,
+        0.7071455949138815
+      ]
+    },
+    {
+      "workload_id": "tenset-d43aef5b1436c9130ac2fa5a",
+      "expected_random": {
+        "top_1_score": 0.5576898075227364,
+        "top_5_score": 0.7988061344000151,
+        "runtime_regret": 2.0497503047908276
+      },
+      "jev": {
+        "top_1_score": 0.26132139685174455,
+        "top_5_score": 0.7806292496292591,
+        "runtime_regret": 2.826705398208666
+      },
+      "observed_random_42": {
+        "top_1_score": 0.15072967612275548,
+        "top_5_score": 0.38747728160756445,
+        "runtime_regret": 5.634393609295569
+      },
+      "expected_prefix_scores": [
+        0.5576898075227366,
+        0.750445767225871,
+        0.8490721862110532,
+        0.903063308647413,
+        0.9337596023930018
+      ]
+    },
+    {
+      "workload_id": "tenset-d7274a3de6e9af3310c41da4",
+      "expected_random": {
+        "top_1_score": 0.357381589233176,
+        "top_5_score": 0.5010725762310015,
+        "runtime_regret": 2.9478423375139453
+      },
+      "jev": {
+        "top_1_score": 0.3373804677042515,
+        "top_5_score": 0.40460913443935487,
+        "runtime_regret": 1.9640127266543548
+      },
+      "observed_random_42": {
+        "top_1_score": 0.47401170569093476,
+        "top_5_score": 0.4985389021450586,
+        "runtime_regret": 1.1096525423193246
+      },
+      "expected_prefix_scores": [
+        0.3573815892331757,
+        0.4621827830478022,
+        0.5224442219177148,
+        0.5650682771486994,
+        0.5982860098076158
+      ]
+    },
+    {
+      "workload_id": "tenset-d9721264d94c2b02b6b76ff7",
+      "expected_random": {
+        "top_1_score": 0.39413842387340525,
+        "top_5_score": 0.5954998212404081,
+        "runtime_regret": 4.081892933988688
+      },
+      "jev": {
+        "top_1_score": 0.1473117382965931,
+        "top_5_score": 0.563284067739009,
+        "runtime_regret": 5.7883252995537235
+      },
+      "observed_random_42": {
+        "top_1_score": 0.221898836406025,
+        "top_5_score": 0.4480911868763986,
+        "runtime_regret": 3.506558106371611
+      },
+      "expected_prefix_scores": [
+        0.3941384238734049,
+        0.5433710191805331,
+        0.6288560632056924,
+        0.6852705927857965,
+        0.7258630071566136
+      ]
+    },
+    {
+      "workload_id": "tenset-daf66160904c8ca61c10c90e",
+      "expected_random": {
+        "top_1_score": 0.22418165896479342,
+        "top_5_score": 0.3836157259311658,
+        "runtime_regret": 10.52551698743627
+      },
+      "jev": {
+        "top_1_score": 0.16331540494240643,
+        "top_5_score": 0.3010567833451094,
+        "runtime_regret": 5.123121088011584
+      },
+      "observed_random_42": {
+        "top_1_score": 0.2534014984085809,
+        "top_5_score": 0.3840288182396555,
+        "runtime_regret": 2.94630657782305
+      },
+      "expected_prefix_scores": [
+        0.2241816589647934,
+        0.33079821628366174,
+        0.4026571905084986,
+        0.45765614951326944,
+        0.5027854143856055
+      ]
+    },
+    {
+      "workload_id": "tenset-db56ae2ae4876d6ee3fa0b43",
+      "expected_random": {
+        "top_1_score": 0.2020762794026008,
+        "top_5_score": 0.34376735521514623,
+        "runtime_regret": 12.860316467180274
+      },
+      "jev": {
+        "top_1_score": 0.13352187887124925,
+        "top_5_score": 0.2498284889860412,
+        "runtime_regret": 6.4894092897259705
+      },
+      "observed_random_42": {
+        "top_1_score": 0.18712994062871782,
+        "top_5_score": 0.803521323472099,
+        "runtime_regret": 4.343880282547022
+      },
+      "expected_prefix_scores": [
+        0.20207627940260076,
+        0.293817479653493,
+        0.3588083483445141,
+        0.41046147470916866,
+        0.45367319396595474
+      ]
+    },
+    {
+      "workload_id": "tenset-dbce08c6e9223dddd2ecd081",
+      "expected_random": {
+        "top_1_score": 0.27245387318626263,
+        "top_5_score": 0.4362784208630533,
+        "runtime_regret": 6.8810374844356
+      },
+      "jev": {
+        "top_1_score": 0.0935260014126211,
+        "top_5_score": 0.8187052002825241,
+        "runtime_regret": 9.69221376832061
+      },
+      "observed_random_42": {
+        "top_1_score": 0.2981594947365366,
+        "top_5_score": 0.5190174791699135,
+        "runtime_regret": 2.353909627743475
+      },
+      "expected_prefix_scores": [
+        0.2724538731862627,
+        0.38769844093790984,
+        0.4599768181345075,
+        0.5111801457219288,
+        0.5500828263346575
+      ]
+    },
+    {
+      "workload_id": "tenset-de06270ce33ed6eb15a10c37",
+      "expected_random": {
+        "top_1_score": 0.3696869350524043,
+        "top_5_score": 0.5707424114320672,
+        "runtime_regret": 5.414012995022167
+      },
+      "jev": {
+        "top_1_score": 0.392686029648168,
+        "top_5_score": 0.553113298256811,
+        "runtime_regret": 1.5465637290329952
+      },
+      "observed_random_42": {
+        "top_1_score": 0.35149666141798364,
+        "top_5_score": 0.35149666141798364,
+        "runtime_regret": 1.8449772352484626
+      },
+      "expected_prefix_scores": [
+        0.36968693505240424,
+        0.5163071521730186,
+        0.6020558365975686,
+        0.6608470558078762,
+        0.7048150775294681
+      ]
+    },
+    {
+      "workload_id": "tenset-de8a6c9b182885d76fbe7eb6",
+      "expected_random": {
+        "top_1_score": 0.33401175701053776,
+        "top_5_score": 0.5406819012440562,
+        "runtime_regret": 4.838076734800143
+      },
+      "jev": {
+        "top_1_score": 0.4204821136965221,
+        "top_5_score": 0.5356590451645633,
+        "runtime_regret": 1.37822244377733
+      },
+      "observed_random_42": {
+        "top_1_score": 0.1223010626009344,
+        "top_5_score": 0.37005407427639525,
+        "runtime_regret": 7.176543839712803
+      },
+      "expected_prefix_scores": [
+        0.3340117570105378,
+        0.47942021619640535,
+        0.5717213907913019,
+        0.635705077763454,
+        0.6825510644585823
+      ]
+    },
+    {
+      "workload_id": "tenset-e12ec96e9007d3e94b9783d0",
+      "expected_random": {
+        "top_1_score": 0.27571181966518693,
+        "top_5_score": 0.4536005682847043,
+        "runtime_regret": 6.4989761559640575
+      },
+      "jev": {
+        "top_1_score": 0.3541864681592,
+        "top_5_score": 0.8708372936318399,
+        "runtime_regret": 1.8233715567883277
+      },
+      "observed_random_42": {
+        "top_1_score": 0.3788849063777614,
+        "top_5_score": 0.4009231985112155,
+        "runtime_regret": 1.6393239296868831
+      },
+      "expected_prefix_scores": [
+        0.27571181966518693,
+        0.3979136778978757,
+        0.4776878384093729,
+        0.5358219776843605,
+        0.5808675277667255
+      ]
+    },
+    {
+      "workload_id": "tenset-e5bbdb9a5c2012d34c064d75",
+      "expected_random": {
+        "top_1_score": 0.23528409911842058,
+        "top_5_score": 0.381730470335566,
+        "runtime_regret": 7.342177176409887
+      },
+      "jev": {
+        "top_1_score": 0.16002685236329792,
+        "top_5_score": 0.5520208073340245,
+        "runtime_regret": 5.248951255566591
+      },
+      "observed_random_42": {
+        "top_1_score": 0.1467420632485974,
+        "top_5_score": 0.22596644984482936,
+        "runtime_regret": 5.8146786126748715
+      },
+      "expected_prefix_scores": [
+        0.23528409911842074,
+        0.3352428286020448,
+        0.40035611449885433,
+        0.4491454341200602,
+        0.48862387533845003
+      ]
+    },
+    {
+      "workload_id": "tenset-e6424f7e7595c1df834b7b95",
+      "expected_random": {
+        "top_1_score": 0.24696224712585496,
+        "top_5_score": 0.4107588801495696,
+        "runtime_regret": 10.250931650736488
+      },
+      "jev": {
+        "top_1_score": 1.0,
+        "top_5_score": 1.0,
+        "runtime_regret": 0.0
+      },
+      "observed_random_42": {
+        "top_1_score": 0.174183707468201,
+        "top_5_score": 0.2067463616403214,
+        "runtime_regret": 4.741065077412939
+      },
+      "expected_prefix_scores": [
+        0.24696224712585496,
+        0.3585326407820433,
+        0.4321004230912479,
+        0.48666452714591113,
+        0.5295345626027905
+      ]
+    },
+    {
+      "workload_id": "tenset-e6cd98ac634fba7bab1d171c",
+      "expected_random": {
+        "top_1_score": 0.2626856824308176,
+        "top_5_score": 0.450003373660567,
+        "runtime_regret": 7.836421056134025
+      },
+      "jev": {
+        "top_1_score": 1.0,
+        "top_5_score": 1.0,
+        "runtime_regret": 0.0
+      },
+      "observed_random_42": {
+        "top_1_score": 0.05103002866538959,
+        "top_5_score": 0.8052134435986058,
+        "runtime_regret": 18.596304884661688
+      },
+      "expected_prefix_scores": [
+        0.2626856824308175,
+        0.38980280887787516,
+        0.4749347828604997,
+        0.537245160318008,
+        0.5853484338156345
+      ]
+    },
+    {
+      "workload_id": "tenset-e89628f154df988428fa910a",
+      "expected_random": {
+        "top_1_score": 0.1322687398575509,
+        "top_5_score": 0.24181333580027875,
+        "runtime_regret": 15.468457781212674
+      },
+      "jev": {
+        "top_1_score": 1.0,
+        "top_5_score": 1.0,
+        "runtime_regret": 0.0
+      },
+      "observed_random_42": {
+        "top_1_score": 0.030280427436326647,
+        "top_5_score": 0.17259914208879665,
+        "runtime_regret": 32.02463289538396
+      },
+      "expected_prefix_scores": [
+        0.13226873985755086,
+        0.20080238622846028,
+        0.2521426807048475,
+        0.294000709435605,
+        0.3298521627749299
+      ]
+    },
+    {
+      "workload_id": "tenset-eaf65c7fa74cd53739bbc484",
+      "expected_random": {
+        "top_1_score": 0.25263675804183733,
+        "top_5_score": 0.43078327558214546,
+        "runtime_regret": 8.828855598701915
+      },
+      "jev": {
+        "top_1_score": 0.11566944856201056,
+        "top_5_score": 0.1654030649646179,
+        "runtime_regret": 7.645325212766952
+      },
+      "observed_random_42": {
+        "top_1_score": 0.028893483228743345,
+        "top_5_score": 0.3386588222094117,
+        "runtime_regret": 33.60988043854804
+      },
+      "expected_prefix_scores": [
+        0.25263675804183716,
+        0.37333864849960074,
+        0.45402032887389715,
+        0.5136431102120419,
+        0.5602775322833505
+      ]
+    },
+    {
+      "workload_id": "tenset-eb95e18174f55486d4440adc",
+      "expected_random": {
+        "top_1_score": 0.5613828148597122,
+        "top_5_score": 0.7150711945882086,
+        "runtime_regret": 1.137925777957184
+      },
+      "jev": {
+        "top_1_score": 0.7446255213102426,
+        "top_5_score": 0.7446255213102426,
+        "runtime_regret": 0.34295692449595405
+      },
+      "observed_random_42": {
+        "top_1_score": 0.35714389274506253,
+        "top_5_score": 0.5725033952186441,
+        "runtime_regret": 1.7999918809022528
+      },
+      "expected_prefix_scores": [
+        0.561382814859712,
+        0.6840764417204493,
+        0.7442071649517088,
+        0.7804019899469947,
+        0.8052875614621781
+      ]
+    },
+    {
+      "workload_id": "tenset-ee843a8624b63bb0ca54c7ff",
+      "expected_random": {
+        "top_1_score": 0.35402144005770486,
+        "top_5_score": 0.5674526615840779,
+        "runtime_regret": 5.852193784151041
+      },
+      "jev": {
+        "top_1_score": 0.912989165913989,
+        "top_5_score": 0.92980535624716,
+        "runtime_regret": 0.09530324929858813
+      },
+      "observed_random_42": {
+        "top_1_score": 0.03239440278750067,
+        "top_5_score": 0.30536317668958,
+        "runtime_regret": 29.86953034941729
+      },
+      "expected_prefix_scores": [
+        0.3540214400577047,
+        0.5042929095775985,
+        0.59858094723241,
+        0.665213164043301,
+        0.7151548470093754
+      ]
+    },
+    {
+      "workload_id": "tenset-eff2f9b1e7815c2586d1d1ee",
+      "expected_random": {
+        "top_1_score": 0.2167286096221266,
+        "top_5_score": 0.3787789984769054,
+        "runtime_regret": 8.243938035722262
+      },
+      "jev": {
+        "top_1_score": 0.186950664573477,
+        "top_5_score": 0.186950664573477,
+        "runtime_regret": 4.3490047884102125
+      },
+      "observed_random_42": {
+        "top_1_score": 0.3517850035179415,
+        "top_5_score": 0.4167036621265109,
+        "runtime_regret": 1.8426453373501994
+      },
+      "expected_prefix_scores": [
+        0.21672860962212645,
+        0.32037754423922177,
+        0.39559611740259026,
+        0.4556003450350897,
+        0.5055923760854987
+      ]
+    },
+    {
+      "workload_id": "tenset-f0123e6425aa9597bdff64c2",
+      "expected_random": {
+        "top_1_score": 0.2417280522160424,
+        "top_5_score": 0.3997503372872434,
+        "runtime_regret": 7.0837640253164125
+      },
+      "jev": {
+        "top_1_score": 0.14075133160764997,
+        "top_5_score": 0.31193180559063577,
+        "runtime_regret": 6.104728520704446
+      },
+      "observed_random_42": {
+        "top_1_score": 0.1858144931922387,
+        "top_5_score": 0.20507189677492899,
+        "runtime_regret": 4.381711527557901
+      },
+      "expected_prefix_scores": [
+        0.2417280522160425,
+        0.34739682205915495,
+        0.41879256845354923,
+        0.47326881503157864,
+        0.5175654286758917
+      ]
+    },
+    {
+      "workload_id": "tenset-f040b0beb23f153814d0682f",
+      "expected_random": {
+        "top_1_score": 0.2757869368549073,
+        "top_5_score": 0.4459975545433322,
+        "runtime_regret": 6.967950643566879
+      },
+      "jev": {
+        "top_1_score": 0.237754591181394,
+        "top_5_score": 0.437392931415007,
+        "runtime_regret": 3.206017621073209
+      },
+      "observed_random_42": {
+        "top_1_score": 0.33223061398581033,
+        "top_5_score": 0.35179691083264036,
+        "runtime_regret": 2.009957414829659
+      },
+      "expected_prefix_scores": [
+        0.2757869368549072,
+        0.39418615737411355,
+        0.46940198507737646,
+        0.5240147736285479,
+        0.5665979197817159
+      ]
+    },
+    {
+      "workload_id": "tenset-f97cb3f117cc422be00e55c6",
+      "expected_random": {
+        "top_1_score": 0.18301281335908803,
+        "top_5_score": 0.3187462806315019,
+        "runtime_regret": 11.057993046416032
+      },
+      "jev": {
+        "top_1_score": 0.13950602058342854,
+        "top_5_score": 0.33692433216637174,
+        "runtime_regret": 6.16814941618933
+      },
+      "observed_random_42": {
+        "top_1_score": 0.05101983637455234,
+        "top_5_score": 0.14064535775417855,
+        "runtime_regret": 18.600219660813725
+      },
+      "expected_prefix_scores": [
+        0.18301281335908806,
+        0.2714637685783217,
+        0.3338818241082841,
+        0.38263289174837334,
+        0.4227401053634423
+      ]
+    },
+    {
+      "workload_id": "tenset-fb2180ae8628e57cf8c5a90f",
+      "expected_random": {
+        "top_1_score": 0.24234285218334733,
+        "top_5_score": 0.431304668202637,
+        "runtime_regret": 13.33120764622011
+      },
+      "jev": {
+        "top_1_score": 0.06317276304306468,
+        "top_5_score": 0.49063356612033476,
+        "runtime_regret": 14.829606808844233
+      },
+      "observed_random_42": {
+        "top_1_score": 0.06317276304306468,
+        "top_5_score": 0.1826941541708232,
+        "runtime_regret": 14.829606808844233
+      },
+      "expected_prefix_scores": [
+        0.24234285218334725,
+        0.36833988830852965,
+        0.4546175936479252,
+        0.5197247586236329,
+        0.5714982482497502
+      ]
+    }
+  ]
+}

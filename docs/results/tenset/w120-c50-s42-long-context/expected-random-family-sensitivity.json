@@ -1,0 +1,34 @@
+{
+  "method": "Exploratory percentile cluster bootstrap. Resample 56 leading DAG-hash families with replacement; retain all member workloads in each sampled family. Compute the ratio of summed Jev-minus-exact-expected-Random differences to summed workload counts. Conditional on this fixed 120x50 cohort and saved Jev decisions. Hash families are not verified independent networks.",
+  "replications": 50000,
+  "seed": 20261112,
+  "source": "expected-random.json",
+  "workloads": 120,
+  "clusters": 56,
+  "metrics": {
+    "top_1_score": {
+      "mean_delta_jev_minus_expected_random": 0.01840713941995775,
+      "cluster_bootstrap_95ci": [
+        -0.028521040921301324,
+        0.05726184350695255
+      ],
+      "bootstrap_fraction_delta_positive": 0.78268
+    },
+    "top_5_score": {
+      "mean_delta_jev_minus_expected_random": 0.018730751634066272,
+      "cluster_bootstrap_95ci": [
+        -0.016611258467951705,
+        0.052591932796069794
+      ],
+      "bootstrap_fraction_delta_positive": 0.85436
+    },
+    "runtime_regret": {
+      "mean_delta_jev_minus_expected_random": -1.6816780277367411,
+      "cluster_bootstrap_95ci": [
+        -2.476097771817791,
+        -0.6292610312140624
+      ],
+      "bootstrap_fraction_delta_positive": 0.00106
+    }
+  }
+}

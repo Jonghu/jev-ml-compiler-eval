@@ -73,7 +73,8 @@ reference, with their protocol differences stated explicitly. The optional
 local XGBoost implementation does not block this experiment.
 
 See the [macOS run guide](run-tenset-on-macos.md), [implementation reference](tenset.md),
-and [RQ1 report section](rq1-report.md).
+and [RQ1 report section](rq1-report.md). Completed runs, uncertainty diagnostics,
+and published tables/figures are in the [TenSet run log](tenset-runlog.md).
 
 ### User-reported Mac pilot
 

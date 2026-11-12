@@ -5,13 +5,13 @@
 Can Jev select competitive tensor schedules using serialized program and schedule
 information, compared with Random and a specialized XGBoost cost model?
 
-The repository implements the TenSet experiment pipeline. Full benchmark results
-are **pending**. A user-reported pilot completed on a MacBook Air using one real
-TenSet workload and eight candidate schedules. Both Random and Jev selected a
-sampled optimum with zero regret; Random had higher pairwise accuracy on that
-case. This verifies the setup path, not general competitiveness. Saved artifacts,
-cache status, token usage, and costs have not been independently inspected.
-See [project status](project-status.md) for the reported pilot output.
+The repository implements the TenSet experiment pipeline. A one-workload pilot
+and a 120-test-workload, 50-schedule long-context comparison have completed;
+their uploaded results were independently audited. The larger run shows a
+modest positive ranking signal and mixed selection performance against Random.
+The full held-out, all-candidate evaluation and follow-up ablations remain
+pending. See the [TenSet run log](tenset-runlog.md) for completed results,
+uncertainty diagnostics, cache-aware usage, and reviewed tables and figures.
 
 Portable Python metadata export reads the supplied registry without installing
 TVM on the Mac. Native-generated fixtures validate format compatibility; their
@@ -44,10 +44,12 @@ no project-specific training. The optional local XGBoost adapter uses only
 training workloads if a matched baseline is run in the future.
 
 Within each test workload, candidates are ordered by a seeded hash independent
-of runtime. Taking prefixes produces nested candidate sets. The planned sizes
-are 8, 16, and 32, with seeds 42, 7, and 2026. All models in a run receive the
-same IDs and configurations. For cross-size comparisons, restrict to workloads
-with at least 32 valid schedules and compare paired workloads. Do not select
+of runtime. Taking prefixes produces nested candidate sets. The completed
+comparison uses 50 candidates and seed 42. Additional sizes 8, 16, and 32 and
+seeds 7 and 2026 remain possible ablations, not completed measurements. All
+models in a run receive the same IDs and configurations. For comparisons across
+8, 16, 32, and 50 candidates, restrict to workloads with at least 50 valid
+schedules and compare paired workloads. Do not select
 the fastest measured candidates or report different pools as a paired comparison.
 
 ## Representations and models
@@ -103,10 +105,14 @@ claiming direct numerical equivalence with the paper.
 
 ## Results and discussion to complete after the benchmark run
 
-No Jev-versus-XGBoost comparison or competitiveness claim is currently supported.
+No matched Jev-versus-XGBoost comparison or competitiveness claim is currently supported.
+The completed 120 x 50 baseline and its audit are published in the
+[TenSet run log](tenset-runlog.md); the following items describe the broader
+benchmark analysis still to complete.
 The analysis command produces aggregate and per-workload tables, breakdowns by
 operation and candidate count, plots, and paired Jev success/failure examples.
-Populate this section from those outputs after the live comparison completes.
+Populate the remaining benchmark analysis from those outputs after the follow-up
+runs complete.
 Report the number of workloads per split and operation, candidate counts,
 serialization byte distributions, metadata coverage, checkpoint provenance,
 Jev model version, seed variation, and all excluded workloads.
@@ -127,8 +133,10 @@ schedules evaluates selection among valid candidates rather than prediction of
 compilability. Sampling bounds input size but changes the oracle. The configured
 byte cap is a local experiment budget, not a verified TypeSafe service limit.
 Serialization retains scheduling transformations but may lack low-level compiler
-features seen by the specialized baseline. The real archive and API path require
-integration verification before publishing benchmark claims. The portable reader
+features seen by the specialized baseline. The result-bundle audit did not
+independently revalidate actual request payloads or raw measurements. Full-scope
+integration and serialization coverage remain to be checked before broader
+competitiveness claims. The portable reader
 rejects unsupported registry formats and tensor nodes instead of dropping semantics.
 
 ## References

@@ -1,0 +1,245 @@
+{
+  "source_sha256": {
+    "predictions": "f7f1787cb3a3650d46850bc6b720d593c5277a57aaf2df4aad988c0ad2c35c0f",
+    "manifest": "b2bca5ea07e0a87a23f17ec74e9721ee7c789cc84295a1157e373910e322a30e"
+  },
+  "experiment": "tenset-e5-2673-random-vs-jev-w120-c50-s42-long-context",
+  "git_commit": "6a4fe91585df2f91e347bfbc7be2fb8bde325df0",
+  "workloads": 120,
+  "candidates_per_workload": 50,
+  "integrity_failures": 0,
+  "jev_faster_slower_tied": {
+    "faster": 58,
+    "slower": 60,
+    "tie": 2
+  },
+  "sampled_optimum_hits": {
+    "random": 5,
+    "jev": 5
+  },
+  "distinct_dag_hash_families": 56,
+  "largest_dag_hash_family_workloads": 25,
+  "live_jev_calls_this_run": 110,
+  "cached_jev_calls_this_run": 10,
+  "mean_live_decision_latency_ms": 465.1557196909091,
+  "mean_live_api_latency_ms": 462.8180693181818,
+  "mean_cached_decision_latency_ms": 1.1389917,
+  "input_tokens_new_live_calls": 5418271,
+  "input_tokens_all_120_unique_responses_including_previous_cached_calls": 5943452,
+  "output_tokens_new_live_calls": 163609,
+  "input_tokens_min_max": [
+    15936,
+    138439
+  ],
+  "price_estimates": {
+    "listed_input_usd_per_million_tokens": 0.042,
+    "listed_output_usd_per_million_tokens": 0,
+    "source": "https://docs.typesafe.ai/models",
+    "new_live_input_estimate_usd": 0.227567382,
+    "all_120_responses_input_estimate_usd": 0.24962498400000002,
+    "qualification": "Public-rate estimate, not an invoice; excludes failed requests, other experiments, custom pricing, taxes and credits. Cached token counts are previous usage, not new usage."
+  },
+  "outlier_sensitivity": {
+    "mean_regret_reduction_random_minus_jev": 0.9778431824541648,
+    "largest_three_favorable_cases": [
+      {
+        "workload_id": "tenset-5a90c3621266f9e4b5730e9d",
+        "random_runtime_regret": 59.22714049903984,
+        "jev_runtime_regret": 1.7241610298056238,
+        "regret_reduction_random_minus_jev": 57.50297946923422
+      },
+      {
+        "workload_id": "tenset-b742422b306341c69597bc21",
+        "random_runtime_regret": 36.95440611973944,
+        "jev_runtime_regret": 1.126101376423386,
+        "regret_reduction_random_minus_jev": 35.82830474331605
+      },
+      {
+        "workload_id": "tenset-e89628f154df988428fa910a",
+        "random_runtime_regret": 32.02463289538396,
+        "jev_runtime_regret": 0.0,
+        "regret_reduction_random_minus_jev": 32.02463289538396
+      }
+    ],
+    "mean_regret_reduction_after_removing_three_largest_favorable_cases": -0.06850201037123471,
+    "qualification": "Post-hoc descriptive sensitivity, not a prespecified inferential test; all 120 cases remain in the primary result."
+  },
+  "limitations": [
+    "Prepared data, raw measurements and actual request payloads were not uploaded; recorded input hashes cannot be recomputed and semantic completeness/label isolation cannot be independently checked from these two files.",
+    "The reported run uses experimental long context. It is a different request condition from the current TpuGraphs default-context configuration.",
+    "One frozen candidate sampling seed and one observed Random seed; family-cluster intervals are sensitivity checks using DAG hashes, not verified independent networks.",
+    "Bootstrap confidence intervals are exploratory and unadjusted for multiple metrics."
+  ],
+  "paired_metric_comparison": {
+    "top_1_score": {
+      "mean_jev_minus_random": 0.004426693912350099,
+      "paired_mean_difference_bootstrap_95ci": [
+        -0.059112095153315475,
+        0.06851533505121876
+      ],
+      "median_jev_minus_random": -0.004021982766516684,
+      "wins": 58,
+      "ties": 2,
+      "losses": 60,
+      "two_sided_paired_sign_test_p": 0.9267042229477814
+    },
+    "top_5_score": {
+      "mean_jev_minus_random": 0.014054581391054154,
+      "paired_mean_difference_bootstrap_95ci": [
+        -0.036992324865387165,
+        0.0650990814863592
+      ],
+      "median_jev_minus_random": 0.010588287406014307,
+      "wins": 65,
+      "ties": 1,
+      "losses": 54,
+      "two_sided_paired_sign_test_p": 0.35935826390511105
+    },
+    "pairwise_accuracy": {
+      "mean_jev_minus_random": 0.02749659863945578,
+      "paired_mean_difference_bootstrap_95ci": [
+        0.01429234693877551,
+        0.04078248299319729
+      ],
+      "median_jev_minus_random": 0.029387755102040808,
+      "wins": 74,
+      "ties": 0,
+      "losses": 46,
+      "two_sided_paired_sign_test_p": 0.013376326728236736
+    },
+    "pairwise_accuracy_tie_aware": {
+      "mean_jev_minus_random": 0.027744897959183664,
+      "paired_mean_difference_bootstrap_95ci": [
+        0.015282227891156451,
+        0.04029591836734691
+      ],
+      "median_jev_minus_random": 0.0295918367346939,
+      "wins": 75,
+      "ties": 0,
+      "losses": 45,
+      "two_sided_paired_sign_test_p": 0.007846593122439764
+    },
+    "runtime_regret": {
+      "mean_jev_minus_random": -0.9778431824541648,
+      "paired_mean_difference_bootstrap_95ci": [
+        -2.982629582395553,
+        0.9069905869927205
+      ],
+      "median_jev_minus_random": 0.08870874458150424,
+      "wins": 58,
+      "ties": 2,
+      "losses": 60,
+      "two_sided_paired_sign_test_p": 0.9267042229477814
+    },
+    "optimal_hit": {
+      "mean_jev_minus_random": 0.0,
+      "paired_mean_difference_bootstrap_95ci": [
+        -0.05,
+        0.041666666666666664
+      ],
+      "median_jev_minus_random": 0.0,
+      "wins": 4,
+      "ties": 112,
+      "losses": 4,
+      "two_sided_paired_sign_test_p": 1.0
+    },
+    "top_5_hit": {
+      "mean_jev_minus_random": 0.008333333333333333,
+      "paired_mean_difference_bootstrap_95ci": [
+        -0.075,
+        0.09166666666666666
+      ],
+      "median_jev_minus_random": 0.0,
+      "wins": 13,
+      "ties": 95,
+      "losses": 12,
+      "two_sided_paired_sign_test_p": 1.0
+    },
+    "best_of_top_5_score": {
+      "mean_jev_minus_random": 0.007593674986962743,
+      "paired_mean_difference_bootstrap_95ci": [
+        -0.04873092915233326,
+        0.06448355271717376
+      ],
+      "median_jev_minus_random": 0.0010340976427392068,
+      "wins": 60,
+      "ties": 4,
+      "losses": 56,
+      "two_sided_paired_sign_test_p": 0.7807391284762694
+    }
+  },
+  "separate_exact_expected_random_reference": {
+    "method": {
+      "reference": "Exact expectation over all 50! uniformly random rankings of each fixed candidate pool; no API calls or simulated approximation for expected metrics",
+      "top_1_formula": "mean(t_min / t_i)",
+      "regret_formula": "mean(t_i / t_min - 1)",
+      "top_5_formula": "mean over k=1..5 of sum_i[(t_min/t_i) * comb(n-i-1,k-1)/comb(n,k)], timings sorted ascending, i zero-based from 0..n-k",
+      "bootstrap_unit": "resample 120 workload pairs with replacement; deterministic expected-Random value travels with same workload as Jev result",
+      "bootstrap_replicates": 50000,
+      "bootstrap_seed": 20261112,
+      "ci": "percentile 2.5 and 97.5; unadjusted; conditional on candidate pool and Jev choices; workload dependence not modeled",
+      "artifact_policy": "Observed random-42 result is retained unchanged; expected_random is a separately named analytical reference"
+    },
+    "metrics": {
+      "top_1_score": {
+        "expected_uniform_random_macro_mean": 0.31845947065311137,
+        "observed_random_42_macro_mean": 0.332439916160719,
+        "jev_macro_mean": 0.3368666100730691,
+        "mean_paired_jev_minus_expected_random": 0.01840713941995774,
+        "paired_workload_bootstrap_95ci": [
+          -0.023603946086394042,
+          0.06296795600209489
+        ],
+        "median_paired_jev_minus_expected_random": -0.045493032886067736
+      },
+      "top_5_score": {
+        "expected_uniform_random_macro_mean": 0.4940985295841673,
+        "observed_random_42_macro_mean": 0.4987746998271794,
+        "jev_macro_mean": 0.5128292812182336,
+        "mean_paired_jev_minus_expected_random": 0.018730751634066255,
+        "paired_workload_bootstrap_95ci": [
+          -0.014489124595501517,
+          0.05354370604609694
+        ],
+        "median_paired_jev_minus_expected_random": -0.016951433735341526
+      },
+      "runtime_regret": {
+        "expected_uniform_random_macro_mean": 6.762688642913474,
+        "observed_random_42_macro_mean": 6.058853797630898,
+        "jev_macro_mean": 5.081010615176732,
+        "mean_paired_jev_minus_expected_random": -1.6816780277367414,
+        "paired_workload_bootstrap_95ci": [
+          -2.731087851197959,
+          -0.5561150610029983
+        ],
+        "median_paired_jev_minus_expected_random": -1.5426184317549394
+      }
+    },
+    "family_cluster_sensitivity": {
+      "top_1_score": {
+        "mean_delta_jev_minus_expected_random": 0.01840713941995775,
+        "cluster_bootstrap_95ci": [
+          -0.028521040921301324,
+          0.05726184350695255
+        ],
+        "bootstrap_fraction_delta_positive": 0.78268
+      },
+      "top_5_score": {
+        "mean_delta_jev_minus_expected_random": 0.018730751634066272,
+        "cluster_bootstrap_95ci": [
+          -0.016611258467951705,
+          0.052591932796069794
+        ],
+        "bootstrap_fraction_delta_positive": 0.85436
+      },
+      "runtime_regret": {
+        "mean_delta_jev_minus_expected_random": -1.6816780277367411,
+        "cluster_bootstrap_95ci": [
+          -2.476097771817791,
+          -0.6292610312140624
+        ],
+        "bootstrap_fraction_delta_positive": 0.00106
+      }
+    }
+  }
+}
