@@ -69,7 +69,11 @@ loader.
 ### `candidate_selection`
 
 Only `strategy: all` is currently implemented. Candidate sampling strategies
-must be added before large benchmark runs.
+for TenSet are applied once in its dataset adapter before the common runner
+passes the resulting fixed cases to every model. See [TenSet](tenset.md) for
+its candidate limits, seeds, input budgets, and workload budgets.
+The Jev-only TenSet pilot additionally sets `require_program_metadata: true`
+so missing program semantics fail before any API request.
 
 ### `models`
 

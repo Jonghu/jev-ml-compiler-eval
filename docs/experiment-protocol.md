@@ -37,6 +37,11 @@ Benchmark owners must implement and cite the official benchmark definitions:
 - TenSet: Top-1 Score, Top-5 Score, Pairwise Accuracy.
 - TpuGraphs: Top-1 Error, Top-5/10 Error, Kendall's Tau.
 
+TenSet's definitions are implemented and cited in [RQ1](rq1-report.md). Top-5
+Score is a mean of prefix-best normalized throughputs, not only the best-of-five
+endpoint. Candidate-count weighting in the reference script agrees with macro
+averaging only when every workload has the same candidate count.
+
 Do not reuse the mock Top-1 accuracy name for an official benchmark metric with
 a different definition.
 

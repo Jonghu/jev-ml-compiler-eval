@@ -11,6 +11,12 @@ dependencies = [
     "typesafe-sdk>=0.7.5,<0.8",
 ]
 
+[project.optional-dependencies]
+tenset = [
+    "gdown>=5.2,<6",
+    "matplotlib>=3.9,<4",
+]
+
 [dependency-groups]
 dev = [
     "pre-commit>=4.3,<5",

@@ -1,0 +1,29 @@
+schema_version: 1
+experiment:
+  name: tenset-e5-2673-random-c32-s42
+  description: TenSet CPU test split, 32 sampled schedules per workload
+  seed: 42
+  output_dir: results/tenset/random-c32-s42
+dataset:
+  type: tenset
+  config:
+    path: data/tenset/prepared.json
+    split: test
+    candidate_limit: 32
+    seed: 42
+    max_input_bytes: 262144
+candidate_selection:
+  strategy: all
+models:
+  - id: random-42
+    type: random
+    config:
+      seed: 42
+metrics:
+  - top_1_score
+  - top_5_score
+  - pairwise_accuracy
+  - pairwise_accuracy_tie_aware
+  - runtime_regret
+execution:
+  fail_fast: true
