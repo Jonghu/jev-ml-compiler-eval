@@ -138,24 +138,27 @@ def test_configures_official_sdk_retry_and_timeout(
     assert sdk_client.closed is True
 
 
-def test_cache_key_is_independent_of_mapping_order(tmp_path: Path) -> None:
+def test_cache_key_depends_on_mapping_order(tmp_path: Path) -> None:
     sdk_client = FakeSdkClient()
     client = JevApiClient(
         make_config(tmp_path),
         sdk_client=sdk_client,  # type: ignore[arg-type]
     )
-    client.decide(
+    first = {"decision": {"type": "noul", "instructions": "Relevant?"}}
+    client.decide(state={"operation": "matmul", "dtype": "float32"}, questions=first)
+
+    repeated = client.decide(
         state={"operation": "matmul", "dtype": "float32"},
         questions={"decision": {"type": "noul", "instructions": "Relevant?"}},
     )
-
-    result = client.decide(
+    reordered = client.decide(
         state={"dtype": "float32", "operation": "matmul"},
-        questions={"decision": {"instructions": "Relevant?", "type": "noul"}},
+        questions=first,
     )
 
-    assert result.cache_hit is True
-    assert sdk_client.calls == 1
+    assert repeated.cache_hit is True
+    assert reordered.cache_hit is False
+    assert sdk_client.calls == 2
 
 
 def test_cache_stores_request_body_with_response(tmp_path: Path) -> None:
@@ -169,7 +172,7 @@ def test_cache_stores_request_body_with_response(tmp_path: Path) -> None:
 
     cache_path = next(make_config(tmp_path).cache_dir.glob("*.json"))
     cached = json.loads(cache_path.read_text(encoding="utf-8"))
-    assert cached["schema_version"] == 2
+    assert cached["schema_version"] == 3
     assert cached["request_sha256"] == cache_path.stem
     assert cached["request"] == {
         "base_url": "https://api.typesafe.ai",

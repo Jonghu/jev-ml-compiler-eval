@@ -172,6 +172,99 @@ Observations:
 - Jev's top choice is `config_1` in 43% of kernels, so position bias remains
   possible alongside the tile-size bias.
 
+### A2 — Offline analysis of R4 Jev failures (no experiment run)
+
+Computed from the R4 predictions and cached Jev responses. Tile size is the
+product of the `output_bounds` and `kernel_bounds` entries.
+
+Simple selection rules on the same 120 kernels (Top-1 error):
+
+| Rule | Mean | Median | Optimal kernels |
+|---|---|---|---|
+| Jev (R4) | 4.237 | 2.840 | 1 |
+| Smallest tile | 4.510 | 3.076 | 0 |
+| Jev reversed (lowest probability) | 0.265 | 0.090 | 12 |
+| Largest tile | 0.092 | 0.041 | 30 |
+| Compiler default | 0.021 | 0.007 | 46 |
+
+Observations:
+
+- Jev's ranking is informative but inverted: reversing it beats Random, yet a
+  one-line "largest tile" rule beats both.
+- In R4, candidate position and tile size are correlated (median within-kernel
+  τ = +0.52), so the R4 position bias could not be separated from size bias.
+  In the 64 kernels where `config_1` is not the smallest tile, Jev picked the
+  smallest tile 48 times and `config_1` 6 times.
+- 87 of 120 kernels expose only `output_bounds`. Field meaning and units are
+  never explained; the values appear to be in hardware-tile units, not
+  elements (for example, default `[1, 1, 80, 3]` for shape `[1, 1, 1280, 384]`).
+- `config_0` is usually a large tile (median size percentile 0.92), yet Jev
+  ranks it near the top (median rank percentile 0.19).
+- 5 groups of kernels (11 kernels) share identical candidate sets but differ in
+  graph. Jev picked the same candidate within every group, while the true best
+  differed within every group.
+- Confidence is not calibrated: Spearman(confidence, Top-1 error) = +0.18, and
+  33 of 35 picks with confidence ≥ 0.5 are the smallest tile.
+
+### R5 — Jev ablation: no graph context, shuffled candidate order
+
+- Date: 2026-11-11 · Commit: `078077c` plus uncommitted changes (optional
+  `include_context`, `candidate_order`, and `order_seed` Jev settings; cache
+  schema v3)
+- Config: `experiments/tpugraphs/tile-valid-jev-context-order-ablation.yaml`
+- Output: `results/tpugraphs/tile-valid-jev-context-order-ablation/` (not in
+  Git)
+- Model: `jev-1.14.0` (resolved `jev-1.14.0` for all 240)
+- Same 120 kernels and serialization as R4; each variant changes one factor:
+  - `no-context`: state contains only `workload_id`
+  - `shuffled`: candidates sent in a random order seeded by `42:<workload_id>`
+- Jev calls: 240 live · Input/output tokens: 447,101 / 54,780 · Cost ≈ $0.019
+- Mean API latency: 84 ms (no-context), 89 ms (shuffled)
+
+Before this run the cache key hashed requests with sorted keys, so a shuffled
+request would have reused the R4 response. Cache schema v3 hashes the request
+in sent order. The 120 v2 entries were re-keyed from their stored requests,
+and R4 still reproduces from cache (120 of 120 hits).
+
+| Model | Kernels | Top-1 acc | Top-1 err | Top-5 err | Top-10 err | Kendall τ |
+|---|---|---|---|---|---|---|
+| Jev (R4, reference) | 120 | 0.008 | 4.237 | 0.145 | 0.009 | −0.269 |
+| Jev no-context | 120 | 0.008 | 4.451 | 0.183 | 0.011 | −0.373 |
+| Jev shuffled | 120 | 0.017 | 3.689 | 0.057 | 0.009 | −0.277 |
+
+Comparison with R4:
+
+| Check | R4 | No-context | Shuffled |
+|---|---|---|---|
+| Picks the smallest tile | 96 | 107 | 96 |
+| Same pick as R4 | — | 94 | 89 |
+| Median τ between probabilities and R4 probabilities | — | 0.67 | 0.60 |
+| Median rank percentile of `config_0` | 0.19 | 0.18 | 0.13 |
+| Kernels with tied probabilities | 111 | 108 | 109 |
+
+Pooled within-kernel regression of standardized probability on size rank and
+presented position rank:
+
+| Run | Size coefficient | Position coefficient | Median τ(position, size) |
+|---|---|---|---|
+| R4 | −0.893 | −0.526 | +0.52 |
+| Shuffled | −1.023 | +0.204 | +0.02 |
+
+Observations:
+
+- The small-tile preference is robust to candidate order: shuffling leaves 96
+  smallest-tile picks and the size coefficient unchanged. The apparent R4
+  position bias was largely size bias, because position and size are
+  correlated in the original order.
+- `config_0` stays near the top after shuffling, including in the 117 kernels
+  where it is not presented first. Its high rank is not a position effect; the
+  ID name or its configuration remains a candidate explanation.
+- Graph context has a small effect: removing it changes 26 picks (17 worse, 9
+  better) and moves Jev further toward the smallest tile (96 → 107).
+- The response noise floor is unknown. R3 showed nondeterminism, so some of
+  the 26 and 31 changed picks may be noise; the Top-1 error difference between
+  R4 and shuffled (4.24 versus 3.69) is not yet significant.
+
 ## Findings so far
 
 1. The compiler default is a far stronger reference than Random. Jev must be
@@ -183,6 +276,9 @@ Observations:
    limit, not cost, constrains how many kernels can be evaluated.
 4. These results are not comparable with the paper values until all kernels
    and all configurations are evaluated.
+5. The small-tile preference is the dominant failure. It survives shuffled
+   candidate order and removal of the graph context (R5), and the
+   configuration fields reach Jev without meaning or units (A2).
 
 ## TODO
 
@@ -196,7 +292,10 @@ Observations:
 - [ ] Add the compiler default as a decision model.
 - [ ] Decide how probability ties are broken in Jev rankings (ties in 111 of
       120 kernels in R4).
-- [ ] Test position bias by shuffling candidate order.
+- [x] Test position bias by shuffling candidate order (R5).
+- [x] Test whether Jev uses the graph context (R5).
+- [ ] Test whether the `config_0` ID name drives its high rank by renaming
+      candidate IDs.
 - [ ] Test prompt and serialization variants that explain what tile fields
       mean; keep R4 as the unchanged baseline.
 - [ ] Measure response variance by repeating identical requests.

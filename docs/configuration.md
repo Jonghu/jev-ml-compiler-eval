@@ -78,7 +78,18 @@ and implementation-specific `config`. Multiple entries may use the same type
 with different configurations.
 
 Random accepts only `seed`. Jev requires `model`, `cache_dir`, `max_retries`,
-and `request_timeout_seconds`.
+and `request_timeout_seconds`. Jev also accepts optional ablation settings:
+
+| Setting | Default | Effect |
+|---|---|---|
+| `include_context` | `true` | `false` sends only the workload ID as state, without `Workload.context`. |
+| `candidate_order` | `original` | `shuffled` sends candidates in a random order, seeded per workload. |
+| `order_seed` | — | Integer seed; required with, and only allowed with, `candidate_order: shuffled`. |
+
+The defaults reproduce earlier requests exactly, so existing cache entries
+remain valid. Shuffled runs record the presented order as
+`presented_candidate_ids` in prediction metadata. Ties in Jev probabilities
+are still broken by the dataset's candidate order, not the presented order.
 
 ### `metrics`
 

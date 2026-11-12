@@ -20,7 +20,7 @@ from typesafe_sdk import (
     TypeSafeError,
 )
 
-CACHE_SCHEMA_VERSION = 2
+CACHE_SCHEMA_VERSION = 3
 
 
 class JevClientError(RuntimeError):
@@ -89,6 +89,10 @@ class JevApiClient:
     Each cache file stores the request body next to the response so that the
     exact model input can be inspected later. The request body never contains
     API credentials.
+
+    The cache key hashes the request in the exact key order that is sent to
+    Jev. Order is part of the model input: Choice candidates presented in a
+    different order are a different request and must not share a response.
     """
 
     def __init__(
@@ -185,7 +189,6 @@ class JevApiClient:
                 allow_nan=False,
                 ensure_ascii=False,
                 separators=(",", ":"),
-                sort_keys=True,
             ).encode()
         except (TypeError, ValueError) as error:
             raise JevClientError(
