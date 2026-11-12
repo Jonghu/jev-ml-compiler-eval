@@ -184,46 +184,57 @@ class JevModel(BaseDecisionModel):
         response: JevApiResult,
         candidate_ids: Sequence[str],
     ) -> tuple[str, float, dict[str, float]]:
-        raw_answer = response.answers.get(DECISION_QUESTION_ID)
-        if raw_answer is None:
-            raise ValueError('Jev response is missing the "decision" answer')
-        if raw_answer.get("type") != "choice":
-            raise ValueError('Jev "decision" answer must have type "choice"')
+        return parse_choice_answer(
+            response.answers.get(DECISION_QUESTION_ID), candidate_ids
+        )
 
-        choice = raw_answer.get("choice")
-        if not isinstance(choice, str) or choice not in candidate_ids:
-            raise ValueError("Jev response choice must match an evaluation candidate")
-        confidence = raw_answer.get("confidence")
+
+def parse_choice_answer(
+    raw_answer: Mapping[str, object] | None,
+    candidate_ids: Sequence[str],
+    question_id: str = DECISION_QUESTION_ID,
+) -> tuple[str, float, dict[str, float]]:
+    """Validate one Jev Choice answer and return choice, confidence, probabilities."""
+
+    if raw_answer is None:
+        raise ValueError(f'Jev response is missing the "{question_id}" answer')
+    if raw_answer.get("type") != "choice":
+        raise ValueError(f'Jev "{question_id}" answer must have type "choice"')
+
+    choice = raw_answer.get("choice")
+    if not isinstance(choice, str) or choice not in candidate_ids:
+        raise ValueError("Jev response choice must match an evaluation candidate")
+    confidence = raw_answer.get("confidence")
+    if (
+        isinstance(confidence, bool)
+        or not isinstance(confidence, (int, float))
+        or not isfinite(confidence)
+        or not 0 <= confidence <= 1
+    ):
+        raise ValueError("Jev response confidence must be between zero and one")
+
+    raw_probabilities = raw_answer.get("probabilities")
+    if not isinstance(raw_probabilities, Mapping):
+        raise ValueError("Jev response probabilities must be a mapping")
+    if set(raw_probabilities) != set(candidate_ids):
+        raise ValueError(
+            "Jev response probabilities must match evaluation candidates exactly"
+        )
+
+    probabilities: dict[str, float] = {}
+    for candidate_id, value in raw_probabilities.items():
         if (
-            isinstance(confidence, bool)
-            or not isinstance(confidence, (int, float))
-            or not isfinite(confidence)
-            or not 0 <= confidence <= 1
+            not isinstance(candidate_id, str)
+            or isinstance(value, bool)
+            or not isinstance(value, (int, float))
+            or not isfinite(value)
+            or not 0 <= value <= 1
         ):
-            raise ValueError("Jev response confidence must be between zero and one")
-
-        raw_probabilities = raw_answer.get("probabilities")
-        if not isinstance(raw_probabilities, Mapping):
-            raise ValueError("Jev response probabilities must be a mapping")
-        if set(raw_probabilities) != set(candidate_ids):
             raise ValueError(
-                "Jev response probabilities must match evaluation candidates exactly"
+                "Jev response probabilities must be numbers between zero and one"
             )
+        probabilities[candidate_id] = float(value)
 
-        probabilities: dict[str, float] = {}
-        for candidate_id, value in raw_probabilities.items():
-            if (
-                not isinstance(candidate_id, str)
-                or isinstance(value, bool)
-                or not isinstance(value, (int, float))
-                or not isfinite(value)
-                or not 0 <= value <= 1
-            ):
-                raise ValueError(
-                    "Jev response probabilities must be numbers between zero and one"
-                )
-            probabilities[candidate_id] = float(value)
-
-        if probabilities[choice] != max(probabilities.values()):
-            raise ValueError("Jev response choice must have the highest probability")
-        return choice, float(confidence), probabilities
+    if probabilities[choice] != max(probabilities.values()):
+        raise ValueError("Jev response choice must have the highest probability")
+    return choice, float(confidence), probabilities

@@ -396,6 +396,118 @@ Observations:
   checked, and a Jev result that beats the paper mainly by picking `config_0`
   would not show model ability.
 
+### R7 — Full `valid` split (676 kernels, all configurations), blind tournament
+
+- Date: 2026-11-11 · Commit: `bed9521` plus uncommitted changes (new
+  `jev-tournament` model, `parse_choice_answer` refactor)
+- Config: `experiments/tpugraphs/tile-valid-all-jev-tournament.yaml`
+- Output: `results/tpugraphs/tile-valid-all-jev-tournament/` (not in Git)
+- Model: `jev-1.14.0` (resolved `jev-1.14.0` for all requests)
+- Scope: all 676 `valid` kernels and all 1,038,376 distinct configurations,
+  matching the paper's evaluation scope. Identical configuration rows are
+  merged (see `tpugraphs.md`), which the paper does not do.
+- Input: R6 serialization with field descriptions. Candidates are renamed
+  to neutral IDs (`c001`, ...) in a seeded shuffled order, so Jev cannot
+  recognize `config_0`.
+- Tournament: Choice questions of at most 255 options. Each question's top 5
+  advance to one final question. Questions of a round share requests of at
+  most 56k estimated tokens, with at most 28k for the state plus one question.
+  263 kernels need one question; 413 need two rounds.
+- Rate limits (client side): 960 requests/min, 200k input tokens/s; no
+  waiting was needed, and no 429 errors occurred.
+- A live probe of the two largest kernels (16 requests, cached and reused)
+  confirmed 255-option questions and requests of about 50k tokens.
+- Jev calls: 1,819 requests (1,803 live), 4,866 questions · Input/output
+  tokens: 54,225,110 / 11,637,846 · Cost ≈ $2.28 (output is unbilled)
+  - The 16 cached requests are the probe's (699,457 input tokens, ≈ $0.03,
+    paid once before the run). The run itself sent 53,525,653 input tokens,
+    ≈ $2.25, or about $0.0033 per kernel.
+- Time: about 7.5 min wall clock for the run (first new cache entry 23:06
+  local to manifest 05:13:56 UTC). Total API time 6.9 min; requests are sent
+  sequentially. Decision latency per kernel: mean 0.65 s, maximum 4.0 s.
+
+Results (percent, mean over kernels; paper values from Table 2 and Table 8):
+
+| Model | Top-1 err | Top-1 median | Top-5 err | Top-10 err | Kendall τ |
+|---|---|---|---|---|---|
+| Paper EarlySAGE, ListMLE | 10.5 | — | 3.0 | 1.8 | not reported |
+| Paper MLP, ListMLE | 84.5 | — | 39.7 | 25.6 | not reported |
+| **Jev tournament, blind** | **413.6** | 80.3 | **48.9** | **24.2** | +0.079 |
+| Random | 268.4 | 111.7 | 57.6 | 35.1 | −0.001 |
+| Compiler default (reference) | 2.4 | 0.6 | — | — | — |
+
+Kendall τ is shown for reference only: the tournament ranking is complete
+only among the finalists, and the paper does not report τ for tiles.
+
+Per program (Top-1 / Top-5 err %; paper Table 9, ListMLE EarlySAGE):
+
+| Program | Kernels | Paper | Jev | Random Top-1 |
+|---|---|---|---|---|
+| `inception_v3_batch_128_train` | 264 | 6 / 1 | 368.9 / 48.0 | 282.7 |
+| `resnet_v1_50_official_batch_128_bf16` | 108 | 13 / 4 | 496.2 / 48.2 | 342.9 |
+| `resnet50.4x4.fp16` | 103 | 15 / 4 | 411.2 / 56.7 | 266.9 |
+| `mlperf_bert_batch_24_2x2` | 75 | 15 / 4 | 549.0 / 76.6 | 205.5 |
+| `tf2_bert_pretrain_dynamic_batch_size` | 60 | 5 / 2 | 353.3 / 32.9 | 220.4 |
+| `bert_pretraining.4x4.fp16` | 56 | 6 / 1 | 415.7 / 26.3 | 189.4 |
+| `unet_3d.4x4.bf16` | 10 | 48 / 6 | 64.1 / 15.4 | 305.9 |
+
+By candidate count (Top-1 err %):
+
+| Candidates | Kernels | Jev mean | Jev median | Jev Top-5 | Random mean |
+|---|---|---|---|---|---|
+| ≤ 50 | 120 | 107.2 | 8.5 | 5.2 | 76.6 |
+| 51–255 | 143 | 539.4 | 98.7 | 29.4 | 189.4 |
+| 256–1,000 | 152 | 519.3 | 153.6 | 66.1 | 235.4 |
+| 1,001–9,988 | 261 | 424.1 | 96.3 | 69.8 | 419.1 |
+
+Single-question quality (kernels with one question; random = chance level):
+
+| Options | Questions | Best picked | Random | Best in top 5 | Random | Zero-probability share | Distinct probability values |
+|---|---|---|---|---|---|---|---|
+| ≤ 50 | 120 | 0.158 | 0.073 | 0.483 | 0.353 | 0.00 | 7.7 |
+| 51–150 | 63 | 0.016 | 0.011 | 0.111 | 0.057 | 0.29 | 6.3 |
+| 151–255 | 80 | 0.050 | 0.005 | 0.150 | 0.027 | 0.69 | 5.8 |
+
+Where the best configuration is lost (413 two-round kernels):
+
+| Outcome | Kernels |
+|---|---|
+| Eliminated in round 0 | 345 (84%) |
+| Reached the final but not picked | 63 |
+| Picked | 5 |
+
+If the final round had picked perfectly among its finalists, the mean Top-1
+error on these kernels would be 17.4% instead of the actual 459.2%.
+
+Other checks: Jev picks the smallest tile in 76 kernels and the largest in
+62 (mean size percentile of the pick 0.61, versus 0.74 in R6). It picks
+`config_0` in 40 kernels without seeing its name. Per kernel, it beats Random
+in 371 and loses in 293, and beats the compiler default in 37. The worst 5%
+of kernels (errors up to 8,480%) account for 43% of the total Top-1 error.
+Mean final confidence is 0.127; Spearman(confidence, Top-1 error) = −0.11.
+
+Observations:
+
+- On the paper's evaluation scope, Jev is far behind the paper's GNN on every
+  metric: Top-1 413.6% versus 10.5%, Top-5 48.9% versus 3.0%, and Top-10
+  24.2% versus 1.8%. It is behind the paper in every program.
+- Jev is worse than Random on mean Top-1 error, because a few catastrophic
+  picks dominate the mean. It is better than Random on median Top-1, Top-5,
+  Top-10, and per-kernel wins (371 versus 293), so it carries a weak signal.
+- The signal fades as questions grow. With more than 50 options, Jev returns
+  only about six distinct probability values per question, and most options
+  get 0.00 (69% at 151–255 options). Which candidates advance is then decided
+  mostly by tie order, which is the shuffled presentation order.
+- The tournament loses the best configuration in round 0 for 84% of
+  two-round kernels. The final round is also weak: picking the best finalist
+  would give 17.4%, but Jev's final pick gives 459.2%.
+- Blinding costs little on small kernels: on the same 120 kernels with at
+  most 50 candidates, mean Top-1 is 107.2% blind versus 90.4% in R6
+  (median 8.5% versus 6.3%).
+- Prediction metadata keeps each candidate's probability from its last
+  question only, so round-0 probabilities of finalists are not stored there.
+  The complete per-question answers are in the Jev cache.
+
 ## Findings so far
 
 1. The compiler default is a far stronger reference than Random. It is a
@@ -417,6 +529,11 @@ Observations:
 7. The research comparison is against the paper's learned models, not the
    compiler default (A3). On Top-1, Jev R6 is at the level of the paper's
    graph-free MLP and far behind its best GNN, even on an easier subset.
+8. On the paper's full `valid` scope (R7), blind Jev with a Choice tournament
+   is far behind the paper's GNN (Top-1/5/10 error 413.6/48.9/24.2% versus
+   10.5/3.0/1.8%) and worse than Random on mean Top-1. Choice probabilities
+   lose resolution beyond about 50 options, so large questions rank mostly by
+   tie order.
 
 ## TODO
 

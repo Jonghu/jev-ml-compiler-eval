@@ -1,0 +1,61 @@
+schema_version: 1
+
+experiment:
+  name: tpugraphs-tile-valid-all-jev-tournament
+  description: >-
+    All 676 tile:xla validation kernels with all distinct configurations, as in
+    the TpuGraphs paper. Jev ranks candidates blind (opaque IDs, shuffled
+    order) through a Choice tournament, with official field descriptions.
+  seed: 42
+  output_dir: results/tpugraphs/tile-valid-all-jev-tournament
+
+dataset:
+  type: tpugraphs-tile
+  config:
+    path: data/tpugraphs/npz/tile/xla/valid
+    # Above the largest distinct-configuration count (9,988), so no kernel is skipped.
+    max_candidates: 10000
+    describe_config_fields: true
+
+candidate_selection:
+  strategy: all
+
+models:
+  - id: random
+    type: random
+    config:
+      seed: 42
+
+  - id: jev-1.14.0-tournament-blind
+    type: jev-tournament
+    config:
+      model: jev-1.14.0
+      cache_dir: .cache/jev
+      max_retries: 3
+      request_timeout_seconds: 60.0
+      order_seed: 42
+      # Neutral IDs in shuffled order, so Jev cannot recognize config_0.
+      candidate_ids: opaque
+      # Published limits: 255 Choice options; 64k tokens per request; 32k for
+      # the state plus the longest question. Token budgets keep a margin
+      # because they are estimated from characters.
+      max_options: 255
+      advance_per_question: 5
+      max_request_tokens: 56000
+      max_state_question_tokens: 28000
+      # Measured about 1.53 characters per token in R4; 1.4 overestimates.
+      chars_per_token: 1.4
+      # About 80% of the published 1,200 requests/min and 250,000 tokens/s.
+      max_requests_per_minute: 960
+      max_tokens_per_second: 200000
+
+metrics:
+  - runtime_regret
+  - top_1_accuracy
+  - top_1_error
+  - top_5_error
+  - top_10_error
+  - kendall_tau
+
+execution:
+  fail_fast: true
