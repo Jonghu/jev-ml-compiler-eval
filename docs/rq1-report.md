@@ -8,11 +8,13 @@ Random**. TenSet supplies measured labels and metric definitions. Specialized
 cost-model training and a numerical XGBoost comparison are outside this scope;
 the retained legacy adapter is optional tooling rather than unfinished RQ1 work.
 
-Two experiments have completed and their uploaded results were audited. They
-answer related questions under different protocols and are reported separately.
+Two evaluation protocols have completed. The E5 study now also includes a
+matched 16/32/50 candidate-size sweep. Their uploaded results answer related
+questions and are reported separately, with the limits of each audit stated.
 The [run log](tenset-runlog.md) records their provenance; the
-[finish guide](run-tenset-finish-rq1.md) provides the remaining local analysis and
-candidate-size commands. Prepared commands are not completed measurements.
+[finish guide](run-tenset-finish-rq1.md) provides the execution and remaining
+semantic case-analysis commands. The 16- and 32-schedule runs are completed
+measurements; the original 50-schedule results are reused.
 
 ## Dataset, serialization, and evaluation protocols
 
@@ -26,7 +28,7 @@ through the API. No CPU kernels are newly timed on the Mac.
 |---|---|---|
 | Recorded hardware | Intel E5-2673 v4, AVX2 | Intel Platinum 8272, AVX-512 |
 | Scope | 120 project-test workloads | 500 sampled files; 484 retained workloads |
-| Candidates | 50 valid distinct schedules each; 6,000 total | All reconstructed test records; 6–400 per workload, 187,679 total |
+| Candidates | Nested pools of 16, 32, and 50 valid distinct schedules; 1,920 / 3,840 / 6,000 per budget | All reconstructed test records; 6–400 per workload, 187,679 total |
 | Split | Workload-key hash: approximately 70/10/20 train/validation/test | Reverse record-order 90/10 split within each workload |
 | Record policy | Invalid timings/errors removed; duplicate schedule records averaged | Duplicate and error records retained; 2,013 test error records reported |
 | Sampling seed | 42 | 0, batch-size-1 workload preset |
@@ -35,7 +37,8 @@ through the API. No CPU kernels are newly timed on the Mac.
 | Primary aggregation | Workload macro mean | Test-record-count weighted mean |
 | Reported metrics | Top-1, Top-5, Pairwise Accuracy, runtime regret | Top-1 and Top-5 selection scores |
 
-The E5 subset freezes 50 schedules independently of their runtime values. It
+The E5 subset freezes 50 schedules independently of their runtime values, with
+16- and 32-schedule prefixes for the size sweep. It
 samples from workloads with sufficient valid candidates. This is a
 project-defined workload split, not the official tutorial's within-task split.
 The Platinum preparation follows the pinned tutorial's file-selection and
@@ -91,7 +94,8 @@ penalties are not interpreted as physical program runtime or used to claim a
 mean runtime speedup. Selection scores and failure-selection counts remain
 explicitly separate outcomes.
 
-The E5 run averages workload metrics equally; all cases contain 50 candidates.
+The E5 runs average workload metrics equally. Every case within a budget
+has the same candidate count; the original anchor has 50 candidates per case.
 The Platinum primary result weights each workload by its number of test records,
 as in the tutorial evaluator [4]. Its unweighted macro scores are separately
 labelled. These aggregations and the different pool/invalid-record policies
@@ -117,6 +121,106 @@ an equal runtime on two. Both select the unique sampled optimum on 5/120 cases.
 This supports a modest ranking signal with mixed selection performance.
 The exact uniform-Random expectation and outlier/family sensitivity are separate
 offline analyses in the run log, not additional model runs.
+
+### Completed candidate-size comparison
+
+The additional E5 runs keep the same 120 workload IDs and use 16 and 32
+schedules from the frozen 50-schedule pool. Seed 42, no field definitions,
+single-question selection, pinned model, and long-context mode follow the
+prepared sweep workflow. The 50-schedule member reuses the original saved
+responses. The uploaded export contains 720 rows: two models, three budgets,
+and 120 workloads. Its six aggregate rows and plotted values are recomputed
+from those per-workload rows in the
+[reviewed sweep results](results/tenset/size-sweep/README.md).
+
+| Schedules | Model | Top-1 Score ↑ | Top-5 Score ↑ | Pairwise Accuracy ↑ | Runtime regret ↓ |
+|---|---|---:|---:|---:|---:|
+| 16 | Random-42 | 0.407439 | 0.615892 | 0.504097 | 5.308322 |
+| 16 | Jev | 0.456949 | 0.645309 | 0.533403 | 3.535879 |
+| 32 | Random-42 | 0.348193 | 0.553470 | 0.503461 | 5.317561 |
+| 32 | Jev | 0.394553 | 0.563148 | 0.529536 | 3.993304 |
+| 50 | Random-42 | 0.332440 | 0.498775 | 0.491959 | 6.058854 |
+| 50 | Jev | 0.336867 | 0.512829 | 0.519456 | 5.081011 |
+
+Jev's observed Top-1 advantage is +0.049510, +0.046360, and +0.004427
+at 16, 32, and 50 schedules. Pairwise Accuracy improves by 2.93, 2.61,
+and 2.75 percentage points. Mean regret is 33.4%, 24.9%, and 16.1% lower
+than the respective Random means; these reductions are not equivalent
+percentages of execution speedup. Compare the models within each budget.
+The oracle changes with the pool, and five choices cover a smaller fraction
+of a larger pool, so falling absolute scores do not alone establish worse
+decision quality as candidate count increases.
+
+An exploratory paired workload bootstrap uses 50,000 resamples, seed
+20261116, and the same sorted-workload draws across budgets. The following
+percentile 95% intervals describe Jev-minus-Random differences:
+
+| Schedules | Top-1 difference and 95% interval | Pairwise Accuracy difference and 95% interval |
+|---|---|---|
+| 16 | +0.049510 [−0.024313, +0.123654] | +0.029306 [+0.002708, +0.055625] |
+| 32 | +0.046360 [−0.009531, +0.102266] | +0.026075 [+0.010232, +0.042104] |
+| 50 | +0.004427 [−0.059905, +0.068146] | +0.027497 [+0.014293, +0.040789] |
+
+Top-1 and Top-5 intervals cross zero at every budget; the strongest
+consistent signal is in Pairwise Accuracy. The mean-regret difference at
+32 schedules has interval [−2.647424, −0.112540], while regret intervals
+at 16 and 50 schedules cross zero. These are unadjusted exploratory
+intervals over several metrics and budgets, conditional on saved responses.
+Program-family dependence is not modeled; operation-name signatures are not
+a substitute for verified DAG-family IDs. They are not fresh API replicates.
+
+Shared resampling also estimates whether the Jev-minus-Random advantage
+changes between budgets. Every tested 16-minus-50 and 32-minus-50
+advantage interval includes zero. For Top-1, these contrasts are +0.045084
+[−0.051515, +0.143318] and +0.041934 [−0.033347, +0.118212]. Thus the
+larger observed Top-1 gap at smaller pools is descriptive, not an established
+candidate-size interaction. Full metric and contrast tables accompany the
+reviewed sweep exports.
+
+A separate [hash-family sensitivity analysis](results/tenset/size-sweep/family-cluster-sensitivity.json)
+joins the historical E5 mapping by workload ID: 56 leading DAG-hash groups,
+with 25 workloads in the largest group. Resampling 56 groups with replacement
+retains all member workloads and computes each mean as summed paired
+differences divided by summed workload counts. It uses 50,000 shared draws
+and seed 20261116. Pairwise Accuracy intervals remain positive at 16
+[+0.000926, +0.057576], 32 [+0.010891, +0.041882], and 50
+[+0.014962, +0.042180], with the 16-schedule lower bound close to zero.
+Top-1/Top-5 and cross-budget advantage intervals still include zero; the
+32-schedule regret interval remains negative. This is a sensitivity check
+using hash-group proxies, not proof of independent networks or an adjustment
+for the several metric comparisons. It leaves the qualitative conclusion
+unchanged: modest ranking evidence with uncertain selection-score gains.
+
+The upload includes analysis exports and plot provenance, but not the new
+16/32 runs' raw predictions, execution manifests, or frozen sweep manifest.
+Export consistency and matched workload IDs can be checked independently;
+the exact new schedule identities, nesting, wire inputs, and resolved API
+model cannot be independently re-audited from this archive alone. The
+prepared workflow checks those invariants on the Mac. Its declared prepared
+file checksum matches the historical E5 artifact. No new model calls were
+made during the export review.
+
+### Workload-type results and examples
+
+The uploaded per-workload export supplies 27 literal joined operation
+signatures, consistent across all three budgets. They identify groups of
+ComputeOp names, not independent program families or fully inspected tensor
+semantics. The largest signature, `PaddedInput+Conv2dOutput+T_add+T_relu`,
+contains 40/120 workloads. Its mean Jev-minus-Random Top-1 differences are
++0.0171, +0.0214, and +0.0521 at 16, 32, and 50 schedules. Other groups
+contain fewer cases and can reverse direction across budgets. These
+descriptive results do not support a blanket claim that Jev is better for
+all convolution workloads. Group sizes and all five metrics are exported
+separately for each candidate budget.
+
+At 50 schedules, `tenset-e6cd98ac634fba7bab1d171c` has operation signature
+`PaddedInput+Conv2dOutput+T_add`. Jev selects a test-pool optimum, scoring
+1.000000 versus Random's 0.051030. A contrasting case,
+`tenset-1c06dd347db18aa8ffcdc91b`, has signature `compute`: Random scores
+1.000000 and Jev 0.200940. These are post-hoc performance examples, not
+representative samples or explanations of why specific transformations
+succeed. Tensor shapes and complete selected/oracle schedule transformations
+still require the context-aware case export from the prepared data.
 
 ## Completed Platinum tournament results
 
@@ -195,23 +299,31 @@ Those are different units and scopes. The E5 live total decision mean is
 465.156 ms for its smaller single-question pools. These values describe their
 respective protocols, not a controlled latency comparison between algorithms.
 
+The additional 16- and 32-schedule E5 runs report 120 live requests each,
+with 2,750,775 and 4,255,904 input tokens. Together they use 7,006,679
+new input tokens, an estimated **$0.294281** at the same assumed input rate.
+The 50-schedule anchor's old 110-live/10-cached accounting is historical;
+reusing its saved results adds no new sweep requests. Mean total decision
+latencies in the uploaded exports are 243.222 ms and 342.073 ms at 16 and
+32 schedules. The historical 50-schedule mean of 426.488 ms includes cached
+cases, so this is not a controlled latency-scaling experiment.
+
 ## Remaining required analyses and prepared work
 
-The implementation and existing results cover the requested Top-1/Top-5,
-Pairwise Accuracy, regret, per-workload predictions, and aggregate exports
-under their stated protocols. The following evidence still needs completion:
+The implementation and completed results cover the requested Top-1/Top-5,
+Pairwise Accuracy, regret, per-workload predictions, aggregate exports,
+candidate-size comparison, and an E5 operation-signature breakdown under
+their stated protocols. Reviewed size results and post-hoc performance
+examples are published. The following evidence still needs completion:
 
-- Run and review the prepared operation/type breakdowns on the Mac's frozen
-  prepared data. The uploaded hashes and opaque IDs cannot supply operation
-  names or verify coverage of workload types.
-- Complete a controlled 16/32/50 candidate-size comparison using the same
-  frozen E5 workloads, seed, metadata, no-description single-question prompt,
-  and long-context mode. Reuse the archived 50-candidate run; the 16/32 runs
-  are prepared, not completed. Each size has its own explicitly bounded oracle.
-- Inspect concrete paired successes and failures, including tensor shapes and
-  selected/oracle schedule transformations, rather than inferring causes from
-  aggregate scores or identifiers alone.
-- Add those reviewed results to this section and the publication exports.
+- Export the full selected/oracle schedule and tensor metadata using the
+  context-aware case analyzer on the Mac. The uploaded E5 operation labels
+  support grouping, but do not supply shapes or transformation arguments.
+- Review those semantic examples before attributing good or poor performance
+  to particular scheduling decisions. Do not infer causes from scores or
+  operation names alone.
+- If extending type-level conclusions to the Platinum study, export and review
+  its own metadata/type breakdown. E5 labels do not describe that separate cohort.
 
 The [finish guide](run-tenset-finish-rq1.md) supplies the commands. Additional
 field-description, context/order, forced-group controls, fresh repeats, and
@@ -222,8 +334,11 @@ revised RQ1 scope.
 
 ## Limitations and interpretation
 
-The completed runs show a modest Jev ranking signal on the E5 pools and a
-positive weighted Top-1 signal on the Platinum test reconstruction. Top-5 gains
+The completed runs show a modest Jev ranking signal across all three E5
+budgets and a positive weighted Top-1 signal on the Platinum test
+reconstruction. E5 Top-1/Top-5 improvements and Platinum Top-5 gains remain
+uncertain under the exploratory intervals. E5 mean regret is lower for Jev
+at 32 schedules under an unadjusted interval; the other budgets
 remain uncertain. This is evidence conditional on selected workloads and API
 responses, not proof of broad superiority across tensor programs or hardware.
 Fresh API repeatability has not been measured. Fixed sampling seeds and cached

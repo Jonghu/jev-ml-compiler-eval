@@ -1,0 +1,23 @@
+{
+  "aggregation": "workload macro mean within each candidate budget",
+  "analysis_summary_sha256": "bc0d9f9cf3cc49b2980c135a2866ef938398020ddb6947ebae73c14107576f3e",
+  "by_candidate_count_sha256": "08e1407cb1adf76aaceabc00115f34eda62334e629b98cb3e2d624c0dad71aa9",
+  "candidate_budgets": [
+    16,
+    32,
+    50
+  ],
+  "data_status": "source_records",
+  "manifest_sha256": "369bb85d6c730c14b38dc96fa324a887d7a171aee16138bd522885dec659c9ee",
+  "note": "Fixed archived/cached responses do not measure fresh API repeatability.",
+  "overall_pooled_scores_used": false,
+  "per_workload_sha256": "c91e3b33ce9d2a9800c4cb50f9a38e6418e73fd26d68338a3078570886fd2099",
+  "plot_data_sha256": "dcc54f1169611197949b6e035b9839b5034fdd39a52cae4d467513e859d71635",
+  "prepared_sha256": "1f949c2c9f788b507c4e395925720c7beaa7063c3efb6ac09ae5ed4855db6275",
+  "scope": "controlled nested candidate pools over the same frozen workload cohort",
+  "workloads_per_budget": 120,
+  "publication_note": "Uploaded per-budget figure and plot-data values are preserved. Raw c16/c32 candidate pools and sweep manifest are unavailable for independent nesting verification.",
+  "source_uploaded_plot_data_sha256": "dcc54f1169611197949b6e035b9839b5034fdd39a52cae4d467513e859d71635",
+  "published_plot_data_filename": "plot-data.csv",
+  "hash_scope_note": "Other method hashes identify original uploaded bytes; the published CSVs have normalized line endings. Published file hashes are listed in provenance.json."
+}

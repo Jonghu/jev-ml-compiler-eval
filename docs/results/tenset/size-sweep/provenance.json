@@ -1,0 +1,111 @@
+{
+  "artifact_status": "Reviewed derived publication, originals preserved outside Git",
+  "source_archive": {
+    "filename": "Archive.zip",
+    "sha256": "78f7b303174bb0ff1318debd332d34f7c2b1d02651c6d6ffa76f0d43c5bb4637",
+    "bytes": 329941,
+    "archive_committed": false
+  },
+  "source_files_sha256": {
+    "analysis/aggregate.csv": "08e1407cb1adf76aaceabc00115f34eda62334e629b98cb3e2d624c0dad71aa9",
+    "analysis/by_candidate_count.csv": "08e1407cb1adf76aaceabc00115f34eda62334e629b98cb3e2d624c0dad71aa9",
+    "analysis/by_operation.csv": "da9f65575d850783b32377785cab7ec805c17bd3fe1ac8a4ca469f2f3a0052b5",
+    "analysis/by_run.csv": "c8c5b7dfea524d0784cae2348601c3209df8ebe6ed3117cd1e13dc386fb688c9",
+    "analysis/comparison.png": "7cf520a08233ab992aa97ee9dfdc63cbf7872fb3129c746e79b3d12844187283",
+    "analysis/comparison.svg": "ed5846281243b0c3f4fa04411e529ee8f7cfba79fcda12a7a601d8f5ddc6cce8",
+    "analysis/decision_accounting.csv": "5ae7d54c5c06b3d4ed31f8a0b467e6716ff8ef66f00c9ec926c6a5ad8e791844",
+    "analysis/jev_cases.csv": "4a85824d00cba8385f0def4c43e133c18b0b99b5ca76f25084097491a8778a67",
+    "analysis/overall.csv": "eff0e24fa5ba4c0b1ada7d213a95797f91de65b91c96b695d3efffede10b290c",
+    "analysis/per_workload.csv": "c91e3b33ce9d2a9800c4cb50f9a38e6418e73fd26d68338a3078570886fd2099",
+    "analysis/summary.json": "bc0d9f9cf3cc49b2980c135a2866ef938398020ddb6947ebae73c14107576f3e",
+    "size-comparison/size-sweep-metrics.png": "24df1deed7605e7bfabd201e68f852be0846a8107c8dd0f18b8324914ecd9859",
+    "size-comparison/size-sweep-metrics.svg": "3f1a370e170e48ad66a507d266c347b2c882537ee2e76647d4ce9aec0e194a35",
+    "size-comparison/size-sweep-plot-data.csv": "dcc54f1169611197949b6e035b9839b5034fdd39a52cae4d467513e859d71635",
+    "size-comparison/size-sweep-plot-method.json": "fbdb829b85e13acd23f2c92c24be20c9ae2f8bc6b338a976f2d7ccdedb998131"
+  },
+  "reviewed_context_inputs_sha256": {
+    "operation-review.md": "79554949af90044a36e1ea760dfe1e5292249e92477e821c3134ba62c5a6ea23",
+    "operation-review.json": "421292ad7009fe78df0780f990b14b1b95185f70bb8b780005f7c52cc31e4037",
+    "by-operation-paired.csv": "375ca112395a1f9b48e5bef29499c459425f5f22c551373a7d0265a94f46e100",
+    "posthoc-examples-by-budget.csv": "432b1b177957bd2fc3f68ae6015e9e7fdcb5d0a9e6b6a846c050a569ab2b46a0",
+    "operation-top1-deltas.png": "baca0f714cbd7fc7382e8f2188c05124a1b89f2ccdb7cc4300eb9ec1ec63b6cd",
+    "operation-top1-deltas.svg": "6c35ff5cadf5fb1f48e53764945934e7a564d5779e00570d36c58e9a1681dfdd"
+  },
+  "reviewed_audit_inputs_sha256": {
+    "audit-summary.json": "d4587c9ff41cbe3c3d7fc702973dee8a3e69d19dc6ef6aacf0ac227583653d5e",
+    "paired-statistics.json": "78253c55e278fa9aa40e981f8401bc29feeaabbffb8c2343a256d37470a920aa",
+    "usage-summary.json": "6fc1607a0972fea41767e965e485d6157cb0fecdc56799995bbeca160e67556a",
+    "paired-comparison.csv": "873b53eb5688ca000e4b317a73e53ac58a2bd601917a8690da2f4fedb30dac00",
+    "between-budget-contrasts.csv": "56741cab737345cf8102ee32f08aea172f6515687df28ab816da937069ae42e2",
+    "paired-differences.csv": "a375b303b10b3217281b28ecf9da4df3ccc9ff1ad96198ede737aaf7db6b6305",
+    "audit_size_sweep.py": "a39a7e54d5147972f7c837ffdcc6317021712a60d1666962de3b8bb3888ecca6",
+    "family-cluster-sensitivity.json": "f3eb9b81725ae41c9d13eb26cdbec8d2ecb80bc1587365a0d2923a5502de556d",
+    "family-cluster-comparison.csv": "cc072b3c4c43154a8725044d510d87e43ad4e0b8e188c71b6cb210bc6a4507a5",
+    "family-cluster-between-budget-contrasts.csv": "3df810d86705c0689f3fdffe6a9edf171114b6ec0219ba520e451c97f555ef86",
+    "family_cluster_sensitivity.py": "a45b7d6d585e35fa52e4ec9754ba6711eaf8b5be3e27259969c5521e8e91f83c"
+  },
+  "published_files_sha256": {
+    "accounting-by-budget.csv": "49f7231c6436d85f4a512656361532cdf3d09e0a5056fca8df17ec469826e610",
+    "audit-summary.json": "d4587c9ff41cbe3c3d7fc702973dee8a3e69d19dc6ef6aacf0ac227583653d5e",
+    "audit_size_sweep.py": "a39a7e54d5147972f7c837ffdcc6317021712a60d1666962de3b8bb3888ecca6",
+    "between-budget-contrasts.csv": "56741cab737345cf8102ee32f08aea172f6515687df28ab816da937069ae42e2",
+    "by-operation-paired.csv": "375ca112395a1f9b48e5bef29499c459425f5f22c551373a7d0265a94f46e100",
+    "by-operation.csv": "ec24ae8deecd3ba36edeb781bb6677280b69f35cb48b520b1050edec97dc786b",
+    "by-run.csv": "6ea72915b5a0273588a5fb59ea48d09354435c7998c6395a3402680f74b99761",
+    "decision-accounting.csv": "e263ccd6fae32580faf90c603ea8efc90b3287122875f936ea259196367ddf29",
+    "family-cluster-between-budget-contrasts.csv": "ee402176572bcaf40ec955a1cbbe68eba00663b568e1d78d12c5c50ea8271f37",
+    "family-cluster-comparison.csv": "7f03a6a2b9f9dfe2b289be3179bbc3e8d8f3f4ea45e1e0ec1d446f722ee04359",
+    "family-cluster-sensitivity.json": "f3eb9b81725ae41c9d13eb26cdbec8d2ecb80bc1587365a0d2923a5502de556d",
+    "family_cluster_sensitivity.py": "a45b7d6d585e35fa52e4ec9754ba6711eaf8b5be3e27259969c5521e8e91f83c",
+    "metrics.csv": "ff5d14883b1286d3430abe3d774f061f5aec4516c1ba5d205930b3a96c7a9cac",
+    "operation-review.json": "421292ad7009fe78df0780f990b14b1b95185f70bb8b780005f7c52cc31e4037",
+    "operation-review.md": "79554949af90044a36e1ea760dfe1e5292249e92477e821c3134ba62c5a6ea23",
+    "operation-top1-deltas.png": "baca0f714cbd7fc7382e8f2188c05124a1b89f2ccdb7cc4300eb9ec1ec63b6cd",
+    "operation-top1-deltas.svg": "d77533a29b1a72d69e1053bf9f9a35beb91b10a0f07a1ddedd4d8fda28e9a48d",
+    "paired-comparison.csv": "873b53eb5688ca000e4b317a73e53ac58a2bd601917a8690da2f4fedb30dac00",
+    "paired-differences.csv": "a375b303b10b3217281b28ecf9da4df3ccc9ff1ad96198ede737aaf7db6b6305",
+    "paired-statistics.json": "78253c55e278fa9aa40e981f8401bc29feeaabbffb8c2343a256d37470a920aa",
+    "per-workload.csv": "4f2a329032d477df2176eee820ed49474d8c1017b3b2bf55fca71769085de3bf",
+    "plot-data.csv": "dcc54f1169611197949b6e035b9839b5034fdd39a52cae4d467513e859d71635",
+    "plot-method.json": "211c77625f8da94f2b76acf10a37c25afff13e3b5b7749267bcde8113f9e7a1d",
+    "posthoc-examples-by-budget.csv": "432b1b177957bd2fc3f68ae6015e9e7fdcb5d0a9e6b6a846c050a569ab2b46a0",
+    "selected-cases.csv": "5da80c6315c13e7c916cbdb8fcdd808d36ab407aa0a3b14538cd712584fc25e8",
+    "size-sweep-metrics.png": "24df1deed7605e7bfabd201e68f852be0846a8107c8dd0f18b8324914ecd9859",
+    "size-sweep-metrics.svg": "37acdd35b2a7a934a4d596844eb7ae3be59f3aa0c3b7d4500c5e1bc9033c9a30",
+    "summary.json": "d73499a3ac5e0ec6dca560367825a76c6f7f7212abe2c1c2cb43a8ca46d4e682",
+    "usage-summary.json": "6fc1607a0972fea41767e965e485d6157cb0fecdc56799995bbeca160e67556a"
+  },
+  "prepared_sha256_reported": "1f949c2c9f788b507c4e395925720c7beaa7063c3efb6ac09ae5ed4855db6275",
+  "hash_group_sensitivity_source": {
+    "repository_file": "docs/results/tenset/w120-c50-s42-long-context/paired-workloads.csv",
+    "sha256": "3e2bf41703b44b5618e9a5dfe3100deed5e0d42d49c9aacee4f4fea9a054bd2d",
+    "mapping_column": "dag_hash_family",
+    "groups": 56,
+    "largest_group_workloads": 25,
+    "scope": "Dependency proxy only; independent network families are unverified"
+  },
+  "sweep_manifest_sha256_reported_but_file_not_supplied": "369bb85d6c730c14b38dc96fa324a887d7a171aee16138bd522885dec659c9ee",
+  "history": {
+    "c50_run_commit": "6a4fe91585df2f91e347bfbc7be2fb8bde325df0",
+    "c50_status": "Historical archived run reused; no new c50 calls implied by its accounting",
+    "c50_independent_verification": {
+      "prior_raw_predictions_sha256": "f7f1787cb3a3650d46850bc6b720d593c5277a57aaf2df4aad988c0ad2c35c0f",
+      "model_workload_rows_compared": 240,
+      "metric_values_compared_per_row": 5,
+      "decision_latency_compared": true,
+      "agreement_absolute_tolerance": 1e-12,
+      "result": "All uploaded c50 metric rows agree with the previously audited raw predictions"
+    },
+    "c16_c32_actual_run_commits": "Not established from the supplied analysis-only bundle"
+  },
+  "derivation_notes": [
+    "CSV line endings are normalized to LF without changing numeric or string field values.",
+    "Private source paths and result-location provenance are omitted from the compact publication summary.",
+    "request_id is removed from the per-workload accounting export; numeric usage fields are preserved.",
+    "The uploaded per-budget PNG is unchanged; SVG trailing whitespace is normalized.",
+    "No pooled overall metric or pooled comparison figure is published.",
+    "Assumed-rate cost estimates are not invoices; new sweep usage includes only c16/c32 and excludes historical c50."
+  ],
+  "independent_verification_limit": "The uploaded c16/c32 analysis exports lack their original predictions/manifests, configs, candidate IDs and raw runtime labels. Reported metrics and protocol remain descriptive pending those artifacts; no raw-pool or fresh-response reproducibility claim is made.",
+  "audit_scope": "The independent audit checks all supplied aggregate tables and plot hashes against the uploaded per-workload exports, plus c50 raw-prediction continuity. Its bootstrap conditions on those exported scores, not newly recovered raw c16/c32 labels."
+}

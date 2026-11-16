@@ -436,10 +436,122 @@ presentation, long context, and tournament selection. Comparing R4 with R3
 cannot isolate any of those factors because hardware, workloads, splits,
 pool sizes, record policy, and aggregation also change.
 
-The [RQ1 report](rq1-report.md) now treats both completed protocols separately
-under a Jev-versus-Random scope. The
-[finish guide](run-tenset-finish-rq1.md) prepares the remaining operation/type
-exports, concrete paired schedule cases, and controlled 16/32/50 E5 size study.
-Those new exports and 16/32 runs are prepared, not reported as completed.
+The [RQ1 report](rq1-report.md) treats both protocols separately under a
+Jev-versus-Random scope. At R4 publication, the
+[finish guide](run-tenset-finish-rq1.md) prepared operation/type exports, concrete
+paired schedule cases, and the controlled 16/32/50 E5 size study. The subsequent
+user-completed size analysis is recorded as R5 below. Full semantic
+case-study exports remain separate from its metric-only examples.
 Optional prompt/order/algorithm controls, fresh repeats, and all-source-schedule
 tournaments are not required completion items for the revised scope.
+
+## R5 — Completed E5 16/32/50 candidate-size study
+
+- Completion evidence: the user uploaded the combined local analysis after
+  executing the 16- and 32-candidate conditions. Exact new execution dates,
+  raw prediction bundles, and new run manifests were not supplied.
+- Reported protocol: the same 120 E5 workloads at each budget; seed 42, no
+  field definitions, single-question Jev, and long context. The uploaded
+  analysis supports scope/count checks; the new raw configs are not included.
+- Source input: the analysis records prepared-file SHA-256
+  `1f949c2c9f788b507c4e395925720c7beaa7063c3efb6ac09ae5ed4855db6275`.
+- The local sweep method declares nested 16/32/50 prefixes of the frozen
+  candidate order. Both models appear on all 120 workload IDs at each size.
+- The 50-candidate condition reuses R3's historical results. It is not a new
+  Jev repeat and is not counted as another 120 independent workloads.
+- Uploaded outputs include six candidate-budget/model aggregate rows,
+  720 per-workload rows, operation-name tables, metric-only case examples,
+  accounting, and a dedicated size-comparison figure with a method record.
+- Reviewed publication: [size-study results](results/tenset/size-sweep/README.md).
+
+### Per-budget results
+
+All values below are workload macro means within one budget. With equal
+candidate counts per workload, record-weighted and macro means coincide
+within each row. Do not use the generic analyzer's across-budget overall
+means as the candidate-size comparison.
+
+| Candidates | Model | Workloads | Top-1 Score | Top-5 Score | Pairwise Accuracy | Tie-aware Pairwise Accuracy | Runtime regret |
+|---:|---|---:|---:|---:|---:|---:|---:|
+| 16 | Random-42 | 120 | 0.407439 | 0.615892 | 0.504097 | 0.504097 | 5.308322 |
+| 16 | Jev 1.14, long context | 120 | 0.456949 | 0.645309 | 0.533403 | 0.533715 | 3.535879 |
+| 32 | Random-42 | 120 | 0.348193 | 0.553470 | 0.503461 | 0.503461 | 5.317561 |
+| 32 | Jev 1.14, long context | 120 | 0.394553 | 0.563148 | 0.529536 | 0.529940 | 3.993304 |
+| 50 | Random-42, reused R3 | 120 | 0.332440 | 0.498775 | 0.491959 | 0.491959 | 6.058854 |
+| 50 | Jev 1.14, reused R3 | 120 | 0.336867 | 0.512829 | 0.519456 | 0.519704 | 5.081011 |
+
+Jev has higher observed Top-1, Top-5, and Pairwise Accuracy and lower mean
+regret than Random within each budget. The observed Top-1 gaps are +0.049510,
++0.046360, and +0.004427 for 16, 32, and 50 candidates. Top-5 gaps are
++0.029417, +0.009678, and +0.014055, respectively. These mean differences
+alone are not significance claims or evidence of fresh API repeatability.
+
+Exploratory paired workload-bootstrap intervals use 50,000 resamples and
+seed 20261116, with common workload draws across budgets. All Top-1 and
+Top-5 intervals include zero. Strict Pairwise Accuracy differences have
+positive intervals at 16 [+0.002708, +0.055625], 32 [+0.010232, +0.042104],
+and 50 [+0.014293, +0.040789]. The mean-regret difference at 32 is
+−1.324258 [−2.647424, −0.112540]; the other regret intervals include zero.
+These are unadjusted comparisons conditional on saved responses, without
+verified DAG-family clustering. Both 16-minus-50 and 32-minus-50 contrasts
+of model advantages include zero for every tested metric. The smaller
+budget's larger observed Top-1 gap is not an established scaling effect.
+
+A supplementary 56-group leading DAG-hash bootstrap uses the historical
+120-workload mapping, 50,000 shared group draws, and the same seed. It keeps
+members together and uses a ratio of summed differences to workload counts.
+Pairwise Accuracy intervals remain positive (the 16-schedule lower bound is
+only +0.000926), while Top-1/Top-5 and budget-advantage contrasts still cross
+zero. The 32-schedule regret interval remains negative. These hash groups
+are not verified independent networks; the supplement is a sensitivity check,
+not a multiplicity correction. See the published cluster-sensitivity tables.
+
+Both models' normalized selection scores decrease across the larger pools,
+but every budget has its own candidate-pool oracle. A score change between
+sizes is not a physical runtime speedup or slowdown. Statistical comparisons
+must pair the same workload IDs and must not treat the 720 rows as 720
+independent tensor programs. The dedicated size figure uses per-budget
+values; the uploaded generic overall figure pools sizes and serves a
+different descriptive purpose.
+
+### Operation-name and case outputs
+
+The generic analyzer now provides 162 per-operation rows: 27 literal operation
+signatures for two models at three budgets. These names come from the saved
+program metadata and include fused-operation signatures. They support a
+descriptive workload-type breakdown; ambiguous names such as `compute` are
+not silently interpreted as a more specific operator family.
+
+The uploaded `jev_cases.csv` supplies ten post-hoc metric examples with
+workload IDs, operation names, candidate counts, and score/regret differences.
+It does not contain tensor shapes, selected candidate transformation arguments,
+or complete Jev/Random/oracle schedules. Full semantic case narratives still
+require the Mac's prepared data and the offline case exporter.
+
+### Verification limits and completion status
+
+Aggregate means can be checked against the uploaded per-workload rows, and
+the plot-method hashes bind the supplied analysis tables. The 50-candidate
+aggregate matches the earlier audited R3 result. The local analysis declares
+the fixed prepared-data identity and controlled nested-pool method.
+
+The new 16/32 prediction rows, model-input hashes, request metadata, raw
+runtime maps, manifests, and prepared shards were not supplied. The cloud
+review therefore does not independently repeat the source-level schedule,
+label, model-version, or API-usage audit for those new runs. No exact new
+execution timestamps or billing totals are inferred from aggregate tables.
+These limits do not turn the user-completed runs back into prepared profiles;
+they distinguish completed analysis evidence from a full raw-artifact audit.
+
+The exported accounting reports 120 live requests at each new size, with
+2,750,775 input tokens at 16 candidates and 4,255,904 at 32. Their combined
+7,006,679 input tokens correspond to an estimated $0.294281 at the assumed
+$0.042 per million input tokens, with free output. No invoice or dated
+pricing snapshot was supplied. The c50 accounting describes historical
+calls and is excluded from incremental sweep usage.
+
+The requested candidate-size comparison and operation-name breakdown are now
+completed and exported. The remaining substantive RQ1 task is the offline
+semantic tensor/schedule case export and its final report narrative. Optional
+fresh repeats or prompt/algorithm controls do not require rerunning these
+completed size conditions merely to regenerate their plots.

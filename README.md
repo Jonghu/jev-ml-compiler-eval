@@ -14,27 +14,38 @@ University of Illinois Urbana-Champaign.
 
 ## Research questions
 
-- **RQ1:** Can Jev make competitive tensor scheduling decisions on TVM
-  workloads?
+- **RQ1:** Can Jev select faster tensor schedules than Random from program and
+  schedule descriptions on TVM workloads?
 - **RQ2:** Can Jev make competitive layout and tiling configuration decisions
   on XLA workloads?
 
-The RQ1 evaluation uses TenSet to compare Jev with Random, with published
-XGBoost results cited as external references. A local XGBoost adapter is also
-available for a future matched comparison. The RQ2 evaluation uses TpuGraphs
-and plans to compare Jev with Random and a GNN performance model.
+The RQ1 evaluation uses TenSet to compare Jev with Random. TenSet provides
+recorded runtime labels and metric definitions; specialized-model comparison
+and training are outside the current RQ1 scope. The retained local XGBoost
+adapter is optional legacy tooling. The RQ2 evaluation uses TpuGraphs and
+plans to compare Jev with Random and a GNN performance model.
 
 ## Current status
 
 The shared evaluation framework, YAML experiment configuration, mock dataset,
-Random baseline, and Jev integration are implemented. The TenSet workstream now
-includes record preparation, label-free serialization, a bridge to the official
-TVM XGBoost baseline, benchmark metrics, and comparison plots. Full TenSet
-experiments require the official dataset and Jev credentials. Program metadata
-can be exported in portable Python; legacy TVM is needed only for the optional
-local XGBoost baseline.
-A one-workload, eight-candidate Random-versus-Jev pilot has completed on the
-user's MacBook Air. Larger experiments and the final RQ1 analysis remain pending.
+Random baseline, and Jev integration are implemented. The TenSet workstream
+includes record preparation, portable metadata export, label-free serialization,
+single-question and tournament selection, benchmark metrics, and comparison plots.
+Legacy TVM is needed only for the optional local XGBoost adapter.
+
+Completed Jev-versus-Random results include the E5-2673 study on the same 120
+workloads at **16, 32, and 50 valid schedules**, and the Platinum-8272 tournament
+on **484 workloads and 187,679 test records**. The 50-schedule result is a
+historical anchor reused in the size study. These protocols are reported
+separately in the [RQ1 report](docs/rq1-report.md), with
+[candidate-size results](docs/results/tenset/size-sweep/README.md) and
+[tournament results](docs/results/tenset/tutorial-500-platinum-test/README.md).
+
+Remaining TenSet work is the offline export and review of concrete tensor and
+schedule case narratives, followed by final report review. The
+[finish guide](docs/run-tenset-finish-rq1.md) distinguishes those steps from
+reproduction commands for already completed paid runs. Offline analysis uses
+the saved prepared data and result bundles; further Jev runs require credentials.
 The TpuGraphs implementation is on the separate `tpu-graph` branch and awaits
 integration.
 
@@ -115,6 +126,7 @@ docs/                     Interfaces, configuration, protocol, and status
 ## Documentation
 
 - [TenSet completed runs and reviewed results](docs/tenset-runlog.md)
+- [Completed TenSet 16/32/50 candidate-size results](docs/results/tenset/size-sweep/README.md)
 - [Finish the Jev-versus-Random RQ1 analyses](docs/run-tenset-finish-rq1.md)
 - [Run the reconstructed TenSet 500-file tutorial test pools](docs/run-tenset-tutorial-reference.md)
 - [Configuration reference](docs/configuration.md)

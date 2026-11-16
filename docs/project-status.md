@@ -65,16 +65,18 @@ and the benchmark evidence still needed for the final report. See the
 ## RQ1: TVM TenSet — Person B
 
 The current research question is **Jev versus Random**. Specialized-model
-comparison and training are outside the agreed RQ1 scope. Two real-data runs
-have completed and their uploaded saved results were audited: the E5
-120-workload single-question experiment and the Platinum 484-workload
-record-test tournament. Their protocols and aggregations remain separate.
+comparison and training are outside the agreed RQ1 scope. Completed evidence
+includes the E5 120-workload single-question experiment, its 16/32/50-candidate
+size study, and the Platinum 484-workload record-test tournament. Their
+protocols and aggregations remain separate. The new size-study upload contains
+analysis exports; it does not include the new raw prediction/manifest bundles.
 
 The [RQ1 report](rq1-report.md) now contains the completed methodology, results,
 uncertainty, cost, and limitations. The [run log](tenset-runlog.md) retains
 historical runs and the [finish guide](run-tenset-finish-rq1.md) gives the
-remaining local export and controlled candidate-size commands. Prepared
-profiles/exporters are not completed experiments or reviewed analysis exports.
+remaining semantic-case export commands and records how the completed size
+study was executed. Prepared optional profiles remain distinct from completed
+experiments.
 
 ### Completed E5 single-question experiment
 
@@ -95,6 +97,43 @@ both models select the sampled optimum on 5/120 cases. Outliers affect the
 lower Jev mean regret. There are 110 live and ten cached responses; the live
 total decision mean is 465.156 ms. See the
 [reviewed E5 outputs](results/tenset/w120-c50-s42-long-context/metrics.csv).
+
+### Completed E5 16/32/50 candidate-size study
+
+The user completed the new 16- and 32-schedule conditions and uploaded their
+combined analysis with the historical 50-schedule anchor. Every budget has
+120 workloads for each model: six aggregate rows and 720 per-workload rows,
+representing the same 120 workload IDs across budgets. The source analysis
+records the audited prepared-file checksum and the fixed E5/seed-42 protocol.
+The 50-schedule row is reused evidence, not a new API repeat.
+
+| Schedules | Model | Top-1 Score | Top-5 Score | Pairwise Accuracy | Runtime regret |
+|---:|---|---:|---:|---:|---:|
+| 16 | Random-42 | 0.407439 | 0.615892 | 0.504097 | 5.308322 |
+| 16 | Jev | 0.456949 | 0.645309 | 0.533403 | 3.535879 |
+| 32 | Random-42 | 0.348193 | 0.553470 | 0.503461 | 5.317561 |
+| 32 | Jev | 0.394553 | 0.563148 | 0.529536 | 3.993304 |
+| 50 | Random-42 | 0.332440 | 0.498775 | 0.491959 | 6.058854 |
+| 50 | Jev | 0.336867 | 0.512829 | 0.519456 | 5.081011 |
+
+Use the [reviewed size-study exports](results/tenset/size-sweep/README.md) and
+dedicated size figure; the generic overall comparison pools budgets. Jev has
+higher observed scores/Pairwise Accuracy and lower mean regret within each
+budget. Exploratory paired workload-bootstrap intervals are positive for
+Pairwise Accuracy at each size and include zero for Top-1 and Top-5 at all
+sizes. The 32-schedule regret interval excludes zero; the other two include
+zero. These intervals are unadjusted for several comparisons and do not model
+verified DAG-family dependence. Cross-budget intervals do not establish a
+change in Jev's advantage. Changing pool oracles also prevents interpreting
+a cross-size score change as a physical speedup.
+
+The upload also provides operation-name breakdowns for 27 literal operation
+signatures and metric-only success/failure examples. Full tensor shapes and
+chosen/oracle schedule configurations are still absent. The new aggregate and
+per-workload exports can be checked internally, but new raw predictions,
+manifests, input hashes, and prepared candidate IDs were not uploaded for an
+independent source-level repetition of the original 50-schedule audit. Exact
+new execution timestamps are not supplied by these analysis exports.
 
 ### Completed Platinum record-test tournament
 
@@ -146,7 +185,9 @@ old numerical specialized-model comparisons remain historical context only.
 - [x] Keep runtime/error/record-index labels outside model-visible fields in the
   implemented interface and verify shared recorded input fingerprints.
 - [x] Measure input sizes; implement token-aware grouping and explicit long context.
-- [ ] Review actual workload-type coverage from the Mac's frozen metadata exports.
+- [x] Obtain E5 operation-name coverage and per-operation scores from the
+  completed size-analysis export; 27 literal signatures are represented.
+- [ ] Complete tensor/schedule semantic case exports from the Mac's frozen data.
 
 The uploaded audit files contain no raw measurements, prepared shards, private
 float32 throughput labels, or actual request payloads. Saved-record consistency
@@ -165,13 +206,15 @@ limited by the supplied artifacts.
 - [x] Separate live/cached latency and usage; report assumed-rate cost estimates.
 - [x] Publish reviewed per-workload/aggregate exports, figures, and provenance.
 - [x] Prepare offline operation/type and paired-case export commands.
-- [ ] Run and review the Mac's workload-type and concrete schedule-case exports.
+- [x] Review the uploaded E5 operation-name and per-budget metric breakdowns.
+- [ ] Run and review the Mac's concrete tensor/schedule case-study exports.
 - [x] Prepare a controlled 16/32/50 candidate-size sweep on the frozen E5 cohort.
-- [ ] Run the new 16/32 conditions, reuse the 50-candidate archive, and review
-  the paired size results. Existing cross-platform or cross-workload count
-  differences do not replace this experiment.
+- [x] Complete the user-run 16/32 conditions, reuse the 50-candidate archive,
+  and obtain the combined per-workload tables and dedicated size plot.
+  Raw new prediction bundles were not uploaded for a source-level audit.
 - [x] Write the RQ1 report with completed results and explicit remaining analyses.
-- [ ] Incorporate the reviewed type/case/size exports into the final report.
+- [x] Incorporate the completed size and operation-name analyses into the report.
+- [ ] Add and review concrete tensor/schedule explanations for the selected cases.
 
 ### Optional extensions and retained tooling
 
@@ -189,8 +232,8 @@ the measured comparison to a three-model study.
 - [x] Reproducible preprocessing, metadata, serialization, and evaluation workflows.
 - [x] Audited Jev-versus-Random tables, figures, per-workload results, and accounting.
 - [x] RQ1 methodology, completed-results discussion, and stated limitations.
-- [ ] Reviewed workload-type, semantic case, and controlled size-study evidence
-  incorporated into the final RQ1 report.
+- [x] Completed candidate-size and operation-name evidence with dedicated plots.
+- [ ] Reviewed semantic tensor/schedule case narratives incorporated into final RQ1.
 
 ## RQ2: XLA TpuGraphs — Person C
 
@@ -268,7 +311,9 @@ and final RQ2 results remain pending.
 
 - [ ] Person A: methodology, Jev integration, evaluation framework, and overall
   comparison.
-- [ ] Person B: TenSet experiment, results, and RQ1 discussion.
+- [x] Person B: standalone TenSet methodology, results, and RQ1 discussion draft.
+- [ ] Person B: integrate the RQ1 draft into the team report and add the
+  remaining tensor/schedule case explanations before final proofreading.
 - [ ] Person C: TpuGraphs experiment, results, and RQ2 discussion.
 - [ ] All members: introduction, related work, limitations, conclusions, and
   final proofreading.

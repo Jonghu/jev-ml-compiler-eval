@@ -18,6 +18,22 @@ This study retains error records and uses tournament selection metrics. Keep
 its aggregates separate from the earlier valid-only E5 single-question study
 below, which supplies full-ranking Pairwise Accuracy and runtime regret.
 
+## 120 E5 workloads at 16, 32, and 50 schedules
+
+The completed [candidate-size comparison](size-sweep/README.md) keeps all
+three budgets separate on the same 120 workload IDs. It publishes six model
+means, all 720 model/workload/budget rows, per-budget curves, paired workload
+uncertainty, operation-signature breakdowns, post-hoc examples, and accounting.
+The 50-schedule anchor reuses the historical run below. The new 16/32 upload
+contains analysis exports rather than raw predictions and manifests, so its
+independent verification is limited to those exports.
+
+Jev's observed means favor it at all budgets. Exploratory Pairwise Accuracy
+intervals are positive; Top-1 and Top-5 intervals include zero. The apparent
+larger Top-1 advantage at smaller budgets is not established by the paired
+cross-budget intervals. Full tensor/schedule explanations still need the
+offline prepared-data case export.
+
 ## 120 test workloads x 50 schedules, long context
 
 Directory: [w120-c50-s42-long-context](w120-c50-s42-long-context/).

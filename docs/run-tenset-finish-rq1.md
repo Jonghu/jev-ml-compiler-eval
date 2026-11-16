@@ -6,7 +6,7 @@ completed studies separate:
 
 | Study | Purpose | Metrics to report |
 |---|---|---|
-| E5-2673, 120 workloads x 50 valid schedules | Single-question schedule ranking | Top-1, Top-5, Pairwise Accuracy, runtime regret |
+| E5-2673, 120 workloads at 16/32/50 valid schedules | Single-question ranking and completed candidate-size comparison | Top-1, Top-5, Pairwise Accuracy, runtime regret |
 | Platinum-8272, 484 workloads and 187,679 test records | Larger tournament selection study | Record-weighted Top-1/Top-5, failure and elimination diagnostics |
 
 The tournament's eliminated tail is a deterministic presentation order, not a
@@ -16,8 +16,12 @@ Accuracy or interpret a mean sentinel-based regret as a measured slowdown.
 
 The [RQ1 report](rq1-report.md), [run log](tenset-runlog.md), and
 [reviewed Platinum results](results/tenset/tutorial-500-platinum-test/README.md)
-contain the completed numerical results. The steps below prepare the remaining
-workload-type examples and controlled size comparison.
+contain the completed numerical results. The user has now completed the 16/32
+conditions and uploaded their analysis together with the reused 50-candidate
+anchor. The [size-study results](results/tenset/size-sweep/README.md) include
+720 per-workload rows, per-operation tables, and the dedicated size figure.
+The remaining substantive export is the concrete tensor/schedule case analysis.
+Sections 3–4 retain reproduction commands; the size runs are not pending work.
 
 The revised three-slide contribution is also available as an
 [editable PowerPoint](presentations/tenset-rq1/tenset_rq1_slides.pptx),
@@ -43,7 +47,13 @@ analysis reads those saved artifacts without rerunning their models. Do not
 resume an old execution under changed code: resume identities intentionally
 require the original implementation and environment.
 
-## 2. Export workload types and schedule examples offline
+## 2. Complete semantic schedule-case exports offline
+
+The completed E5 size-analysis upload already contains operation-name
+breakdowns for 27 literal signatures. Its `jev_cases.csv` identifies post-hoc
+metric successes and failures, but does not contain tensor shapes or selected
+schedule arguments. The commands below add that missing semantic context and
+can also provide Platinum operation/type breakdowns.
 
 Run the context-aware analyzer on the complete Platinum study:
 
@@ -91,13 +101,20 @@ Inspect the case export's `analysis-manifest.json`, `by_operation.csv`,
 `case_studies.json` for complete transformations. If an analysis output directory
 already exists, choose a new output name rather than overwriting it.
 
-The prepared shards are only on the Mac, so the cloud audit could not produce
-these semantic exports. They are ready-to-run analysis, not fabricated finished
-workload-type results.
+The prepared shards are only on the Mac. The uploaded operation-name tables
+can be reviewed in the cloud, but complete tensor/schedule explanations still
+require these local semantic exports. They are ready-to-run analysis, not
+finished case narratives.
 
-## 3. Freeze the controlled candidate-size sweep offline
+## 3. Reproduction: freeze the candidate-size sweep offline
 
-Use the same 120 E5 workloads at 16, 32, and 50 schedules. Smaller pools are
+**Status: completed and analyzed by the user.** The new 16/32 executions and
+the historical 50-schedule anchor are represented in the uploaded six-row
+aggregate and 720-row per-workload table. The raw new prediction/manifest
+bundles were not supplied, so the cloud review checks analysis consistency
+rather than repeating the entire source-level audit.
+
+For a reproduction, use the same 120 E5 workloads at 16, 32, and 50 schedules. Smaller pools are
 prefixes of the same seeded order; they are not selected by measured speed.
 The target, seed 42, metadata, no-description input, long-context mode, model
 version, and metric definitions stay fixed. This is separate from the Platinum
@@ -122,7 +139,8 @@ Local profiles and the frozen manifest are written to
 Preparation prints the applicable preflight, execution, and analysis commands.
 Keep the data and generated profiles unchanged after freezing them.
 
-Validate the 16- and 32-schedule members without credentials or model calls:
+For a reproduction, validate the 16- and 32-schedule members without
+credentials or model calls:
 
 ```bash
 uv run python scripts/run_tenset_size_sweep.py \
@@ -139,11 +157,14 @@ different file hash is not automatically interchangeable with the audited file.
 Custom data can use an explicit expected checksum when preparing a new study;
 that does not establish identity with the historical benchmark.
 
-## 4. Run only the new size experiments when ready
+## 4. Reproduction: paid size-experiment commands
 
-The following commands make **paid Jev API calls**. They were prepared and
-tested offline, not executed as part of this update. The earlier approximately
-7.62 USD cost belongs to the completed Platinum study, not to this sweep.
+**The user has already completed these 16/32 runs.** These commands are
+preserved for reproducibility, not as instructions to repeat paid calls to
+finish the current analysis. A fresh execution against a new destination makes
+**paid Jev API calls**. The earlier approximately 7.62 USD cost belongs to the
+completed Platinum study; it is not the cost of this size sweep. New run dates
+and billing details cannot be established from the analysis tables alone.
 
 The key is `TYPESAFE_API_KEY` in the repository-root `.env`. An exported shell
 value takes precedence. To use the value in `.env` without displaying it:
@@ -171,14 +192,16 @@ completion like the tournament collection runner, so do not assume `--resume`
 is available for this sweep. Consult the helper's printed status and preserve
 any partial output before choosing a new destination.
 
-After the new members finish, run the analysis command printed during
-preparation. Use `by_candidate_count.csv` and paired per-workload rows to discuss
+The uploaded completed analysis was generated after the new members finished.
+For a reproduction, run the analysis command printed during preparation after
+all requested members complete. Use `by_candidate_count.csv` and paired rows to discuss
 size effects. An overall average pooled across sizes is not the size comparison.
 The plot and table should show the number of workloads and the 16/32/50 budgets.
 Compare Jev and Random within each budget. Increasing the pool can change its
 fastest schedule, so a cross-size score change alone is not a physical speedup.
 
-Generate the dedicated candidate-size figure from the completed analysis:
+The dedicated candidate-size figure has also been uploaded. To regenerate it
+offline from a completed local analysis:
 
 ```bash
 uv run python scripts/plot_tenset_size_sweep.py \
@@ -200,14 +223,18 @@ candidate-count effects, because workload identity changes between those groups.
 - [x] Include paired uncertainty and a separately labelled exact Random expectation.
 - [x] Record failure-sentinel choices, tournament attrition, tokens, and cached usage.
 - [x] Prepare plots, updated slides, and the context-aware export workflow.
-- [ ] Run the Mac metadata export and write the workload-type and schedule examples.
-- [ ] Run the new 16/32 experiments and incorporate the controlled size comparison.
+- [x] Complete the user-run 16/32 conditions and analyze them with the reused 50 anchor.
+- [x] Review per-budget metrics, operation-name breakdowns, and the dedicated size plot.
+- [ ] Export full tensor/schedule context and write the semantic case narratives.
 
 Fresh API repeatability checks, field-description/context/order ablations, and
 expansion to all raw schedules are useful optional extensions. Finish the
-metadata/case exports and the controlled size comparison before expanding scope.
+semantic case exports and final narrative before expanding scope.
 
 For final review, the compact Mac exports to share are `by_operation.csv`,
 `by_operation_family.csv`, `per_workload.csv`, and `case_studies.json` from each
-case-analysis directory. The frozen prepared data and API key do not need to be
-shared. Add the completed size analysis and its dedicated plot once available.
+case-analysis directory. The completed size analysis and dedicated plot have
+already been shared. The frozen prepared data and API key do not need to be
+shared. A full independent audit of the new size runs would additionally need
+their original prediction and manifest bundles; their absence is explicitly
+recorded in the current analysis limits.

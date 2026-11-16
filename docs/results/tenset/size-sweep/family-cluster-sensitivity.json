@@ -1,0 +1,377 @@
+{
+  "method": "Exploratory percentile cluster bootstrap: resample 56 leading DAG-hash groups with replacement; retain all member workloads; divide summed paired metric differences by summed workload counts. Use the same group-index draws across all three budgets.",
+  "replicates": 50000,
+  "seed": 20261116,
+  "rng": "NumPy default_rng (PCG64)",
+  "numpy_version": "2.3.5",
+  "workloads": 120,
+  "clusters": 56,
+  "largest_cluster_workloads": 25,
+  "bootstrap_replicate_workload_count_range": [
+    70,
+    269
+  ],
+  "workload_order": "lexicographic ascending workload_id",
+  "cluster_order": "lexicographic ascending dag_hash_family",
+  "source_sha256": {
+    "per_workload": "c91e3b33ce9d2a9800c4cb50f9a38e6418e73fd26d68338a3078570886fd2099",
+    "family_map": "3e2bf41703b44b5618e9a5dfe3100deed5e0d42d49c9aacee4f4fea9a054bd2d"
+  },
+  "source_names": {
+    "per_workload": "per_workload.csv",
+    "family_map": "paired-workloads.csv"
+  },
+  "workload_to_hash_group": {
+    "tenset-006a0e3b0b43c66259010c87": "6e24397e6a0f017cdf546cb2ec2116a5",
+    "tenset-03080621599410bd1568e462": "bb6dce4be7b86f257e2d3e61dd0d325c",
+    "tenset-093ee18e2bc242708bb4770d": "0c9a5ba46ffc5e1a9e5641018527117f",
+    "tenset-09fe40890a98477917f1cd85": "76d9dba3bae2a5400bc39bb1282eb064",
+    "tenset-0b59f27e417cf9effd85b214": "14342fd24968f3a3bd585ea887ddfe5e",
+    "tenset-0baf83e047ce853188730e10": "fca31b60022f207d5b529c3683ae35f2",
+    "tenset-0dc8d7972c9050391a256bdb": "54d608964c2426f018493a10106a673e",
+    "tenset-0e761c111a604dc0731479bf": "fef3771fbad826271268252d597ca5fa",
+    "tenset-107579e1e938604a05b91442": "efd2ee999f6a23d362c3b74657bef447",
+    "tenset-126ef63ec265508a028ca3f1": "5c3704334f58981d6e2ab710edf861d3",
+    "tenset-144e26872d47c6189bf795a7": "d89363c18021b27583a5d1e40b0996a2",
+    "tenset-16d6f553355caefc86d440ac": "0c9a5ba46ffc5e1a9e5641018527117f",
+    "tenset-1730cf1f3646150cda11acd7": "d24d211e8d389e84a034e8c867dc3031",
+    "tenset-19173a9e314d24b638068029": "6b7583cf23c7c37d3212cad9d06e58c1",
+    "tenset-1a66347ec8fb594bdd2bcd45": "c87ba68bc180312f5716af09a77ca15b",
+    "tenset-1b8bb7ea70083e2af62f1857": "7006235cfc29b73be524cf390ed5a977",
+    "tenset-1c06dd347db18aa8ffcdc91b": "d2a28fdf41e83222456f5a6e5bf8a24a",
+    "tenset-1d5e75a221131c568dcb1bcf": "c9e5af24c341e4f873ea9bb33341012a",
+    "tenset-218874f0ed0a9123e5f45364": "6e24397e6a0f017cdf546cb2ec2116a5",
+    "tenset-2291af69d2513ee9d5fc9ee5": "d89363c18021b27583a5d1e40b0996a2",
+    "tenset-29287dba7fddc56fab608c73": "4228de36f0a28d51bb9739b9b99d6625",
+    "tenset-2c060f83f2a87ace4db5ea48": "e9e52d20c2bff58d4d1b5e22aceac714",
+    "tenset-2f1b34217165f1d2ba31463e": "54d608964c2426f018493a10106a673e",
+    "tenset-36be4fa74a940924f755d1e7": "12ce7983e87fd05673462ec1bdbbc40b",
+    "tenset-37433fa026016fa6acffca19": "2350d19dc42a0665244368384c66b3a5",
+    "tenset-37ea9606dad34388f43f6204": "152a9d56fbcd72f4ab8f42214673dd12",
+    "tenset-39aa9f958c7c0cfbe04d047d": "c2962c92f0aa6a1169e4490bafef3dec",
+    "tenset-39f0a1c98b244c3cc847d759": "ef319e663b1ce6b90382531c1808b4f0",
+    "tenset-3a65b4582ed3ddf1a81b11d3": "3379f5d4bd5cdf85842a76d666d9cc39",
+    "tenset-3e1bd3050d4131b325aed460": "54d608964c2426f018493a10106a673e",
+    "tenset-3fdc8598f5f484cc1a51c801": "54d608964c2426f018493a10106a673e",
+    "tenset-401261ae157993d3c35c1ad1": "54d608964c2426f018493a10106a673e",
+    "tenset-408995cd806e74ae08f4a9a0": "54d608964c2426f018493a10106a673e",
+    "tenset-40b14642425f0726c0e1a861": "d2a28fdf41e83222456f5a6e5bf8a24a",
+    "tenset-419fec4831d60b67d10fa93f": "0013c369f74ad81dbdce48d38fd42748",
+    "tenset-42abf3f9a4802401baa9691b": "eb0958f310390c4e57ae423bb51cd224",
+    "tenset-4999c172a645c5fa11fc89be": "cbd44ab40cd3043d1c2bce7ddb1f6392",
+    "tenset-49b0c0f2da212fa3d2ad2f4d": "a12fbee7636d485f5404304276246b54",
+    "tenset-56998206c132a0fd7fbbec5a": "99f9887afb7cb6c4ff91067ec495666c",
+    "tenset-5a90c3621266f9e4b5730e9d": "6b7583cf23c7c37d3212cad9d06e58c1",
+    "tenset-5c4c5bc280131376e40a6a35": "54d608964c2426f018493a10106a673e",
+    "tenset-5fa63a945d8e2bb367b24924": "42e3fa8828a931031e7bd25b0484a9ea",
+    "tenset-5fe9581d7ef78bc11b236dec": "d89363c18021b27583a5d1e40b0996a2",
+    "tenset-609089b7bf4e58390d74fb5b": "4fde5718363be962a345d29aab5063a5",
+    "tenset-612e767d5f9076967c9384d4": "eb0958f310390c4e57ae423bb51cd224",
+    "tenset-617776070c27dc65a03af81f": "6b7583cf23c7c37d3212cad9d06e58c1",
+    "tenset-6308af8976eb4fd2875dd49a": "6b7583cf23c7c37d3212cad9d06e58c1",
+    "tenset-6671773214713fc571a8bf12": "54d608964c2426f018493a10106a673e",
+    "tenset-6a22d07a9bee5cba3e6f51db": "54d608964c2426f018493a10106a673e",
+    "tenset-6b9e8b89f02589b1fbba9e2f": "54d608964c2426f018493a10106a673e",
+    "tenset-6cc74337ee072cd3c2941fdc": "54d608964c2426f018493a10106a673e",
+    "tenset-7014dc30fe9421a269244607": "6629ea5cbcaabf7bda37f634dfc99590",
+    "tenset-705c3ede939935929217450f": "fca31b60022f207d5b529c3683ae35f2",
+    "tenset-707ed54343f56850e86e4069": "54d608964c2426f018493a10106a673e",
+    "tenset-77da9bfdaab1deb713268ecc": "07ef657820f942e2753dd7e1e484ad2c",
+    "tenset-780acd6a0e90cdad12877b48": "9125f1ebe1533d8d2b0ba98ca24132cb",
+    "tenset-7e38f99ebfdb0ea3ec0ca4c7": "9f4c6b76f51d20e5c3bfb1817edd446e",
+    "tenset-7e97e6e138ff7d07e428ec43": "54d608964c2426f018493a10106a673e",
+    "tenset-7fbb67e756acd29143eb208b": "54d608964c2426f018493a10106a673e",
+    "tenset-8071f866d1b462ddb870185b": "12ce7983e87fd05673462ec1bdbbc40b",
+    "tenset-82369931ee560e6125f084df": "12ce7983e87fd05673462ec1bdbbc40b",
+    "tenset-83826a6e43db39e2b0b8c43c": "54da7d97586c156121150257c5268139",
+    "tenset-85c2867e668837d23ec414fd": "389740c677f61bb6e420304c5008fa7d",
+    "tenset-8af951afa2f37592ceef86bb": "c985575127b3ad80868c19dff585d60b",
+    "tenset-8da014a5ca7b56a3c50d14fc": "54d608964c2426f018493a10106a673e",
+    "tenset-8fe4093576ea4d4a7fba0cae": "022e9ad925fa9d131944586979dafc0f",
+    "tenset-8ff3572391bb0b1bceddce81": "54d608964c2426f018493a10106a673e",
+    "tenset-91ba2d3131eb0abba0d211bf": "bb6dce4be7b86f257e2d3e61dd0d325c",
+    "tenset-956a29560052e010542db92a": "23b8a36aee55cd70eeb0706ebd25dcf3",
+    "tenset-9a76b3a543c7bf842652e671": "022e9ad925fa9d131944586979dafc0f",
+    "tenset-9ad12b11192b7e455ff2a00a": "389740c677f61bb6e420304c5008fa7d",
+    "tenset-9cf6f40e676715c0836f94fc": "6b7583cf23c7c37d3212cad9d06e58c1",
+    "tenset-9f08736863e043e0027570f7": "14342fd24968f3a3bd585ea887ddfe5e",
+    "tenset-a09086b64a17b2acb759abab": "4fb2ceaf5533056f2fd8b6ff43968375",
+    "tenset-a1e1d5822c9c2e951070d7f9": "12ce7983e87fd05673462ec1bdbbc40b",
+    "tenset-a9e6bba7e6410e0450c3f66a": "4228de36f0a28d51bb9739b9b99d6625",
+    "tenset-aa4dcb43787385b12268d73f": "54d608964c2426f018493a10106a673e",
+    "tenset-acb6180691e0888d4fa4d360": "65b62664005b79209deaf87fd70be8dc",
+    "tenset-adc945681353d01ef3bbc3d1": "9b3e847b3dc06bae02db886b03aed74c",
+    "tenset-af28a7bc0064e78e676de617": "42e3fa8828a931031e7bd25b0484a9ea",
+    "tenset-b0bdadb20c008c3aa187e5e3": "512ea13620c26cd386609288092a751b",
+    "tenset-b17085864f5cc316b95c3b92": "fb4a01c3da78ae0da8352ece38076266",
+    "tenset-b19e219f0e9c3245ecacdf59": "994b4daf74abb67a01d1d157d4227578",
+    "tenset-b1bf1082ca47c1269d2b6580": "9f94740a643b79c85f0dc9b8bcce4d26",
+    "tenset-b23d871419294d2d5a529d0a": "54d608964c2426f018493a10106a673e",
+    "tenset-b3d8fc42e72f69c14949fc65": "6b7583cf23c7c37d3212cad9d06e58c1",
+    "tenset-b3da5219baee4e22c2274708": "42e3fa8828a931031e7bd25b0484a9ea",
+    "tenset-b6be07e6610d4ff9f53d0c64": "fef3771fbad826271268252d597ca5fa",
+    "tenset-b742422b306341c69597bc21": "12b88bedece6984af589a28b43e0f3c4",
+    "tenset-bcee392de9e26abb7fde8006": "0c9a5ba46ffc5e1a9e5641018527117f",
+    "tenset-bdd3337a0943b34e9cbf79e3": "3eb184d18885126bd13d564ef260c820",
+    "tenset-c597b51283ced533b6ee0481": "152a9d56fbcd72f4ab8f42214673dd12",
+    "tenset-c60108949ea2c725ec7482ef": "9f4c6b76f51d20e5c3bfb1817edd446e",
+    "tenset-c894700f98ae3df214e8598e": "fb4a01c3da78ae0da8352ece38076266",
+    "tenset-cd04caf8b544a1d9308a0d0d": "12b88bedece6984af589a28b43e0f3c4",
+    "tenset-cd2aac9bc3a338208471be92": "dde89265d3f1a59075cee648386eac1e",
+    "tenset-cda4177fbd8ef83624528817": "21e7adf4e9a4c2da7fbf34554be0526f",
+    "tenset-cef3425d9e6981c1c45d2270": "54d608964c2426f018493a10106a673e",
+    "tenset-d1b94181cbcd3c6a62dbe3f9": "4228de36f0a28d51bb9739b9b99d6625",
+    "tenset-d43aef5b1436c9130ac2fa5a": "69115f188984ae34ede37c3b8ca40b43",
+    "tenset-d7274a3de6e9af3310c41da4": "c2962c92f0aa6a1169e4490bafef3dec",
+    "tenset-d9721264d94c2b02b6b76ff7": "76d9dba3bae2a5400bc39bb1282eb064",
+    "tenset-daf66160904c8ca61c10c90e": "9f94740a643b79c85f0dc9b8bcce4d26",
+    "tenset-db56ae2ae4876d6ee3fa0b43": "9f4c6b76f51d20e5c3bfb1817edd446e",
+    "tenset-dbce08c6e9223dddd2ecd081": "6e24397e6a0f017cdf546cb2ec2116a5",
+    "tenset-de06270ce33ed6eb15a10c37": "6e24397e6a0f017cdf546cb2ec2116a5",
+    "tenset-de8a6c9b182885d76fbe7eb6": "54d608964c2426f018493a10106a673e",
+    "tenset-e12ec96e9007d3e94b9783d0": "54d608964c2426f018493a10106a673e",
+    "tenset-e5bbdb9a5c2012d34c064d75": "2350d19dc42a0665244368384c66b3a5",
+    "tenset-e6424f7e7595c1df834b7b95": "54d608964c2426f018493a10106a673e",
+    "tenset-e6cd98ac634fba7bab1d171c": "8c674f26f66543069d1e1c56cda249f9",
+    "tenset-e89628f154df988428fa910a": "d3c2d35d319c1cb2e62f4f64aca23ad1",
+    "tenset-eaf65c7fa74cd53739bbc484": "6b7583cf23c7c37d3212cad9d06e58c1",
+    "tenset-eb95e18174f55486d4440adc": "14342fd24968f3a3bd585ea887ddfe5e",
+    "tenset-ee843a8624b63bb0ca54c7ff": "54d608964c2426f018493a10106a673e",
+    "tenset-eff2f9b1e7815c2586d1d1ee": "efd2ee999f6a23d362c3b74657bef447",
+    "tenset-f0123e6425aa9597bdff64c2": "54d608964c2426f018493a10106a673e",
+    "tenset-f040b0beb23f153814d0682f": "964df221628741c0abde2ee6a6aa1e57",
+    "tenset-f97cb3f117cc422be00e55c6": "54d608964c2426f018493a10106a673e",
+    "tenset-fb2180ae8628e57cf8c5a90f": "12ce7983e87fd05673462ec1bdbbc40b"
+  },
+  "group_workload_counts": {
+    "0013c369f74ad81dbdce48d38fd42748": 1,
+    "022e9ad925fa9d131944586979dafc0f": 2,
+    "07ef657820f942e2753dd7e1e484ad2c": 1,
+    "0c9a5ba46ffc5e1a9e5641018527117f": 3,
+    "12b88bedece6984af589a28b43e0f3c4": 2,
+    "12ce7983e87fd05673462ec1bdbbc40b": 5,
+    "14342fd24968f3a3bd585ea887ddfe5e": 3,
+    "152a9d56fbcd72f4ab8f42214673dd12": 2,
+    "21e7adf4e9a4c2da7fbf34554be0526f": 1,
+    "2350d19dc42a0665244368384c66b3a5": 2,
+    "23b8a36aee55cd70eeb0706ebd25dcf3": 1,
+    "3379f5d4bd5cdf85842a76d666d9cc39": 1,
+    "389740c677f61bb6e420304c5008fa7d": 2,
+    "3eb184d18885126bd13d564ef260c820": 1,
+    "4228de36f0a28d51bb9739b9b99d6625": 3,
+    "42e3fa8828a931031e7bd25b0484a9ea": 3,
+    "4fb2ceaf5533056f2fd8b6ff43968375": 1,
+    "4fde5718363be962a345d29aab5063a5": 1,
+    "512ea13620c26cd386609288092a751b": 1,
+    "54d608964c2426f018493a10106a673e": 25,
+    "54da7d97586c156121150257c5268139": 1,
+    "5c3704334f58981d6e2ab710edf861d3": 1,
+    "65b62664005b79209deaf87fd70be8dc": 1,
+    "6629ea5cbcaabf7bda37f634dfc99590": 1,
+    "69115f188984ae34ede37c3b8ca40b43": 1,
+    "6b7583cf23c7c37d3212cad9d06e58c1": 7,
+    "6e24397e6a0f017cdf546cb2ec2116a5": 4,
+    "7006235cfc29b73be524cf390ed5a977": 1,
+    "76d9dba3bae2a5400bc39bb1282eb064": 2,
+    "8c674f26f66543069d1e1c56cda249f9": 1,
+    "9125f1ebe1533d8d2b0ba98ca24132cb": 1,
+    "964df221628741c0abde2ee6a6aa1e57": 1,
+    "994b4daf74abb67a01d1d157d4227578": 1,
+    "99f9887afb7cb6c4ff91067ec495666c": 1,
+    "9b3e847b3dc06bae02db886b03aed74c": 1,
+    "9f4c6b76f51d20e5c3bfb1817edd446e": 3,
+    "9f94740a643b79c85f0dc9b8bcce4d26": 2,
+    "a12fbee7636d485f5404304276246b54": 1,
+    "bb6dce4be7b86f257e2d3e61dd0d325c": 2,
+    "c2962c92f0aa6a1169e4490bafef3dec": 2,
+    "c87ba68bc180312f5716af09a77ca15b": 1,
+    "c985575127b3ad80868c19dff585d60b": 1,
+    "c9e5af24c341e4f873ea9bb33341012a": 1,
+    "cbd44ab40cd3043d1c2bce7ddb1f6392": 1,
+    "d24d211e8d389e84a034e8c867dc3031": 1,
+    "d2a28fdf41e83222456f5a6e5bf8a24a": 2,
+    "d3c2d35d319c1cb2e62f4f64aca23ad1": 1,
+    "d89363c18021b27583a5d1e40b0996a2": 3,
+    "dde89265d3f1a59075cee648386eac1e": 1,
+    "e9e52d20c2bff58d4d1b5e22aceac714": 1,
+    "eb0958f310390c4e57ae423bb51cd224": 2,
+    "ef319e663b1ce6b90382531c1808b4f0": 1,
+    "efd2ee999f6a23d362c3b74657bef447": 2,
+    "fb4a01c3da78ae0da8352ece38076266": 2,
+    "fca31b60022f207d5b529c3683ae35f2": 2,
+    "fef3771fbad826271268252d597ca5fa": 2
+  },
+  "limitations": [
+    "Intervals are exploratory and unadjusted for multiple comparisons.",
+    "Leading-hash groups are not verified independent program or network families; this is a sensitivity analysis only.",
+    "Conditions on one Random seed and one saved Jev outcome per workload/budget; c50 is a historical reused anchor.",
+    "New c16/c32 raw predictions, labels, candidate pools and saved configurations were not uploaded for independent verification.",
+    "Candidate-pool optima change with budget; normalized-score changes do not directly measure selected-runtime changes."
+  ],
+  "per_budget": {
+    "16": {
+      "top_1_score": {
+        "mean_delta_jev_minus_random": 0.04951036807693306,
+        "bootstrap_95ci": [
+          -0.03948166940562733,
+          0.12391468155638152
+        ],
+        "lower_is_better": false
+      },
+      "top_5_score": {
+        "mean_delta_jev_minus_random": 0.029417167559555635,
+        "bootstrap_95ci": [
+          -0.02773570683046488,
+          0.08157025895900737
+        ],
+        "lower_is_better": false
+      },
+      "pairwise_accuracy": {
+        "mean_delta_jev_minus_random": 0.029305555555555547,
+        "bootstrap_95ci": [
+          0.0009257557189542533,
+          0.05757597037793671
+        ],
+        "lower_is_better": false
+      },
+      "runtime_regret": {
+        "mean_delta_jev_minus_random": -1.7724433808486681,
+        "bootstrap_95ci": [
+          -3.8038002253798826,
+          1.0529049090786664
+        ],
+        "lower_is_better": true
+      }
+    },
+    "32": {
+      "top_1_score": {
+        "mean_delta_jev_minus_random": 0.04636035046738501,
+        "bootstrap_95ci": [
+          -0.009750043506377929,
+          0.10175738192487935
+        ],
+        "lower_is_better": false
+      },
+      "top_5_score": {
+        "mean_delta_jev_minus_random": 0.009678226229471797,
+        "bootstrap_95ci": [
+          -0.03902289257584567,
+          0.06622440953172748
+        ],
+        "lower_is_better": false
+      },
+      "pairwise_accuracy": {
+        "mean_delta_jev_minus_random": 0.026075268817204296,
+        "bootstrap_95ci": [
+          0.010890689627086949,
+          0.04188194481490609
+        ],
+        "lower_is_better": false
+      },
+      "runtime_regret": {
+        "mean_delta_jev_minus_random": -1.3242576618764768,
+        "bootstrap_95ci": [
+          -2.5181980749401522,
+          -0.3296854129436598
+        ],
+        "lower_is_better": true
+      }
+    },
+    "50": {
+      "top_1_score": {
+        "mean_delta_jev_minus_random": 0.004426693912350118,
+        "bootstrap_95ci": [
+          -0.0663849429266716,
+          0.06044370157516915
+        ],
+        "lower_is_better": false
+      },
+      "top_5_score": {
+        "mean_delta_jev_minus_random": 0.014054581391054151,
+        "bootstrap_95ci": [
+          -0.044922992530968466,
+          0.05911129397213865
+        ],
+        "lower_is_better": false
+      },
+      "pairwise_accuracy": {
+        "mean_delta_jev_minus_random": 0.027496598639455767,
+        "bootstrap_95ci": [
+          0.014961726654947686,
+          0.04217960384153662
+        ],
+        "lower_is_better": false
+      },
+      "runtime_regret": {
+        "mean_delta_jev_minus_random": -0.9778431824541649,
+        "bootstrap_95ci": [
+          -2.879721223922968,
+          1.1859349051291308
+        ],
+        "lower_is_better": true
+      }
+    }
+  },
+  "between_budget_contrasts": {
+    "16-50": {
+      "top_1_score": {
+        "difference_of_jev_minus_random_deltas": 0.04508367416458295,
+        "bootstrap_95ci": [
+          -0.04305966288787051,
+          0.13595755656619735
+        ]
+      },
+      "top_5_score": {
+        "difference_of_jev_minus_random_deltas": 0.015362586168501485,
+        "bootstrap_95ci": [
+          -0.04207055241531259,
+          0.08503534812559892
+        ]
+      },
+      "pairwise_accuracy": {
+        "difference_of_jev_minus_random_deltas": 0.0018089569160997798,
+        "bootstrap_95ci": [
+          -0.027954830678870835,
+          0.02890563131313135
+        ]
+      },
+      "runtime_regret": {
+        "difference_of_jev_minus_random_deltas": -0.7946001983945032,
+        "bootstrap_95ci": [
+          -3.4369179803128715,
+          2.5557438842728297
+        ]
+      }
+    },
+    "32-50": {
+      "top_1_score": {
+        "difference_of_jev_minus_random_deltas": 0.04193365655503489,
+        "bootstrap_95ci": [
+          -0.020911910102850602,
+          0.12616048506387378
+        ]
+      },
+      "top_5_score": {
+        "difference_of_jev_minus_random_deltas": -0.004376355161582354,
+        "bootstrap_95ci": [
+          -0.06137682282985769,
+          0.0731581314336832
+        ]
+      },
+      "pairwise_accuracy": {
+        "difference_of_jev_minus_random_deltas": -0.0014213298222514707,
+        "bootstrap_95ci": [
+          -0.019459150338954588,
+          0.015124663579639921
+        ]
+      },
+      "runtime_regret": {
+        "difference_of_jev_minus_random_deltas": -0.34641447942231185,
+        "bootstrap_95ci": [
+          -2.7238848005685528,
+          1.5543433072066308
+        ]
+      }
+    }
+  }
+}
