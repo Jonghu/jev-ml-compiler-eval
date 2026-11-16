@@ -1,0 +1,14 @@
+{
+  "source": "paired-workloads.csv",
+  "source_sha256": "ae102594e15125419e1dfce95a7097b4b15961dc5dfed9bc4138bbd2534dceea",
+  "population": "All484 paired workloads and187679 test records from saved500-file tutorial reconstruction audit. Groups partition the observed candidate counts.",
+  "metric_numeric_source": "Recomputed from saved runtime maps. Private original float32 official-throughput labels were not supplied; overall agreement with uploaded official summary was within5.3e-10. These grouped figures use runtime ratios, not independently reconstructed official labels.",
+  "metric_definitions": {
+    "top_1_score": "Minimum candidate runtime divided by selected runtime.",
+    "top_5_score": "Mean over prefixes k=1..5 of minimum runtime divided by minimum runtime among first k predicted candidates."
+  },
+  "aggregation": "Within each group/model, weight every workload score by its test-record count and divide by total records in the group.",
+  "interpretation": "Descriptive natural candidate-count grouping only. Workload identity/type and candidate-count group are confounded;468 workloads have400 candidates while only16 have6-88. This is not a controlled candidate-size ablation and does not establish an effect of candidate count. No additional calls or confidence intervals.",
+  "unchanged_artifacts": "Original reported Random0 and Jev outputs remain unchanged.",
+  "original_audit_paired_workloads_sha256": "822cffd3382cc61dec4f98239ea36b94da65eaa998087c0cc33921e83aed16da"
+}

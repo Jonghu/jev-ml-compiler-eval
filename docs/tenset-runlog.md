@@ -3,9 +3,10 @@
 A record of completed TenSet experiments and separately labelled offline
 analyses. This follows the TpuGraphs [run-log format](https://github.com/Jonghu/jev-ml-compiler-eval/blob/61fe406/docs/runlog.md).
 Dates below use America/Chicago; UTC completion timestamps are also given.
-Prepared follow-up profiles are listed at the end and are not completed runs.
+The current comparison is Jev versus Random. Prepared follow-up profiles are
+not completed runs; older optional comparisons remain historical context.
 
-## Shared setup
+## E5 shared setup — R1–R3
 
 | Item | Value |
 |---|---|
@@ -25,7 +26,8 @@ Top-5 Score averages the best score at each prefix of the first five choices;
 it is not just the best-of-five endpoint. Pairwise Accuracy follows TenSet's
 strict comparisons, with a separately named tie-aware diagnostic. Runtime
 regret is `selected / fastest_candidate - 1`, where the oracle is limited to
-the candidates presented in that run. Results are workload macro means.
+the candidates presented in that run. R1–R3 results are workload macro means;
+R4 below reports test-record-weighted selection scores separately.
 
 Original generated bundles remain outside Git, as in the TpuGraphs workstream.
 Reviewed tables, figures, audit methods, and input checksums are published under
@@ -242,7 +244,7 @@ TenSet Pairwise Accuracy and TpuGraphs Kendall's tau are not interchangeable.
 The linked [comparison CSV](results/tenset/cross-dataset-comparison.csv) retains
 scope and evidence labels alongside the reported means.
 
-## Findings so far
+## Historical findings from R1–R3
 
 1. The setup pilot's perfect score was a correct one-case result, not an
    overall accuracy claim.
@@ -255,7 +257,7 @@ scope and evidence labels alongside the reported means.
 5. Published XGBoost results are an external literature reference. No matched
    XGBoost evaluation or competitiveness claim is supported by these runs.
 
-## Follow-ups prepared, not yet reported as completed
+## Optional R3 follow-ups prepared, not reported as completed
 
 - [ ] Field-description ablation on the same 120 x 50 cohort.
 - [ ] No-context and shuffled-presentation controls.
@@ -267,3 +269,177 @@ Commands and methodological constraints are in the
 [follow-up experiment guide](run-tenset-followup-experiments.md). These are
 exploratory extensions of inspected test results; reserve untouched cases for
 confirmatory claims after freezing further choices.
+
+## R4 — 500-file Platinum record-test tournament
+
+- Completed: 2026-11-16, 15:38 CST (`2026-11-16T21:38:42.173585Z`).
+- Recorded code commit: `ed73f19184f0513d8ca3f88e381435d28c3229a8`.
+- Config: `experiments/tenset/jev-tutorial-500-test.yaml`.
+- Original output: `results/tenset/tutorial-500-platinum-test/`, outside Git.
+- Uploaded for audit: `experiment.yaml`, `manifest.json`, `predictions.jsonl`,
+  `official-weighted-summary.json`, and `official-weighted-summary.csv`.
+- Platform: Intel Platinum 8272; exact recorded target
+  `llvm -keys=cpu -link-params=0 -mcpu=skylake-avx512 -model=platinum-8272`.
+- Environment: Python 3.11.18, TypeSafe SDK 0.7.5, NumPy 2.4.6,
+  Matplotlib 3.11.2.
+- Scope: 500 sampled batch-size-1 workload files, seed 0; 484 retained workload
+  pools with 187,679 test records. 468 pools contain 400 records; the remaining
+  16 contain 6–88. The minimum retained source workload has 48 records.
+- Split: reverse source-record order, the first `int(0.9*N)` reversed indices
+  assigned to the unused training portion and the remaining indices to test.
+  This is within each workload, not a workload-disjoint holdout.
+- Preparation reports 1,689,022 training records, 187,679 test records,
+  1,876,701 retained records, and 340 records in excluded small workloads.
+  It preserves measurement-error records and duplicates. The observed test
+  pools contain 2,013 reported error records and no duplicate configurations.
+- Jev uses field definitions, seeded shuffled neutral aliases, long context,
+  at most 255 options per question, and five candidates advancing per group.
+  Token-aware packing can use smaller groups. There are 468 two-round cases
+  and 16 single-question cases.
+- All 1,856 saved questions/requests resolve to `jev-1.14.0`.
+
+The current research scope is **Jev versus Random**. The tutorial supplies a
+reproducible selection/split procedure and metric context; no numerical
+specialized-model comparison is required. Original tutorial artifact identity
+and native TVM feature reproduction remain unverified and are not inferred
+from matching record counts. This is not labelled a paper-table reproduction.
+
+Reviewed derived outputs are in
+[the Platinum result directory](results/tenset/tutorial-500-platinum-test/README.md).
+
+| Model | Workloads | Test records | Record-weighted Top-1 Score | Record-weighted Top-5 Score |
+|---|---:|---:|---:|---:|
+| Random-0 | 484 | 187,679 | 0.235045 | 0.385021 |
+| Jev 1.14, fields and long-context tournament | 484 | 187,679 | 0.269356 | 0.388245 |
+
+The primary aggregation weights workloads by their number of test records.
+The separate macro means are 0.249948/0.399532 for Random and
+0.282998/0.400940 for Jev. The saved canonical runtime-based scores and the
+private-label weighted summaries have distinct names and aggregation scopes.
+
+Top-1 Score is a performance ratio rather than an optimum-hit percentage.
+Jev selects the unique test-pool optimum on 9/484 cases, versus 6/484 for
+Random. Jev has a higher Top-1 score on 278 cases and a lower score on 206;
+its Top-5 score wins 238 and loses 246. There are no paired score ties.
+
+Global Pairwise Accuracy is not reported: probabilities are only comparable
+within a tournament question, and the eliminated tail is deterministically
+ordered. Failure-sentinel penalties are not physical runtime measurements;
+no average physical-runtime regret or speedup is inferred from them.
+
+### Integrity audit
+
+All 968 predictions are present, 484 per model. Every paired row has identical
+ordered candidate IDs, runtime maps, recorded model-input fingerprints, and
+byte counts. The manifest's realized pools agree with the predictions, Random-0
+rankings reproduce exactly, and all saved generic Top-1/Top-5 metrics recompute
+within `1.11e-16`.
+
+Every tournament's seeded presentation, per-round partitions, question
+probabilities, choice-first rankings, top-five advancement, final question,
+and deterministic elimination order reconstruct from the saved metadata.
+Probabilities are finite and sum to one in every question. All recorded package
+source fingerprints agree with the recorded commit. The uploaded weighted
+summary's prediction checksum and all collection-index hash references agree.
+Runtime-ratio recomputation agrees with the private-label weighted scores
+within `5.3e-10`; this is not exact independent reconstruction of the private
+float32 labels.
+
+Raw measurements, prepared shards, private throughput labels, actual request
+payloads, and the request cache were not supplied. Consequently raw aggregation,
+semantic completeness, and actual request-label isolation were not independently
+rechecked. All audit conclusions retain those content-validation limits.
+
+### Paired uncertainty and exact uniform-Random expectation
+
+The paired workload bootstrap samples 484 workload pairs with replacement,
+retains each sampled case's test-record weight, and recomputes weighted ratios
+of sums. There are 50,000 percentile resamples with seed 20261116. Intervals
+are exploratory, conditional on this file sample and saved responses, and
+unadjusted for multiple metrics. Related workloads may be correlated; a
+DAG-family mapping was not recoverable from the uploaded artifacts.
+
+| Metric | Weighted Jev minus Random-0 | Exploratory 95% paired interval |
+|---|---:|---:|
+| Top-1 Score | +0.034310 | +0.009015 to +0.059739 |
+| Top-5 Score | +0.003224 | −0.018344 to +0.024936 |
+
+All saved runtime labels also support an exact uniform-Random expectation over
+every candidate permutation. Top-1 is a direct average; Top-5 uses the minimum
+order-statistic distribution for each prefix. This is an analytical reference,
+not a fresh API experiment or a replacement for the observed Random-0 ranking.
+
+| Analytical reference | Weighted Top-1 Score | Weighted Top-5 Score |
+|---|---:|---:|
+| Exact uniform-Random expectation | 0.239404 | 0.378379 |
+| Observed Random-0 | 0.235045 | 0.385021 |
+| Observed Jev | 0.269356 | 0.388245 |
+
+Jev minus expected Random is +0.029951 for Top-1, with interval
+[+0.012579, +0.048034], and +0.009865 for Top-5, with interval
+[−0.005705, +0.025934]. The positive Top-1 mean signal persists against this
+reference; Top-5 remains uncertain. Jev exceeds expected Random on 219 workloads
+and falls below it on 265, so a positive weighted mean is not a universal
+per-workload improvement.
+
+### Tournament and probability diagnostics
+
+The test-pool optimum is unique in all 484 workloads. Among 468 two-round
+cases, the optimum is eliminated in round 0 on 442 (94.44%). The other 26
+advance it; six select it and 20 do not. Among 16 single-question cases, three
+select the optimum. This is recorded-path attribution, not evidence of what a
+hypothetical single-question or different-grouping strategy would choose.
+
+| Options per question | Questions | Option probabilities equal to zero | Median distinct probability values |
+|---|---:|---:|---:|
+| At most 50 | 479 | 0.00% | 9 |
+| 51–150 | 1,189 | 25.38% | 3 |
+| 151–255 | 188 | 62.57% | 4 |
+
+Across all 1,856 questions, 61,591 of 194,539 option-probability entries are
+zero (31.66%), and 837 questions have multiple candidates tied for maximum
+probability. These bins differ in workload and tournament round and do not
+constitute an isolated candidate-size ablation. Zero recorded probability is
+not proof that a schedule cannot be optimal.
+
+The saved runtime maps retain 2,013 failure-sentinel records across 145
+workloads, matching the reported test error count. Jev selects a sentinel
+record on eight cases, versus seven for Random; at least one appears in the
+first five choices on 28 versus 22 cases. No claim that Jev avoids failed
+configurations is supported.
+
+### Usage, latency, and estimated input cost
+
+| Accounting item | Value |
+|---|---:|
+| Live / cached requests in the completed run | 1,840 / 16 |
+| New live input / output tokens | 179,522,529 / 1,974,500 |
+| Previously cached input / output tokens | 1,880,950 / 13,018 |
+| All distinct saved-response input / output tokens | 181,403,479 / 1,987,518 |
+| Mean live API latency, per request | 1.022 s |
+| Mean total decision latency, per workload, mixed live/cache | 4.102 s |
+| Estimated new successful input cost | $7.539946 |
+| Estimated total including earlier pilot responses | $7.618946 |
+
+The 16 cached requests correspond to the first three workload inputs, with
+8/4/4 saved responses. The pricing assumption is $0.042 per million input
+tokens with output free. No invoice or dated provider-pricing artifact was
+supplied. These estimates cover logged successful responses, excluding failed
+or other requests, custom pricing, taxes, and credits. They overlap and must
+not be added; cached tokens are prior usage rather than new full-run charges.
+
+### Interpretation and current remaining work
+
+R4 supports a positive weighted Top-1 signal against Random on these fixed
+pools, with no clear Top-5 gain. It combines field definitions, blind
+presentation, long context, and tournament selection. Comparing R4 with R3
+cannot isolate any of those factors because hardware, workloads, splits,
+pool sizes, record policy, and aggregation also change.
+
+The [RQ1 report](rq1-report.md) now treats both completed protocols separately
+under a Jev-versus-Random scope. The
+[finish guide](run-tenset-finish-rq1.md) prepares the remaining operation/type
+exports, concrete paired schedule cases, and controlled 16/32/50 E5 size study.
+Those new exports and 16/32 runs are prepared, not reported as completed.
+Optional prompt/order/algorithm controls, fresh repeats, and all-source-schedule
+tournaments are not required completion items for the revised scope.

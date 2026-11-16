@@ -1,10 +1,10 @@
-"""Evaluate record-level tutorial test pools without claiming a matched XGBoost run.
+"""Evaluate Jev and Random on record-level tutorial-derived test pools.
 
 The ordinary collection runner retains its runtime-based macro summaries. This
 wrapper additionally recomputes Top-1/Top-5 from the private official throughput
-labels and reports the tutorial's test-record-count weighted aggregation. Original
-published test identities and XGBoost artifacts remain unavailable; the published
-aggregate is therefore recorded separately as an external reference.
+labels and reports test-record-count weighted aggregation. Tutorial alignment is
+recorded as dataset provenance; it is not a prerequisite for the paired
+Jev-versus-Random comparison on the frozen local candidate pools.
 """
 
 from __future__ import annotations
@@ -27,12 +27,7 @@ EXPERIMENT_PROTOCOL = "tenset_500file_tutorial_record_test_reconstruction"
 ALIGNMENT_STATUS = "unverified_original_tutorial_artifacts"
 SUMMARY_JSON = "official-weighted-summary.json"
 SUMMARY_CSV = "official-weighted-summary.csv"
-REFERENCE_JSON = "external-xgboost-reference.json"
-REFERENCE_SOURCE = (
-    "https://github.com/tlc-pack/tenset/blob/"
-    "35774ed373f9693cc6efcbe83f5703141e8ab0c8/"
-    "docs/try_pretrained_models_on_aws_c59x.md#L78"
-)
+COMPARISON_SCOPE = "Jev versus Random"
 
 
 def _read_json(path: Path) -> dict:
@@ -138,10 +133,11 @@ def preflight_tenset_tutorial(
         **result,
         "experiment_protocol": EXPERIMENT_PROTOCOL,
         "reference_alignment_status": ALIGNMENT_STATUS,
+        "comparison_scope": COMPARISON_SCOPE,
         "test_record_count": total,
+        # Retain these false-valued compatibility fields for saved consumers.
         "paired_xgboost_comparison": False,
-        "published_xgboost_reference_source": REFERENCE_SOURCE,
-        "live_execution_requires_allow_external_reference": True,
+        "live_execution_requires_allow_external_reference": False,
     }
 
 
@@ -284,6 +280,7 @@ def summarize_tenset_tutorial(
         "schema_version": 1,
         "experiment_protocol": EXPERIMENT_PROTOCOL,
         "reference_alignment_status": ALIGNMENT_STATUS,
+        "comparison_scope": COMPARISON_SCOPE,
         "paired_xgboost_comparison": False,
         "collection_index_sha256": _sha256(plan.index_path),
         "predictions_sha256": _sha256(source),
@@ -295,36 +292,8 @@ def summarize_tenset_tutorial(
             "These label-based scores can differ by floating-point roundoff."
         ),
         "global_tournament_pairwise_accuracy_reported": False,
-        "external_reference_file": REFERENCE_JSON,
         "models": models,
     }
-    reference = {
-        "schema_version": 1,
-        "status": "external_published_tutorial_reference_only",
-        "source": REFERENCE_SOURCE,
-        "reference_alignment_status": ALIGNMENT_STATUS,
-        "paired_comparison": False,
-        "model": "XGBoost",
-        "sampled_files": 500,
-        "retained_workloads": 484,
-        "training_records": 1689022,
-        "test_records": 187679,
-        "platform": "platinum-8272",
-        "split": "90/10 within-task record split",
-        "reported_metrics": {
-            "top_1_score": 0.829146,
-            "top_5_score": 0.904636,
-            "pairwise_accuracy": 0.846439,
-        },
-        "limitations": [
-            "Original inventory, dataset cache and XGBoost artifacts are unavailable.",
-            "Equal counts do not prove matching test records or XGBoost predictions.",
-            "The published aggregate is not a model prediction in this experiment.",
-            "Tournament group rankings do not establish global Pairwise Accuracy.",
-            "No XGBoost runtime-regret value is inferred from aggregate scores.",
-        ],
-    }
-    _write_json(plan.output_dir / REFERENCE_JSON, reference)
     _write_json(plan.output_dir / SUMMARY_JSON, summary)
 
     def write_csv(stream):
@@ -347,12 +316,15 @@ def run_tenset_tutorial(
     output_dir: str | Path | None = None,
     progress: Callable[[int, int, str, bool], None] | None = None,
 ) -> ExperimentRunResult:
-    """Run a checked reconstruction with explicit external-reference labelling."""
+    """Run checked Jev-versus-Random test pools.
 
-    if allow_external_reference is not True:
+    ``allow_external_reference`` is an ignored, deprecated compatibility option
+    for older callers. Existing historical reference files are left untouched.
+    """
+
+    if type(allow_external_reference) is not bool:
         raise ValueError(
-            "original tutorial/XGBoost artifacts are unverified; execution requires "
-            "--allow-external-reference and remains a Jev-versus-Random reconstruction"
+            "allow_external_reference compatibility option must be a boolean"
         )
     # Validate every selected private label and workload before starting any model.
     preflight_tenset_tutorial(

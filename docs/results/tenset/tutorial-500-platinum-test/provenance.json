@@ -1,0 +1,72 @@
+{
+  "artifact_status": "Reviewed derived exports; raw generated result bundles are excluded",
+  "study_scope": "Jev versus Random only",
+  "experiment_name": "tenset-tutorial-500-platinum-test",
+  "run_commit": "ed73f19184f0513d8ca3f88e381435d28c3229a8",
+  "completed_at_utc": "2026-11-16T21:38:42.173585+00:00",
+  "completed_at_america_chicago": "2026-11-16T15:38:42.173585-06:00",
+  "source_artifacts": {
+    "predictions.jsonl": {
+      "sha256": "53e2662aeb7480af284abcd2b302264d3760288060c512803ed67c25ca978179",
+      "raw_contents_committed": false
+    },
+    "manifest.json": {
+      "sha256": "9e36427bc46ca3644feedadec4afbe81eb9194e034ee9e1aac1dea964a401de2",
+      "raw_contents_committed": false
+    },
+    "experiment.yaml": {
+      "sha256": "82efbb72551a75cd4b225a2b54831609addfea745be5d9d845b4881a53c133c5",
+      "raw_contents_committed": false
+    },
+    "official-weighted-summary.csv": {
+      "sha256": "08a3201a937d25139f38c0a503b8e1a1cf746bb57cb1213d1cac6708d3d126f2",
+      "raw_contents_committed": false
+    },
+    "official-weighted-summary.json": {
+      "sha256": "5df5349c5912de66955dcf0f28331e25e4d74f9583dcbacfd15cbfb7d1e3983a",
+      "raw_contents_committed": false
+    }
+  },
+  "audit_inputs": {
+    "by-candidate-count-method.json": "d40a422c97ed47b7ea36065c2cec0c196e93538eb321c15546f340175ac05292",
+    "by-candidate-count.csv": "fe3bf46476c8f8a903b34bcfd74e2fc545e4196129ff12fba4f3830c759be7e5",
+    "exact-random-expectation.csv": "546b306e643be569b3f4e2c81fe076ad6fc112f474e52ab74f4bd3e624f94fad",
+    "exact-random-expectation.json": "65207112b29aa2b90a24462bfe6937c1ae07527dd0a146f9b483f695d4a83dd5",
+    "paired-statistics.json": "a19c05525bb720dfad64b25a6ba0cb23d62f39dede4594afd6880b0b6df12f56",
+    "paired-workloads.csv": "822cffd3382cc61dec4f98239ea36b94da65eaa998087c0cc33921e83aed16da",
+    "tournament-diagnostics.json": "9f43fab0767f6855197068e8c83f7e5d3640852d9f1ca8ec844b8a28d3fb8971",
+    "usage-independent.json": "a4c322df29e0099403952a834485ef604e04c17306f45d340aa0d8f1af310133"
+  },
+  "published_normalized_csv_sha256": {
+    "paired-workloads.csv": "ae102594e15125419e1dfce95a7097b4b15961dc5dfed9bc4138bbd2534dceea",
+    "exact-random-expectation.csv": "6b66f0da2b70f086ca2186daa90739047984ce7838c8c2e2c19b550cea1e9ac2",
+    "by-candidate-count.csv": "bf0428941fc8fa6ab633d39b18547bd1124ae95dd6ea6fed0f4373a0c15e951b"
+  },
+  "dataset": {
+    "platform": "platinum-8272",
+    "target": "llvm -keys=cpu -link-params=0 -mcpu=skylake-avx512 -model=platinum-8272",
+    "sampling_seed": 0,
+    "sampled_files": 500,
+    "retained_workloads": 484,
+    "test_records": 187679,
+    "split": "Reverse-order 90/10 within-workload record split from the pinned tutorial preparation",
+    "candidate_policy": "All test records; duplicate/error records retained",
+    "reported_error_records": 2013
+  },
+  "derivation_notes": [
+    "Numerical audit values are retained unchanged.",
+    "CSV line endings are normalized to LF; metadata references to published CSV hashes are updated and original audit hashes are retained separately.",
+    "Obsolete external-baseline metadata fields are removed after the research scope changed to Jev versus Random; no model measurements are removed.",
+    "Pricing attribution is corrected to an assumed audit rate, not user-specified pricing or an invoice.",
+    "metrics.csv and summary.json are reviewed exports from uploaded official-weighted summaries, not original-named bundle files."
+  ],
+  "limitations": [
+    "Raw measurements, private float32 official throughput labels, prepared shards and actual API request payloads were not supplied.",
+    "Runtime-map score recomputation agrees with the uploaded official-label summary within 5.3e-10; exact original-label reconstruction is not claimed.",
+    "Paired bootstrap intervals are exploratory, unadjusted and conditional on the saved cohort, Random seed and Jev responses.",
+    "Related workload-family dependence is not modeled because family identifiers were unavailable.",
+    "Failure-sentinel costs are not physical program execution times; no tournament mean runtime-regret claim is made.",
+    "No global tournament Pairwise Accuracy is claimed.",
+    "Natural candidate-count groups are confounded by workload composition; they are not a controlled candidate-size ablation."
+  ]
+}

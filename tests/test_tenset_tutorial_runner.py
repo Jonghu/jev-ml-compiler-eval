@@ -183,17 +183,23 @@ def test_offline_preflight_validates_all_private_records_without_clients(
     assert result["api_requests_made"] == 0
     assert result["test_record_count"] == 6
     assert result["selected_workloads"] == 2
+    assert result["comparison_scope"] == "Jev versus Random"
     assert result["paired_xgboost_comparison"] is False
+    assert result["live_execution_requires_allow_external_reference"] is False
+    assert "published_xgboost_reference_source" not in result
     assert result["reference_alignment_status"] == tutorial.ALIGNMENT_STATUS
     assert not TutorialTestModel.calls
 
 
-def test_live_guard_precedes_model_or_environment_initialization(
+def test_invalid_private_pool_precedes_model_initialization_without_reference_flag(
     tutorial_fixture, monkeypatch
 ):
-    path, config, _ = tutorial_fixture
+    path, config, index = tutorial_fixture
+    change_shard(
+        index, lambda workload: workload["candidates"][0].update(official_throughput=0)
+    )
     monkeypatch.setattr(collection, "run_tenset_collection", forbid)
-    with pytest.raises(ValueError, match="allow-external-reference"):
+    with pytest.raises(ValueError, match="throughput"):
         tutorial.run_tenset_tutorial(path)
     assert not Path(config["experiment"]["output_dir"]).exists()
 
@@ -259,7 +265,7 @@ def test_execution_writes_weighted_and_macro_scores_as_distinct_outputs(
     tutorial_fixture,
 ):
     path, config, _ = tutorial_fixture
-    result = tutorial.run_tenset_tutorial(path, allow_external_reference=True)
+    result = tutorial.run_tenset_tutorial(path)
     output = Path(config["experiment"]["output_dir"])
     assert result.output_dir == output
     summary = json.loads((output / tutorial.SUMMARY_JSON).read_text())
@@ -273,15 +279,14 @@ def test_execution_writes_weighted_and_macro_scores_as_distinct_outputs(
     assert model["record_weighted_metrics"]["top_5_score"] == pytest.approx(0.5625)
     assert model["macro_metrics"]["top_5_score"] == pytest.approx(0.609375)
     assert summary["global_tournament_pairwise_accuracy_reported"] is False
+    assert summary["comparison_scope"] == "Jev versus Random"
     assert summary["paired_xgboost_comparison"] is False
+    assert "external_reference_file" not in summary
     assert summary["predictions_sha256"] == digest(output / "predictions.jsonl")
     rows = list(csv.DictReader((output / tutorial.SUMMARY_CSV).open()))
     assert len(rows) == 2
     assert float(rows[1]["weighted_top_1_score"]) == pytest.approx(0.25)
-    reference = json.loads((output / tutorial.REFERENCE_JSON).read_text())
-    assert reference["reported_metrics"]["top_1_score"] == 0.829146
-    assert reference["paired_comparison"] is False
-    assert "runtime_regret" not in reference["reported_metrics"]
+    assert not (output / "external-xgboost-reference.json").exists()
     assert [
         row["model_id"]
         for row in json.loads((output / "metrics.json").read_text())["models"]
@@ -297,11 +302,15 @@ def test_resume_reuses_results_and_recreates_only_derived_summaries(tutorial_fix
     tutorial.run_tenset_tutorial(path, allow_external_reference=True)
     output = Path(config["experiment"]["output_dir"])
     original_predictions = (output / "predictions.jsonl").read_bytes()
+    legacy_reference = output / "external-xgboost-reference.json"
+    historical_contents = b'{"status":"historical reference; preserve unchanged"}\n'
+    legacy_reference.write_bytes(historical_contents)
     (output / tutorial.SUMMARY_JSON).unlink()
     tutorial.run_tenset_tutorial(path, allow_external_reference=True, resume=True)
     assert len(TutorialTestModel.calls) == 2
     assert (output / "predictions.jsonl").read_bytes() == original_predictions
     assert (output / tutorial.SUMMARY_JSON).is_file()
+    assert legacy_reference.read_bytes() == historical_contents
 
 
 def rewrite_predictions_and_completion(output, update):
@@ -475,13 +484,21 @@ def test_cli_preflight_never_loads_credentials_or_runs_models(
     assert '"test_record_count": 6' in capsys.readouterr().out
 
 
-def test_cli_requires_external_reference_flag_before_loading_credentials(
-    tutorial_fixture, monkeypatch
+@pytest.mark.parametrize("compatibility_args", [[], ["--allow-external-reference"]])
+def test_cli_runs_jev_random_without_requiring_external_reference_flag(
+    tutorial_fixture, monkeypatch, capsys, compatibility_args
 ):
-    path, _, _ = tutorial_fixture
+    path, config, _ = tutorial_fixture
     module = load_script()
-    monkeypatch.setattr(module, "load_cli_environment", forbid)
-    monkeypatch.setattr("sys.argv", ["run_tenset_tutorial.py", "--config", str(path)])
-    with pytest.raises(SystemExit) as error:
-        module.main()
-    assert error.value.code == 2
+    credentials = []
+    monkeypatch.setattr(module, "load_cli_environment", credentials.append)
+    monkeypatch.setattr(
+        "sys.argv",
+        ["run_tenset_tutorial.py", "--config", str(path), *compatibility_args],
+    )
+    module.main()
+    assert len(credentials) == 1
+    assert len(TutorialTestModel.calls) == 2
+    assert "Comparison: Jev versus Random" in capsys.readouterr().out
+    output = Path(config["experiment"]["output_dir"])
+    assert not (output / "external-xgboost-reference.json").exists()

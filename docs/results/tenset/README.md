@@ -5,6 +5,19 @@ interpretation. This directory contains reviewed derived outputs for the final
 report, following the project convention of keeping generated raw bundles
 outside Git. Publication was explicitly requested by the TenSet workstream owner.
 
+## 484 Platinum workloads: Jev versus Random
+
+The completed [Platinum test-pool result publication](tutorial-500-platinum-test/)
+contains record-weighted Top-1/Top-5 results, paired uncertainty, exact
+uniform-Random expectations, natural candidate-count breakdowns, tournament
+diagnostics, reviewed usage/cost tables, and three reproducible PNG/SVG figures.
+It covers 484 retained workloads and 187,679 test records. The research scope is
+Jev versus Random; no specialized-model comparison is required.
+
+This study retains error records and uses tournament selection metrics. Keep
+its aggregates separate from the earlier valid-only E5 single-question study
+below, which supplies full-ranking Pairwise Accuracy and runtime regret.
+
 ## 120 test workloads x 50 schedules, long context
 
 Directory: [w120-c50-s42-long-context](w120-c50-s42-long-context/).

@@ -1,7 +1,7 @@
 schema_version: 1
 experiment:
   name: tenset-tutorial-500-platinum-test-pilot
-  description: First three reconstructed tutorial test pools; published XGBoost scores are external reference only
+  description: Jev versus Random on the first three reconstructed tutorial test pools
   seed: 0
   output_dir: results/tenset/tutorial-500-platinum-pilot
 dataset:

@@ -25,7 +25,7 @@ def main() -> None:
     parser.add_argument(
         "--allow-external-reference",
         action="store_true",
-        help="Label published XGBoost aggregates as external reference only",
+        help="Deprecated compatibility flag; no longer needed for Jev versus Random",
     )
     args = parser.parse_args()
     if args.preflight_only:
@@ -35,11 +35,6 @@ def main() -> None:
         print(json.dumps(result, indent=2))
         print("Offline validation only; no API client or environment file was loaded.")
         return
-    if not args.allow_external_reference:
-        parser.error(
-            "--allow-external-reference is required: original test identities and "
-            "XGBoost artifacts are unverified; this is not a matched XGBoost comparison"
-        )
     # Check the complete selected scope before loading credentials or SDK clients.
     preflight_tenset_tutorial(
         args.config, workload_limit=args.workload_limit, output_dir=args.output_dir
@@ -50,10 +45,10 @@ def main() -> None:
         status = "reused completed results" if reused else "completed"
         print(f"[{done}/{total}] {workload}: {status}", flush=True)
 
-    print("Published XGBoost is external reference only; original pool is unverified.")
+    print("Comparison: Jev versus Random on identical frozen test pools.")
     result = run_tenset_tutorial(
         args.config,
-        allow_external_reference=True,
+        allow_external_reference=args.allow_external_reference,
         workload_limit=args.workload_limit,
         resume=args.resume,
         output_dir=args.output_dir,

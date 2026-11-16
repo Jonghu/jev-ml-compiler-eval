@@ -1,0 +1,152 @@
+{
+  "source_sha256": {
+    "predictions.jsonl": "53e2662aeb7480af284abcd2b302264d3760288060c512803ed67c25ca978179",
+    "paired-workloads.csv": "ae102594e15125419e1dfce95a7097b4b15961dc5dfed9bc4138bbd2534dceea"
+  },
+  "counts": {
+    "paired_workloads": 484,
+    "test_records": 187679
+  },
+  "method": {
+    "random_distribution": "Uniform random permutation of every candidate in each saved runtime pool, without replacement. Exact expectation over all permutations; no Monte Carlo random rankings.",
+    "formula": "For ascending runtimes t_i, i=0..n-1, expected prefix-k score = sum_i (t_0/t_i) * comb(n-i-1,k-1)/comb(n,k), i=0..n-k. Expected Top5 is the mean of expected prefixes k=1..5. Repeated runtimes retain distinct positions and probabilities, so ties are exact.",
+    "weights": "Number of test records in each workload; normalized ratio of weighted sums.",
+    "bootstrap_unit": "Paired workload bootstrap: sample484 workload indices with replacement, preserving each sampled workload test-record weight. Recompute weighted ratio of sums.",
+    "bootstrap_replicates": 50000,
+    "bootstrap_seed": 20261116,
+    "bootstrap_interval": "Exploratory unadjusted percentile95% CI, conditional on frozen484 pools and one saved Jev response per workload. Not evidence of API repeatability or universality; related DAG families are not clustered because keys were not supplied.",
+    "metric_numeric_source": "Saved runtime ratios; private original float32 official-throughput labels absent. Matches uploaded official summary within5.3e-10. Failure sentinel records retained exactly as in reported evaluation.",
+    "validation": "Order-statistic probabilities sum to1; exhaustive combinations checked on3 small pools including runtime ties. No original artifacts modified."
+  },
+  "models": {
+    "expected_random": {
+      "weighted": {
+        "top_1_score": 0.23940438923487226,
+        "top_5_score": 0.37837937071028993
+      },
+      "macro": {
+        "top_1_score": 0.2508244222941076,
+        "top_5_score": 0.39083146514449973
+      }
+    },
+    "jev": {
+      "weighted": {
+        "top_1_score": 0.2693555649867857,
+        "top_5_score": 0.388244862359658
+      },
+      "macro": {
+        "top_1_score": 0.28299768175179524,
+        "top_5_score": 0.40094012454476735
+      }
+    },
+    "random": {
+      "weighted": {
+        "top_1_score": 0.23504543298337027,
+        "top_5_score": 0.3850208695001388
+      },
+      "macro": {
+        "top_1_score": 0.2499479744347092,
+        "top_5_score": 0.39953205227354416
+      }
+    }
+  },
+  "comparisons": {
+    "jev_minus_expected_random": {
+      "top_1_score": {
+        "weighted_mean_delta": 0.029951175751913427,
+        "weighted_bootstrap_95ci": [
+          0.012579006908488247,
+          0.04803360046178319
+        ],
+        "macro_mean_delta": 0.03217325945768755,
+        "macro_bootstrap_95ci": [
+          0.015163730309115574,
+          0.0498534245618921
+        ],
+        "workload_positive": 219,
+        "workload_zero": 0,
+        "workload_negative": 265
+      },
+      "top_5_score": {
+        "weighted_mean_delta": 0.009865491649368134,
+        "weighted_bootstrap_95ci": [
+          -0.005704909238190088,
+          0.025933966490303686
+        ],
+        "macro_mean_delta": 0.010108659400267532,
+        "macro_bootstrap_95ci": [
+          -0.005005330884993693,
+          0.025720694598268087
+        ],
+        "workload_positive": 207,
+        "workload_zero": 0,
+        "workload_negative": 277
+      }
+    },
+    "random0_minus_expected_random": {
+      "top_1_score": {
+        "weighted_mean_delta": -0.004358956251501996,
+        "weighted_bootstrap_95ci": [
+          -0.021907162846801328,
+          0.01359304967695404
+        ],
+        "macro_mean_delta": -0.000876447859398462,
+        "macro_bootstrap_95ci": [
+          -0.018309947721841732,
+          0.017106175387202306
+        ],
+        "workload_positive": 182,
+        "workload_zero": 0,
+        "workload_negative": 302
+      },
+      "top_5_score": {
+        "weighted_mean_delta": 0.0066414987898489085,
+        "weighted_bootstrap_95ci": [
+          -0.007966182767523422,
+          0.0216594568641862
+        ],
+        "macro_mean_delta": 0.008700587129044384,
+        "macro_bootstrap_95ci": [
+          -0.005702892999929643,
+          0.023518290984800943
+        ],
+        "workload_positive": 221,
+        "workload_zero": 0,
+        "workload_negative": 263
+      }
+    },
+    "jev_minus_random0": {
+      "top_1_score": {
+        "weighted_mean_delta": 0.03431013200341543,
+        "weighted_bootstrap_95ci": [
+          0.00901450020717709,
+          0.05973910639973973
+        ],
+        "macro_mean_delta": 0.033049707317086,
+        "macro_bootstrap_95ci": [
+          0.00816046678935053,
+          0.0580420993974627
+        ],
+        "workload_positive": 278,
+        "workload_zero": 0,
+        "workload_negative": 206
+      },
+      "top_5_score": {
+        "weighted_mean_delta": 0.0032239928595192316,
+        "weighted_bootstrap_95ci": [
+          -0.018343688338460003,
+          0.024936006248024025
+        ],
+        "macro_mean_delta": 0.0014080722712231507,
+        "macro_bootstrap_95ci": [
+          -0.019638910502503687,
+          0.02270229704794854
+        ],
+        "workload_positive": 238,
+        "workload_zero": 0,
+        "workload_negative": 246
+      }
+    }
+  },
+  "original_audit_paired_workloads_sha256": "822cffd3382cc61dec4f98239ea36b94da65eaa998087c0cc33921e83aed16da"
+}

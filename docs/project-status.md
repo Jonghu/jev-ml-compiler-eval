@@ -64,132 +64,133 @@ and the benchmark evidence still needed for the final report. See the
 
 ## RQ1: TVM TenSet — Person B
 
-The portable dataset and metadata pipeline is implemented. The Mac pilot and
-a 120-test-workload, 50-schedule long-context comparison have completed. The
-uploaded results of both runs were independently audited. The full held-out,
-all-candidate experiment and the follow-up ablations remain pending. The primary experiment is
-Jev versus Random; published XGBoost results are an external literature
-reference, with their protocol differences stated explicitly. The optional
-local XGBoost implementation does not block this experiment.
+The current research question is **Jev versus Random**. Specialized-model
+comparison and training are outside the agreed RQ1 scope. Two real-data runs
+have completed and their uploaded saved results were audited: the E5
+120-workload single-question experiment and the Platinum 484-workload
+record-test tournament. Their protocols and aggregations remain separate.
 
-See the [macOS run guide](run-tenset-on-macos.md), [implementation reference](tenset.md),
-and [RQ1 report section](rq1-report.md). Completed runs, uncertainty diagnostics,
-and published tables/figures are in the [TenSet run log](tenset-runlog.md).
+The [RQ1 report](rq1-report.md) now contains the completed methodology, results,
+uncertainty, cost, and limitations. The [run log](tenset-runlog.md) retains
+historical runs and the [finish guide](run-tenset-finish-rq1.md) gives the
+remaining local export and controlled candidate-size commands. Prepared
+profiles/exporters are not completed experiments or reviewed analysis exports.
 
-### User-reported Mac pilot
+### Completed E5 single-question experiment
 
-The console output from `experiments/tenset/jev-vs-random.yaml` reports:
-
-| Model | Workloads | Schedules | Top-1 Score | Top-5 Score | Pairwise Accuracy | Runtime regret | Mean decision latency (ms) |
-|---|---:|---:|---:|---:|---:|---:|---:|
-| Random | 1 | 8 | 1.0 | 1.0 | 0.821429 | 0.0 | 0.0355 |
-| Jev `jev-1.14.0` | 1 | 8 | 1.0 | 1.0 | 0.571429 | 0.0 | 555.784792 |
-
-Both selected a fastest schedule in this candidate pool. This is a setup pilot
-using `split: all`, not the held-out benchmark or evidence of overall model
-competitiveness. The subsequently uploaded pilot bundle was inspected: both
-models selected the unique sampled optimum, Jev used the requested model, and
-its request was uncached. The saved metric values recomputed correctly.
-
-### Audited 120-workload comparison
-
-The run at commit `6a4fe91` uses 120 project-test workloads, 50 identical sampled
-schedules per workload, seed 42, full program metadata, and experimental Jev
-long-context mode. All 240 prediction rows agree with the manifest and the
-reported metric definitions. Random rankings reproduce from their recorded seed.
+The run at `6a4fe91` uses 120 project-test workloads, 50 valid distinct sampled
+schedules each, seed 42, program metadata, no field definitions, and long
+context. Both models receive identical pools. Pairwise Accuracy and runtime
+regret are reported for this full-ranking, valid-only protocol.
 
 | Model | Top-1 Score | Top-5 Score | Pairwise Accuracy | Runtime regret |
 |---|---:|---:|---:|---:|
 | Random-42 | 0.332440 | 0.498775 | 0.491959 | 6.058854 |
 | Jev 1.14 long context | 0.336867 | 0.512829 | 0.519456 | 5.081011 |
 
-Jev selects a faster schedule on 58 workloads, a slower one on 60, and ties
-on two; both models select the sampled optimum on five workloads. Exploratory
-paired confidence intervals include no improvement for Top-1, Top-5, and mean
-regret against the observed Random-42 ranking. The modest Pairwise Accuracy
-gain remains positive in workload and DAG-hash-family resampling. Exact uniform
-Random expectation, a separate analytical reference, has mean regret 6.762689.
+The Pairwise Accuracy difference is 2.75 percentage points. Exploratory paired
+intervals include zero improvement for Top-1, Top-5, and regret. Jev chooses a
+faster schedule on 58 workloads, a slower one on 60, and an equal runtime on two;
+both models select the sampled optimum on 5/120 cases. Outliers affect the
+lower Jev mean regret. There are 110 live and ten cached responses; the live
+total decision mean is 465.156 ms. See the
+[reviewed E5 outputs](results/tenset/w120-c50-s42-long-context/metrics.csv).
 
-There are 110 live and ten cached Jev responses. Mean live total decision
-latency is 465.156 ms; the 426.488 ms console mean mixes both. Long context and
-these accounting distinctions must be explicit in the report. Raw measurements
-and actual request payloads were not part of the uploaded audit bundle.
+### Completed Platinum record-test tournament
 
-The [follow-up guide](run-tenset-followup-experiments.md) provides field-definition,
-context/order, forced-group tournament, and resumable all-candidate workflows.
-These are prepared execution profiles, not completed experimental results.
+The run at `ed73f19` uses the tutorial's batch-size-1 file-selection procedure,
+500 sampled workload files, 484 retained workloads, and 187,679 test records.
+The reverse-order 90/10 split is within each workload. It retains error records;
+the reported test pools include 2,013 error records. This is not a
+workload-disjoint test set or proof of identity with unpublished original
+artifacts. Jev and Random use the same reconstructed pools.
 
-The separate [500-file tutorial workflow](run-tenset-tutorial-reference.md)
-prepares Platinum-8272 test-record pools using the official preset ordering and
-within-workload record split. It includes offline preflight, a three-workload
-pilot, resumable execution, and test-record-weighted Top-1/Top-5 summaries. This
-workflow is prepared and has no completed real-data result here. Original
-tutorial test identities and matching XGBoost artifacts remain unverified;
-published XGBoost scores are explicitly external reference values. Live runs
-require `--allow-external-reference`, and the workflow does not establish a
-controlled three-model comparison or a reproduction of a paper table.
+Jev uses field definitions, long context, neutral aliases, shuffled presentation,
+and a maximum of 255 options per question with five advancing from each group.
+468 workloads require two rounds and 16 require one. The primary results weight
+each workload by its number of test records.
 
-### Dataset preparation
+| Model | Record-weighted Top-1 Score | Record-weighted Top-5 Score |
+|---|---:|---:|
+| Random-0 | 0.235045 | 0.385021 |
+| Jev 1.14 tournament | 0.269356 | 0.388245 |
 
-- [x] Download, prepare, and run TenSet on the user's Mac, as demonstrated by
-  the user-reported pilot.
-- [x] Implement extraction of tensor workloads, candidate schedules, and
-  measured runtimes, with fixture validation and a user-reported real-data pilot.
-- [x] Select Intel E5-2673 v4 as the initial recorded hardware target.
-- [ ] Establish a representative benchmark workload set and report its coverage.
-- [x] Implement workload metadata, schedule configuration, and runtime extraction.
-- [x] Define reproducible evaluation subsets and train/test splits.
+The Jev-minus-Random exploratory 95% paired weighted intervals are
+[+0.009015, +0.059739] for Top-1 and [−0.018344, +0.024936] for Top-5.
+Exact uniform-Random expectation, a separate analytical reference, is
+0.239404/0.378379; the positive Top-1 signal remains under that reference.
+Jev selects the test-pool optimum on 9/484 cases, versus 6/484 for Random.
+Among 468 two-round cases, the optimum is eliminated in round 0 on 442.
+These are saved-path diagnostics, not evidence of a counterfactual winner.
 
-### Workload serialization
+The completed run records 1,840 live and 16 cached requests. New input usage
+is 179,522,529 tokens; total stored-response input usage including earlier
+pilot responses is 181,403,479. At the assumed $0.042 per million input tokens
+with free output, estimates are $7.539946 new and $7.618946 including the pilot.
+They overlap and must not be added; neither is an invoice or a spending cap.
 
-- [x] Represent tensor shapes, operation types, loop structures, and scheduling
-  transformations in `Workload.context` and `Candidate.configuration`.
-- [x] Validate serialization against real TVM record structure and focused fixtures.
-- [x] Verify that measured runtimes never appear in model-visible data.
-- [x] Export semantic program metadata with portable Python and native format fixtures.
-- [x] Measure serialized input bytes and enforce a configurable local budget.
-- [ ] Verify actual service limits and full-dataset serialization coverage.
+See the [reviewed Platinum results](results/tenset/tutorial-500-platinum-test/README.md).
+Global Pairwise Accuracy is not defined by the tournament's deterministic
+elimination tail. Failure-sentinel penalties are not interpreted as physical
+runtime slowdowns. The older one-workload pilot remains a setup check, and
+old numerical specialized-model comparisons remain historical context only.
 
-### Optional local XGBoost baseline
+### Dataset and serialization
 
-The implementation is retained for a future matched comparison. Training and
-running it locally are optional; current experiments use Jev and Random.
+- [x] Download, prepare, and evaluate real TenSet CPU measurements from the Mac.
+- [x] Preserve exact E5-2673 and Platinum-8272 hardware-target metadata.
+- [x] Implement and document both project-workload and within-workload record splits.
+- [x] Preserve distinct-valid-schedule and tutorial record-level policies separately.
+- [x] Serialize shapes, dtypes, operation names, tensor-expression graphs, loops,
+  and scheduling transformations with portable Python and native format fixtures.
+- [x] Keep runtime/error/record-index labels outside model-visible fields in the
+  implemented interface and verify shared recorded input fingerprints.
+- [x] Measure input sizes; implement token-aware grouping and explicit long context.
+- [ ] Review actual workload-type coverage from the Mac's frozen metadata exports.
 
-- [x] Reuse the paper or official TVM XGBoost cost-model implementation where
-  feasible.
-- [ ] Optionally train or load the model with a documented training split.
-- [ ] Optionally generate and validate rankings on the same held-out candidates.
-- [x] Integrate XGBoost through `BaseDecisionModel` with a persistent legacy worker.
+The uploaded audit files contain no raw measurements, prepared shards, private
+float32 throughput labels, or actual request payloads. Saved-record consistency
+is verified; independent raw-content and request-label-isolation audits remain
+limited by the supplied artifacts.
 
-### Experiments and analysis
+### Metrics, experiments, and reviewed outputs
 
-- [x] Run the user-reported Jev-versus-Random setup pilot on one workload and
-  eight shared candidates.
-- [x] Run and audit the 120 x 50 Jev-versus-Random evaluation on held-out workloads.
-- [ ] Run field-definition and context/order ablations.
-- [ ] Run the all-candidate tournament on the full eligible test collection.
-- [ ] Select and verify published XGBoost results for a separately cited
-  literature comparison, without treating them as paired measurements.
-- [ ] Optionally evaluate the local XGBoost baseline on identical candidates.
-- [x] Implement official Top-1/Top-5 Score and Pairwise Accuracy with parity tests.
-- [x] Obtain user-reported Top-1/Top-5 Score, Pairwise Accuracy, and runtime
-  regret for the one-workload pilot.
-- [x] Independently inspect the pilot and 120 x 50 predictions and provenance.
-- [ ] Compute benchmark metrics and regret over the full agreed evaluation set.
-- [ ] Compare workload types and candidate-set sizes.
-- [ ] Identify Jev success and failure cases.
-- [ ] Analyze variation across workloads and seeds with appropriate statistics.
-- [ ] Validate live/cached decision latency, API usage, and monetary cost.
-- [x] Implement per-workload exports, aggregate analysis, and comparison plots.
-- [x] Write the RQ1 methodology and explicitly pending results/discussion section.
-- [ ] Complete the RQ1 results and discussion with real benchmark evidence.
+- [x] Run and audit the original setup pilot and 120 × 50 single-question comparison.
+- [x] Run and audit the 484-workload Platinum record-test tournament.
+- [x] Report Top-1/Top-5, Pairwise Accuracy, and valid-only runtime regret for E5.
+- [x] Report record-weighted Top-1/Top-5 and separate macro scores for Platinum.
+- [x] Compute paired workload uncertainty and separately labelled exact Random expectations.
+- [x] Inspect tournament elimination, coarse probabilities, optimum hits, and
+  failure-sentinel selection counts without additional API calls.
+- [x] Separate live/cached latency and usage; report assumed-rate cost estimates.
+- [x] Publish reviewed per-workload/aggregate exports, figures, and provenance.
+- [x] Prepare offline operation/type and paired-case export commands.
+- [ ] Run and review the Mac's workload-type and concrete schedule-case exports.
+- [x] Prepare a controlled 16/32/50 candidate-size sweep on the frozen E5 cohort.
+- [ ] Run the new 16/32 conditions, reuse the 50-candidate archive, and review
+  the paired size results. Existing cross-platform or cross-workload count
+  differences do not replace this experiment.
+- [x] Write the RQ1 report with completed results and explicit remaining analyses.
+- [ ] Incorporate the reviewed type/case/size exports into the final report.
+
+### Optional extensions and retained tooling
+
+Field-only ablations, context/order controls, forced-group tournament controls,
+fresh Jev repeats, and all-source-schedule experiments remain available in the
+[follow-up guide](run-tenset-followup-experiments.md). They are useful extensions,
+not required completion items under the present Jev-versus-Random scope.
+The specialized-model adapter remains optional legacy code; its training,
+artifacts, and numerical comparison are not RQ1 blockers. Historical tutorial
+commands may still acknowledge external-reference provenance without changing
+the measured comparison to a three-model study.
 
 ### RQ1 deliverables
 
-- [x] TenSet preprocessing and serialization pipeline.
-- [x] Official XGBoost cost-model baseline integration (legacy execution pending).
-- [ ] TenSet result tables and plots.
-- [x] RQ1 report section with methodology, references, and explicit pending results.
+- [x] Reproducible preprocessing, metadata, serialization, and evaluation workflows.
+- [x] Audited Jev-versus-Random tables, figures, per-workload results, and accounting.
+- [x] RQ1 methodology, completed-results discussion, and stated limitations.
+- [ ] Reviewed workload-type, semantic case, and controlled size-study evidence
+  incorporated into the final RQ1 report.
 
 ## RQ2: XLA TpuGraphs — Person C
 

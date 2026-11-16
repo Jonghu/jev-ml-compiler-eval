@@ -1,0 +1,3 @@
+model_id,model_type,workloads,test_records,weighted_top_1_score,weighted_top_5_score,macro_top_1_score,macro_top_5_score
+random-0,random,484,187679,0.23504543298685907,0.38502086961629045,0.24994797437506916,0.3995320523263606
+jev-1.14.0-tutorial-tournament-fields-long-context,jev-tournament,484,187679,0.26935556454967097,0.3882448622497107,0.2829976812303397,0.400940124367707

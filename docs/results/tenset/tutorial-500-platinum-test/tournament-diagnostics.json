@@ -1,0 +1,2763 @@
+{
+  "source_predictions_sha256": "53e2662aeb7480af284abcd2b302264d3760288060c512803ed67c25ca978179",
+  "analysis": "Offline saved-record tournament diagnostics; no API requests",
+  "optimum_definition": "Any candidate tied for minimum saved runtime in that workload test pool; not all source schedules",
+  "advancement_definition": "At least one test-pool optimum appears in the final question; only two-round cases are interpreted as round-0 elimination",
+  "by_round_count": {
+    "1": {
+      "workloads": 16,
+      "selected_test_pool_optimum": 3,
+      "workloads_with_an_optimum_in_final": 16,
+      "optimum_reached_final_but_not_selected": 13
+    },
+    "2": {
+      "workloads": 468,
+      "all_optima_eliminated_before_final": 442,
+      "workloads_with_an_optimum_in_final": 26,
+      "optimum_reached_final_but_not_selected": 20,
+      "selected_test_pool_optimum": 6
+    }
+  },
+  "optimal_records_per_workload_distribution": {
+    "1": 484
+  },
+  "question_probability_diagnostics_by_option_count": {
+    "<=50": {
+      "questions": 479,
+      "options_total": 6950,
+      "zero_probability_options": 0,
+      "zero_probability_option_fraction": 0.0,
+      "mean_question_zero_share": 0.0,
+      "distinct_probability_values": {
+        "min": 4,
+        "median": 9,
+        "mean": 8.60125260960334,
+        "max": 12
+      },
+      "questions_with_tied_max_probability": 34,
+      "top_probability_tie_width": {
+        "median": 1,
+        "mean": 1.081419624217119,
+        "max": 4
+      }
+    },
+    "51-150": {
+      "questions": 1189,
+      "options_total": 149989,
+      "zero_probability_options": 38063,
+      "zero_probability_option_fraction": 0.25377194327584024,
+      "mean_question_zero_share": 0.24041432046454936,
+      "distinct_probability_values": {
+        "min": 2,
+        "median": 3,
+        "mean": 2.9167367535744324,
+        "max": 8
+      },
+      "questions_with_tied_max_probability": 710,
+      "top_probability_tie_width": {
+        "median": 2,
+        "mean": 38.609756097560975,
+        "max": 100
+      }
+    },
+    "151-255": {
+      "questions": 188,
+      "options_total": 37600,
+      "zero_probability_options": 23528,
+      "zero_probability_option_fraction": 0.6257446808510638,
+      "mean_question_zero_share": 0.6257446808510638,
+      "distinct_probability_values": {
+        "min": 3,
+        "median": 4.0,
+        "mean": 4.01595744680851,
+        "max": 6
+      },
+      "questions_with_tied_max_probability": 93,
+      "top_probability_tie_width": {
+        "median": 1.0,
+        "mean": 5.3936170212765955,
+        "max": 28
+      }
+    }
+  },
+  "global_question_diagnostics": {
+    "questions": 1856,
+    "options_total": 194539,
+    "zero_probability_options": 61591,
+    "zero_probability_option_fraction": 0.3165997563470564,
+    "mean_question_zero_share": 0.2173990447372571,
+    "distinct_probability_values": {
+      "min": 2,
+      "median": 3.0,
+      "mean": 4.495150862068965,
+      "max": 12
+    },
+    "questions_with_tied_max_probability": 837,
+    "top_probability_tie_width": {
+      "median": 1.0,
+      "mean": 25.559806034482758,
+      "max": 100
+    }
+  },
+  "limitations": [
+    "Per-question probabilities are comparable only within their own question.",
+    "Elimination attribution uses recorded rankings and does not establish the counterfactual final choice if the optimum had advanced.",
+    "Probability ties can affect saved within-question ordering; the chosen candidate is ranked first.",
+    "No original prepared shards or request payloads were supplied; only saved records were inspected.",
+    "Option-count bins differ in round and workload composition; these are descriptive comparisons, not a controlled candidate-count ablation."
+  ],
+  "round0_elimination_workloads": [
+    {
+      "workload_id": "tenset-tutorial-a71acce0399f158bdcde8c84",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 56
+    },
+    {
+      "workload_id": "tenset-tutorial-c3379594783942065ce85be1",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 89
+    },
+    {
+      "workload_id": "tenset-tutorial-c99fdbc6b7f35dd09cba2a6d",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 108
+    },
+    {
+      "workload_id": "tenset-tutorial-808065aae47b3c978ab06ec0",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 100
+    },
+    {
+      "workload_id": "tenset-tutorial-e80c477a670bac15654ace7e",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 49
+    },
+    {
+      "workload_id": "tenset-tutorial-6e2d1a2afc8ba88a39f99bcd",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 48
+    },
+    {
+      "workload_id": "tenset-tutorial-764612d81dd0b4d8f79ed621",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 36
+    },
+    {
+      "workload_id": "tenset-tutorial-2622d1c9c3acea3da0252376",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 100
+    },
+    {
+      "workload_id": "tenset-tutorial-887a097446d1d9ab10861296",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 132
+    },
+    {
+      "workload_id": "tenset-tutorial-bf8650a64738f2e6363812d1",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 93
+    },
+    {
+      "workload_id": "tenset-tutorial-8c3287d7d078b0ae41e29206",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 59
+    },
+    {
+      "workload_id": "tenset-tutorial-b47bd61da92d0ef51b3c78e0",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 92
+    },
+    {
+      "workload_id": "tenset-tutorial-d73e3760e2ef0accfced9a45",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 97
+    },
+    {
+      "workload_id": "tenset-tutorial-2e6d0af985bd37528df40cff",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 125
+    },
+    {
+      "workload_id": "tenset-tutorial-c677022c303335901c6eeba3",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 78
+    },
+    {
+      "workload_id": "tenset-tutorial-5f9a0a889c6fc562ec4af755",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 129
+    },
+    {
+      "workload_id": "tenset-tutorial-2d8dd9aba529239b848d5d78",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 113
+    },
+    {
+      "workload_id": "tenset-tutorial-3c5b9d4616452c17f47121af",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 68
+    },
+    {
+      "workload_id": "tenset-tutorial-47c57c8bc89d574bd291b509",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 102
+    },
+    {
+      "workload_id": "tenset-tutorial-08422f008d4838d9f59efd02",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 70
+    },
+    {
+      "workload_id": "tenset-tutorial-74adaf0a8cf010da82e7929d",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 44
+    },
+    {
+      "workload_id": "tenset-tutorial-88fdd2071126b3c44af72e5d",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 100
+    },
+    {
+      "workload_id": "tenset-tutorial-2014962292b303df72d290f6",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 128
+    },
+    {
+      "workload_id": "tenset-tutorial-8e740f1ee741f4a4a3d1b38f",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 142
+    },
+    {
+      "workload_id": "tenset-tutorial-85a306194549f271a62f3af6",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 95
+    },
+    {
+      "workload_id": "tenset-tutorial-2638f1ccdda25ef423080260",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 56
+    },
+    {
+      "workload_id": "tenset-tutorial-6f50889df8427489ecd464b0",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 127
+    },
+    {
+      "workload_id": "tenset-tutorial-fba71984ff3eef2ee8233ca3",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 163
+    },
+    {
+      "workload_id": "tenset-tutorial-af3b78c758a8a10867715d42",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 16
+    },
+    {
+      "workload_id": "tenset-tutorial-3c1bfc4041b9c8b81f0851fa",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 53
+    },
+    {
+      "workload_id": "tenset-tutorial-abb4680f974dfb849bed0ff9",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 79
+    },
+    {
+      "workload_id": "tenset-tutorial-d230a090b0042b3ce17a0f98",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 11
+    },
+    {
+      "workload_id": "tenset-tutorial-aabfa1a1208dd7f3e11a04a5",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 63
+    },
+    {
+      "workload_id": "tenset-tutorial-1770578d3d3f177001543c82",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 23
+    },
+    {
+      "workload_id": "tenset-tutorial-98d01d1ef127c8afd777114c",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 20
+    },
+    {
+      "workload_id": "tenset-tutorial-763d4c9c6a8b9bce31ddc579",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 21
+    },
+    {
+      "workload_id": "tenset-tutorial-7f02e015ba41a2f59a201ed9",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 50
+    },
+    {
+      "workload_id": "tenset-tutorial-cb1849c18777cd0cf5d49084",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 130
+    },
+    {
+      "workload_id": "tenset-tutorial-fbe89241e41b0bfc00ea0550",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 133
+    },
+    {
+      "workload_id": "tenset-tutorial-35a6d5e52f06322a85c65463",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 99
+    },
+    {
+      "workload_id": "tenset-tutorial-b09601a67519a3de1c1754cc",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 99
+    },
+    {
+      "workload_id": "tenset-tutorial-92cd95284623c7798ecc52c6",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 57
+    },
+    {
+      "workload_id": "tenset-tutorial-48353f53c1b910d41b7d3116",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 132
+    },
+    {
+      "workload_id": "tenset-tutorial-3b7568f60f597f547eaa3dd5",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 87
+    },
+    {
+      "workload_id": "tenset-tutorial-e5ea44783162d410b0758516",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 42
+    },
+    {
+      "workload_id": "tenset-tutorial-a0e2e341feffb44653f52655",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 95
+    },
+    {
+      "workload_id": "tenset-tutorial-7c903eb38ece082c6e286172",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 84
+    },
+    {
+      "workload_id": "tenset-tutorial-05b38a7e5bf3ee448a872996",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 71
+    },
+    {
+      "workload_id": "tenset-tutorial-28bbb446dc98fca6a63003cd",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 90
+    },
+    {
+      "workload_id": "tenset-tutorial-cc58a9f7edf5779c79a985e6",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 78
+    },
+    {
+      "workload_id": "tenset-tutorial-6ec645db1370225f5808734d",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 71
+    },
+    {
+      "workload_id": "tenset-tutorial-fa1b5f3a484accdc359c0525",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 80
+    },
+    {
+      "workload_id": "tenset-tutorial-cade6b1e6332b6605f40e5d4",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 114
+    },
+    {
+      "workload_id": "tenset-tutorial-5bbd22b1cf592fed2b7b689e",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 120
+    },
+    {
+      "workload_id": "tenset-tutorial-11f8c326dd704e8f39935f45",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 12
+    },
+    {
+      "workload_id": "tenset-tutorial-fcdca500d232ed43b5741888",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 56
+    },
+    {
+      "workload_id": "tenset-tutorial-bffa36cad3bf5e6429f1471a",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 123
+    },
+    {
+      "workload_id": "tenset-tutorial-c2422d51b45badebfdf58fc7",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 11
+    },
+    {
+      "workload_id": "tenset-tutorial-1b1231106d47b8cfbbabcb16",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 81
+    },
+    {
+      "workload_id": "tenset-tutorial-a3eb16364c9947f67b69578f",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 114
+    },
+    {
+      "workload_id": "tenset-tutorial-6d89d1372c8ce33cc1469f33",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 110
+    },
+    {
+      "workload_id": "tenset-tutorial-8002563bb0755eb23d0bc616",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 8
+    },
+    {
+      "workload_id": "tenset-tutorial-de25ee35fcdbc4dc79fca40e",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 23
+    },
+    {
+      "workload_id": "tenset-tutorial-c49bfb3310157be04f96d172",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 56
+    },
+    {
+      "workload_id": "tenset-tutorial-691f13634fced3a0fb48c309",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 19
+    },
+    {
+      "workload_id": "tenset-tutorial-493463daf145fd2a9f3a0516",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 131
+    },
+    {
+      "workload_id": "tenset-tutorial-bd2e15d2a3c9f943569b1cbd",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 128
+    },
+    {
+      "workload_id": "tenset-tutorial-fa417b4453416513ac84b0b9",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 21
+    },
+    {
+      "workload_id": "tenset-tutorial-b904551e1b1f194e0f09b801",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 36
+    },
+    {
+      "workload_id": "tenset-tutorial-e19e84f4b6a6d1ad5d428510",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 27
+    },
+    {
+      "workload_id": "tenset-tutorial-30351ed6a163a0bef8fafb6e",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 123
+    },
+    {
+      "workload_id": "tenset-tutorial-b51dca0525c549655af4e39f",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 78
+    },
+    {
+      "workload_id": "tenset-tutorial-6e4d78b8258f7fb87e6bfa63",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 32
+    },
+    {
+      "workload_id": "tenset-tutorial-2c0c794408c342008ef6f9f7",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 55
+    },
+    {
+      "workload_id": "tenset-tutorial-6bb994471a8fb5181eb12b19",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 89
+    },
+    {
+      "workload_id": "tenset-tutorial-4894788739e0614ac3591e88",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 11
+    },
+    {
+      "workload_id": "tenset-tutorial-97b0942bb8d124e9bf35b43f",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 39
+    },
+    {
+      "workload_id": "tenset-tutorial-eb475ee5f1449eabee160692",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 125
+    },
+    {
+      "workload_id": "tenset-tutorial-d45c75fc761511ba702d7c74",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 17
+    },
+    {
+      "workload_id": "tenset-tutorial-55e8738a723d753a832042fb",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 33
+    },
+    {
+      "workload_id": "tenset-tutorial-6f9a4d66b83295073b0c0454",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 125
+    },
+    {
+      "workload_id": "tenset-tutorial-ee9448291d184350d8a022d3",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 77
+    },
+    {
+      "workload_id": "tenset-tutorial-419fec65648042e84ba35fa1",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 80
+    },
+    {
+      "workload_id": "tenset-tutorial-fc6712167972aa8515ef3aab",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 191
+    },
+    {
+      "workload_id": "tenset-tutorial-f85361021518f32fddcd7e57",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 102
+    },
+    {
+      "workload_id": "tenset-tutorial-c814f31b2ef7563146268307",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 48
+    },
+    {
+      "workload_id": "tenset-tutorial-1f033dec373c739a19d76d27",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 15
+    },
+    {
+      "workload_id": "tenset-tutorial-95c1ddf5684a214498f17105",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 115
+    },
+    {
+      "workload_id": "tenset-tutorial-6ec80c77a20061a5c3b7f551",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 31
+    },
+    {
+      "workload_id": "tenset-tutorial-4d0e0720079906962574f7f8",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 56
+    },
+    {
+      "workload_id": "tenset-tutorial-8203845f17e55b0d7bc8b23b",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 78
+    },
+    {
+      "workload_id": "tenset-tutorial-b2d3e036644375a40fc43afa",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 71
+    },
+    {
+      "workload_id": "tenset-tutorial-cea510986925e39d5b5eb808",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 18
+    },
+    {
+      "workload_id": "tenset-tutorial-77cc4e2b35da54720c3ea2a1",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 87
+    },
+    {
+      "workload_id": "tenset-tutorial-58b7674c388c5be7d16f0de1",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 9
+    },
+    {
+      "workload_id": "tenset-tutorial-7d3613fc7068222f5a180ced",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 99
+    },
+    {
+      "workload_id": "tenset-tutorial-7ba499f21360ad73002943cc",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 62
+    },
+    {
+      "workload_id": "tenset-tutorial-1456c8f720a5320d5c6e92f0",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 17
+    },
+    {
+      "workload_id": "tenset-tutorial-6ce401cb5df80221f6a16331",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 47
+    },
+    {
+      "workload_id": "tenset-tutorial-9802cc19567f8b4b7a8f4eaf",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 6
+    },
+    {
+      "workload_id": "tenset-tutorial-1a3997084196f89db64e17f1",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 89
+    },
+    {
+      "workload_id": "tenset-tutorial-8cc7903f2b2ff23da627ae02",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 59
+    },
+    {
+      "workload_id": "tenset-tutorial-af79748036b73340df4127ad",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 73
+    },
+    {
+      "workload_id": "tenset-tutorial-501f085f7d3108df98b35e0b",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 76
+    },
+    {
+      "workload_id": "tenset-tutorial-b9c7cbb83d26d4ccdf68f1a3",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 11
+    },
+    {
+      "workload_id": "tenset-tutorial-9f23ae9fd40798cd5da3e91e",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 6
+    },
+    {
+      "workload_id": "tenset-tutorial-d128c96e9f59fd54dc579d59",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 16
+    },
+    {
+      "workload_id": "tenset-tutorial-b32f010cf62e24453f87f8f6",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 116
+    },
+    {
+      "workload_id": "tenset-tutorial-1f20576577aaac14bfb7d37f",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 81
+    },
+    {
+      "workload_id": "tenset-tutorial-22659f5cb9a15a994b0705db",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 117
+    },
+    {
+      "workload_id": "tenset-tutorial-4e07f685077d3bc6e8364437",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 19
+    },
+    {
+      "workload_id": "tenset-tutorial-8e74d5c1590dee2de24ae2e8",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 51
+    },
+    {
+      "workload_id": "tenset-tutorial-738253593e9139140d0e55b3",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 20
+    },
+    {
+      "workload_id": "tenset-tutorial-8ab13f0c0080b5fb3c860c8b",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 66
+    },
+    {
+      "workload_id": "tenset-tutorial-0860d8b97062b21a022ab31c",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 70
+    },
+    {
+      "workload_id": "tenset-tutorial-59738e5dc3d5f9cdf64f428e",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 186
+    },
+    {
+      "workload_id": "tenset-tutorial-52819322492c188fdfcf07e1",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 17
+    },
+    {
+      "workload_id": "tenset-tutorial-717ccc1aba092a43cc99df86",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 13
+    },
+    {
+      "workload_id": "tenset-tutorial-d13306748524462a0fc37eb3",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 81
+    },
+    {
+      "workload_id": "tenset-tutorial-ee0d34c6fae65f57415667ad",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 45
+    },
+    {
+      "workload_id": "tenset-tutorial-f2cbadc91aabc2d367dd5de1",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 102
+    },
+    {
+      "workload_id": "tenset-tutorial-6dd2bbd93af79164a721642c",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 129
+    },
+    {
+      "workload_id": "tenset-tutorial-dbc049b7416fbdc398c2f198",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 140
+    },
+    {
+      "workload_id": "tenset-tutorial-61652d3ed104b6e840176c68",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 6
+    },
+    {
+      "workload_id": "tenset-tutorial-2a49bc481dfdb11275d29c61",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 37
+    },
+    {
+      "workload_id": "tenset-tutorial-009f248cade0ea61ca835b87",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 196
+    },
+    {
+      "workload_id": "tenset-tutorial-bb6083f160d00b68b3b342c8",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 42
+    },
+    {
+      "workload_id": "tenset-tutorial-a2f97a7be35db9c0cd8ea422",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 52
+    },
+    {
+      "workload_id": "tenset-tutorial-275e7ce1d5f20a01a96c8586",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 37
+    },
+    {
+      "workload_id": "tenset-tutorial-4dd54bcb07f8633c83773a0c",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 67
+    },
+    {
+      "workload_id": "tenset-tutorial-fb6ca5d3709a83a26c04d1a9",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 37
+    },
+    {
+      "workload_id": "tenset-tutorial-2b124601ed30d48dad7fcf3b",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 40
+    },
+    {
+      "workload_id": "tenset-tutorial-c4221650ef0f35adae672f4a",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 86
+    },
+    {
+      "workload_id": "tenset-tutorial-6dcf9ccf1f4ef0b169782b63",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 29
+    },
+    {
+      "workload_id": "tenset-tutorial-61ee23a5771a668c7a56870a",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 167
+    },
+    {
+      "workload_id": "tenset-tutorial-fe5483678a72d9d8a9a1c8a6",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 100
+    },
+    {
+      "workload_id": "tenset-tutorial-a8b4f9c88917ae321c30edb8",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 23
+    },
+    {
+      "workload_id": "tenset-tutorial-d0e5241cd2d98d99dfd549ea",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 57
+    },
+    {
+      "workload_id": "tenset-tutorial-55c9ea023b9b438d55f4ab13",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 49
+    },
+    {
+      "workload_id": "tenset-tutorial-4e117e84d8e97d61c4c2ed78",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 92
+    },
+    {
+      "workload_id": "tenset-tutorial-7e9c278878570317cbb12ac1",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 88
+    },
+    {
+      "workload_id": "tenset-tutorial-38c9d2d3e02dd6fc2f67126b",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 96
+    },
+    {
+      "workload_id": "tenset-tutorial-637b5cf1fdd62d413bbf96db",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 32
+    },
+    {
+      "workload_id": "tenset-tutorial-439eb82ce717475674a2b3dc",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 89
+    },
+    {
+      "workload_id": "tenset-tutorial-8514cbd1744d459659277bd1",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 105
+    },
+    {
+      "workload_id": "tenset-tutorial-a080be1876276605d7ae654e",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 162
+    },
+    {
+      "workload_id": "tenset-tutorial-885653fd88d73596df0061ca",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 59
+    },
+    {
+      "workload_id": "tenset-tutorial-e5fada43e3dc9d67e5b744bf",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 95
+    },
+    {
+      "workload_id": "tenset-tutorial-aa1c16558a5a0d00eb0a5f8a",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 195
+    },
+    {
+      "workload_id": "tenset-tutorial-cff826c9c85e63cb99533458",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 183
+    },
+    {
+      "workload_id": "tenset-tutorial-d480b720493a9c55b48a1661",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 39
+    },
+    {
+      "workload_id": "tenset-tutorial-748872bb37a33301c7adf644",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 23
+    },
+    {
+      "workload_id": "tenset-tutorial-68163ba26495931f5114706b",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 10
+    },
+    {
+      "workload_id": "tenset-tutorial-81a056dea71851883f936a43",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 22
+    },
+    {
+      "workload_id": "tenset-tutorial-931aca3a48e95b172724d599",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 7
+    },
+    {
+      "workload_id": "tenset-tutorial-7a92b30e4090e4edd7f76087",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 111
+    },
+    {
+      "workload_id": "tenset-tutorial-059af12bdc9bed353bffd7b3",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 124
+    },
+    {
+      "workload_id": "tenset-tutorial-ea782aab05942e3fa495cc27",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 15
+    },
+    {
+      "workload_id": "tenset-tutorial-45c55cec23ae19570b090371",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 72
+    },
+    {
+      "workload_id": "tenset-tutorial-4c07cc0431c9dab6b4f0d231",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 41
+    },
+    {
+      "workload_id": "tenset-tutorial-14f072b95cac0856e8384ae4",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 79
+    },
+    {
+      "workload_id": "tenset-tutorial-8a309419b1f2b416ba96144b",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 38
+    },
+    {
+      "workload_id": "tenset-tutorial-1da52059beccc0ea62cc36e6",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 115
+    },
+    {
+      "workload_id": "tenset-tutorial-6a39f684fde5f23c3ad773f5",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 104
+    },
+    {
+      "workload_id": "tenset-tutorial-f8044572098fbee8eb6840b5",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 59
+    },
+    {
+      "workload_id": "tenset-tutorial-7cd72bd00918ef5d657e6169",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 107
+    },
+    {
+      "workload_id": "tenset-tutorial-9257854e4f1bc03055d0c035",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 23
+    },
+    {
+      "workload_id": "tenset-tutorial-66453f25dfc72dc57999f69a",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 75
+    },
+    {
+      "workload_id": "tenset-tutorial-8007b6ba9027de2444fa18a9",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 16
+    },
+    {
+      "workload_id": "tenset-tutorial-83441dc04bae2ed72bc160d3",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 24
+    },
+    {
+      "workload_id": "tenset-tutorial-2aa9c4841d3073c9fecc5838",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 83
+    },
+    {
+      "workload_id": "tenset-tutorial-dc3fb1c16df21e7a37d6c7f3",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 188
+    },
+    {
+      "workload_id": "tenset-tutorial-d19458d41bd22a60fca99eea",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 78
+    },
+    {
+      "workload_id": "tenset-tutorial-35f42cdfa8dedcabb7318430",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 51
+    },
+    {
+      "workload_id": "tenset-tutorial-b5077037a91ff8c76acdef25",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 71
+    },
+    {
+      "workload_id": "tenset-tutorial-c61b553478fa765444a42adc",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 19
+    },
+    {
+      "workload_id": "tenset-tutorial-f33218957f25f1fbfb827301",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 74
+    },
+    {
+      "workload_id": "tenset-tutorial-1c55003673f08435d97b6515",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 119
+    },
+    {
+      "workload_id": "tenset-tutorial-a32db699e4ef736a5395e511",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 126
+    },
+    {
+      "workload_id": "tenset-tutorial-d072d616e2290c59eb09fffc",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 95
+    },
+    {
+      "workload_id": "tenset-tutorial-a2cda4d529671b3389f355dc",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 59
+    },
+    {
+      "workload_id": "tenset-tutorial-9fa5facaa13d2b1d8e473532",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 84
+    },
+    {
+      "workload_id": "tenset-tutorial-f3cd6cc0c284cdbded599849",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 19
+    },
+    {
+      "workload_id": "tenset-tutorial-e43356afa1770f9e8291f3b3",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 37
+    },
+    {
+      "workload_id": "tenset-tutorial-ad451071c67364f1870b73df",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 45
+    },
+    {
+      "workload_id": "tenset-tutorial-6bc139574a31cb577687a035",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 56
+    },
+    {
+      "workload_id": "tenset-tutorial-97b362d5f6772116276e25d8",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 34
+    },
+    {
+      "workload_id": "tenset-tutorial-a186af656d195ca93a2a60b5",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 48
+    },
+    {
+      "workload_id": "tenset-tutorial-a807eaecc71ea2442ebe23f5",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 129
+    },
+    {
+      "workload_id": "tenset-tutorial-6c3e1becf1f30de11783167d",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 140
+    },
+    {
+      "workload_id": "tenset-tutorial-3e9ad7b11ab1c47fbf2086c5",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 71
+    },
+    {
+      "workload_id": "tenset-tutorial-2a8094de059c3c6e5d2834f0",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 71
+    },
+    {
+      "workload_id": "tenset-tutorial-af229715e273d2428f61e273",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 56
+    },
+    {
+      "workload_id": "tenset-tutorial-ff895bae4e426e85d5fa35a1",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 75
+    },
+    {
+      "workload_id": "tenset-tutorial-ba3cbc7bcd69ee4619e16b70",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 107
+    },
+    {
+      "workload_id": "tenset-tutorial-24244d24162bf2feb9360343",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 113
+    },
+    {
+      "workload_id": "tenset-tutorial-f9fa04b4081665f82214ea11",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 121
+    },
+    {
+      "workload_id": "tenset-tutorial-69cd945f9a039ed041b65d1d",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 101
+    },
+    {
+      "workload_id": "tenset-tutorial-f356ebded310980743c4f944",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 94
+    },
+    {
+      "workload_id": "tenset-tutorial-6eae5c29fcfd6fc07d65647f",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 56
+    },
+    {
+      "workload_id": "tenset-tutorial-4a4b2a31a7ea879ce0fcb771",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 166
+    },
+    {
+      "workload_id": "tenset-tutorial-eb7d29d5d52f65b930ed78dd",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 37
+    },
+    {
+      "workload_id": "tenset-tutorial-3fe09a0c640fc41298f96249",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 23
+    },
+    {
+      "workload_id": "tenset-tutorial-01beb9cbada28e8d077b0b1f",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 34
+    },
+    {
+      "workload_id": "tenset-tutorial-3433997f9705a4c0edcdbbbc",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 52
+    },
+    {
+      "workload_id": "tenset-tutorial-f0c6901f945ffb0f0935f00b",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 98
+    },
+    {
+      "workload_id": "tenset-tutorial-2978262f7872d7b3d9152ac5",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 70
+    },
+    {
+      "workload_id": "tenset-tutorial-0d04c187d009a6830a0ad0da",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 124
+    },
+    {
+      "workload_id": "tenset-tutorial-05f3663e3c9a2cee866e347d",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 46
+    },
+    {
+      "workload_id": "tenset-tutorial-9091e7aab0181e7f79de7894",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 12
+    },
+    {
+      "workload_id": "tenset-tutorial-a7783d3f1932ed2afc39f85b",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 19
+    },
+    {
+      "workload_id": "tenset-tutorial-2b392cc9c412728ae24311c4",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 43
+    },
+    {
+      "workload_id": "tenset-tutorial-5eca384a875c0bc3578121da",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 117
+    },
+    {
+      "workload_id": "tenset-tutorial-b94bceda38637275875534fa",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 83
+    },
+    {
+      "workload_id": "tenset-tutorial-79ee3c1054b10aaa6b10475f",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 85
+    },
+    {
+      "workload_id": "tenset-tutorial-b848dfca0cb177cc2d2dd6b4",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 12
+    },
+    {
+      "workload_id": "tenset-tutorial-e31bed984df3274ee0364b1a",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 67
+    },
+    {
+      "workload_id": "tenset-tutorial-e450455c76a75b67889e2da0",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 34
+    },
+    {
+      "workload_id": "tenset-tutorial-b57ed680f92cf2af9109fbb6",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 88
+    },
+    {
+      "workload_id": "tenset-tutorial-ded8af2d4c7f1a472d146d0a",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 85
+    },
+    {
+      "workload_id": "tenset-tutorial-3229ca19adb5bed731f6647c",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 176
+    },
+    {
+      "workload_id": "tenset-tutorial-a7668eeed07d8ef38dd73a4d",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 41
+    },
+    {
+      "workload_id": "tenset-tutorial-a500ef6dec906ddcd55a8ce5",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 110
+    },
+    {
+      "workload_id": "tenset-tutorial-93299206b8a0dc7dc0fdd412",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 180
+    },
+    {
+      "workload_id": "tenset-tutorial-4b2f1f05cf42b1829e44c9d7",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 118
+    },
+    {
+      "workload_id": "tenset-tutorial-8e8a2dbb6376daddec82a78f",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 131
+    },
+    {
+      "workload_id": "tenset-tutorial-574dc45cf669e04da482c6be",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 41
+    },
+    {
+      "workload_id": "tenset-tutorial-3a803ec63274391ef27c5360",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 184
+    },
+    {
+      "workload_id": "tenset-tutorial-99542d5b08970024b8e4f9c2",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 22
+    },
+    {
+      "workload_id": "tenset-tutorial-1e7c1424f0c1cbf842146c34",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 83
+    },
+    {
+      "workload_id": "tenset-tutorial-c8edffcd21c62ac03afd0140",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 98
+    },
+    {
+      "workload_id": "tenset-tutorial-c6d187082016a2bb0713370e",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 108
+    },
+    {
+      "workload_id": "tenset-tutorial-6900f52c948bb9fdec45fd06",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 100
+    },
+    {
+      "workload_id": "tenset-tutorial-354944010cb5dc2f55dd4f31",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 80
+    },
+    {
+      "workload_id": "tenset-tutorial-5902fba0973625537d9d0b23",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 30
+    },
+    {
+      "workload_id": "tenset-tutorial-b0f6b644665af36334a94154",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 29
+    },
+    {
+      "workload_id": "tenset-tutorial-b423c55a2156a66ab6e7829e",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 12
+    },
+    {
+      "workload_id": "tenset-tutorial-7417a7309151428a0c4b2959",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 111
+    },
+    {
+      "workload_id": "tenset-tutorial-0d19fa588c730536f8a9c565",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 194
+    },
+    {
+      "workload_id": "tenset-tutorial-c3a5e334e867da3b69012384",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 43
+    },
+    {
+      "workload_id": "tenset-tutorial-d45203721a6cb446277b4364",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 118
+    },
+    {
+      "workload_id": "tenset-tutorial-114f66b51b61bfa42b805a1c",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 6
+    },
+    {
+      "workload_id": "tenset-tutorial-112c50c30c2cc23d69e5b469",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 29
+    },
+    {
+      "workload_id": "tenset-tutorial-bf06ef70d3bf0fc9059c6415",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 84
+    },
+    {
+      "workload_id": "tenset-tutorial-480b41d37dc79c3dc5c61129",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 50
+    },
+    {
+      "workload_id": "tenset-tutorial-407e0a72ddebce1d7eb57d26",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 56
+    },
+    {
+      "workload_id": "tenset-tutorial-efa2905053cc74348b84df50",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 50
+    },
+    {
+      "workload_id": "tenset-tutorial-37a73db6b1aed740807984f5",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 110
+    },
+    {
+      "workload_id": "tenset-tutorial-30298ea5b54fc1ae31e0c829",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 6
+    },
+    {
+      "workload_id": "tenset-tutorial-3ddbe5016f0f477776521976",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 17
+    },
+    {
+      "workload_id": "tenset-tutorial-2046f6e4936ea837cf9b2c04",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 141
+    },
+    {
+      "workload_id": "tenset-tutorial-50c0c869f294432b3c629f88",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 81
+    },
+    {
+      "workload_id": "tenset-tutorial-b03e48ca3e68f9894b17e72b",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 98
+    },
+    {
+      "workload_id": "tenset-tutorial-f1b4fafba969691129f9f0b1",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 40
+    },
+    {
+      "workload_id": "tenset-tutorial-a7715e55d21c807bed914a06",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 50
+    },
+    {
+      "workload_id": "tenset-tutorial-b49df07ca8a8a3a0f12c04db",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 88
+    },
+    {
+      "workload_id": "tenset-tutorial-f69899d8ff49f0da9a3b19f9",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 30
+    },
+    {
+      "workload_id": "tenset-tutorial-ec4b362dd2d03331630af391",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 96
+    },
+    {
+      "workload_id": "tenset-tutorial-815e3c0b201f72dea46b5456",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 167
+    },
+    {
+      "workload_id": "tenset-tutorial-26ef292d5d899731f9b108d5",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 51
+    },
+    {
+      "workload_id": "tenset-tutorial-63c6da97807d6a9000bd814e",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 113
+    },
+    {
+      "workload_id": "tenset-tutorial-cf20a93f82a8638092f3b251",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 51
+    },
+    {
+      "workload_id": "tenset-tutorial-ff7a1dd73244dc82bb535c79",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 63
+    },
+    {
+      "workload_id": "tenset-tutorial-75f59e18adbd3366519c0fb7",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 33
+    },
+    {
+      "workload_id": "tenset-tutorial-f0321f334ba4ccf45dd56d13",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 25
+    },
+    {
+      "workload_id": "tenset-tutorial-cd4722413480d17db83ee928",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 132
+    },
+    {
+      "workload_id": "tenset-tutorial-1649edf6206dff434cc86b01",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 75
+    },
+    {
+      "workload_id": "tenset-tutorial-ed047b885e25f3749a344088",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 58
+    },
+    {
+      "workload_id": "tenset-tutorial-9cc09cd802bcad2a62fbee55",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 121
+    },
+    {
+      "workload_id": "tenset-tutorial-08b382ad3d71bc58734cd63a",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 16
+    },
+    {
+      "workload_id": "tenset-tutorial-e8d1ed1b5343708e9d674163",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 108
+    },
+    {
+      "workload_id": "tenset-tutorial-1a55b59e2d6a5b31a0383943",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 89
+    },
+    {
+      "workload_id": "tenset-tutorial-0595d5f99e61a6db0698dc05",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 178
+    },
+    {
+      "workload_id": "tenset-tutorial-80b211e09c8150f079e90464",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 112
+    },
+    {
+      "workload_id": "tenset-tutorial-d0c9320b6ca9a52d5c64d350",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 30
+    },
+    {
+      "workload_id": "tenset-tutorial-8524d08d4bd81d9797cc931c",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 113
+    },
+    {
+      "workload_id": "tenset-tutorial-e56945d52b0da9b60a1ba0d7",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 23
+    },
+    {
+      "workload_id": "tenset-tutorial-65e830d9d064bedad2c7e351",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 91
+    },
+    {
+      "workload_id": "tenset-tutorial-3e742dbc2309838b2f413da1",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 45
+    },
+    {
+      "workload_id": "tenset-tutorial-945492b8dbe74a271f4af29c",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 119
+    },
+    {
+      "workload_id": "tenset-tutorial-2fdbb1b2a3aa7cc75c0dbead",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 51
+    },
+    {
+      "workload_id": "tenset-tutorial-c3a5ea5165b99ed2ec24760b",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 128
+    },
+    {
+      "workload_id": "tenset-tutorial-fb81d723069704b90a0bbcfe",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 19
+    },
+    {
+      "workload_id": "tenset-tutorial-0a4dc4538871ef4cf856518a",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 17
+    },
+    {
+      "workload_id": "tenset-tutorial-bce2bf38898b8b0d6dc5c126",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 91
+    },
+    {
+      "workload_id": "tenset-tutorial-7c3dc969b2fac95ff4e07f02",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 63
+    },
+    {
+      "workload_id": "tenset-tutorial-34a7ff3edc376ccf4644c7ba",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 118
+    },
+    {
+      "workload_id": "tenset-tutorial-e72ca0fd4b4fcd3035eeaf5d",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 6
+    },
+    {
+      "workload_id": "tenset-tutorial-23f5e7ba5dca210513472712",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 79
+    },
+    {
+      "workload_id": "tenset-tutorial-f737240a42ad25dd5fcc1600",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 151
+    },
+    {
+      "workload_id": "tenset-tutorial-583c7ab0c6f33a7bf0a47cac",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 129
+    },
+    {
+      "workload_id": "tenset-tutorial-ef79d14cd1621e21c4525df3",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 29
+    },
+    {
+      "workload_id": "tenset-tutorial-3a622027f7e93aab0d96dc5a",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 96
+    },
+    {
+      "workload_id": "tenset-tutorial-47adef5f6ab97e2504889fdf",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 97
+    },
+    {
+      "workload_id": "tenset-tutorial-55f90459cfa20961d826280c",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 34
+    },
+    {
+      "workload_id": "tenset-tutorial-d32fdffaf334e50fdd749e6f",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 20
+    },
+    {
+      "workload_id": "tenset-tutorial-a566c2c18de8f38cf475194e",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 60
+    },
+    {
+      "workload_id": "tenset-tutorial-0c951f34b89c05e02a92eab2",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 127
+    },
+    {
+      "workload_id": "tenset-tutorial-3030432451b33a27cfb6d124",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 56
+    },
+    {
+      "workload_id": "tenset-tutorial-3e4023dc3779a3381a488e90",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 44
+    },
+    {
+      "workload_id": "tenset-tutorial-d4219453aa3073a423790717",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 117
+    },
+    {
+      "workload_id": "tenset-tutorial-2576d00ce610875498bf2622",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 116
+    },
+    {
+      "workload_id": "tenset-tutorial-546320709dc8817cfc63479d",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 7
+    },
+    {
+      "workload_id": "tenset-tutorial-4d8cb9a654be7e026ebc8659",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 105
+    },
+    {
+      "workload_id": "tenset-tutorial-f8cf21ab6147d6fccd9f90f9",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 124
+    },
+    {
+      "workload_id": "tenset-tutorial-82eab47aa6c3383148b6499b",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 20
+    },
+    {
+      "workload_id": "tenset-tutorial-46363ce06e69a065b6571dfa",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 11
+    },
+    {
+      "workload_id": "tenset-tutorial-6136ee400921512a26ff46fc",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 12
+    },
+    {
+      "workload_id": "tenset-tutorial-28a58dd89f2d57a5add26b8c",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 53
+    },
+    {
+      "workload_id": "tenset-tutorial-df3d51595bc1eeefd34330ec",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 39
+    },
+    {
+      "workload_id": "tenset-tutorial-2cab0ba8f80e998b66dfc90a",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 58
+    },
+    {
+      "workload_id": "tenset-tutorial-b83c10d677de067322070fa7",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 8
+    },
+    {
+      "workload_id": "tenset-tutorial-5f4252f255e004fd80c9a05a",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 60
+    },
+    {
+      "workload_id": "tenset-tutorial-9826a242d9c705f0f72bf463",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 46
+    },
+    {
+      "workload_id": "tenset-tutorial-2ea825fcf42c4493d0c2c57e",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 179
+    },
+    {
+      "workload_id": "tenset-tutorial-190feb44ef00c1f1edc3875f",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 23
+    },
+    {
+      "workload_id": "tenset-tutorial-b4dbbf38990131678f6c2bcb",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 132
+    },
+    {
+      "workload_id": "tenset-tutorial-b96161825ff60a7f6bd00ccb",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 21
+    },
+    {
+      "workload_id": "tenset-tutorial-b32cb4186694d56137147f5b",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 82
+    },
+    {
+      "workload_id": "tenset-tutorial-1dcc352cbfd7b3c83469465f",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 24
+    },
+    {
+      "workload_id": "tenset-tutorial-dcd722d670b68e8b172df846",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 80
+    },
+    {
+      "workload_id": "tenset-tutorial-ef26fa00086b262e81d4bd10",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 117
+    },
+    {
+      "workload_id": "tenset-tutorial-ca9f71822cbf6f8875e7a764",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 10
+    },
+    {
+      "workload_id": "tenset-tutorial-280578e7c995c18aaba78e61",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 21
+    },
+    {
+      "workload_id": "tenset-tutorial-252386e08ef8e7034d0e979b",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 100
+    },
+    {
+      "workload_id": "tenset-tutorial-e36dee32399d1cebe6b481b9",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 72
+    },
+    {
+      "workload_id": "tenset-tutorial-0f8d0d4c0621f8ed273681d2",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 82
+    },
+    {
+      "workload_id": "tenset-tutorial-82d187207b33fd58b976c46c",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 128
+    },
+    {
+      "workload_id": "tenset-tutorial-245a5be411cd6d6eed316f66",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 103
+    },
+    {
+      "workload_id": "tenset-tutorial-51f07670cd5ac6bca517194a",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 85
+    },
+    {
+      "workload_id": "tenset-tutorial-094109f44b525c90ccf52805",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 151
+    },
+    {
+      "workload_id": "tenset-tutorial-18e390e30f24fe4feb8391d1",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 80
+    },
+    {
+      "workload_id": "tenset-tutorial-bc15d18ec5aeadb08e7fe5be",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 16
+    },
+    {
+      "workload_id": "tenset-tutorial-858ac67a363114ae18f2ca2a",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 113
+    },
+    {
+      "workload_id": "tenset-tutorial-210aefaa2964c1cf0abd8f99",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 51
+    },
+    {
+      "workload_id": "tenset-tutorial-36abacf10d037460bf254648",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 180
+    },
+    {
+      "workload_id": "tenset-tutorial-94cd127f81d06abf229d952d",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 22
+    },
+    {
+      "workload_id": "tenset-tutorial-8b6db1fad7a73e0a386b1484",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 11
+    },
+    {
+      "workload_id": "tenset-tutorial-2a4bb327a1881333f12e4cff",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 23
+    },
+    {
+      "workload_id": "tenset-tutorial-c756560999ff70966d75bc19",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 41
+    },
+    {
+      "workload_id": "tenset-tutorial-6ec408d9422176dc90129524",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 49
+    },
+    {
+      "workload_id": "tenset-tutorial-7ef300a381325eba528d9bd5",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 23
+    },
+    {
+      "workload_id": "tenset-tutorial-d565bd30cc40dd72d46ee5dc",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 92
+    },
+    {
+      "workload_id": "tenset-tutorial-0c6e4b847ce935956dac9b48",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 55
+    },
+    {
+      "workload_id": "tenset-tutorial-e1ea6eb0f3118a21a70649b9",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 132
+    },
+    {
+      "workload_id": "tenset-tutorial-33b1dfe45e468a707ee92841",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 145
+    },
+    {
+      "workload_id": "tenset-tutorial-b47540eb1383a529f8d31ae9",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 17
+    },
+    {
+      "workload_id": "tenset-tutorial-1db859498589c50935d75dd3",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 70
+    },
+    {
+      "workload_id": "tenset-tutorial-265d2a352dae2cde34eefa97",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 56
+    },
+    {
+      "workload_id": "tenset-tutorial-133b0f44662f019d2f0bdaf9",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 103
+    },
+    {
+      "workload_id": "tenset-tutorial-088911672773458f8bf51491",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 74
+    },
+    {
+      "workload_id": "tenset-tutorial-71a820b7226544d4bc2a28d5",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 47
+    },
+    {
+      "workload_id": "tenset-tutorial-6cf90d92bb25fdfdf0df98a6",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 37
+    },
+    {
+      "workload_id": "tenset-tutorial-e5c43fc91b1813ae80d7520e",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 105
+    },
+    {
+      "workload_id": "tenset-tutorial-0d53a684fef12ac4ab099209",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 140
+    },
+    {
+      "workload_id": "tenset-tutorial-b12d16c9d22d74f1532a71cf",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 61
+    },
+    {
+      "workload_id": "tenset-tutorial-1e8f7ebbae6f19eaf3c3f9bc",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 53
+    },
+    {
+      "workload_id": "tenset-tutorial-29cc7793dcd1c7cf8ba92051",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 196
+    },
+    {
+      "workload_id": "tenset-tutorial-d21b523bdc0a4ab48895f34b",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 36
+    },
+    {
+      "workload_id": "tenset-tutorial-e3165596cbda98091e53a3d1",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 12
+    },
+    {
+      "workload_id": "tenset-tutorial-6ff9a5f6b0c02fc57f6ab8b3",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 64
+    },
+    {
+      "workload_id": "tenset-tutorial-cf2b9c67ca98cc585ecebbe6",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 71
+    },
+    {
+      "workload_id": "tenset-tutorial-4dbfccca695c3cf5fc7308c6",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 125
+    },
+    {
+      "workload_id": "tenset-tutorial-33a5167c2ba04671c5fd2c08",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 76
+    },
+    {
+      "workload_id": "tenset-tutorial-8066833350cea874289a76af",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 118
+    },
+    {
+      "workload_id": "tenset-tutorial-e4146b7f95470e838d27be35",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 32
+    },
+    {
+      "workload_id": "tenset-tutorial-04be003ebe2f3bf5d9387057",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 68
+    },
+    {
+      "workload_id": "tenset-tutorial-9d5d7aaee168a56b160a610f",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 70
+    },
+    {
+      "workload_id": "tenset-tutorial-b40d827f758f431e3cc4c398",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 139
+    },
+    {
+      "workload_id": "tenset-tutorial-a96a70e7592d5399fa25be22",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 105
+    },
+    {
+      "workload_id": "tenset-tutorial-e5188019399fc2a82f8181a4",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 68
+    },
+    {
+      "workload_id": "tenset-tutorial-1583aa0efc491257b38d5bdd",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 104
+    },
+    {
+      "workload_id": "tenset-tutorial-21e56c8eb4baaeef80566521",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 65
+    },
+    {
+      "workload_id": "tenset-tutorial-42d41554b5d3723b0613396e",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 7
+    },
+    {
+      "workload_id": "tenset-tutorial-5e66f0d7d51ddf1abc57ec7a",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 120
+    },
+    {
+      "workload_id": "tenset-tutorial-aedb0cba541ac519c6f4c24d",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 59
+    },
+    {
+      "workload_id": "tenset-tutorial-cb421390dc872d8e55458957",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 107
+    },
+    {
+      "workload_id": "tenset-tutorial-6f5a8ef52aaf12b0bfca0989",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 101
+    },
+    {
+      "workload_id": "tenset-tutorial-9f9c51bf8ae9dfd25a4fbd20",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 131
+    },
+    {
+      "workload_id": "tenset-tutorial-85c14d21c18d5cea92895b7b",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 91
+    },
+    {
+      "workload_id": "tenset-tutorial-826e2cf1812216fb7d8fc75a",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 115
+    },
+    {
+      "workload_id": "tenset-tutorial-f2424649eb752ea9e1481096",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 125
+    },
+    {
+      "workload_id": "tenset-tutorial-8f8558b80694a91f2ac8606b",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 32
+    },
+    {
+      "workload_id": "tenset-tutorial-e3e629031f52c141ceb6cda8",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 199
+    },
+    {
+      "workload_id": "tenset-tutorial-f52f6602b6efcc7c401a28ab",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 65
+    },
+    {
+      "workload_id": "tenset-tutorial-58146734bd8e678507927c68",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 195
+    },
+    {
+      "workload_id": "tenset-tutorial-bd550de0d868ab698d9dfa40",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 49
+    },
+    {
+      "workload_id": "tenset-tutorial-aedb30a24fe0f25f5b8e3b31",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 13
+    },
+    {
+      "workload_id": "tenset-tutorial-452a89ad73187c979c4dc8de",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 72
+    },
+    {
+      "workload_id": "tenset-tutorial-a96e617bc3d224eb479c6c3d",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 89
+    },
+    {
+      "workload_id": "tenset-tutorial-8c47d100821e1c0410dc48a9",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 25
+    },
+    {
+      "workload_id": "tenset-tutorial-65c6f667b33a5bb898a21c09",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 110
+    },
+    {
+      "workload_id": "tenset-tutorial-28102d7994ef9a043c90e783",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 115
+    },
+    {
+      "workload_id": "tenset-tutorial-06d6b9ea70e4ff1950e3a7b0",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 30
+    },
+    {
+      "workload_id": "tenset-tutorial-048caf4ff54e35953663465f",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 196
+    },
+    {
+      "workload_id": "tenset-tutorial-ecd7caa55375525e44610f9b",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 183
+    },
+    {
+      "workload_id": "tenset-tutorial-4339ced501bfc5a17994ca34",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 118
+    },
+    {
+      "workload_id": "tenset-tutorial-2ebec70c483e01dc9832877a",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 194
+    },
+    {
+      "workload_id": "tenset-tutorial-ec05d85a6f4c58de61316bba",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 95
+    },
+    {
+      "workload_id": "tenset-tutorial-44d0bc5d0a8ce08808ca0067",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 130
+    },
+    {
+      "workload_id": "tenset-tutorial-655008161736e7a9bfbd3576",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 61
+    },
+    {
+      "workload_id": "tenset-tutorial-fc4c13ead87272140de5860d",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 85
+    },
+    {
+      "workload_id": "tenset-tutorial-aa4ff76f4ed5c1d0c6e4f636",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 94
+    },
+    {
+      "workload_id": "tenset-tutorial-df45af4cc742208cf8b41cd8",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 68
+    },
+    {
+      "workload_id": "tenset-tutorial-682cbb757dd08422f0b38cf0",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 191
+    },
+    {
+      "workload_id": "tenset-tutorial-983dabf6c341103ffd2201d5",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 18
+    },
+    {
+      "workload_id": "tenset-tutorial-c80009d9e4c0fe6a281f8457",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 124
+    },
+    {
+      "workload_id": "tenset-tutorial-5070c35081ccd7d96ffca971",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 20
+    },
+    {
+      "workload_id": "tenset-tutorial-5567b026e46ee1537e052592",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 54
+    },
+    {
+      "workload_id": "tenset-tutorial-046beea55e1cee8147212e0c",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 101
+    },
+    {
+      "workload_id": "tenset-tutorial-25aa4f90e9b83e4b881adc37",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 52
+    },
+    {
+      "workload_id": "tenset-tutorial-0bbb8d4ba6868a1f4c22fb75",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 97
+    },
+    {
+      "workload_id": "tenset-tutorial-e6943c033be64e66f07a4484",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 22
+    },
+    {
+      "workload_id": "tenset-tutorial-ebeb505370f2a67c8ec8687a",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 183
+    },
+    {
+      "workload_id": "tenset-tutorial-136101695ce360d08c585f0e",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 75
+    },
+    {
+      "workload_id": "tenset-tutorial-8c8f10816f91560bab6eec64",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 45
+    },
+    {
+      "workload_id": "tenset-tutorial-cc6b859fd17328ad4e5b5d75",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 130
+    },
+    {
+      "workload_id": "tenset-tutorial-9680678534abb3c0c6c667a0",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 40
+    },
+    {
+      "workload_id": "tenset-tutorial-488a2e07f88ea2857218aad4",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 104
+    },
+    {
+      "workload_id": "tenset-tutorial-ec6fea95c13ac121fe09df7c",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 50
+    },
+    {
+      "workload_id": "tenset-tutorial-39853f5ca9642a19738799a2",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 51
+    },
+    {
+      "workload_id": "tenset-tutorial-42a040829732917bb49ce736",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 97
+    },
+    {
+      "workload_id": "tenset-tutorial-dd372925aa56cbbbaf7444e8",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 123
+    },
+    {
+      "workload_id": "tenset-tutorial-b4a35d103075773a65b8d624",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 132
+    },
+    {
+      "workload_id": "tenset-tutorial-770ff64aa5438183f2848b9a",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 39
+    },
+    {
+      "workload_id": "tenset-tutorial-5c8ef3342b08b33e4732775a",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 36
+    },
+    {
+      "workload_id": "tenset-tutorial-870b3d5148897783b30994c1",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 103
+    },
+    {
+      "workload_id": "tenset-tutorial-f71f531ffdc77fecee38850c",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 96
+    },
+    {
+      "workload_id": "tenset-tutorial-2bcfbc8c7f6a2e6084b0f2bd",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 62
+    },
+    {
+      "workload_id": "tenset-tutorial-d00889a1e403c82e8de73c17",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 29
+    },
+    {
+      "workload_id": "tenset-tutorial-780f2108437b6e72b81d2ee2",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 77
+    },
+    {
+      "workload_id": "tenset-tutorial-858c246ea7abacc010ce5b9c",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 14
+    },
+    {
+      "workload_id": "tenset-tutorial-43cebe3a4cb44e0f4a02cbd7",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 52
+    },
+    {
+      "workload_id": "tenset-tutorial-2536fedc074056d92d1236dd",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 18
+    },
+    {
+      "workload_id": "tenset-tutorial-53ea458f9826ec4d06dfb08e",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 98
+    },
+    {
+      "workload_id": "tenset-tutorial-3939b2ef5f3708ea0ee3b47d",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 79
+    },
+    {
+      "workload_id": "tenset-tutorial-193a5c4c7ee2da0b04ce1a06",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 35
+    },
+    {
+      "workload_id": "tenset-tutorial-e7d641886fee7421939fbfe6",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 54
+    },
+    {
+      "workload_id": "tenset-tutorial-baff26791e18a34154c0f45f",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 75
+    },
+    {
+      "workload_id": "tenset-tutorial-c8515dc696cb3516f2efef90",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 47
+    },
+    {
+      "workload_id": "tenset-tutorial-1eca60dcfd886a01158b3662",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 86
+    },
+    {
+      "workload_id": "tenset-tutorial-94dcb46565eb29ddc1e05362",
+      "test_candidate_count": 400,
+      "optimal_records": 1,
+      "best_optimal_rank_in_round0_group": 67
+    }
+  ]
+}
