@@ -271,18 +271,8 @@ def _tensor_graph(task: _DataSearchTask) -> dict[str, object]:
     return graph
 
 
-def load_tenset_registry(
-    path: str | Path, *, max_bytes: int = DEFAULT_MAX_BYTES
-) -> tuple[dict[str, object], ...]:
-    """Return workload keys and parsed tensor graphs from a restricted registry.
-
-    Binary pickle protocols 2–5 are supported. Unknown globals, reducers,
-    constructors, state layouts, extensions, external buffers and persistent
-    IDs fail closed. This function performs no TVM imports, tensor execution,
-    dynamic module loading or native deserialization. Duplicate workload keys
-    with identical graphs are deduplicated; conflicting graphs are rejected.
-    ``max_bytes`` bounds the input read, not the expanded Python object size.
-    """
+def _load_registry_data(path: str | Path, max_bytes: int) -> object:
+    """Read either supported container through the same inert pickle boundary."""
 
     if type(max_bytes) is not int or max_bytes <= 0:
         raise ValueError("registry max_bytes must be a positive integer")
@@ -292,7 +282,7 @@ def load_tenset_registry(
         raise RegistryFormatError("TenSet registry exceeds max_bytes")
     _check_stream(data)
     try:
-        tasks = _RegistryUnpickler(io.BytesIO(data)).load()
+        return _RegistryUnpickler(io.BytesIO(data)).load()
     except RegistryFormatError:
         raise
     except (
@@ -309,6 +299,22 @@ def load_tenset_registry(
         raise RegistryFormatError(
             "malformed or unsupported TenSet registry pickle"
         ) from error
+
+
+def load_tenset_registry(
+    path: str | Path, *, max_bytes: int = DEFAULT_MAX_BYTES
+) -> tuple[dict[str, object], ...]:
+    """Return workload keys and parsed tensor graphs from a restricted registry.
+
+    Binary pickle protocols 2–5 are supported. Unknown globals, reducers,
+    constructors, state layouts, extensions, external buffers and persistent
+    IDs fail closed. This function performs no TVM imports, tensor execution,
+    dynamic module loading or native deserialization. Duplicate workload keys
+    with identical graphs are deduplicated; conflicting graphs are rejected.
+    ``max_bytes`` bounds the input read, not the expanded Python object size.
+    """
+
+    tasks = _load_registry_data(path, max_bytes)
     if not isinstance(tasks, list) or not tasks:
         raise RegistryFormatError("TenSet registry must contain a nonempty task list")
     result = {}
@@ -324,3 +330,40 @@ def load_tenset_registry(
         {"workload_key": workload_key, "tensor_graph": graph}
         for workload_key, graph in result.items()
     )
+
+
+def load_tenset_task_info_keys(
+    path: str | Path, *, max_bytes: int = DEFAULT_MAX_BYTES
+) -> list[str]:
+    """Read ordered keys from an official ``(tasks, weights)`` network pickle.
+
+    The same inert loader used for ``all_tasks.pkl`` rejects executable pickle
+    operations. Only the network-info tuple, task list and positive integer
+    weights emitted by TenSet are accepted. Task order and duplicate keys are
+    preserved; the tutorial applies first-occurrence deduplication across the
+    ordered network files after loading them. Tensor graphs are format-checked
+    but no TVM deserialization or computation is performed.
+    """
+
+    value = _load_registry_data(path, max_bytes)
+    if not isinstance(value, tuple) or len(value) != 2:
+        raise RegistryFormatError("TenSet task info must contain (tasks, weights)")
+    tasks, weights = value
+    if (
+        not isinstance(tasks, list)
+        or not tasks
+        or not isinstance(weights, list)
+        or len(weights) != len(tasks)
+        or any(type(weight) is not int or weight <= 0 for weight in weights)
+    ):
+        raise RegistryFormatError(
+            "TenSet task info requires a nonempty task list and matching "
+            "positive integer weights"
+        )
+    result = []
+    for task in tasks:
+        if type(task) is not _DataSearchTask or not hasattr(task, "state"):
+            raise RegistryFormatError("TenSet task info contains an unsupported task")
+        _tensor_graph(task)
+        result.append(str(task.state["workload_key"]))
+    return result

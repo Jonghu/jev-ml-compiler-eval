@@ -256,12 +256,17 @@ def preflight_tenset_collection(
                 {
                     "first_round_requests": 0,
                     "first_round_questions": 0,
+                    "estimated_first_round_input_tokens": 0,
                     "max_estimated_state_question_tokens": 0,
                     "max_estimated_request_tokens": 0,
                     "warnings": model_plan["warnings"],
                 },
             )
-            for name in ("first_round_requests", "first_round_questions"):
+            for name in (
+                "first_round_requests",
+                "first_round_questions",
+                "estimated_first_round_input_tokens",
+            ):
                 accumulated[name] += model_plan[name]
             for name in (
                 "max_estimated_state_question_tokens",

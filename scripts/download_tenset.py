@@ -22,13 +22,22 @@ def main() -> None:
         help="Empty destination for selected records and the workload registry",
     )
     parser.add_argument("--platform", default="e5-2673")
+    parser.add_argument(
+        "--include-network-tasks",
+        action="store_true",
+        help="Also extract network task inventories for the tutorial preset",
+    )
     parser.add_argument("--sha256", help="Expected SHA-256 from a trusted source")
     args = parser.parse_args()
     archive = args.archive
     if archive is None:
         archive = download_cpu_archive(args.download_to)
     manifest = extract_cpu_archive(
-        archive, args.output_dir, platform=args.platform, expected_sha256=args.sha256
+        archive,
+        args.output_dir,
+        platform=args.platform,
+        expected_sha256=args.sha256,
+        include_network_tasks=args.include_network_tasks,
     )
     print(f"Extracted {len(manifest['files'])} files to {args.output_dir}")
     print(f"Archive SHA-256: {manifest['archive_sha256']}")

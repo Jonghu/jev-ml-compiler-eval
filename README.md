@@ -115,6 +115,7 @@ docs/                     Interfaces, configuration, protocol, and status
 ## Documentation
 
 - [TenSet completed runs and reviewed results](docs/tenset-runlog.md)
+- [Run the reconstructed TenSet 500-file tutorial test pools](docs/run-tenset-tutorial-reference.md)
 - [Configuration reference](docs/configuration.md)
 - [Extension interfaces](docs/interfaces.md)
 - [Experiment protocol](docs/experiment-protocol.md)

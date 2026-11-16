@@ -119,6 +119,16 @@ The [follow-up guide](run-tenset-followup-experiments.md) provides field-definit
 context/order, forced-group tournament, and resumable all-candidate workflows.
 These are prepared execution profiles, not completed experimental results.
 
+The separate [500-file tutorial workflow](run-tenset-tutorial-reference.md)
+prepares Platinum-8272 test-record pools using the official preset ordering and
+within-workload record split. It includes offline preflight, a three-workload
+pilot, resumable execution, and test-record-weighted Top-1/Top-5 summaries. This
+workflow is prepared and has no completed real-data result here. Original
+tutorial test identities and matching XGBoost artifacts remain unverified;
+published XGBoost scores are explicitly external reference values. Live runs
+require `--allow-external-reference`, and the workflow does not establish a
+controlled three-model comparison or a reproduction of a paper table.
+
 ### Dataset preparation
 
 - [x] Download, prepare, and run TenSet on the user's Mac, as demonstrated by
