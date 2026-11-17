@@ -357,14 +357,16 @@ median of three training runs. Jev is not trained on TpuGraphs.
 
 Overall (`valid`, mean over kernels):
 
-| Model | Scope | Top-1 err | Top-5 err | Top-10 err |
-|---|---|---|---|---|
-| Paper EarlySAGE, ListMLE (best; Table 2) | 676 kernels, all configs | 10.5 | 3.0 | 1.8 |
-| Paper EarlyGCN, ListMLE (Table 8) | 676, all | 11.5 | 3.6 | 2.4 |
-| Paper MLP, ListMLE (Table 8) | 676, all | 84.5 | 39.7 | 25.6 |
-| Jev R6 | 120, candidates ≤ 50 | 90.4 (median 6.3) | 1.2 | 0.5 |
-| Random (R4) | 120, candidates ≤ 50 | 76.6 | 10.1 | 4.2 |
-| Random (A1) | 676, all | 268.4 | 57.6 | 35.1 |
+| Model | Scope | Top-1 err | Top-1 slowdown | Top-5 err | Top-10 err |
+|---|---|---|---|---|---|
+| Paper EarlySAGE, ListMLE (best; Table 2) | 676 kernels, all configs | 10.5 | 1.11× | 3.0 | 1.8 |
+| Paper EarlyGCN, ListMLE (Table 8) | 676, all | 11.5 | 1.12× | 3.6 | 2.4 |
+| Paper MLP, ListMLE (Table 8) | 676, all | 84.5 | 1.85× | 39.7 | 25.6 |
+| Jev R6 | 120, candidates ≤ 50 | 90.4 (median 6.3) | 1.90× | 1.2 | 0.5 |
+| Random (R4) | 120, candidates ≤ 50 | 76.6 | 1.77× | 10.1 | 4.2 |
+| Random (A1) | 676, all | 268.4 | 3.68× | 57.6 | 35.1 |
+
+Top-1 slowdown is 1 + Top-1 err / 100.
 
 Per program (Top-1 / Top-5 err; paper Table 9, ListMLE EarlySAGE):
 
@@ -428,13 +430,18 @@ Observations:
 
 Results (percent, mean over kernels; paper values from Table 2 and Table 8):
 
-| Model | Top-1 err | Top-1 median | Top-5 err | Top-10 err | Kendall τ |
-|---|---|---|---|---|---|
-| Paper EarlySAGE, ListMLE | 10.5 | — | 3.0 | 1.8 | not reported |
-| Paper MLP, ListMLE | 84.5 | — | 39.7 | 25.6 | not reported |
-| **Jev tournament, blind** | **413.6** | 80.3 | **48.9** | **24.2** | +0.079 |
-| Random | 268.4 | 111.7 | 57.6 | 35.1 | −0.001 |
-| Compiler default (reference) | 2.4 | 0.6 | — | — | — |
+| Model | Top-1 err | Top-1 slowdown | Top-1 median | Top-5 err | Top-10 err | Kendall τ |
+|---|---|---|---|---|---|---|
+| Paper EarlySAGE, ListMLE | 10.5 | 1.11× | — | 3.0 | 1.8 | not reported |
+| Paper MLP, ListMLE | 84.5 | 1.85× | — | 39.7 | 25.6 | not reported |
+| **Jev tournament, blind** | **413.6** | **5.14×** | 80.3 | **48.9** | **24.2** | +0.079 |
+| Random | 268.4 | 3.68× | 111.7 | 57.6 | 35.1 | −0.001 |
+| Compiler default (reference) | 2.4 | 1.02× | 0.6 | — | — | — |
+
+Errors follow the paper's Eq. 1 (Top-K E %, mean over kernels). Top-1
+slowdown is 1 + Top-1 err / 100: how many times slower than the optimum the
+first pick is on average. Paper values are the median of three training
+runs; the Jev and Random values come from a single run.
 
 Kendall τ is shown for reference only: the tournament ranking is complete
 only among the finalists, and the paper does not report τ for tiles.
