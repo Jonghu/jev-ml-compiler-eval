@@ -1,5 +1,11 @@
 # Finish RQ1: Jev versus Random
 
+For the newly prepared main-paper ResNet-50 comparison, use the separate
+[paper run guide](run-tenset-paper-resnet50.md) and
+[protocol audit](tenset-paper-protocol.md). Its full-record test pool and
+network endpoint metric differ from the completed studies below. It has not
+been executed yet.
+
 The current research comparison is **Jev versus Random**. No specialized-model
 training, checkpoint, or published-model comparison is required. Keep the two
 completed studies separate:

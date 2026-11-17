@@ -34,6 +34,16 @@ larger Top-1 advantage at smaller budgets is not established by the paired
 cross-budget intervals. Full tensor/schedule explanations still need the
 offline prepared-data case export.
 
+## Prepared main-paper ResNet-50 extension
+
+The [paper run guide](../../run-tenset-paper-resnet50.md) prepares one Table 4
+network column and an offline token/cost preflight. The
+[source audit](../../tenset-paper-protocol.md) defines the full-record pools,
+occurrence-weighted best-of-K network score, and external MLP + Ranking loss
+reference. This is a prepared workflow, not a published new experiment.
+The existing 484-workload and candidate-size scores use different aggregation
+and cannot be substituted for this network result.
+
 ## 120 test workloads x 50 schedules, long context
 
 Directory: [w120-c50-s42-long-context](w120-c50-s42-long-context/).

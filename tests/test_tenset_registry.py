@@ -14,6 +14,8 @@ import pytest
 from jev_compiler_eval.datasets.tenset_registry import (
     RegistryFormatError,
     load_tenset_registry,
+    load_tenset_task_info,
+    load_tenset_task_info_keys,
 )
 
 
@@ -141,6 +143,46 @@ def _write_pickle(tmp_path, value, protocol=4):
     path = tmp_path / "all_tasks.pkl"
     path.write_bytes(pickle.dumps(value, protocol=protocol))
     return path
+
+
+@pytest.mark.parametrize("protocol", [2, 3, 4, 5])
+def test_weighted_network_info_preserves_task_order_weights_and_graphs(
+    tmp_path, registry_factory, protocol
+):
+    make_task, graph, executed = registry_factory
+    path = _write_pickle(
+        tmp_path,
+        ([make_task('["second",2]'), make_task('["first",1]')], [3, 11]),
+        protocol,
+    )
+    rows = load_tenset_task_info(path)
+    assert rows == [
+        {"workload_key": '["second",2]', "task_weight": 3, "tensor_graph": graph},
+        {"workload_key": '["first",1]', "task_weight": 11, "tensor_graph": graph},
+    ]
+    assert load_tenset_task_info_keys(path) == ['["second",2]', '["first",1]']
+    assert executed == []
+
+
+def test_weighted_network_info_rejects_duplicates_without_changing_key_only_reader(
+    tmp_path, registry_factory
+):
+    make_task, _, executed = registry_factory
+    path = _write_pickle(tmp_path, ([make_task(), make_task()], [2, 7]))
+    assert len(load_tenset_task_info_keys(path)) == 2
+    with pytest.raises(RegistryFormatError, match="duplicate workload keys"):
+        load_tenset_task_info(path)
+    assert executed == []
+
+
+@pytest.mark.parametrize("weights", [[0], [-1], [True], [1.5], [], [1, 2]])
+def test_weighted_network_info_rejects_invalid_or_misaligned_weights(
+    tmp_path, registry_factory, weights
+):
+    make_task, _, _ = registry_factory
+    path = _write_pickle(tmp_path, ([make_task()], weights))
+    with pytest.raises(RegistryFormatError, match="positive integer weights"):
+        load_tenset_task_info(path)
 
 
 @pytest.mark.parametrize("protocol", [2, 3, 4, 5])

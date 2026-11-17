@@ -555,3 +555,25 @@ completed and exported. The remaining substantive RQ1 task is the offline
 semantic tensor/schedule case export and its final report narrative. Optional
 fresh repeats or prompt/algorithm controls do not require rerunning these
 completed size conditions merely to regenerate their plots.
+
+## Prepared extension — main-paper ResNet-50 column
+
+The [new preparation and preflight workflow](run-tenset-paper-resnet50.md)
+targets ResNet-50, batch 1, input224, on recorded Platinum-8272 measurements.
+The main paper's Table 4 MLP + Ranking loss reference is 0.8823 Top-1 and
+0.9456 Top-5. The original model checkpoint and record inventory remain
+unverified; no model from the paper is locally trained by this workflow.
+
+Every task in the network metadata and every record in each resolved source
+file is retained, with frequency weights, duplicates and error records. The
+new reported metric is the pinned network evaluator's weighted best-of-K
+endpoint latency ratio, not the earlier record-weighted prefix-average score.
+The [protocol audit](tenset-paper-protocol.md) records the source, floating-point
+conventions and limitations, including the inaccessible supplemental appendices.
+
+Preparation, pilot/full profiles, offline cost scenarios and verified resumable
+execution are implemented and tested. There are **no real-data preflight
+counts, new Jev results, live requests, or measured costs** for this extension
+yet. The Mac's existing CPU data are needed for the offline plan. The
+three-task pilot must remain labelled as a subset without the full-network
+published reference; a completed full run will receive its own run entry.

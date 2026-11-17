@@ -41,13 +41,19 @@ separately in the [RQ1 report](docs/rq1-report.md), with
 [candidate-size results](docs/results/tenset/size-sweep/README.md) and
 [tournament results](docs/results/tenset/tutorial-500-platinum-test/README.md).
 
-Remaining TenSet work is the offline export and review of concrete tensor and
-schedule case narratives, followed by final report review. The
+Remaining TenSet work includes concrete tensor/schedule case narratives,
+execution of the prepared paper-comparison extension, and final report review. The
 [finish guide](docs/run-tenset-finish-rq1.md) distinguishes those steps from
 reproduction commands for already completed paid runs. Offline analysis uses
 the saved prepared data and result bundles; further Jev runs require credentials.
 The TpuGraphs implementation is on the separate `tpu-graph` branch and awaits
 integration.
+
+A separate [main-paper ResNet-50 extension](docs/run-tenset-paper-resnet50.md)
+is now prepared for a comparison with the published MLP + Ranking loss
+reference. It uses full per-kernel record pools and weighted network endpoint
+scores rather than the tutorial's record-weighted prefix scores. Preparation
+and cost preflight work offline; no new benchmark results are claimed.
 
 See [Project status](docs/project-status.md) for the completed-work checklist
 and the remaining tasks for each benchmark.
@@ -127,6 +133,8 @@ docs/                     Interfaces, configuration, protocol, and status
 
 - [TenSet completed runs and reviewed results](docs/tenset-runlog.md)
 - [Completed TenSet 16/32/50 candidate-size results](docs/results/tenset/size-sweep/README.md)
+- [Prepare the main-paper ResNet-50 comparison and estimate cost offline](docs/run-tenset-paper-resnet50.md)
+- [Main-paper protocol and metric source audit](docs/tenset-paper-protocol.md)
 - [Finish the Jev-versus-Random RQ1 analyses](docs/run-tenset-finish-rq1.md)
 - [Run the reconstructed TenSet 500-file tutorial test pools](docs/run-tenset-tutorial-reference.md)
 - [Configuration reference](docs/configuration.md)

@@ -1,0 +1,46 @@
+schema_version: 1
+experiment:
+  name: tenset-paper-resnet50-platinum-pilot
+  description: Offline-first pilot using complete source-record pools for three tasks
+  seed: 0
+  output_dir: results/tenset/paper-resnet50/pilot
+dataset:
+  type: tenset
+  config:
+    path: data/tenset/paper-resnet50-platinum/index.json
+    split: test
+    candidate_limit: null
+    max_workloads: 3
+    seed: 0
+    max_input_bytes: null
+    require_program_metadata: true
+    describe_config_fields: true
+candidate_selection:
+  strategy: all
+models:
+- id: random-0
+  type: random
+  config:
+    seed: 0
+- id: jev-1.14.0-paper-resnet50-tournament-fields-long-context
+  type: jev-tournament
+  config:
+    model: jev-1.14.0
+    cache_dir: .cache/jev-tenset-paper-resnet50
+    max_retries: 3
+    request_timeout_seconds: 120.0
+    long_context: true
+    order_seed: 0
+    candidate_ids: opaque
+    max_options: 255
+    advance_per_question: 5
+    max_request_tokens: 200000
+    max_state_question_tokens: 180000
+    chars_per_token: 1.4
+    max_requests_per_minute: 960
+    max_tokens_per_second: 200000
+metrics:
+- top_1_score
+- top_5_score
+execution:
+  fail_fast: true

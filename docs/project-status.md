@@ -216,6 +216,29 @@ limited by the supplied artifacts.
 - [x] Incorporate the completed size and operation-name analyses into the report.
 - [ ] Add and review concrete tensor/schedule explanations for the selected cases.
 
+### Prepared main-paper ResNet-50 comparison
+
+The [new workflow](run-tenset-paper-resnet50.md) targets one main-paper Table 4
+column: ResNet-50, batch 1, input224, Platinum-8272. Its MLP + Ranking loss
+reference is 0.8823/0.9456 for Top-1/Top-5. This reference is separate from
+the completed tutorial experiment and remains unverified against the original
+checkpoint and record inventory.
+
+- [x] Prepare complete network task/weight/record inventories from ZIP or raw data.
+- [x] Reconstruct the pinned network-weighted best-of-K endpoint evaluator.
+- [x] Keep intermediate prefix metrics separate and suppress full-network
+  reference comparisons for pilot subsets.
+- [x] Prepare a three-row full-run comparison export: local Jev, local Random,
+  and the separately labelled published MLP + Ranking loss reference.
+- [x] Provide offline-first validation and token/cost scenarios, plus explicitly
+  selected execution with verified per-task resume.
+- [ ] Run local-data preflight and review the actual scope and estimated cost.
+- [ ] Execute and review the pilot and full-network Jev/Random experiment.
+
+No new benchmark outcome or paid model usage is claimed. The
+[protocol audit](tenset-paper-protocol.md) documents the inaccessible appendices,
+native label/error behavior and remaining limits of the published comparison.
+
 ### Optional extensions and retained tooling
 
 Field-only ablations, context/order controls, forced-group tournament controls,

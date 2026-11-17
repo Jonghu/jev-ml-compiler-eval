@@ -565,15 +565,25 @@ def run_tenset_collection(
     resume: bool = False,
     output_dir: str | Path | None = None,
     progress: Callable[[int, int, str, bool], None] | None = None,
+    expected_identity: Mapping[str, object] | None = None,
 ) -> ExperimentRunResult:
     """Run every selected shard; resume verified completed cases without model calls.
 
     A failed case stops the run and no aggregate bundle is declared complete.
     Restart with identical inputs and ``resume=True``. Completed child bundles
     are verified and reused; unfinished model requests may reuse the API cache.
+    A supplied ``expected_identity`` binds execution to a caller's validated
+    preflight, checked before creating output or initializing any model.
     """
 
     plan = _load_plan(config_path, workload_limit=workload_limit, output_dir=output_dir)
+    if expected_identity is not None and (
+        not isinstance(expected_identity, Mapping)
+        or plan.identity != dict(expected_identity)
+    ):
+        raise ValueError(
+            "collection execution differs from its validated preflight identity"
+        )
     destination = plan.output_dir
     state_path = destination / STATE_FILE
     if destination.exists() and (

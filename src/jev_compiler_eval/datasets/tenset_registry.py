@@ -345,6 +345,12 @@ def load_tenset_task_info_keys(
     but no TVM deserialization or computation is performed.
     """
 
+    return [entry["workload_key"] for entry in _task_info_rows(path, max_bytes)]
+
+
+def _task_info_rows(path: str | Path, max_bytes: int) -> list[dict]:
+    """Validate a network task container once through the inert decoder."""
+
     value = _load_registry_data(path, max_bytes)
     if not isinstance(value, tuple) or len(value) != 2:
         raise RegistryFormatError("TenSet task info must contain (tasks, weights)")
@@ -361,9 +367,32 @@ def load_tenset_task_info_keys(
             "positive integer weights"
         )
     result = []
-    for task in tasks:
+    for task, weight in zip(tasks, weights, strict=True):
         if type(task) is not _DataSearchTask or not hasattr(task, "state"):
             raise RegistryFormatError("TenSet task info contains an unsupported task")
-        _tensor_graph(task)
-        result.append(str(task.state["workload_key"]))
+        result.append(
+            {
+                "workload_key": str(task.state["workload_key"]),
+                "task_weight": weight,
+                "tensor_graph": _tensor_graph(task),
+            }
+        )
     return result
+
+
+def load_tenset_task_info(
+    path: str | Path, *, max_bytes: int = DEFAULT_MAX_BYTES
+) -> list[dict]:
+    """Read ordered network tasks, occurrence weights, and semantic tensor graphs.
+
+    Unlike the tutorial's key-only loader, a weighted network evaluation cannot
+    silently deduplicate tasks or overwrite occurrence weights. Duplicate keys
+    therefore fail closed. Weights and parsed graphs are dataset metadata; this
+    reader imports no TVM code and executes no source pickle callables.
+    """
+
+    rows = _task_info_rows(path, max_bytes)
+    keys = [entry["workload_key"] for entry in rows]
+    if len(keys) != len(set(keys)):
+        raise RegistryFormatError("weighted task info contains duplicate workload keys")
+    return rows

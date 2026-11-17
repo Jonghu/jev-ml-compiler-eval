@@ -30,7 +30,10 @@ from jev_compiler_eval.datasets.tenset_collection import (
     load_collection_shard,
 )
 from jev_compiler_eval.datasets.tenset_registry import load_tenset_registry
-from jev_compiler_eval.datasets.tenset_tutorial_protocol import tutorial_file_sample
+from jev_compiler_eval.datasets.tenset_tutorial_protocol import (
+    f32,
+    tutorial_file_sample,
+)
 
 PROTOCOL = "tenset_500file_tutorial_record_test_reconstruction"
 ALIGNMENT = "unverified_original_tutorial_artifacts"
@@ -59,7 +62,11 @@ def tutorial_test_indices(count: int) -> list[int]:
     return list(range(count - 1, -1, -1))[int(0.9 * count) :]
 
 
-def _record_pool(path: Path) -> tuple[list, list[dict]]:
+def _record_pool(
+    path: Path, *, allow_zero_throughput: bool = False
+) -> tuple[list, list[dict]]:
+    if type(allow_zero_throughput) is not bool:
+        raise ValueError("allow_zero_throughput must be a boolean")
     task = None
     records = []
     with path.open(encoding="utf-8") as stream:
@@ -133,9 +140,14 @@ def _record_pool(path: Path) -> tuple[list, list[dict]]:
         raise ValueError(f"empty tutorial source file: {path}")
     minimum = min(record["reference_cost_seconds"] for record in records)
     for record in records:
-        record["official_throughput"] = _float32(
-            minimum / record["reference_cost_seconds"]
-        )
+        ratio = minimum / record["reference_cost_seconds"]
+        if allow_zero_throughput:
+            throughput = f32(ratio)
+            if not isfinite(throughput) or not 0 <= throughput <= 1:
+                raise ValueError("throughput must be finite and in [0, 1]")
+            record["official_throughput"] = throughput
+        else:
+            record["official_throughput"] = _float32(ratio)
     return task, records
 
 

@@ -16,6 +16,10 @@ The [run log](tenset-runlog.md) records their provenance; the
 semantic case-analysis commands. The 16- and 32-schedule runs are completed
 measurements; the original 50-schedule results are reused.
 
+A separate ResNet-50 evaluation aligned with the main paper's network
+evaluator is prepared but has not run. It targets a published MLP reference
+under a different test-pool and aggregation protocol, described below.
+
 ## Dataset, serialization, and evaluation protocols
 
 TenSet contains 51,577,248 program measurements across six hardware platforms
@@ -308,6 +312,50 @@ latencies in the uploaded exports are 243.222 ms and 342.073 ms at 16 and
 32 schedules. The historical 50-schedule mean of 426.488 ms includes cached
 cases, so this is not a controlled latency-scaling experiment.
 
+## Prepared main-paper ResNet-50 extension
+
+Section 5.2/Table 4 of the paper [5] reports an MLP + Ranking loss model on
+ResNet-50, batch 1, image resolution 224, using Platinum-8272 measurements:
+
+| External published model | ResNet-50 Top-1 | ResNet-50 Top-5 |
+|---|---:|---:|
+| MLP + Ranking loss | 0.8823 | 0.9456 |
+
+These are reference values, not a locally evaluated model or a new Jev
+result. The paper trains its models excluding the union of tasks from five
+held-out networks. This extension targets only the ResNet-50 column; it does
+not reproduce the entire five-network experiment or the original checkpoint.
+
+The pinned network evaluator [6] reads all records for the network's task
+inventory and weights each task by its occurrence count. It recovers latency
+from float32-origin throughput labels with a `1e-5` floor, then computes the
+ratio of weighted oracle latency to weighted best-of-K selected latency.
+Top-5 is the best of five endpoint choices. It is not the prefix-average
+score used in the completed experiments above, nor a record-weighted average.
+The old 484-workload aggregate cannot be inserted into this network table.
+
+The [source-audited protocol](tenset-paper-protocol.md) and
+[Mac run guide](run-tenset-paper-resnet50.md) define preparation, the three-task
+pilot, complete-network execution, and offline token/cost scenarios. They use
+the existing CPU ZIP and safe task/weight/graph decoding without installing
+TVM or training a baseline. The CLI defaults to offline preflight; live
+execution uses `--execute`. The Mac's prepared data are needed for real task
+counts and estimates. No paid request or actual experiment for this extension
+has been performed as part of its implementation.
+
+Complete new runs will report separately named
+`paper_network_best_of_1_score` and `paper_network_best_of_5_score` alongside
+the external reference, with original inventory/checkpoint identity marked
+unverified. Jev versus Random on the same locally frozen full-record pools
+remains the paired comparison. Pilot scores cannot be compared with the full
+published network. The supplemental appendices were inaccessible during
+the audit; detailed numerical conventions follow the pinned executable
+network evaluator rather than claiming independent appendix verification.
+The full-run comparison export will contain three explicitly sourced rows:
+Jev and Random from the local frozen pools, and MLP + Ranking loss from the
+published Table 4 reference. The external row will not be represented as a
+locally evaluated model or included in paired significance calculations.
+
 ## Remaining required analyses and prepared work
 
 The implementation and completed results cover the requested Top-1/Top-5,
@@ -366,3 +414,5 @@ comparisons do not change the current Jev-versus-Random research question.
 2. [Pinned tutorial and record-preparation procedure](https://github.com/tlc-pack/tenset/blob/35774ed373f9693cc6efcbe83f5703141e8ab0c8/docs/try_pretrained_models_on_aws_c59x.md).
 3. [Official metric definitions](https://github.com/tlc-pack/tenset/blob/35774ed373f9693cc6efcbe83f5703141e8ab0c8/python/tvm/auto_scheduler/cost_model/metric.py).
 4. [Reference evaluation and aggregation](https://github.com/tlc-pack/tenset/blob/35774ed373f9693cc6efcbe83f5703141e8ab0c8/scripts/train_model.py).
+5. [Main-paper Section 5.2/Table 4, page 7](https://datasets-benchmarks-proceedings.neurips.cc/paper_files/paper/2021/file/a684eceee76fc522773286a895bc8436-Paper-round1.pdf#page=7).
+6. [Pinned network-weighted endpoint evaluator](https://github.com/tlc-pack/tenset/blob/35774ed373f9693cc6efcbe83f5703141e8ab0c8/scripts/eval_model_on_dataset.py).
