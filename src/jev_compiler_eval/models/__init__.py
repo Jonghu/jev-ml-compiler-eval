@@ -2,6 +2,7 @@
 
 from jev_compiler_eval.models.base import BaseDecisionModel
 from jev_compiler_eval.models.jev import JevModel
+from jev_compiler_eval.models.jev_tournament import JevTournamentModel
 from jev_compiler_eval.models.random import RandomModel
 from jev_compiler_eval.models.registry import get_model_class, register_model
 from jev_compiler_eval.models.tenset_xgb import TenSetXGBModel
@@ -9,10 +10,12 @@ from jev_compiler_eval.models.tenset_xgb import TenSetXGBModel
 register_model("random", RandomModel)
 register_model("jev", JevModel)
 register_model("tenset_xgb", TenSetXGBModel)
+register_model("jev-tournament", JevTournamentModel)
 
 __all__ = [
     "BaseDecisionModel",
     "JevModel",
+    "JevTournamentModel",
     "RandomModel",
     "TenSetXGBModel",
     "get_model_class",

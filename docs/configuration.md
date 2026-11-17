@@ -82,15 +82,36 @@ and implementation-specific `config`. Multiple entries may use the same type
 with different configurations.
 
 Random accepts only `seed`. Jev requires `model`, `cache_dir`, `max_retries`,
-and `request_timeout_seconds`.
+and `request_timeout_seconds`. Jev also accepts optional ablation settings:
+
+| Setting | Default | Effect |
+|---|---|---|
+| `include_context` | `true` | `false` sends only the workload ID as state, without `Workload.context`. |
+| `candidate_order` | `original` | `shuffled` sends candidates in a random order, seeded per workload. |
+| `order_seed` | — | Integer seed; required with, and only allowed with, `candidate_order: shuffled`. |
+
+The defaults reproduce earlier requests exactly, so existing cache entries
+remain valid. Shuffled runs record the presented order as
+`presented_candidate_ids` in prediction metadata. Ties in Jev probabilities
+are still broken by the dataset's candidate order, not the presented order.
 
 ### `metrics`
 
-The shared metrics include `runtime_regret` and mock `top_1_accuracy`. TenSet adds
-`top_1_score`, `top_5_score`, and official `pairwise_accuracy`, plus a separately
-named `pairwise_accuracy_tie_aware` diagnostic. Its Top-5 score averages the best
-normalized throughput reached at each prefix. See [RQ1](rq1-report.md) for exact
-formulas and aggregation. TpuGraphs metrics remain to be implemented.
+Each metric is computed per workload and averaged across workloads. Every
+model must rank all candidates, so ranking metrics see the full ranking.
+
+| Name | Definition |
+|---|---|
+| `runtime_regret` | Selected runtime divided by optimal runtime, minus one. |
+| `top_1_accuracy` | One when the selected candidate ties for the optimal runtime. |
+| `top_1_error`, `top_5_error`, `top_10_error` | Fastest runtime among the K highest-ranked candidates divided by optimal runtime, minus one. Zero when a workload has at most K candidates. |
+| `kendall_tau` | Kendall's tau-b between ranking positions and runtimes; one means the ranking is ordered from fastest to slowest. |
+
+`top_1_error` equals `runtime_regret`. The Top-K errors and Kendall's tau
+follow the TpuGraphs definitions (Phothilimthana et al., arXiv:2308.13490).
+`kendall_tau` raises an error for workloads with fewer than two candidates or
+identical runtimes, where it is undefined. TenSet Top-1 Score, Top-5 Score,
+and Pairwise Accuracy are not yet implemented.
 
 ### `execution`
 

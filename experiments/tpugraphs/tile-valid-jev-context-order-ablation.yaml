@@ -1,0 +1,51 @@
+schema_version: 1
+
+experiment:
+  name: tpugraphs-tile-valid-jev-context-order-ablation
+  description: >-
+    Ablate the R4 Jev baseline on tile:xla validation kernels with at most 50
+    configs: remove the graph context, or shuffle the candidate order
+  seed: 42
+  output_dir: results/tpugraphs/tile-valid-jev-context-order-ablation
+
+dataset:
+  type: tpugraphs-tile
+  config:
+    path: data/tpugraphs/npz/tile/xla/valid
+    max_candidates: 50
+
+candidate_selection:
+  strategy: all
+
+models:
+  # Same request as R4 except that the state contains only the workload ID.
+  - id: jev-1.14.0-no-context
+    type: jev
+    config:
+      model: jev-1.14.0
+      cache_dir: .cache/jev
+      max_retries: 3
+      request_timeout_seconds: 30.0
+      include_context: false
+
+  # Same request as R4 except that candidates are sent in a seeded random order.
+  - id: jev-1.14.0-shuffled
+    type: jev
+    config:
+      model: jev-1.14.0
+      cache_dir: .cache/jev
+      max_retries: 3
+      request_timeout_seconds: 30.0
+      candidate_order: shuffled
+      order_seed: 42
+
+metrics:
+  - runtime_regret
+  - top_1_accuracy
+  - top_1_error
+  - top_5_error
+  - top_10_error
+  - kendall_tau
+
+execution:
+  fail_fast: true

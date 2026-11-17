@@ -138,24 +138,64 @@ def test_configures_official_sdk_retry_and_timeout(
     assert sdk_client.closed is True
 
 
-def test_cache_key_is_independent_of_mapping_order(tmp_path: Path) -> None:
+def test_cache_key_depends_on_mapping_order(tmp_path: Path) -> None:
     sdk_client = FakeSdkClient()
     client = JevApiClient(
         make_config(tmp_path),
         sdk_client=sdk_client,  # type: ignore[arg-type]
     )
-    client.decide(
+    first = {"decision": {"type": "noul", "instructions": "Relevant?"}}
+    client.decide(state={"operation": "matmul", "dtype": "float32"}, questions=first)
+
+    repeated = client.decide(
         state={"operation": "matmul", "dtype": "float32"},
         questions={"decision": {"type": "noul", "instructions": "Relevant?"}},
     )
-
-    result = client.decide(
+    reordered = client.decide(
         state={"dtype": "float32", "operation": "matmul"},
-        questions={"decision": {"instructions": "Relevant?", "type": "noul"}},
+        questions=first,
     )
 
-    assert result.cache_hit is True
-    assert sdk_client.calls == 1
+    assert repeated.cache_hit is True
+    assert reordered.cache_hit is False
+    assert sdk_client.calls == 2
+
+
+def test_cache_stores_request_body_with_response(tmp_path: Path) -> None:
+    client = JevApiClient(
+        make_config(tmp_path),
+        sdk_client=FakeSdkClient(),  # type: ignore[arg-type]
+    )
+    values = request()
+
+    client.decide(**values)  # type: ignore[arg-type]
+
+    cache_path = next(make_config(tmp_path).cache_dir.glob("*.json"))
+    cached = json.loads(cache_path.read_text(encoding="utf-8"))
+    assert cached["schema_version"] == 3
+    assert cached["request_sha256"] == cache_path.stem
+    assert cached["request"] == {
+        "base_url": "https://api.typesafe.ai",
+        "model": "jev-1.13.0",
+        **values,
+    }
+    assert cached["response"]["request_id"] is None
+
+
+def test_rejects_cache_whose_request_does_not_match_its_hash(tmp_path: Path) -> None:
+    client = JevApiClient(
+        make_config(tmp_path),
+        sdk_client=FakeSdkClient(),  # type: ignore[arg-type]
+    )
+    values = request()
+    client.decide(**values)  # type: ignore[arg-type]
+    cache_path = next(make_config(tmp_path).cache_dir.glob("*.json"))
+    cached = json.loads(cache_path.read_text(encoding="utf-8"))
+    cached["request"]["state"] = {"operation": "conv2d"}
+    cache_path.write_text(json.dumps(cached), encoding="utf-8")
+
+    with pytest.raises(JevCacheError, match="failed to read Jev cache file"):
+        client.decide(**values)  # type: ignore[arg-type]
 
 
 def test_cache_does_not_contain_api_credentials(

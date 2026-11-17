@@ -162,21 +162,21 @@ and final RQ2 results remain pending.
 
 ### Dataset preparation
 
-- [ ] Download and set up TpuGraphs.
-- [ ] Explore graph representations, candidate configurations, and runtime
+- [x] Download and set up TpuGraphs.
+- [x] Explore graph representations, candidate configurations, and runtime
   labels.
-- [ ] Start with the `tile:xla` collection.
+- [x] Start with the `tile:xla` collection.
 - [ ] Expand to layout configurations only if time and feasibility permit.
-- [ ] Extract graph features, configuration parameters, and runtime labels.
-- [ ] Use and document the official dataset splits.
+- [x] Extract graph features, configuration parameters, and runtime labels.
+- [x] Use and document the official dataset splits.
 
 ### Graph serialization
 
-- [ ] Represent operation types, graph connectivity, tensor shapes, and tile
+- [x] Represent operation types, graph connectivity, tensor shapes, and tile
   sizes in `Workload.context` and `Candidate.configuration`.
 - [ ] Develop a compact summary for graphs that exceed Jev input limits.
 - [ ] Validate serialized representations against source data.
-- [ ] Verify that measured runtimes never appear in model-visible data.
+- [x] Verify that measured runtimes never appear in model-visible data.
 - [ ] Analyze the effect of serialization and input size on decisions.
 
 ### GNN baseline
@@ -189,8 +189,8 @@ and final RQ2 results remain pending.
 ### Experiments and analysis
 
 - [ ] Evaluate Jev, Random, and GNN on identical candidate sets.
-- [ ] Implement and compute official Top-1 Error.
-- [ ] Implement and compute Top-5/10 Error and Kendall's Tau.
+- [x] Implement official Top-1 Error.
+- [x] Implement Top-5/10 Error and Kendall's Tau.
 - [ ] Compute runtime regret.
 - [ ] Compare graph sizes, configuration types, and candidate-set sizes.
 - [ ] Investigate Jev success and failure cases.

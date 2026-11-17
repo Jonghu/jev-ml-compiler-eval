@@ -1,0 +1,33 @@
+schema_version: 1
+
+experiment:
+  name: tpugraphs-tile-valid-random-smoke-test
+  description: Run Random on tile:xla validation kernels with at most 50 configs
+  seed: 42
+  output_dir: results/tpugraphs/tile-valid-random-smoke-test
+
+dataset:
+  type: tpugraphs-tile
+  config:
+    path: data/tpugraphs/npz/tile/xla/valid
+    max_candidates: 50
+
+candidate_selection:
+  strategy: all
+
+models:
+  - id: random
+    type: random
+    config:
+      seed: 42
+
+metrics:
+  - runtime_regret
+  - top_1_accuracy
+  - top_1_error
+  - top_5_error
+  - top_10_error
+  - kendall_tau
+
+execution:
+  fail_fast: true

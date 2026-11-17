@@ -59,6 +59,17 @@ Record for every Jev decision:
 Cached responses must not be counted as new API cost. API keys must never be
 written to YAML, cache files, result files, logs, or commits.
 
+Each successful Jev request is cached as `<cache_dir>/<request_sha256>.json`.
+The file stores the full request body (base URL, model, state, and questions)
+next to the response, so the exact model input behind every decision can be
+inspected. Reading a cache file fails if the file uses another schema version
+or if its stored request does not hash to its file name.
+
+The hash covers the request in the exact key order sent to Jev (cache schema
+v3). Candidate order is part of the model input, so requests that differ only
+in order are cached separately. Schema v2 sorted keys before hashing, which
+let a shuffled-order request silently reuse an original-order response.
+
 ## Result bundle
 
 Each completed experiment writes:
