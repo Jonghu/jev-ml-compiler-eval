@@ -11,12 +11,27 @@ The completed [Platinum test-pool result publication](tutorial-500-platinum-test
 contains record-weighted Top-1/Top-5 results, paired uncertainty, exact
 uniform-Random expectations, natural candidate-count breakdowns, tournament
 diagnostics, reviewed usage/cost tables, and three reproducible PNG/SVG figures.
-It covers 484 retained workloads and 187,679 test records. The research scope is
-Jev versus Random; no specialized-model comparison is required.
+It covers 484 retained workloads and 187,679 test records. The empirical paired
+comparison is Jev versus Random. Published XGBoost scores are reported separately
+as external context, rather than as a third locally evaluated model.
 
 This study retains error records and uses tournament selection metrics. Keep
 its aggregates separate from the earlier valid-only E5 single-question study
 below, which supplies full-ranking Pairwise Accuracy and runtime regret.
+
+## Published XGBoost tutorial reference
+
+The [separate reference record](tutorial-500-platinum-test/xgboost-tutorial-reference.json)
+cites the pinned official 500-file tutorial: XGBoost Top-1 Score 0.829146,
+Top-5 Score 0.904636, and Pairwise Accuracy 0.846439. Its reported training/test
+record counts are 1,689,022/187,679. The original inventory, exact test records,
+and checkpoint have not been matched, so the values are external context and
+are not labelled paper-table results or a controlled three-model comparison.
+
+The tutorial contains no published Random baseline. Our Random-0 and Random-42
+results are local measurements paired with Jev on our own pools. Adding this
+reference requires no new API calls or model training and does not alter the
+frozen experimental outputs below.
 
 ## 120 E5 workloads at 16, 32, and 50 schedules
 

@@ -1,0 +1,167 @@
+{
+  "reference_id": "tenset-pinned-500-file-xgboost-tutorial",
+  "evidence_class": "external_published_tutorial_reference",
+  "purpose": "Numerical cross-study context; not an additional locally measured model or paired baseline",
+  "source": {
+    "repository": "tlc-pack/tenset",
+    "commit": "35774ed373f9693cc6efcbe83f5703141e8ab0c8",
+    "document": "docs/try_pretrained_models_on_aws_c59x.md",
+    "url": "https://github.com/tlc-pack/tenset/blob/35774ed373f9693cc6efcbe83f5703141e8ab0c8/docs/try_pretrained_models_on_aws_c59x.md",
+    "git_blob_sha1": "92616c4d3cc7a3a8bb2f7d0fc154173f73276047",
+    "document_sha256": "8648c73ae5996af84234dfdd8564961193a66ab7450731833cb073ef689db563",
+    "verification_date_utc": "2026-11-17",
+    "verification_method": "Pinned document fetched from GitHub independently and checked against its Git blob identity",
+    "newline_note": "The saved retrieval copy had one additional final newline; the document SHA256 is computed after removing that one extra newline to reproduce the verified Git blob bytes. The original retrieval copy is preserved outside Git.",
+    "source_type": "Repository tutorial reference output, not a result table from the TenSet paper"
+  },
+  "protocol": {
+    "sampling_command": "python3 make_dataset.py --logs dataset/measure_records/platinum-8272/*.json --preset batch-size-1 --sample-in-files 500",
+    "sampled_files": 500,
+    "network_preset": "batch-size-1",
+    "sampling_seed": 0,
+    "training_seed": 0,
+    "split_scheme": "within_task",
+    "train_ratio": 0.9,
+    "test_ratio": 0.1,
+    "training_records": 1689022,
+    "test_records": 187679,
+    "hardware_measurements": "platinum-8272",
+    "target": "llvm -keys=cpu -link-params=0 -mcpu=skylake-avx512 -model=platinum-8272",
+    "xgboost_requirement": "1.2.1",
+    "test_workloads_derived_from_printed_size_list": 484,
+    "printed_size_list_sum": 187679,
+    "printed_size_list_source_lines": [
+      74,
+      77
+    ],
+    "minimum_printed_test_size": 6,
+    "maximum_printed_test_size": 400,
+    "task_count_derivation": "484 is the length of the tutorial printed Test set sizes list; counts alone do not prove identical original task or schedule inventories."
+  },
+  "published_metrics": {
+    "top_1_score": {
+      "value": 0.829146,
+      "source_name": "average peak score@1",
+      "published_literal": "0.829146"
+    },
+    "top_5_score": {
+      "value": 0.904636,
+      "source_name": "average peak score@5",
+      "published_literal": "0.904636"
+    },
+    "pairwise_accuracy": {
+      "value": 0.846439,
+      "source_name": "pairwise comparision accuracy",
+      "published_literal": "0.846439"
+    },
+    "rmse": {
+      "value": 0.080881,
+      "source_name": "RMSE",
+      "published_literal": "0.080881"
+    }
+  },
+  "document_evidence": [
+    {
+      "line": 6,
+      "url": "https://github.com/tlc-pack/tenset/blob/35774ed373f9693cc6efcbe83f5703141e8ab0c8/docs/try_pretrained_models_on_aws_c59x.md#L6",
+      "text": "xgboost=1.2.1"
+    },
+    {
+      "line": 25,
+      "url": "https://github.com/tlc-pack/tenset/blob/35774ed373f9693cc6efcbe83f5703141e8ab0c8/docs/try_pretrained_models_on_aws_c59x.md#L25",
+      "text": "python3 make_dataset.py --logs dataset/measure_records/platinum-8272/*.json --preset batch-size-1 --sample-in-files 500"
+    },
+    {
+      "line": 48,
+      "url": "https://github.com/tlc-pack/tenset/blob/35774ed373f9693cc6efcbe83f5703141e8ab0c8/docs/try_pretrained_models_on_aws_c59x.md#L48",
+      "text": "4. Train a XGB model"
+    },
+    {
+      "line": 50,
+      "url": "https://github.com/tlc-pack/tenset/blob/35774ed373f9693cc6efcbe83f5703141e8ab0c8/docs/try_pretrained_models_on_aws_c59x.md#L50",
+      "text": "python3 train_model.py --dataset dataset.pkl"
+    },
+    {
+      "line": 55,
+      "url": "https://github.com/tlc-pack/tenset/blob/35774ed373f9693cc6efcbe83f5703141e8ab0c8/docs/try_pretrained_models_on_aws_c59x.md#L55",
+      "text": "Arguments: Namespace(dataset=['dataset.pkl'], models='xgb', seed=0, split_scheme='within_task', train_ratio=0.9, use_gpu=False)"
+    },
+    {
+      "line": 58,
+      "url": "https://github.com/tlc-pack/tenset/blob/35774ed373f9693cc6efcbe83f5703141e8ab0c8/docs/try_pretrained_models_on_aws_c59x.md#L58",
+      "text": "Train set: 1689022. Task 0 = LearningTask(workload_key='[\"bd2701f138c7fb53c6a136a3d8e9ee16\", 1, 73, 73, 80, 6, 6, 192, 80, 1, 1, 1, 192, 1, 71, 71, 192]', target='llvm -keys=cpu -link-params=0 -mcpu=skylake-avx512 -model=platinum-8272')"
+    },
+    {
+      "line": 59,
+      "url": "https://github.com/tlc-pack/tenset/blob/35774ed373f9693cc6efcbe83f5703141e8ab0c8/docs/try_pretrained_models_on_aws_c59x.md#L59",
+      "text": "Test set:  187679. Task 0 = LearningTask(workload_key='[\"bd2701f138c7fb53c6a136a3d8e9ee16\", 1, 73, 73, 80, 6, 6, 192, 80, 1, 1, 1, 192, 1, 71, 71, 192]', target='llvm -keys=cpu -link-params=0 -mcpu=skylake-avx512 -model=platinum-8272')"
+    },
+    {
+      "line": 78,
+      "url": "https://github.com/tlc-pack/tenset/blob/35774ed373f9693cc6efcbe83f5703141e8ab0c8/docs/try_pretrained_models_on_aws_c59x.md#L78",
+      "text": "xgb {'RMSE': '0.080881', 'R^2': '0.743378', 'pairwise comparision accuracy': '0.846439', 'mape': '29587344424.402508', 'average peak score@1': '0.829146', 'average peak score@5': '0.904636'}"
+    }
+  ],
+  "sampling_seed_evidence": {
+    "document": "scripts/make_dataset.py",
+    "commit": "35774ed373f9693cc6efcbe83f5703141e8ab0c8",
+    "git_blob_sha1": "b673c07ba23d984a139c327905d942ea4cc7ca53",
+    "url": "https://github.com/tlc-pack/tenset/blob/35774ed373f9693cc6efcbe83f5703141e8ab0c8/scripts/make_dataset.py",
+    "lines": [
+      {
+        "line": 132,
+        "text": "    parser.add_argument(\"--seed\", type=int, default=0)"
+      },
+      {
+        "line": 142,
+        "text": "    random.seed(args.seed)"
+      },
+      {
+        "line": 201,
+        "text": "        files = random.sample(files, args.sample_in_files)"
+      }
+    ],
+    "interpretation": "The tutorial sampling command does not override the seed, so the pinned script uses its default seed 0."
+  },
+  "local_comparison_status": {
+    "xgboost_locally_run": false,
+    "original_tutorial_test_inventory_matched": false,
+    "original_tutorial_checkpoint_matched": false,
+    "paired_xgboost_predictions_available": false,
+    "paired_significance_test_available": false,
+    "native_tvm_features_reproduced_for_this_reference": false,
+    "actual_measured_models": [
+      "Jev",
+      "Random"
+    ],
+    "measured_metrics_modified": false,
+    "interpretation": "Published Top-1/Top-5 values are numerically higher than the local Jev scores, but original pool/checkpoint matching is unverified. The external result is cross-study context and does not establish a matched head-to-head comparison."
+  },
+  "random_reference_distinction": {
+    "random_result_published_in_this_500_file_tutorial": false,
+    "note": "This tutorial prints XGBoost evaluation metrics only for the 500-file setup. Support for a Random model elsewhere in the TenSet repository does not constitute a published Random result here. Local Random-0 measurements and the exact uniform-Random expectation remain separate artifacts.",
+    "repository_support_evidence": {
+      "document": "scripts/train_model.py",
+      "commit": "35774ed373f9693cc6efcbe83f5703141e8ab0c8",
+      "git_blob_sha1": "8e14a65cad0fe5c1a1e051a98c326d6ea8eba314",
+      "url": "https://github.com/tlc-pack/tenset/blob/35774ed373f9693cc6efcbe83f5703141e8ab0c8/scripts/train_model.py#L89-L90",
+      "lines": [
+        {
+          "line": 89,
+          "text": "    elif name == \"random\":"
+        },
+        {
+          "line": 90,
+          "text": "        return RandomModelInternal()"
+        }
+      ],
+      "interpretation": "A supported model in source code is not evidence of a published Random result in the tutorial output."
+    }
+  },
+  "artifact_provenance": {
+    "reference_csv": "xgboost-tutorial-reference.csv",
+    "reference_csv_sha256": "bc5168cffc4531f4776004ee2d8c93b007af996aff9bc1dfc714c80adabc7610",
+    "existing_measured_metrics_summary_and_provenance": "Preserved without edits; the external reference is added separately",
+    "new_training_or_api_requests_made": 0
+  }
+}

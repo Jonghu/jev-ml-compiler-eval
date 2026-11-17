@@ -19,11 +19,15 @@ University of Illinois Urbana-Champaign.
 - **RQ2:** Can Jev make competitive layout and tiling configuration decisions
   on XLA workloads?
 
-The RQ1 evaluation uses TenSet to compare Jev with Random. TenSet provides
-recorded runtime labels and metric definitions; specialized-model comparison
-and training are outside the current RQ1 scope. The retained local XGBoost
-adapter is optional legacy tooling. The RQ2 evaluation uses TpuGraphs and
-plans to compare Jev with Random and a GNN performance model.
+The paired RQ1 evaluation uses TenSet to compare Jev with Random. Published
+XGBoost results from the official 500-file tutorial are included separately as
+[external context](docs/results/tenset/tutorial-500-platinum-test/xgboost-tutorial-reference.json).
+The original test inventory and model are unverified, so these scores do not
+establish a matched three-model experiment. The tutorial reports XGBoost only;
+our Random baseline is measured locally on Jev's test pools. No new experiment
+or local XGBoost training is required for this published reference. The retained
+adapter is optional tooling. RQ2 uses TpuGraphs and plans to compare Jev with
+Random and a GNN performance model.
 
 ## Current status
 
@@ -127,6 +131,7 @@ docs/                     Interfaces, configuration, protocol, and status
 
 - [TenSet completed runs and reviewed results](docs/tenset-runlog.md)
 - [Completed TenSet 16/32/50 candidate-size results](docs/results/tenset/size-sweep/README.md)
+- [Published TenSet XGBoost tutorial reference: external context](docs/results/tenset/tutorial-500-platinum-test/xgboost-tutorial-reference.json)
 - [Finish the Jev-versus-Random RQ1 analyses](docs/run-tenset-finish-rq1.md)
 - [Run the reconstructed TenSet 500-file tutorial test pools](docs/run-tenset-tutorial-reference.md)
 - [Configuration reference](docs/configuration.md)

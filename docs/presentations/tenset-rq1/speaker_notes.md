@@ -1,6 +1,6 @@
 # TenSet contribution: three slides
 
-Scope: Jev versus Random only. Updated with the completed 16/32/50 E5 candidate-size analysis. The main Platinum selection study and E5 single-question sweep are reported separately. Charts and text are editable; suggested speaking time is about 2–3 minutes.
+Empirical comparison: Jev versus Random. Published XGBoost is external tutorial context. Updated with the completed 16/32/50 E5 candidate-size analysis. The main Platinum selection study and E5 single-question sweep are reported separately. Charts and text are editable; suggested speaking time is about 2–3 minutes.
 
 ## Slide 1: Two experiment setups
 
@@ -15,15 +15,17 @@ Dataset source: https://github.com/tlc-pack/tenset/blob/35774ed373f9693cc6efcbe8
 
 ## Slide 2: Main Platinum selection results
 
-In the main Platinum study, Jev's weighted Top-1 score was 0.2694, compared with 0.2350 for Random. Top-5 was nearly tied at 0.3882 and 0.3850. The exploratory paired Top-1 interval is positive, while the Top-5 interval crosses zero. These are normalized throughput scores, not accuracy percentages or average speedups. Logged input usage corresponds to about 7 dollars and 62 cents under the assumed rate, including the pilot responses.
+In our paired Platinum experiment, Jev's weighted Top-1 score was 0.2694, compared with 0.2350 for Random. Top-5 was nearly tied at 0.3882 and 0.3850. The exploratory paired Top-1 interval is positive, while the Top-5 interval crosses zero. For context, the official TenSet tutorial publishes XGBoost scores of 0.8291 and 0.9046. Those reference numbers are shown separately because the original exact test inventory and checkpoint have not been independently matched. The Random scores on this slide come from our experiment, not from that tutorial.
 
 ### Presenter reference
 
 Exact record-weighted Random Top-1 0.235045432987, Top-5 0.385020869616; Jev Top-1 0.269355564550, Top-5 0.388244862250.
 Weight each workload by its number of test records. Top-1 is optimal test-pool runtime / selected runtime; Top-5 averages prefix-best throughput ratios for the first five choices. Runtime-based recomputation agrees with the uploaded private-label summary within 5.3e-10; original private labels and prepared shards were not supplied for an exact label audit.
-Bootstrap: 50,000 paired-workload resamples, record weights retained, seed 20261116, percentile intervals. These are exploratory, unadjusted and conditional on saved responses and the sampled workload cohort. Family dependence is unmodeled. Top-1 wins 278/484, optimum hits Jev 9/484 versus Random 6/484. Failure-sentinel selections are Jev 8 and Random 7; global tournament Pairwise Accuracy and physical sentinel regret are not reported. An analytical exact Random expectation gives Top-1 0.2394043892 and Top-5 0.3783793707; the positive Top-1 signal remains, while Top-5 stays uncertain.
-Platinum usage: 179,522,529 live input tokens and 1,880,950 cached prior pilot tokens; 181,403,479 stored-response inputs. New successful-call input estimate 7.539946 USD; total including pilot 7.618946 USD. Do not add these totals. 1,840 live requests plus 16 cached responses. The 7.62 USD figure covers the Platinum study, not all historical E5 runs. No invoice supplied.
-Main prediction checksum: 53e2662aeb7480af284abcd2b302264d3760288060c512803ed67c25ca978179.
+Published XGBoost reference: the official 500-file Platinum-8272, batch-size-1 tutorial output reports Top-1 0.829146, Top-5 0.904636, and Pairwise Accuracy 0.846439. It reports 1,689,022 training records and 187,679 test records, using a 90/10 within-workload split. The tutorial does not publish a Random output; every Random result shown here was measured in our own experiment. The original test inventory, dataset cache, and trained checkpoint have not been independently matched. Matching record counts alone is insufficient to establish identical test pools. This is an external tutorial aggregate, not a controlled third model run or a verified paper-table reproduction. There is no paired confidence interval, cross-study significance claim, accuracy interpretation, or physical-speedup claim against XGBoost. Its Pairwise Accuracy is included only in these notes and is not comparable with a synthetic tournament tail ranking.
+Our bootstrap: 50,000 paired-workload resamples, record weights retained, seed 20261116, percentile intervals. These are exploratory, unadjusted and conditional on saved responses and the sampled workload cohort. Family dependence is unmodeled. Top-1 wins 278/484, optimum hits Jev 9/484 versus Random 6/484. Failure-sentinel selections are Jev 8 and Random 7; global tournament Pairwise Accuracy and physical sentinel regret are not reported. An analytical exact Random expectation gives Top-1 0.2394043892 and Top-5 0.3783793707; the positive Top-1 signal remains, while Top-5 stays uncertain.
+Platinum usage: 179,522,529 live input tokens and 1,880,950 cached prior pilot tokens; 181,403,479 stored-response inputs. New successful-call input estimate 7.539946 USD; total including pilot 7.618946 USD. Do not add these totals. 1,840 live requests plus 16 cached responses. The 7.62 USD figure covers the Platinum study, not all historical E5 runs. Cost assumes 0.042 USD per million input tokens and output free; no invoice supplied.
+Our main prediction checksum: 53e2662aeb7480af284abcd2b302264d3760288060c512803ed67c25ca978179.
+Published reference source: https://github.com/tlc-pack/tenset/blob/35774ed373f9693cc6efcbe83f5703141e8ab0c8/docs/try_pretrained_models_on_aws_c59x.md#L78
 
 ## Slide 3: Completed E5 candidate-size comparison
 

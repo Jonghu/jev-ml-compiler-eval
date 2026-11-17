@@ -182,5 +182,8 @@ uv run --extra tenset python docs/results/tenset/size-sweep/family_cluster_sensi
 Keep this E5 valid-schedule, full-ranking study separate from the
 [484-workload Platinum tournament](../tutorial-500-platinum-test/). The targets,
 cohorts, candidate policies, aggregation, and invalid-record handling differ.
-Neither study requires a specialized-model comparison under the current
-Jev-versus-Random scope.
+Their empirical comparisons remain Jev versus Random. Published XGBoost
+scores from the Platinum tutorial are supplied separately as
+[external context](../tutorial-500-platinum-test/xgboost-tutorial-reference.json),
+with original test identities and checkpoint unverified. They are not a
+matched baseline for these E5 candidate-size rows.
