@@ -50,39 +50,6 @@ differences remain uncertain.
 
 ![Scores and paired differences](comparison.png)
 
-## Published XGBoost tutorial reference
-
-The pinned [TenSet 500-file tutorial](https://github.com/tlc-pack/tenset/blob/35774ed373f9693cc6efcbe83f5703141e8ab0c8/docs/try_pretrained_models_on_aws_c59x.md#L78)
-reports these XGBoost values. This is an external tutorial result, rather than
-a table from the TenSet paper or an additional model run in our experiment.
-
-| Published tutorial metric | XGBoost external reference |
-|---|---:|
-| Top-1 / average peak score@1 | 0.829146 |
-| Top-5 / average peak score@5 | 0.904636 |
-| Pairwise Accuracy | 0.846439 |
-| RMSE | 0.080881 |
-
-The tutorial samples 500 Platinum-8272 files and trains XGBoost on 1,689,022
-records, with 187,679 test records under a seed-0, 90/10 within-task split.
-Its printed test-size list contains 484 workloads. These counts agree with
-our reconstruction, but the original tutorial test inventory and trained
-checkpoint have not been matched, and we did not run XGBoost locally.
-
-The published Top-1/Top-5 values are numerically higher than our Jev scores
-of 0.269356/0.388245. Treat that as cross-study context: it does not establish
-a paired comparison, a significance result, or a controlled performance gap.
-The Jev-versus-Random tables and intervals above remain the measured comparison.
-The tutorial's Pairwise Accuracy also has no matching global Jev tournament
-ordering to compare against.
-
-The TenSet repository supports a Random model, but this 500-file tutorial does
-not publish its Random-model scores. The observed Random-0 result above is
-our own run; the exact uniform-Random expectation is our separate analytical
-reference. See [xgboost-tutorial-reference.json](xgboost-tutorial-reference.json)
-and [.csv](xgboost-tutorial-reference.csv) for the exact values, pinned source
-commit, document lines, checksums, protocol evidence, and comparison limits.
-
 ## Candidate counts and tournament diagnostics
 
 The natural size groups are highly unbalanced: 468 workloads have 400 candidates
@@ -132,7 +99,6 @@ or 4.127 seconds among wholly live workloads. Mean live API latency was
 | [paired-workloads.csv](paired-workloads.csv) | Per-workload runtime-based score recomputation, outcomes, optimum hits and sentinel flags |
 | [paired-statistics.json](paired-statistics.json) | Independent metric audit, paired uncertainty, wins, and selected cases |
 | [exact-random-expectation.json](exact-random-expectation.json), [.csv](exact-random-expectation.csv) | Exact uniform-Random expectation and separately labelled comparisons |
-| [xgboost-tutorial-reference.json](xgboost-tutorial-reference.json), [.csv](xgboost-tutorial-reference.csv) | Published XGBoost tutorial output as separate external context; no locally matched XGBoost run |
 | [by-candidate-count.csv](by-candidate-count.csv), [method note](by-candidate-count-method.json) | Descriptive natural candidate-count groups |
 | [tournament-diagnostics.json](tournament-diagnostics.json) | Recorded elimination paths, per-question probability ties and option-count groups |
 | [usage-summary.csv](usage-summary.csv), [usage-independent.json](usage-independent.json) | Live/cache accounting, latency and assumed-rate cost estimates |
@@ -162,5 +128,3 @@ attribution is corrected to an assumed audit rate. Numerical results are unchang
 Generated SVG whitespace is normalized without changing the plotted data.
 The archived historical tutorial-inventory verification status does not block
 the within-run comparison of Jev and Random on identical saved pools.
-The published XGBoost reference is now provided in separate files; it does not
-modify that measured-study metadata or add a locally evaluated model.

@@ -64,11 +64,8 @@ and the benchmark evidence still needed for the final report. See the
 
 ## RQ1: TVM TenSet — Person B
 
-The empirical paired comparison is **Jev versus Random**. Published XGBoost
-results from the official 500-file tutorial are also reported as external
-context. Their original inventory and model are unverified; no local training
-or new experiment is required, and no matched three-model claim is made.
-Completed evidence
+The current research question is **Jev versus Random**. Specialized-model
+comparison and training are outside the agreed RQ1 scope. Completed evidence
 includes the E5 120-workload single-question experiment, its 16/32/50-candidate
 size study, and the Platinum 484-workload record-test tournament. Their
 protocols and aggregations remain separate. The new size-study upload contains
@@ -174,20 +171,8 @@ They overlap and must not be added; neither is an invoice or a spending cap.
 See the [reviewed Platinum results](results/tenset/tutorial-500-platinum-test/README.md).
 Global Pairwise Accuracy is not defined by the tournament's deterministic
 elimination tail. Failure-sentinel penalties are not interpreted as physical
-runtime slowdowns. The older one-workload pilot remains a setup check.
-
-### Published XGBoost context, separate from measured models
-
-The [pinned 500-file tutorial reference](results/tenset/tutorial-500-platinum-test/xgboost-tutorial-reference.json)
-reports XGBoost Top-1 Score 0.829146, Top-5 Score 0.904636, and Pairwise Accuracy
-0.846439, with 1,689,022 training records and 187,679 test records. It is an
-official tutorial output, not a verified paper-table result or a local rerun.
-The original file inventory, test-record identities, and checkpoint are not
-verified. Matching counts alone does not remove those limits.
-
-The tutorial does not report Random results. Our Random-0 and Random-42
-measurements belong to our own paired test pools. The published XGBoost
-Pairwise Accuracy does not supply a global ranking metric for our tournament.
+runtime slowdowns. The older one-workload pilot remains a setup check, and
+old numerical specialized-model comparisons remain historical context only.
 
 ### Dataset and serialization
 
@@ -229,8 +214,6 @@ limited by the supplied artifacts.
   Raw new prediction bundles were not uploaded for a source-level audit.
 - [x] Write the RQ1 report with completed results and explicit remaining analyses.
 - [x] Incorporate the completed size and operation-name analyses into the report.
-- [x] Include the published XGBoost tutorial scores as sourced external context,
-  keeping the measured Jev-versus-Random comparison and provenance separate.
 - [ ] Add and review concrete tensor/schedule explanations for the selected cases.
 
 ### Optional extensions and retained tooling
@@ -239,10 +222,10 @@ Field-only ablations, context/order controls, forced-group tournament controls,
 fresh Jev repeats, and all-source-schedule experiments remain available in the
 [follow-up guide](run-tenset-followup-experiments.md). They are useful extensions,
 not required completion items under the present Jev-versus-Random scope.
-The specialized-model adapter remains optional tooling. Local training and a
-matched checkpoint/prediction experiment are not required for reporting the
-published XGBoost scores as external context. The measured comparison remains
-Jev versus Random; the external scores are not additional local model results.
+The specialized-model adapter remains optional legacy code; its training,
+artifacts, and numerical comparison are not RQ1 blockers. Historical tutorial
+commands may still acknowledge external-reference provenance without changing
+the measured comparison to a three-model study.
 
 ### RQ1 deliverables
 

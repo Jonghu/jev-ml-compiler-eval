@@ -1,9 +1,8 @@
 # Finish RQ1: Jev versus Random
 
-The empirical paired comparison is **Jev versus Random**. Published XGBoost
-scores from the pinned 500-file tutorial are also included as external context.
-No local training, new checkpoint, or additional experiment is required for
-that reporting step. Keep the two completed studies separate:
+The current research comparison is **Jev versus Random**. No specialized-model
+training, checkpoint, or published-model comparison is required. Keep the two
+completed studies separate:
 
 | Study | Purpose | Metrics to report |
 |---|---|---|
@@ -14,13 +13,6 @@ The tournament's eliminated tail is a deterministic presentation order, not a
 global learned ranking. Its retained failed-measurement costs are placeholders,
 not physical execution latencies. Do not manufacture tournament Pairwise
 Accuracy or interpret a mean sentinel-based regret as a measured slowdown.
-
-The [published XGBoost reference](results/tenset/tutorial-500-platinum-test/xgboost-tutorial-reference.json)
-records Top-1 0.829146, Top-5 0.904636, and Pairwise Accuracy 0.846439 from the
-official tutorial, with 1,689,022 training and 187,679 test records. The original
-test inventory and model remain unverified; report these scores separately
-rather than as a matched third model. The tutorial publishes no Random scores.
-Our Random measurements use the same local test pools as Jev.
 
 The [RQ1 report](rq1-report.md), [run log](tenset-runlog.md), and
 [reviewed Platinum results](results/tenset/tutorial-500-platinum-test/README.md)
@@ -227,8 +219,6 @@ candidate-count effects, because workload identity changes between those groups.
 ## 5. Complete the report checklist
 
 - [x] State the Jev-versus-Random scope and distinguish the two completed studies.
-- [x] Include the sourced XGBoost tutorial scores as external context, with no
-  claim of matched original test identities or local baseline execution.
 - [x] Publish Top-1/Top-5, the E5 Pairwise Accuracy/regret, and reproducible metrics.
 - [x] Include paired uncertainty and a separately labelled exact Random expectation.
 - [x] Record failure-sentinel choices, tournament attrition, tokens, and cached usage.

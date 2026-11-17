@@ -3,10 +3,8 @@
 A record of completed TenSet experiments and separately labelled offline
 analyses. This follows the TpuGraphs [run-log format](https://github.com/Jonghu/jev-ml-compiler-eval/blob/61fe406/docs/runlog.md).
 Dates below use America/Chicago; UTC completion timestamps are also given.
-The current empirical comparison is Jev versus Random. Published XGBoost
-tutorial scores are separately included as external context; see the reporting
-update at the end. Prepared follow-up profiles are not completed runs.
-Historical scope notes and numerical results are retained.
+The current comparison is Jev versus Random. Prepared follow-up profiles are
+not completed runs; older optional comparisons remain historical context.
 
 ## E5 shared setup — R1–R3
 
@@ -557,33 +555,3 @@ completed and exported. The remaining substantive RQ1 task is the offline
 semantic tensor/schedule case export and its final report narrative. Optional
 fresh repeats or prompt/algorithm controls do not require rerunning these
 completed size conditions merely to regenerate their plots.
-
-## Reporting update — published XGBoost as external context
-
-The reporting scope now includes the official 500-file tutorial's published
-XGBoost cost-model scores as **external context**. This updates the earlier
-scope notes that did not require a numerical specialized-model comparison;
-it does not change any completed Jev/Random run, frozen result, or metric.
-No local XGBoost training or new model experiment was performed or is required
-for citing this reference.
-
-| Published external model | Top-1 Score | Top-5 Score | Pairwise Accuracy |
-|---|---:|---:|---:|
-| XGBoost, official 500-file tutorial | 0.829146 | 0.904636 | 0.846439 |
-
-Source: [pinned official tutorial output](https://github.com/tlc-pack/tenset/blob/35774ed373f9693cc6efcbe83f5703141e8ab0c8/docs/try_pretrained_models_on_aws_c59x.md#L78).
-The [reference record](results/tenset/tutorial-500-platinum-test/xgboost-tutorial-reference.json)
-keeps the source, metric values, and provenance caveats separate from our
-measured model exports. The reported training/test record counts are
-1,689,022/187,679 on Platinum-8272 using the tutorial's within-task split.
-
-The original file inventory, exact test-record identities, and checkpoint
-have not been verified. Count agreement is not proof of a matched test set.
-These values are not labelled paper-table results, a local baseline rerun,
-or a controlled three-model comparison, and no paired uncertainty is inferred
-against their aggregate values. Tournament Pairwise Accuracy remains omitted.
-
-The tutorial's cost-model evaluation publishes XGBoost scores and **no Random
-baseline scores**. Random-0 in R4 and Random-42 in R3/R5 are our own empirical
-baselines evaluated on the same local pools as Jev. Published XGBoost context
-does not turn those measurements into results from the source tutorial.

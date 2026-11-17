@@ -5,22 +5,16 @@ schedule pools. Dataset selection and the record split follow the official
 repository's 500-file, batch-size-1 tutorial at TenSet commit
 `35774ed373f9693cc6efcbe83f5703141e8ab0c8`.
 
-XGBoost is not rerun as part of the empirical comparison. Its published
-500-file tutorial scores are included as external context in the report and
-slides, with a [separate reference record](results/tenset/tutorial-500-platinum-test/xgboost-tutorial-reference.json).
-No XGBoost training, checkpoint, or matching published-model artifact is required
-to run Jev and Random on the same local pools or cite those published values.
-Original tutorial inventory identity remains a provenance limitation; it does
-not invalidate the paired comparison of our two local models. The tutorial
-does not provide Random baseline scores; those come from our own experiments.
+XGBoost is outside the empirical comparison. No XGBoost training, checkpoint,
+or matching published-model artifact is required to run Jev and Random on the
+same local pools. Original tutorial inventory identity remains a dataset-provenance
+limitation; it does not invalidate the paired comparison of our two models.
 
 Data preparation, preflight, and reading saved outputs make no API calls. New
 runs no longer require `--allow-external-reference`; the old flag remains an
 ignored compatibility option for earlier commands. New summaries identify their
-measured scope as `Jev versus Random`; the published XGBoost reporting reference
-is not a model prediction in the saved experiment. Historical reference files
-and saved result bundles are left untouched. Including the published reference
-requires no new API calls, model training, or execution guard.
+scope as `Jev versus Random` and do not create an external XGBoost result file.
+Historical reference files and saved result bundles are left untouched.
 
 If the 484-workload run is already complete, use the
 [remaining RQ1 analysis guide](run-tenset-finish-rq1.md) to analyze it. Do not
@@ -233,14 +227,6 @@ The canonical `metrics.json` remains runtime-based and workload-macro; its
 scores can also differ slightly because of floating-point rounding. The wrapper
 reports only the configured models and leaves the saved empirical comparison
 limited to Jev and Random.
-
-The separately cited XGBoost tutorial evaluation reports Top-1 Score 0.829146,
-Top-5 Score 0.904636, and Pairwise Accuracy 0.846439, using 1,689,022 training
-records and 187,679 test records. It is an official tutorial output, not a
-verified paper-table result or a local baseline rerun. The exact original
-inventory, test-record identities, and checkpoint remain unverified. Those
-scores are external context, not a matched third row in our measured model
-summaries. No Random result is published in that tutorial cost-model table.
 
 The profiles report Top-1 and Top-5 only. They omit runtime regret because the
 pool retains failed-measurement sentinel costs. Those placeholders should not

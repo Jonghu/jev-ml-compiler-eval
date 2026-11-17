@@ -4,11 +4,9 @@
 
 Can Jev select faster tensor schedules than uniform Random from serialized
 program and schedule descriptions? The current RQ1 comparison is **Jev versus
-Random** on identical project test pools. TenSet supplies measured labels and
-metric definitions. The official 500-file tutorial's published XGBoost scores
-are included as a separate external reference. We do not train or independently
-reproduce that XGBoost model, so it is not a paired experimental baseline.
-The retained legacy adapter is optional tooling rather than unfinished RQ1 work.
+Random**. TenSet supplies measured runtime labels and metric definitions.
+The empirical results below compare these two models on identical candidate
+pools within each experiment.
 
 Two evaluation protocols have completed. The E5 study now also includes a
 matched 16/32/50 candidate-size sweep. Their uploaded results answer related
@@ -251,46 +249,6 @@ Top-5, it wins 238 and loses 246. It selects the unique test-pool optimum on
 are 0.282998/0.400940 for Jev and 0.249948/0.399532 for Random. They are not the
 weighted values in the primary table.
 
-### Published XGBoost reference from the 500-file tutorial
-
-The pinned official tutorial [2, step 4] reports the following XGBoost output:
-
-| Source | Top-1 Score ↑ | Top-5 Score ↑ | Pairwise Accuracy ↑ |
-|---|---:|---:|---:|
-| Published tutorial XGBoost, external reference | 0.829146 | 0.904636 | 0.846439 |
-
-These values are transcribed from the tutorial's six-decimal metric line,
-not its later four-decimal summary. The reference and source-line provenance
-are published in [JSON](results/tenset/tutorial-500-platinum-test/xgboost-tutorial-reference.json)
-and [CSV](results/tenset/tutorial-500-platinum-test/xgboost-tutorial-reference.csv).
-This is an official tutorial result rather than a locally reproduced result
-or a claim to reproduce a table in the main paper.
-
-The tutorial samples 500 batch-size-1 Platinum-8272 files with seed 0, trains
-on 1,689,022 records, and tests on 187,679 records using the within-task 90/10
-split. Its published test-size list contains 484 workloads. Our reconstruction
-matches these counts and follows the same record-selection procedure. The
-original test inventory and trained checkpoint have not been independently
-matched. Count agreement and common metric formulas do not establish
-identical records, features, or predictions.
-
-The published XGBoost Top-1/Top-5 values are numerically higher than our
-Jev values of 0.269356/0.388245. This places the observed Jev-versus-Random
-gain in context, but does not measure a paired XGBoost-versus-Jev effect or
-support a significance test between those two sources. XGBoost is trained on
-the tutorial's measured labels and native compiler features; Jev receives
-serialized descriptions without local training. Its global Pairwise Accuracy
-is also distinct from the tournament output, for which we do not report
-a global learned ranking.
-
-The 500-file tutorial prints **XGBoost results only**. It does not publish a
-Random score for that setup, although the repository's training code supports
-a Random model. The Random-0 scores in our primary table were measured by
-our runner on the same reconstructed test pools used by Jev. The exact
-uniform-Random expectation below is our separate offline calculation. Neither
-Random result is copied from the tutorial, and evaluating Random from saved
-labels requires no Jev API calls.
-
 ### Analytical Random reference and failure diagnostics
 
 Saved runtime maps permit computing the exact expectation of a uniform random
@@ -397,10 +355,8 @@ recomputation agrees with the uploaded Platinum weighted scores within
 5.3e-10, but that is not exact reconstruction of the private labels. The
 portable reader fails on unsupported semantic formats rather than silently
 removing them. Local byte/token guards are planning policies, not guarantees
-of service admission. The published XGBoost reference provides context for
-the current Jev-versus-Random research question; it does not establish a
-matched trained-model comparison. Optional legacy training tools remain
-separate from the completed empirical study.
+of service admission. Optional legacy tools and historical numerical
+comparisons do not change the current Jev-versus-Random research question.
 
 ## References
 
