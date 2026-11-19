@@ -1,0 +1,328 @@
+{
+  "source_sha256": {
+    "predictions.jsonl": "a87404603313bf84f3057ce91cd9363fb8e61ba7af90ac28c58e168d09201fcc",
+    "manifest.json": "f3d6f73a3af166042707837b4ab7ff34526ee87fe26ba22d359ffbb2eb1dae5c",
+    "paper-network-summary.json": "cc16e48fa1097fce92e3c3b22500f148088fd6e4d91f8e0e2c03bb41d76954f0",
+    "paper-task-decompositions.csv": "58eebade5f71719ed00cd0f91865ba5f7f11a805f84e32ea267bee231ab789d0"
+  },
+  "checks": "all recorded ranking, ordering, promotion, elimination, pool, model and accounting invariants passed",
+  "tasks": 27,
+  "source_candidates": 100126,
+  "round_depth_counts": {
+    "2": 23,
+    "1": 2,
+    "3": 2
+  },
+  "single_round_tasks": 2,
+  "question_count": 673,
+  "questions_by_round": {
+    "0": 636,
+    "1": 35,
+    "2": 2
+  },
+  "probabilities": {
+    "candidate_probability_observations": 103356,
+    "zeros": 48522,
+    "median_distinct_values_per_question": 4,
+    "probability_sum_range": [
+      1.0,
+      1.0
+    ],
+    "choice_below_max_probability_questions": 0,
+    "first_round_promotion_questions": 634,
+    "first_round_top5_boundary_tie_questions": 576,
+    "final_round_top5_boundary_tie_questions": 25,
+    "mean_first_round_promoted_relative_position": 0.39719609571108916,
+    "mean_first_round_nonchoice_promoted_relative_position": 0.32777553978390384,
+    "mean_final_top5_relative_position": 0.3093185035191469,
+    "position_note": "Within each presented question, 0=first and 1=last; a uniform choice has mean 0.5. Descriptive, not a causal order test."
+  },
+  "oracle_fates": {
+    "eliminated_before_final": 25,
+    "lost_in_round0": 25,
+    "alive_in_final_pool": 2,
+    "included_in_actual_top5": 1
+  },
+  "posthoc_network_scores": {
+    "oracle_after_round0": 0.7868237497484244,
+    "oracle_within_finalists": 0.742401408413135,
+    "jev_top1": 0.09772422696828181,
+    "jev_top5": 0.2745825619891273,
+    "random_top5": 0.37712115252641787
+  },
+  "weighted_latency_denominators_seconds": {
+    "oracle_after_round0": 0.015606340351568968,
+    "oracle_within_finalists": 0.01654016155696504,
+    "jev_top1": 0.12565399201630068,
+    "jev_top5": 0.04472038991229848,
+    "random_top5": 0.032560993073469796
+  },
+  "oracle_weighted_latency_seconds": 0.012279439235271639,
+  "top5_excess_latency_decomposition": {
+    "round0_pruning_excess_seconds": 0.0033269011162973296,
+    "later_pruning_excess_seconds": 0.000933821205396073,
+    "final_ranking_excess_seconds": 0.028180228355333438,
+    "interpretation": "Posthoc oracle-aware stage ceilings on saved pools; these are not attainable performance predictions or rerun results."
+  },
+  "usage": {
+    "requests": 673,
+    "live_requests": 631,
+    "cached_requests": 42,
+    "all_stored_input_tokens": 100761552,
+    "live_input_tokens": 95175703,
+    "cached_input_tokens": 5585849,
+    "live_output_tokens": 1061953,
+    "stored_output_tokens": 1153303,
+    "api_latency_seconds_including_cache_reads": 1075.251674898,
+    "decision_latency_seconds": 1133.867633044,
+    "rate_limit_wait_seconds": 0.0,
+    "estimated_new_input_cost_usd_at_0.042_per_million": 3.997379526
+  },
+  "limitations": [
+    "Raw cached request/response files and experiment.yaml were not uploaded; the audit verifies exported probabilities/choices, not the service's raw payloads.",
+    "Opaque-alias metadata and seeded presentation order agree with the implementation; actual transmitted aliases/input content cannot be rechecked without request bodies.",
+    "All saved API responses completed; hidden retries/errors before successful responses and invoice charges cannot be audited from these files.",
+    "Private prepared record files were not uploaded; labels and errors cannot be independently verified against original TenSet records.",
+    "One saved model outcome and order seed cannot establish causal position bias or repeatability; coarse probability ties make documented order tie-breaking relevant.",
+    "Costs are input-only estimates at the assumed 0.042 USD/million, not invoices; cached inputs are historical usage, not new calls in this run."
+  ],
+  "finalist_selection_diagnostics": {
+    "first_round_oracle_candidate_fates": {
+      "oracle_tied_at_cutoff_but_excluded": 3,
+      "oracle_below_cutoff_probability": 22
+    },
+    "final_best_candidate_fates": {
+      "best_finalist_probability_below_top5_cutoff": 11,
+      "best_finalist_in_top5": 2,
+      "best_finalist_tied_at_top5_cutoff_but_excluded": 14
+    },
+    "excess_latency_fractions": {
+      "round0_pruning_excess_seconds": 0.10255251609051287,
+      "later_pruning_excess_seconds": 0.028785260169867998,
+      "final_ranking_excess_seconds": 0.8686622237396191
+    },
+    "median_best_finalist_normalized_throughput": 0.7703640691714977,
+    "median_actual_top5_best_normalized_throughput": 0.3224904661405527,
+    "median_selected_true_runtime_rank": 2218,
+    "median_top5_best_true_runtime_rank": 920,
+    "interpretation": "Within the saved outcomes only: no random-order rerun or causal tie-breaking experiment is implied.",
+    "per_task": [
+      {
+        "workload_id": "tenset-paper-6d3d58cf56f0585505cf8066",
+        "final_best_candidate_fate": "best_finalist_probability_below_top5_cutoff",
+        "selected_true_runtime_rank": 1005,
+        "top5_best_true_runtime_rank": 954,
+        "top5_best_normalized_throughput": 0.6382799718057292,
+        "best_finalist_normalized_throughput": 0.8283777946651968
+      },
+      {
+        "workload_id": "tenset-paper-1c5419984309e95b85f5a727",
+        "final_best_candidate_fate": "best_finalist_in_top5",
+        "selected_true_runtime_rank": 7,
+        "top5_best_true_runtime_rank": 1,
+        "top5_best_normalized_throughput": 1.0,
+        "best_finalist_normalized_throughput": 1.0
+      },
+      {
+        "workload_id": "tenset-paper-68d88d7d2494653237641be5",
+        "final_best_candidate_fate": "best_finalist_tied_at_top5_cutoff_but_excluded",
+        "selected_true_runtime_rank": 2355,
+        "top5_best_true_runtime_rank": 1552,
+        "top5_best_normalized_throughput": 0.2349846638840826,
+        "best_finalist_normalized_throughput": 0.8128876939388642
+      },
+      {
+        "workload_id": "tenset-paper-ce41a62275688a21716cbebe",
+        "final_best_candidate_fate": "best_finalist_tied_at_top5_cutoff_but_excluded",
+        "selected_true_runtime_rank": 668,
+        "top5_best_true_runtime_rank": 668,
+        "top5_best_normalized_throughput": 0.2786557781039858,
+        "best_finalist_normalized_throughput": 0.8595602417712531
+      },
+      {
+        "workload_id": "tenset-paper-bdf5f6c82b3a906e319087f3",
+        "final_best_candidate_fate": "best_finalist_probability_below_top5_cutoff",
+        "selected_true_runtime_rank": 2752,
+        "top5_best_true_runtime_rank": 368,
+        "top5_best_normalized_throughput": 0.4675335824625959,
+        "best_finalist_normalized_throughput": 0.6350754513483543
+      },
+      {
+        "workload_id": "tenset-paper-9329bc3862c9c8b57fd695ca",
+        "final_best_candidate_fate": "best_finalist_tied_at_top5_cutoff_but_excluded",
+        "selected_true_runtime_rank": 3241,
+        "top5_best_true_runtime_rank": 398,
+        "top5_best_normalized_throughput": 0.40786567336668883,
+        "best_finalist_normalized_throughput": 0.669923258754769
+      },
+      {
+        "workload_id": "tenset-paper-20a2437e02e135e177833304",
+        "final_best_candidate_fate": "best_finalist_probability_below_top5_cutoff",
+        "selected_true_runtime_rank": 2387,
+        "top5_best_true_runtime_rank": 1265,
+        "top5_best_normalized_throughput": 0.2197983184293053,
+        "best_finalist_normalized_throughput": 0.8117780340373159
+      },
+      {
+        "workload_id": "tenset-paper-bd30ca2a4fac3b7cdd630021",
+        "final_best_candidate_fate": "best_finalist_tied_at_top5_cutoff_but_excluded",
+        "selected_true_runtime_rank": 2083,
+        "top5_best_true_runtime_rank": 1157,
+        "top5_best_normalized_throughput": 0.3444706574232115,
+        "best_finalist_normalized_throughput": 0.9311666653398859
+      },
+      {
+        "workload_id": "tenset-paper-aef9cfd759c0c2f72259af06",
+        "final_best_candidate_fate": "best_finalist_probability_below_top5_cutoff",
+        "selected_true_runtime_rank": 1037,
+        "top5_best_true_runtime_rank": 167,
+        "top5_best_normalized_throughput": 0.6785877587524217,
+        "best_finalist_normalized_throughput": 0.7112155959170404
+      },
+      {
+        "workload_id": "tenset-paper-22a8a1e1c5447d1ec866918b",
+        "final_best_candidate_fate": "best_finalist_in_top5",
+        "selected_true_runtime_rank": 3644,
+        "top5_best_true_runtime_rank": 31,
+        "top5_best_normalized_throughput": 0.8068060104762949,
+        "best_finalist_normalized_throughput": 0.8068060104762949
+      },
+      {
+        "workload_id": "tenset-paper-dbfc8d54add09c56fba58e47",
+        "final_best_candidate_fate": "best_finalist_probability_below_top5_cutoff",
+        "selected_true_runtime_rank": 3292,
+        "top5_best_true_runtime_rank": 1342,
+        "top5_best_normalized_throughput": 0.1468368699937254,
+        "best_finalist_normalized_throughput": 0.6068624154887752
+      },
+      {
+        "workload_id": "tenset-paper-d3b85770761aa9f7ec0848d6",
+        "final_best_candidate_fate": "best_finalist_probability_below_top5_cutoff",
+        "selected_true_runtime_rank": 2385,
+        "top5_best_true_runtime_rank": 720,
+        "top5_best_normalized_throughput": 0.3224904661405527,
+        "best_finalist_normalized_throughput": 0.8334460308575672
+      },
+      {
+        "workload_id": "tenset-paper-df9eb3048e6de0f013d3ec47",
+        "final_best_candidate_fate": "best_finalist_tied_at_top5_cutoff_but_excluded",
+        "selected_true_runtime_rank": 2970,
+        "top5_best_true_runtime_rank": 477,
+        "top5_best_normalized_throughput": 0.4692738208136697,
+        "best_finalist_normalized_throughput": 0.7393232422646184
+      },
+      {
+        "workload_id": "tenset-paper-45a83cfc2b04dc11106ee15c",
+        "final_best_candidate_fate": "best_finalist_probability_below_top5_cutoff",
+        "selected_true_runtime_rank": 2218,
+        "top5_best_true_runtime_rank": 2002,
+        "top5_best_normalized_throughput": 0.1989396989423567,
+        "best_finalist_normalized_throughput": 0.6273450659384958
+      },
+      {
+        "workload_id": "tenset-paper-ea1406d65f643cb12696d47b",
+        "final_best_candidate_fate": "best_finalist_tied_at_top5_cutoff_but_excluded",
+        "selected_true_runtime_rank": 2768,
+        "top5_best_true_runtime_rank": 2768,
+        "top5_best_normalized_throughput": 0.06698911889136955,
+        "best_finalist_normalized_throughput": 0.8491542603543418
+      },
+      {
+        "workload_id": "tenset-paper-b6305c6b97a1af1dbf55b090",
+        "final_best_candidate_fate": "best_finalist_tied_at_top5_cutoff_but_excluded",
+        "selected_true_runtime_rank": 3378,
+        "top5_best_true_runtime_rank": 2493,
+        "top5_best_normalized_throughput": 0.061163899523361,
+        "best_finalist_normalized_throughput": 0.8366475456082557
+      },
+      {
+        "workload_id": "tenset-paper-710c1c387a9c928394f0f8b0",
+        "final_best_candidate_fate": "best_finalist_tied_at_top5_cutoff_but_excluded",
+        "selected_true_runtime_rank": 2177,
+        "top5_best_true_runtime_rank": 576,
+        "top5_best_normalized_throughput": 0.3215807423054105,
+        "best_finalist_normalized_throughput": 0.7175461056947927
+      },
+      {
+        "workload_id": "tenset-paper-2ffea87ad25307e2284f51ce",
+        "final_best_candidate_fate": "best_finalist_tied_at_top5_cutoff_but_excluded",
+        "selected_true_runtime_rank": 1323,
+        "top5_best_true_runtime_rank": 920,
+        "top5_best_normalized_throughput": 0.32385753538948076,
+        "best_finalist_normalized_throughput": 0.5839377542587633
+      },
+      {
+        "workload_id": "tenset-paper-6856dfad598a13e165ce2e0f",
+        "final_best_candidate_fate": "best_finalist_tied_at_top5_cutoff_but_excluded",
+        "selected_true_runtime_rank": 911,
+        "top5_best_true_runtime_rank": 251,
+        "top5_best_normalized_throughput": 0.4282688253898145,
+        "best_finalist_normalized_throughput": 0.7146323634819713
+      },
+      {
+        "workload_id": "tenset-paper-d00c6117aa3034c189c4ea97",
+        "final_best_candidate_fate": "best_finalist_tied_at_top5_cutoff_but_excluded",
+        "selected_true_runtime_rank": 653,
+        "top5_best_true_runtime_rank": 220,
+        "top5_best_normalized_throughput": 0.52677072717635,
+        "best_finalist_normalized_throughput": 0.7703640691714977
+      },
+      {
+        "workload_id": "tenset-paper-a7b32a208797b8887cf3baa3",
+        "final_best_candidate_fate": "best_finalist_probability_below_top5_cutoff",
+        "selected_true_runtime_rank": 2554,
+        "top5_best_true_runtime_rank": 1553,
+        "top5_best_normalized_throughput": 0.2516281505558885,
+        "best_finalist_normalized_throughput": 0.6185166678380136
+      },
+      {
+        "workload_id": "tenset-paper-bb6223cdcb16d251b89729f8",
+        "final_best_candidate_fate": "best_finalist_probability_below_top5_cutoff",
+        "selected_true_runtime_rank": 58,
+        "top5_best_true_runtime_rank": 20,
+        "top5_best_normalized_throughput": 0.5724027716997478,
+        "best_finalist_normalized_throughput": 1.0
+      },
+      {
+        "workload_id": "tenset-paper-fd4579ca1755bc6892707f9e",
+        "final_best_candidate_fate": "best_finalist_tied_at_top5_cutoff_but_excluded",
+        "selected_true_runtime_rank": 2638,
+        "top5_best_true_runtime_rank": 1205,
+        "top5_best_normalized_throughput": 0.1794590111944341,
+        "best_finalist_normalized_throughput": 0.7648887977487738
+      },
+      {
+        "workload_id": "tenset-paper-4f8bce554a21a0c0ff712ac0",
+        "final_best_candidate_fate": "best_finalist_tied_at_top5_cutoff_but_excluded",
+        "selected_true_runtime_rank": 1244,
+        "top5_best_true_runtime_rank": 1244,
+        "top5_best_normalized_throughput": 0.25566035696187733,
+        "best_finalist_normalized_throughput": 0.7219606402985838
+      },
+      {
+        "workload_id": "tenset-paper-af3477587f63503438345732",
+        "final_best_candidate_fate": "best_finalist_tied_at_top5_cutoff_but_excluded",
+        "selected_true_runtime_rank": 1307,
+        "top5_best_true_runtime_rank": 1115,
+        "top5_best_normalized_throughput": 0.2649041317853358,
+        "best_finalist_normalized_throughput": 0.8692006932277845
+      },
+      {
+        "workload_id": "tenset-paper-a7c02090d1e1bc67685fdfab",
+        "final_best_candidate_fate": "best_finalist_probability_below_top5_cutoff",
+        "selected_true_runtime_rank": 883,
+        "top5_best_true_runtime_rank": 234,
+        "top5_best_normalized_throughput": 0.5651681989723845,
+        "best_finalist_normalized_throughput": 0.8084835893617404
+      },
+      {
+        "workload_id": "tenset-paper-24ade43104f80ba53b65b6e7",
+        "final_best_candidate_fate": "best_finalist_probability_below_top5_cutoff",
+        "selected_true_runtime_rank": 2908,
+        "top5_best_true_runtime_rank": 949,
+        "top5_best_normalized_throughput": 0.3053147267090631,
+        "best_finalist_normalized_throughput": 0.6246950232596459
+      }
+    ]
+  }
+}

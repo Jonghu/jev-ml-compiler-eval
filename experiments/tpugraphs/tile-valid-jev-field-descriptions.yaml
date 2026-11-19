@@ -1,0 +1,42 @@
+schema_version: 1
+
+experiment:
+  name: tpugraphs-tile-valid-jev-field-descriptions
+  description: >-
+    Repeat the R4 Jev baseline on tile:xla validation kernels with at most 50
+    configs, adding official tile configuration field descriptions to the
+    context
+  seed: 42
+  output_dir: results/tpugraphs/tile-valid-jev-field-descriptions
+
+dataset:
+  type: tpugraphs-tile
+  config:
+    path: data/tpugraphs/npz/tile/xla/valid
+    max_candidates: 50
+    # Adds the official field definitions; units and speed direction are not stated.
+    describe_config_fields: true
+
+candidate_selection:
+  strategy: all
+
+models:
+  # Same model settings as R4; only the dataset context differs.
+  - id: jev-1.14.0-field-descriptions
+    type: jev
+    config:
+      model: jev-1.14.0
+      cache_dir: .cache/jev
+      max_retries: 3
+      request_timeout_seconds: 30.0
+
+metrics:
+  - runtime_regret
+  - top_1_accuracy
+  - top_1_error
+  - top_5_error
+  - top_10_error
+  - kendall_tau
+
+execution:
+  fail_fast: true

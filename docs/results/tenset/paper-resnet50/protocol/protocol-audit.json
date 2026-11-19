@@ -1,0 +1,53 @@
+{
+  "status": "No concrete formula, units, weight, normalizer or paired-pool bug found in the uploaded exports.",
+  "source_snapshot": {
+    "manifest.json": "f3d6f73a3af166042707837b4ab7ff34526ee87fe26ba22d359ffbb2eb1dae5c",
+    "paper-network-summary.json": "cc16e48fa1097fce92e3c3b22500f148088fd6e4d91f8e0e2c03bb41d76954f0",
+    "paper-task-decompositions.csv": "58eebade5f71719ed00cd0f91865ba5f7f11a805f84e32ea267bee231ab789d0",
+    "predictions.jsonl": "a87404603313bf84f3057ce91cd9363fb8e61ba7af90ac28c58e168d09201fcc"
+  },
+  "execution_commit": "f6a2a49f6b2d0dc8b3ae2e9f87ca6b3250d929ea",
+  "implementation_source_hashes_checked": 40,
+  "implementation_source_hash_mismatches": [],
+  "checks": {
+    "paired_complete_pools": 27,
+    "valid_decompositions": 108,
+    "complete_valid_rankings": 54
+  },
+  "distinct_tasks": 27,
+  "network_task_occurrences": 56,
+  "candidate_records": 100126,
+  "pool_size_histogram": {
+    "20": 1,
+    "106": 1,
+    "4000": 25
+  },
+  "saved_sentinel_1e13_ms_records": 67,
+  "manifest_declared_error_records": 67,
+  "selected_floor_count_by_model_k": {
+    "random-0/k1": 0,
+    "random-0/k5": 0,
+    "jev-1.14.0-paper-resnet50-tournament-fields-long-context/k1": 0,
+    "jev-1.14.0-paper-resnet50-tournament-fields-long-context/k5": 0
+  },
+  "source_parity_contract": {
+    "source_commit": "35774ed373f9693cc6efcbe83f5703141e8ab0c8",
+    "evaluator": "https://github.com/tlc-pack/tenset/blob/35774ed373f9693cc6efcbe83f5703141e8ab0c8/scripts/eval_model_on_dataset.py",
+    "pool": "all available source records for every network task, no within-task split, no error-code filter, no deduplication",
+    "weighting": "network task extraction occurrence weights; ratio of weighted latency sums, not average scores or record-count weights",
+    "normalizer": "minimum full-task float32(mean raw record costs) seconds",
+    "label": "float32(full-task minimum / record float32 cost)",
+    "metric": "sum(w * minimum) / sum(w * min(minimum / max(label, 1e-5) among first K))",
+    "arithmetic": "float32-origin labels/minima unpacked to float64; weighted recovery and accumulation float64"
+  },
+  "confirmed_limits": [
+    "The uploaded four files do not include the CPU archive, original network task pickle, collection index, preparation state, prepared shards, or raw requests.",
+    "Source file hashes/weights in a manifest are declarations until the source artifacts are independently supplied; full identity with original Table 4 inventory and checkpoint is not established.",
+    "Counts 27 tasks/56 occurrences and Platinum target are consistent with the declared reconstruction, not proof of exact published artifact identity.",
+    "67 sentinel-cost rows match the declared error count, but original error flags are absent, so error-code-to-record mapping is not independently rechecked.",
+    "The inference procedure is a Jev tournament with field descriptions and long context; Table 4 reports a trained MLP cost model. Inference differences are expected, not scorer bugs.",
+    "Appendix B/C was not independently inspected; metric alignment is to the pinned executable evaluator, consistent with the main-paper description.",
+    "Manifest collection_execution.aggregation describes intermediate macro collection diagnostics; the separate paper-network summary applies task-frequency endpoint network scores."
+  ],
+  "comparison_wording": "Jev and Random were evaluated on the same reconstructed ResNet-50 pools using the pinned TenSet network metric. Published MLP + Ranking loss scores are external reference values with original inventory and checkpoint unverified."
+}

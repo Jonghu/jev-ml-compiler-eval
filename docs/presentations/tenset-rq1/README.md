@@ -1,31 +1,48 @@
-# TenSet contribution: three slides
+# TenSet contribution: four ResNet-50 slides
 
 - [Editable PowerPoint](tenset_rq1_slides.pptx)
 - [PDF](tenset_rq1_slides.pdf)
 - [Speaker notes and source details](speaker_notes.md)
+- [Artifact provenance and checksums](provenance.json)
 
-These three slides cover Jev versus Random only:
+The primary contribution now covers the completed reconstructed ResNet-50
+network evaluation, in this order:
 
-1. The main Platinum selection study and the separate E5 candidate-size setup.
-2. Record-weighted Top-1/Top-5 results for all 484 Platinum workloads, with the
-   existing exploratory paired-workload intervals and logged input-cost estimate.
-3. Completed E5 results at 16, 32, and 50 candidates on the same 120-workload
-   cohort, including editable score charts and a Pairwise Accuracy/regret table.
+1. Setup: 27 distinct tasks, 56 task occurrences, and 100,126 schedule records.
+2. Workflow: serialization, hidden runtime labels, Jev's choice tournament,
+   saved rankings, and occurrence-weighted network endpoint scoring.
+3. Results: Jev versus the saved Random baseline, with MLP + Ranking loss
+   shown separately as an external published reference.
+4. Diagnosis: probability ties, finalist selection, the offline Random-choice
+   reference distribution, and possible follow-up experiments.
 
-The studies are not pooled. Platinum scores are test-record-weighted; E5 scores
-are workload macro means within each candidate budget. The E5 selection-score
-gain intervals cross zero at every budget, while strict Pairwise Accuracy gain
-intervals are positive in the exploratory, unadjusted analysis. Cross-budget
-advantage contrasts remain uncertain. The charts and text in the PowerPoint are
-editable, and presenter notes include methods, source details, and limitations.
+Jev's network Top-1/Top-5 scores are 0.097724/0.274583; Random's are
+0.091462/0.377121. These are evaluator latency-proxy ratios, not accuracy
+percentages or newly measured end-to-end network speedups. The paper's
+0.8823/0.9456 MLP + Ranking loss values are external aggregates; the original
+pool and checkpoint have not been matched and the model was not run locally.
+One saved Jev outcome does not establish fresh-call repeatability. The fact
+that 95.3% of 100,000 offline Random draws exceed Jev's fixed Top-5 is a
+Random-choice reference result, not a p-value or a confidence interval.
 
-Sources: the [RQ1 report](../../rq1-report.md),
-[reviewed Platinum results](../../results/tenset/tutorial-500-platinum-test/README.md),
-the [reviewed E5 50-candidate results](../../results/tenset/w120-c50-s42-long-context/metrics.csv),
-and the [completed candidate-size sweep](../../results/tenset/size-sweep/README.md).
+The PowerPoint contains native editable rectangles, text boxes and line shapes
+for its bar charts. It does not use chart screenshots or data-linked Google
+Sheets objects. It can be uploaded for import into Google Slides; account
+authorization was blocked during preparation, so no account-level Google Slides
+file was created and no cross-application import test was performed. The PDF
+has four pages. Presenter notes retain the numerical definitions, evidence
+limits, and source details omitted from the concise visible slides.
 
-Operation labels are available in the uploaded analysis: 27 literal ComputeOp
-signatures across the E5 cohort. Full tensor-shape and selected/oracle schedule
-explanations still require the prepared-data case export. Fresh API repeatability
-has not been measured; archived response reuse is not an independent repeat.
-Use the [finish guide](../../run-tenset-finish-rq1.md) for remaining offline exports.
+Sources: [reviewed ResNet-50 results](../../results/tenset/paper-resnet50/README.md),
+[RQ1 report](../../rq1-report.md), and the
+[network protocol audit](../../tenset-paper-protocol.md).
+The deck and PDF are exact copies of the reviewed supplied four-slide artifacts;
+SHA-256 hashes are recorded in provenance.json.
+
+The earlier studies remain separately documented: the
+[484-workload Platinum tutorial tournament](../../results/tenset/tutorial-500-platinum-test/README.md),
+[E5 16/32/50 candidate-size study](../../results/tenset/size-sweep/README.md), and
+[E5 50-candidate audit](../../results/tenset/w120-c50-s42-long-context/metrics.csv).
+Their cohorts, candidate policies, and score aggregation differ from this
+network endpoint evaluation. Their scores are not substituted into this deck's
+ResNet-50 comparison.

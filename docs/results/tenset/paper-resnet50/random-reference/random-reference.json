@@ -1,0 +1,51 @@
+{
+  "draws": 100000,
+  "seed": 20261118,
+  "generator": "NumPy default_rng; independent per-task ordered uniform samples without replacement",
+  "scope": "Frozen local network, candidate pools, occurrence weights and Jev outputs",
+  "interpretation": "Reference distribution across new uniform-Random choices only. Percentile bands are not confidence intervals, and tail fractions are not significance tests of Jev.",
+  "verified_selected_float32_labels": 108,
+  "weighted_oracle_seconds": 0.012279439235271639,
+  "source_sha256": {
+    "paper-task-decompositions.csv": "58eebade5f71719ed00cd0f91865ba5f7f11a805f84e32ea267bee231ab789d0",
+    "predictions.jsonl": "a87404603313bf84f3057ce91cd9363fb8e61ba7af90ac28c58e168d09201fcc",
+    "paper-network-summary.json": "cc16e48fa1097fce92e3c3b22500f148088fd6e4d91f8e0e2c03bb41d76954f0",
+    "manifest.json": "f3d6f73a3af166042707837b4ab7ff34526ee87fe26ba22d359ffbb2eb1dae5c"
+  },
+  "metrics": {
+    "paper_network_best_of_1_score": {
+      "jev_score": 0.09772422696828181,
+      "saved_random_seed_0_score": 0.09146194046953035,
+      "random_mean_score": 0.07409310328051742,
+      "random_median_score": 0.0720306267950716,
+      "random_central_95_percentile_range": [
+        0.017545504225938837,
+        0.14166360693862282
+      ],
+      "fraction_random_draws_below_fixed_jev": 0.77934,
+      "fraction_random_draws_below_saved_random": 0.72049,
+      "jev_minus_random_score_mean": 0.023631123687764398,
+      "jev_minus_random_central_95_percentile_range": [
+        -0.043939379970340996,
+        0.08017872274234288
+      ]
+    },
+    "paper_network_best_of_5_score": {
+      "jev_score": 0.2745825619891273,
+      "saved_random_seed_0_score": 0.37712115252641787,
+      "random_mean_score": 0.34794880543426027,
+      "random_median_score": 0.34656960912462315,
+      "random_central_95_percentile_range": [
+        0.26344452871103907,
+        0.4405937504224168
+      ],
+      "fraction_random_draws_below_fixed_jev": 0.0468,
+      "fraction_random_draws_below_saved_random": 0.74588,
+      "jev_minus_random_score_mean": -0.07336624344513296,
+      "jev_minus_random_central_95_percentile_range": [
+        -0.16601118843328952,
+        0.011138033278088223
+      ]
+    }
+  }
+}

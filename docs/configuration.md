@@ -117,13 +117,40 @@ schedule configurations, or measured values. Full-candidate collections use
 `scripts/run_tenset_collection.py` with a completed collection index instead of
 loading all candidate pools through the ordinary runner at once.
 
+Single-question Jev records shuffled input IDs as `presented_candidate_ids`.
+Its probability ties preserve original dataset order. The tournament instead
+uses each question's seeded presentation order for probability ties and records
+`last_question_probabilities`; those values are not a global score map.
+
 ### `metrics`
 
-The shared metrics include `runtime_regret` and mock `top_1_accuracy`. TenSet adds
-`top_1_score`, `top_5_score`, and official `pairwise_accuracy`, plus a separately
-named `pairwise_accuracy_tie_aware` diagnostic. Its Top-5 score averages the best
-normalized throughput reached at each prefix. See [RQ1](rq1-report.md) for exact
-formulas and aggregation. TpuGraphs metrics remain to be implemented.
+The shared runner computes metrics per workload and averages them across
+workloads. Tournament rankings include a deterministic eliminated-candidate
+tail: selection metrics remain meaningful, but global ranking metrics do not.
+
+| Name | Definition |
+|---|---|
+| `runtime_regret` | Selected runtime divided by optimal runtime, minus one. |
+| `top_1_accuracy` | One when the selected candidate ties for the optimal runtime. |
+| `top_1_score`, `top_5_score` | TenSet prefix-average performance ratios; higher is better. |
+| `pairwise_accuracy` | TenSet's strict pairwise comparison convention. |
+| `pairwise_accuracy_tie_aware` | Separate pairwise diagnostic with explicit tie handling. |
+| `top_1_error`, `top_5_error`, `top_10_error` | Fastest runtime among the K highest-ranked candidates divided by optimal runtime, minus one. Zero when a workload has at most K candidates. |
+| `kendall_tau` | Kendall's tau-b between ranking positions and runtimes; one means the ranking is ordered from fastest to slowest. |
+
+`top_1_error` equals `runtime_regret`. The Top-K errors and Kendall's tau
+follow the TpuGraphs definitions (Phothilimthana et al., arXiv:2308.13490).
+`kendall_tau` raises an error for workloads with fewer than two candidates or
+identical runtimes, where it is undefined. The runner rejects global Pairwise
+Accuracy for tournaments; tournament Kendall's tau is at most a historical
+manufactured-order diagnostic, not a learned full-ranking result.
+
+The [ResNet-50 workflow](run-tenset-paper-resnet50.md) separately exports
+`paper_network_best_of_1_score` and `paper_network_best_of_5_score`, using
+task-frequency-weighted network latency sums and the best-of-K endpoint.
+These are not the shared runner's macro/prefix-average scores. Only for the
+same network aggregation is proxy regret `1 / network_score - 1`; do not apply
+that transformation to a macro mean of per-workload scores.
 
 ### `execution`
 

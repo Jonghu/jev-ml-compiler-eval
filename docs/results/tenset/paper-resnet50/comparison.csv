@@ -1,0 +1,4 @@
+model,evidence,top_1,top_5,same_local_pool_verified
+Jev,local paired saved decisions,0.09772422696828181,0.2745825619891273,True
+Random,local paired saved decisions,0.09146194046953035,0.37712115252641787,True
+MLP + Ranking loss,external published reference,0.8823,0.9456,False

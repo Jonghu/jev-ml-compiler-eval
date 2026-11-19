@@ -1,0 +1,255 @@
+{
+  "source_sha256": {
+    "paper-network-summary.json": "cc16e48fa1097fce92e3c3b22500f148088fd6e4d91f8e0e2c03bb41d76954f0",
+    "paper-task-decompositions.csv": "58eebade5f71719ed00cd0f91865ba5f7f11a805f84e32ea267bee231ab789d0",
+    "predictions.jsonl": "a87404603313bf84f3057ce91cd9363fb8e61ba7af90ac28c58e168d09201fcc",
+    "manifest.json": "f3d6f73a3af166042707837b4ab7ff34526ee87fe26ba22d359ffbb2eb1dae5c"
+  },
+  "checks": {
+    "prediction_rows": 54,
+    "paired_distinct_tasks": 27,
+    "task_frequency_sum": 56,
+    "candidates_per_model": 100126,
+    "candidate_count_histogram": {
+      "4000": 25,
+      "20": 1,
+      "106": 1
+    },
+    "exact_identical_ordered_pools_runtimes_and_model_input_hashes": true,
+    "manifest_realized_candidate_pools_match": true,
+    "complete_declared_network_inventory_covered": true,
+    "manifest_index_and_effective_config_hashes_match_summary": true,
+    "predictions_sha256_matches_summary": true,
+    "random_seed0_all_27_full_rankings_replay_exactly": true,
+    "random_seed_replay_method": "int.from_bytes(SHA256(str(base_seed) + NUL + workload_id)); Python random.Random(seed).shuffle(saved candidate_ids)",
+    "all_runtime_costs_recover_float32_origin": true,
+    "all_endpoint_csv_json_fields_match_independent_formula": true,
+    "maximum_endpoint_decomposition_numeric_error": 0.0,
+    "ordinary_prefix_average_diagnostics_match_saved_runtime_ratios": true,
+    "zero_throughput_labels_reconstructed": 0,
+    "labels_below_evaluator_floor": 67,
+    "expected_failure_sentinel_cost_candidates": 67
+  },
+  "independent_formula": "m_i=min(float32(runtime_ms/1000)); q_ic=float32(m_i/float32(runtime_ms/1000)); l_ic=m_i/max(q_ic,1e-5), float64 recovery; S_k=sum(w_i*m_i)/sum(w_i*min(l_ic for first K ranked candidates)), ordered by manifest network tasks",
+  "endpoint_results": [
+    {
+      "model": "random",
+      "top_k": 1,
+      "score": 0.09146194046953035,
+      "weighted_oracle_seconds": 0.012279439235271639,
+      "selected_weighted_seconds": 0.13425736620318496,
+      "one_over_score_latency_proxy_ratio": 10.933509554535858,
+      "largest_contributor_id": "tenset-paper-9329bc3862c9c8b57fd695ca",
+      "largest_contributor_denominator_share": 0.23538913548137877,
+      "top_three_denominator_share": 0.45212998985201364
+    },
+    {
+      "model": "random",
+      "top_k": 5,
+      "score": 0.37712115252641787,
+      "weighted_oracle_seconds": 0.012279439235271639,
+      "selected_weighted_seconds": 0.032560993073469796,
+      "one_over_score_latency_proxy_ratio": 2.651667755310937,
+      "largest_contributor_id": "tenset-paper-bd30ca2a4fac3b7cdd630021",
+      "largest_contributor_denominator_share": 0.1530678412370053,
+      "top_three_denominator_share": 0.32788348270580403
+    },
+    {
+      "model": "jev",
+      "top_k": 1,
+      "score": 0.09772422696828181,
+      "weighted_oracle_seconds": 0.012279439235271639,
+      "selected_weighted_seconds": 0.12565399201630068,
+      "one_over_score_latency_proxy_ratio": 10.232877056418857,
+      "largest_contributor_id": "tenset-paper-22a8a1e1c5447d1ec866918b",
+      "largest_contributor_denominator_share": 0.21297024720581487,
+      "top_three_denominator_share": 0.376782592785565
+    },
+    {
+      "model": "jev",
+      "top_k": 5,
+      "score": 0.2745825619891273,
+      "weighted_oracle_seconds": 0.012279439235271639,
+      "selected_weighted_seconds": 0.04472038991229848,
+      "one_over_score_latency_proxy_ratio": 3.6418918694465288,
+      "largest_contributor_id": "tenset-paper-ea1406d65f643cb12696d47b",
+      "largest_contributor_denominator_share": 0.1533091822946342,
+      "top_three_denominator_share": 0.3336409336534218
+    }
+  ],
+  "jev_minus_random_score_deltas": {
+    "1": 0.006262286498751463,
+    "5": -0.10253859053729059
+  },
+  "concentration": [
+    {
+      "top_k": 1,
+      "jev_lower_task_latency": 14,
+      "jev_higher_task_latency": 13,
+      "equal_task_latency": 0,
+      "jev_minus_random_summed_weighted_proxy_seconds": -0.008603374186884321,
+      "largest_savings": [
+        {
+          "workload_id": "tenset-paper-9329bc3862c9c8b57fd695ca",
+          "task_index": 5,
+          "task_weight": 1,
+          "jev_minus_random_weighted_proxy_seconds": -0.022837405989241333
+        },
+        {
+          "workload_id": "tenset-paper-d3b85770761aa9f7ec0848d6",
+          "task_index": 11,
+          "task_weight": 1,
+          "jev_minus_random_weighted_proxy_seconds": -0.015541723802776897
+        },
+        {
+          "workload_id": "tenset-paper-ea1406d65f643cb12696d47b",
+          "task_index": 14,
+          "task_weight": 3,
+          "jev_minus_random_weighted_proxy_seconds": -0.0037631359980728665
+        }
+      ],
+      "largest_losses": [
+        {
+          "workload_id": "tenset-paper-22a8a1e1c5447d1ec866918b",
+          "task_index": 9,
+          "task_weight": 5,
+          "jev_minus_random_weighted_proxy_seconds": 0.01842518031958152
+        },
+        {
+          "workload_id": "tenset-paper-dbfc8d54add09c56fba58e47",
+          "task_index": 10,
+          "task_weight": 1,
+          "jev_minus_random_weighted_proxy_seconds": 0.00865476424253326
+        },
+        {
+          "workload_id": "tenset-paper-b6305c6b97a1af1dbf55b090",
+          "task_index": 15,
+          "task_weight": 1,
+          "jev_minus_random_weighted_proxy_seconds": 0.007428755853472966
+        }
+      ]
+    },
+    {
+      "top_k": 5,
+      "jev_lower_task_latency": 10,
+      "jev_higher_task_latency": 17,
+      "equal_task_latency": 0,
+      "jev_minus_random_summed_weighted_proxy_seconds": 0.012159396838828681,
+      "largest_savings": [
+        {
+          "workload_id": "tenset-paper-bdf5f6c82b3a906e319087f3",
+          "task_index": 4,
+          "task_weight": 2,
+          "jev_minus_random_weighted_proxy_seconds": -0.0019216876403178734
+        },
+        {
+          "workload_id": "tenset-paper-bd30ca2a4fac3b7cdd630021",
+          "task_index": 7,
+          "task_weight": 6,
+          "jev_minus_random_weighted_proxy_seconds": -0.001841347188094305
+        },
+        {
+          "workload_id": "tenset-paper-af3477587f63503438345732",
+          "task_index": 24,
+          "task_weight": 1,
+          "jev_minus_random_weighted_proxy_seconds": -0.0008491101726504234
+        }
+      ],
+      "largest_losses": [
+        {
+          "workload_id": "tenset-paper-ea1406d65f643cb12696d47b",
+          "task_index": 14,
+          "task_weight": 3,
+          "jev_minus_random_weighted_proxy_seconds": 0.006143726365040942
+        },
+        {
+          "workload_id": "tenset-paper-b6305c6b97a1af1dbf55b090",
+          "task_index": 15,
+          "task_weight": 1,
+          "jev_minus_random_weighted_proxy_seconds": 0.0038998145834593075
+        },
+        {
+          "workload_id": "tenset-paper-45a83cfc2b04dc11106ee15c",
+          "task_index": 13,
+          "task_weight": 3,
+          "jev_minus_random_weighted_proxy_seconds": 0.002333765538687655
+        }
+      ]
+    }
+  ],
+  "sensitivity": {
+    "task_resampling": {
+      "replicates": 50000,
+      "seed": 20261118,
+      "unit": "27 distinct task pairs, carrying their fixed task-frequency weights and minima",
+      "interpretation": "Hypothetical task-mixture sensitivity only. The components form one ResNet-50 network and are not independent sampled networks. These intervals are not population confidence, fresh Jev response repeatability, or proof of a model effect. No multiplicity adjustment.",
+      "results": [
+        {
+          "top_k": 1,
+          "percentile_2_5": -0.05243607820846535,
+          "percentile_97_5": 0.05241659781205188,
+          "fraction_positive": 0.5848
+        },
+        {
+          "top_k": 5,
+          "percentile_2_5": -0.22828846058883032,
+          "percentile_97_5": 0.02458598267250205,
+          "fraction_positive": 0.05968
+        }
+      ]
+    },
+    "leave_one_task_out": [
+      {
+        "top_k": 1,
+        "minimum_delta": -0.014034778441960591,
+        "maximum_delta": 0.024976401528322825,
+        "positive_deltas": 25,
+        "negative_deltas": 2
+      },
+      {
+        "top_k": 5,
+        "minimum_delta": -0.13672288047241876,
+        "maximum_delta": -0.05896381487853297,
+        "positive_deltas": 0,
+        "negative_deltas": 27
+      }
+    ],
+    "leave_one_leading_hash_group_out": [
+      {
+        "top_k": 1,
+        "minimum_delta": -0.0014626213397801041,
+        "maximum_delta": 0.008573401469474037,
+        "positive_deltas": 10,
+        "negative_deltas": 1
+      },
+      {
+        "top_k": 5,
+        "minimum_delta": -0.13345937984892087,
+        "maximum_delta": -0.06651160102220571,
+        "positive_deltas": 0,
+        "negative_deltas": 11
+      }
+    ],
+    "leading_hash_group_sizes": {
+      "9847f8cc0b305137f49f2c5c0c8ab25d": 1,
+      "69115f188984ae34ede37c3b8ca40b43": 1,
+      "022e9ad925fa9d131944586979dafc0f": 4,
+      "2350d19dc42a0665244368384c66b3a5": 2,
+      "6b7583cf23c7c37d3212cad9d06e58c1": 8,
+      "12b88bedece6984af589a28b43e0f3c4": 4,
+      "c68f92478eb18145106184c587d212b6": 1,
+      "ecec634b4882c5731f86cce3109db636": 1,
+      "23b8a36aee55cd70eeb0706ebd25dcf3": 1,
+      "9f4c6b76f51d20e5c3bfb1817edd446e": 1,
+      "a12fbee7636d485f5404304276246b54": 3
+    },
+    "leading_hash_groups_caveat": "Leading DAG hashes are available from actual workload keys; groups are not verified independent networks. Leave-group-out changes the scored task mixture and does not produce a new measured network run."
+  },
+  "limitations": [
+    "Only one fixed reconstructed ResNet-50 network and saved Jev response set; no fresh live replication.",
+    "Private prepared source records and .task.pkl inventory were not supplied. Inventory, source records and error codes cannot be independently verified from these derived files.",
+    "Original paper inventory/checkpoint identity remains unverified; published MLP is external, not a paired comparison.",
+    "Raw cost proxies and task-frequency weighting do not measure actual newly executed end-to-end network wall time.",
+    "67 manifest error records are reported; sentinel counts independently flag expected artificial cost values, not raw error status."
+  ]
+}

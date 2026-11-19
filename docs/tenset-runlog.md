@@ -3,8 +3,10 @@
 A record of completed TenSet experiments and separately labelled offline
 analyses. This follows the TpuGraphs [run-log format](https://github.com/Jonghu/jev-ml-compiler-eval/blob/61fe406/docs/runlog.md).
 Dates below use America/Chicago; UTC completion timestamps are also given.
-The current comparison is Jev versus Random. Prepared follow-up profiles are
-not completed runs; older optional comparisons remain historical context.
+The paired comparison is Jev versus Random. The main-paper MLP + Ranking loss
+values are an external published reference, not a locally trained baseline.
+The completed primary ResNet-50 run is R6 below; R1–R5 retain their historical
+cohorts and metrics. Prepared follow-up profiles are not completed runs.
 
 ## E5 shared setup — R1–R3
 
@@ -556,24 +558,154 @@ semantic tensor/schedule case export and its final report narrative. Optional
 fresh repeats or prompt/algorithm controls do not require rerunning these
 completed size conditions merely to regenerate their plots.
 
-## Prepared extension — main-paper ResNet-50 column
+## R6 — Completed main-paper-aligned ResNet-50 network study
 
-The [new preparation and preflight workflow](run-tenset-paper-resnet50.md)
-targets ResNet-50, batch 1, input224, on recorded Platinum-8272 measurements.
-The main paper's Table 4 MLP + Ranking loss reference is 0.8823 Top-1 and
-0.9456 Top-5. The original model checkpoint and record inventory remain
-unverified; no model from the paper is locally trained by this workflow.
+- Aggregate manifest: 2026-11-18, 13:46 CST
+  (`2026-11-18T19:46:01.580450Z`). This is the recorded manifest timestamp,
+  not an inferred first-request or last-request timestamp.
+- Execution commit: `f6a2a49f6b2d0dc8b3ae2e9f87ca6b3250d929ea`.
+- Config: `experiments/tenset/paper-resnet50/full.yaml` at that commit.
+- Original output: `results/tenset/paper-resnet50/full/`, retained outside Git.
+- Reviewed publication: [paper-resnet50](results/tenset/paper-resnet50/README.md).
+- Presentation: [four-slide setup/workflow/results/diagnosis contribution](presentations/tenset-rq1/README.md).
 
-Every task in the network metadata and every record in each resolved source
-file is retained, with frequency weights, duplicates and error records. The
-new reported metric is the pinned network evaluator's weighted best-of-K
-endpoint latency ratio, not the earlier record-weighted prefix-average score.
-The [protocol audit](tenset-paper-protocol.md) records the source, floating-point
-conventions and limitations, including the inaccessible supplemental appendices.
+### Cohort and protocol
 
-Preparation, pilot/full profiles, offline cost scenarios and verified resumable
-execution are implemented and tested. There are **no real-data preflight
-counts, new Jev results, live requests, or measured costs** for this extension
-yet. The Mac's existing CPU data are needed for the offline plan. The
-three-task pilot must remain labelled as a subset without the full-network
-published reference; a completed full run will receive its own run entry.
+One reconstructed ResNet-50 network, batch 1, input `(1, 3, 224, 224)`, has
+27 distinct tasks with occurrence weights summing to 56. It contains 100,126
+candidate records: 25 pools of 4,000, one of 20, and one of 106. Its exact
+recorded target is
+`llvm -keys=cpu -link-params=0 -mcpu=skylake-avx512 -model=platinum-8272`.
+All declared task records are retained, without 500-file sampling, a 90/10
+record split, deduplication, or filtering by error code. The manifest reports
+67 errors. Runtime maps contain 67 expected failure-sentinel values; raw error
+flags were not supplied for independent status verification. None of the
+selected best-of-1/best-of-5 labels is below the evaluator throughput floor.
+
+Jev 1.14.0 uses full program/schedule context, field descriptions, opaque
+aliases, seeded candidate presentation, long context, at most 255 choices per
+question, and five promotions per group. Token guards may produce smaller
+groups. Questions rank the explicit choice first, then decreasing probability,
+then seeded presentation order for ties. The same frozen candidate pools are
+used by Random-0. The Mac runs the API/evaluation client and does not newly
+execute or time the CPU kernels.
+
+The [pinned network evaluator](https://github.com/tlc-pack/tenset/blob/35774ed373f9693cc6efcbe83f5703141e8ab0c8/scripts/eval_model_on_dataset.py)
+computes `sum(weight * full-task minimum) / sum(weight * best first-K latency)`.
+Latency is recovered in float64 from float32-origin throughput labels with
+floor `1e-5`. These are task-frequency-weighted network endpoint scores, not
+the older tutorial's record-weighted prefix-average scores. Use
+`paper-network-summary.json` rather than the generic collection diagnostics.
+
+### Results and external reference
+
+| Model and evidence | Network Top-1 ↑ | Network Top-5 ↑ |
+|---|---:|---:|
+| Random-0, paired local run | 0.091461940470 | 0.377121152526 |
+| Jev, paired local run | 0.097724226968 | 0.274582561989 |
+| MLP + Ranking loss, external published Table 4 reference | 0.8823 | 0.9456 |
+| Jev minus saved Random | +0.006262286499 | −0.102538590537 |
+
+MLP + Ranking loss is a neural-network cost model, not XGBoost. The paper's
+original inventory and checkpoint are unverified, and the MLP was not trained
+or evaluated locally. Its larger published values provide cross-study context;
+they do not establish a matched MLP-versus-Jev effect or exact Table 4 reproduction.
+The reconstruction covers only the ResNet-50 column, not all five held-out networks.
+
+The optional aggregate proxy regret `1 / Network Score@1 - 1` is 9.232877 for
+Jev and 9.933510 for Random. It refers to the same occurrence-weighted latency
+sums, not physical end-to-end network execution or a mean of task regrets.
+The reciprocal identity must not be applied to the older macro score means.
+
+### Independent saved-output checks and sensitivity
+
+The audit verifies all 54 complete rankings, exact paired candidate order,
+runtime maps and model-input hashes for every task, and exact deterministic
+replay of all 27 Random-0 rankings. All 108 task/K decompositions and both
+network score pairs match independent float32-label/float64-latency arithmetic
+exactly. All 40 implementation source hashes in the manifest match the
+recorded checkout. No concrete scoring or setup defect was found in the
+supplied exports; their gap from the paper reference is not evidence of a bug.
+
+| Original uploaded artifact | SHA-256 |
+|---|---|
+| `predictions.jsonl` | `a87404603313bf84f3057ce91cd9363fb8e61ba7af90ac28c58e168d09201fcc` |
+| `manifest.json` | `f3d6f73a3af166042707837b4ab7ff34526ee87fe26ba22d359ffbb2eb1dae5c` |
+| `paper-network-summary.json` | `cc16e48fa1097fce92e3c3b22500f148088fd6e4d91f8e0e2c03bb41d76954f0` |
+| `paper-task-decompositions.csv` | `58eebade5f71719ed00cd0f91865ba5f7f11a805f84e32ea267bee231ab789d0` |
+
+The declared collection index hash is
+`d010a639fdd0d499511e4c9ac6b5137dd7825dae660c87211c4e143e3b28bb3c`;
+the effective configuration hash is
+`82b4d9532d9ae0b2e8e9319b6055a0d2f6e18f60062614e8685f6f3aa811cdb3`.
+Publication preserves these original identities. Later integration changes
+code hashes, so replay/resume uses the historical checkout and dependencies;
+old provenance must not be rewritten to authorize a newer implementation.
+
+Jev has a lower latency proxy on 14/27 tasks at K=1 and 10/27 at K=5.
+Omitting either of two influential tasks reverses the small Top-1 advantage.
+The Top-5 deficit persists under all one-task and leading-DAG-hash-group
+omissions. Task-mixture resampling is descriptive sensitivity, not a confidence
+interval across networks: 27 tasks and 56 occurrences are components of one
+network, not independent network observations.
+
+A separate 100,000-draw offline uniform-Random reference samples ordered choices
+without replacement within each fixed task pool, using seed 20261118. Mean
+scores are 0.074093103281/0.347948805434. Fixed Jev Top-1 exceeds 77.934% of
+Random draws. At K=5, 95.320% of draws exceed fixed Jev, with no score ties.
+These fractions and percentile ranges are not p-values, population confidence
+intervals, or fresh Jev inference replicates.
+
+### Tournament and finalist diagnosis
+
+There are 23 two-round, two one-round, and two three-round task tournaments,
+with 673 questions in total. All 25 multi-round tasks lose a pool-optimal
+record in round 0: 22 below the probability cutoff and three tied at it but
+excluded. Final Top-5 cutoff ties occur in 25/27 tasks. A runtime-best surviving
+finalist is included in the actual Top-5 in only two tasks; it is tied at the
+cutoff but excluded in 14 and below the cutoff in 11. Median distinct probability
+levels per question are four. Do not equate the 25 boundary ties with 25
+best-finalist exclusions by ties.
+
+The retrospective oracle-aware score within surviving final pools is 0.742401
+versus achieved Jev Top-5 0.274583. The final-ranking stage accounts for 86.866%
+of saved excess weighted Top-5 latency proxy. These label-dependent upper
+bounds/decompositions describe recorded decisions, not attainable predictions,
+causal ablations, or model reruns. Probabilities are only comparable within a
+question, so no global tournament Pairwise Accuracy is reported.
+
+### Usage and cost
+
+| Accounting item | Recorded value |
+|---|---:|
+| Successful live / cached requests | 631 / 42 |
+| New live input tokens | 95,175,703 |
+| Historical cached input tokens | 5,585,849 |
+| All stored input tokens | 100,761,552 |
+| New live output tokens | 1,061,953 |
+| Assumed input rate | $0.042 per million |
+| Estimated new successful input cost | $3.997379526 |
+| Total recorded decision latency, including cached cases | 1,133.867633 seconds |
+
+The estimate covers new input only. Output charges, unobserved retries/errors,
+custom pricing, taxes and credits are excluded; cached tokens represent prior
+usage. Confirm the actual tariff and reconcile billing before calling this an
+invoice total. Decision latency is client/model time, not physical ResNet runtime.
+
+### Evidence limits and remaining work
+
+Raw source measurements, the original task pickle, preparation state/index,
+prepared shards, and transmitted request bodies were not uploaded. The audit
+checks consistency of saved outputs and the matching implementation; it does
+not independently validate original paper pool/checkpoint identity or actual
+wire contents. The [source audit](tenset-paper-protocol.md) follows the pinned
+executable evaluator; supplemental appendices were inaccessible. Missing raw
+artifacts are a verification limit, not a demonstrated code defect.
+
+The completed run, numerical review, plots, accounting, and slides need no
+additional paid calls. Remaining report deliverables are the Mac's concrete
+tensor/schedule case exports and reviewed semantic explanations, integration
+into the team report, and pricing/billing validation. Fresh Jev calls and
+controlled order, tie-breaking, context/field-description, and grouping
+ablations are optional follow-ups. Matching trained-baseline reproduction
+is outside the current scope; the MLP reference remains external.

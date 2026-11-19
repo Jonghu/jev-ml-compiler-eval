@@ -4,21 +4,25 @@
 
 Can Jev select faster tensor schedules than uniform Random from serialized
 program and schedule descriptions? The current RQ1 comparison is **Jev versus
-Random**. TenSet supplies measured runtime labels and metric definitions.
-The empirical results below compare these two models on identical candidate
-pools within each experiment.
+Random** on identical candidate pools within each experiment. The primary
+completed study reconstructs the main paper's ResNet-50 network evaluator.
+The published MLP + Ranking loss result is a separate external reference;
+that model was not trained or evaluated locally and is not a paired baseline.
 
-Two evaluation protocols have completed. The E5 study now also includes a
-matched 16/32/50 candidate-size sweep. Their uploaded results answer related
-questions and are reported separately, with the limits of each audit stated.
+Three evaluation protocols have completed: the ResNet-50 network study, the
+E5 120-workload single-question study with a 16/32/50 candidate-size sweep,
+and the Platinum 484-workload tutorial test-record tournament. Their uploaded
+results answer related questions and are reported separately because their
+cohorts, candidate policies, and aggregation rules differ.
 The [run log](tenset-runlog.md) records their provenance; the
 [finish guide](run-tenset-finish-rq1.md) provides the execution and remaining
 semantic case-analysis commands. The 16- and 32-schedule runs are completed
 measurements; the original 50-schedule results are reused.
 
-A separate ResNet-50 evaluation aligned with the main paper's network
-evaluator is prepared but has not run. It targets a published MLP reference
-under a different test-pool and aggregation protocol, described below.
+The [audited ResNet-50 results](results/tenset/paper-resnet50/README.md) and
+[four-slide contribution](presentations/tenset-rq1/README.md) describe the
+completed primary experiment. No new Jev requests were made to audit or
+publish these saved results.
 
 ## Dataset, serialization, and evaluation protocols
 
@@ -28,7 +32,10 @@ workload. A workload is a tensor program; a schedule is a compiler configuration
 for that program. The Mac runs the evaluation client, while Jev inference runs
 through the API. No CPU kernels are newly timed on the Mac.
 
-| Property | E5 single-question experiment | Platinum tournament experiment |
+The historical studies use the following protocols. The complete ResNet-50
+network protocol and its distinct endpoint metric are specified below.
+
+| Property | E5 single-question experiment | Platinum tutorial tournament experiment |
 |---|---|---|
 | Recorded hardware | Intel E5-2673 v4, AVX2 | Intel Platinum 8272, AVX-512 |
 | Scope | 120 project-test workloads | 500 sampled files; 484 retained workloads |
@@ -53,7 +60,7 @@ alone does not establish a reproduction of a paper table. The 90% portion is
 not supplied to Jev as training data, and these 484 cases are not 484 unseen
 programs under a workload-disjoint split.
 
-Program serialization retains tensor shapes and dtypes, operation names,
+The implemented serialization retains tensor shapes and dtypes, operation names,
 complete tensor-expression graphs, loop information, and the exact TVM target.
 Schedule serialization retains initial state and each scheduling transformation
 with its code and arguments. Workload keys alone are insufficient descriptions.
@@ -64,46 +71,165 @@ independent content audit.
 
 The tournament compares at most 255 options per question and advances five
 from each group. Local token estimates can require smaller groups. In the
-completed Platinum run, 468 workloads required two rounds and 16 required one;
+historical Platinum tutorial run, 468 workloads required two rounds and 16 required one;
 all 1,856 saved requests resolved to the pinned model. The definitions and
 tournament were evaluated together, so this run does not isolate the effect
 of either change.
 
 ## Metrics and aggregation
 
-Let `t*` be the minimum runtime in a workload's evaluated pool and `b_j` the
-best runtime among its first `j` predicted choices. TenSet's score is [3]:
+For the historical E5 and 500-file tutorial studies, let `t*` be the minimum
+runtime in a workload's evaluated pool and `b_j` the best runtime among its
+first `j` predicted choices. Their task-level score is [3]:
 
 ```text
 Top-k Score = mean(t* / b_j, j = 1..min(k, candidate_count))
 runtime_regret = selected_runtime / t* - 1
 ```
 
-Top-5 therefore averages the prefix-best scores; it is not just the endpoint
-best-of-five ratio. These scores are normalized performance ratios, not
+Their Top-5 averages the prefix-best scores. The ResNet-50 network study
+instead uses the best-of-five endpoint described below. Scores are normalized
+performance ratios, not
 optimum-hit accuracy. The oracle is restricted to each presented test pool.
-The reciprocal relationship between Top-1 and regret applies per workload,
-not by inverting an aggregate mean.
+For these historical task metrics, the reciprocal relationship between Top-1
+and regret applies per workload, not by inverting an aggregate mean.
 
 For the E5 single-question run, Pairwise Accuracy follows the official strict
 comparison convention and preserves model score ties. A separately named
 tie-aware diagnostic excludes equal measured timings and gives half credit
 for predicted ties. Valid-only runtime regret describes measured schedules.
 
-For the Platinum tournament, probabilities are comparable within each
+For both Platinum tournament protocols, probabilities are comparable within each
 question. Eliminated candidates are appended using a deterministic rule;
 that tail is not a global learned ranking. We therefore do not report global
-Pairwise Accuracy. Error records carry failure-sentinel costs, so their large
-penalties are not interpreted as physical program runtime or used to claim a
+Pairwise Accuracy. Retained failure-sentinel costs are artificial penalties,
+so they are not interpreted as physical program runtime or used to claim a
 mean runtime speedup. Selection scores and failure-selection counts remain
 explicitly separate outcomes.
 
 The E5 runs average workload metrics equally. Every case within a budget
 has the same candidate count; the original anchor has 50 candidates per case.
-The Platinum primary result weights each workload by its number of test records,
-as in the tutorial evaluator [4]. Its unweighted macro scores are separately
+The historical Platinum tutorial result weights each workload by its number
+of test records, as in the tutorial evaluator [4]. Its unweighted macro scores are separately
 labelled. These aggregations and the different pool/invalid-record policies
 must not be mixed into one cross-run result.
+
+## Completed primary study: ResNet-50 network selection
+
+The user completed the full ResNet-50 run at commit
+`f6a2a49f6b2d0dc8b3ae2e9f87ca6b3250d929ea`; its aggregate manifest was created
+on 2026-11-18 at `19:46:01.580450Z`. The run contains **27 distinct tasks,
+56 network task occurrences, and 100,126 schedule records** for batch 1 and
+input `(1, 3, 224, 224)`, using recorded Platinum-8272 measurements. Twenty-five
+pools have 4,000 records, one has 20, and one has 106. Every declared task and
+its complete record pool is evaluated; no 500-file sampling, within-task
+90/10 split, valid-only filtering, or schedule deduplication is applied.
+The manifest reports 67 error records. The Mac runs the client; it does not
+newly execute the measured CPU kernels.
+
+The [published audit](results/tenset/paper-resnet50/README.md) verifies 54 saved
+model predictions, identical ordered candidate pools/runtime maps/input hashes
+for all 27 Jev/Random pairs, and exact replay of every Random-0 ranking. All
+108 task/K decompositions match an independent reconstruction exactly, and
+all 40 recorded implementation hashes match the experiment checkout. These
+checks establish consistency of the supplied outputs and implementation.
+The raw task pickle, source measurements, prepared shards, and transmitted
+request bodies were not supplied for independent source/content verification.
+No concrete scoring or setup defect was found in the supplied evidence.
+
+### Network endpoint metric and comparison
+
+The pinned network evaluator [6] weights each task by its occurrence count,
+not its number of candidate records. Let `m_i` be the full-pool minimum
+float32 cost and `q_ic = float32(m_i / cost_ic)` the normalized throughput.
+It recovers the latency proxy `ell_ic = m_i / max(q_ic, 1e-5)` in float64 and
+reports:
+
+```text
+Network Score@K = sum_i(w_i * m_i) /
+                  sum_i(w_i * min(ell_ic for c in the first K choices))
+```
+
+Top-5 is the best of the first five choices. This differs from the historical
+prefix-average task scores and record-weighted tutorial aggregate. The
+shared runner's ordinary `top_1_score`/`top_5_score` remain intermediate
+prefix diagnostics; the primary outputs are
+`paper_network_best_of_1_score` and `paper_network_best_of_5_score` in
+`paper-network-summary.json`. The original tutorial result cannot be inserted
+into this network comparison.
+
+| Model and evidence | Network Top-1 ↑ | Network Top-5 ↑ |
+|---|---:|---:|
+| Random-0, locally paired | 0.091462 | 0.377121 |
+| Jev 1.14, locally paired | 0.097724 | 0.274583 |
+| MLP + Ranking loss, external published reference | 0.8823 | 0.9456 |
+
+Jev minus saved Random is **+0.006262** for Top-1 and **−0.102539** for Top-5.
+The small observed Top-1 lead does not establish reliable superiority.
+The derived network latency-proxy regret `1 / Network Score@1 - 1` is
+9.232877 for Jev and 9.933510 for Random. This identity applies to these
+same network latency sums; it is not a mean task regret, measured end-to-end
+network slowdown, or a rule for inverting the older macro-averaged scores.
+
+The MLP row comes from Section 5.2/Table 4 of the main paper [5]. It is a
+trained neural-network cost model with ranking loss, not XGBoost. The paper
+excludes the union of tasks from five held-out networks during training;
+this reconstruction covers only its ResNet-50 column. Original task/candidate
+inventory and trained checkpoint identity remain unverified. The published
+values are numerically higher but do not support a matched MLP-versus-Jev
+significance test or a claim of reproducing Table 4.
+
+### Random variation, concentration, and tournament diagnostics
+
+An additional offline reference samples 100,000 uniform ordered Random choices
+without replacement within each fixed task pool (seed 20261118). Its mean
+network scores are 0.074093/0.347949. The saved Jev Top-1 exceeds 77.934% of
+these draws, while **95.320% of draws score higher than saved Jev on Top-5**.
+These are Random-choice reference distributions conditional on this network,
+its pools/weights, and a fixed Jev response set. They are not p-values,
+population confidence intervals, or fresh Jev replications.
+
+Jev chooses a lower latency proxy on 14/27 tasks at Top-1 and 10/27 at Top-5.
+Omitting either of two influential tasks reverses the Top-1 advantage.
+The Top-5 deficit persists under every single-task and leading-DAG-hash-group
+omission. These are descriptive changes to the task mixture, not additional
+network experiments. The 27 components, 56 occurrences, and 100,126 schedules
+do not constitute independent network observations.
+
+The recorded tournament uses 23 two-round, two one-round, and two three-round
+cases, with 673 questions in total. All 25 multi-round cases lose an original
+pool-optimal record in round 0. Final Top-5 boundary probability ties occur
+in 25/27 tasks; only two tasks include a runtime-best surviving finalist in
+the reported Top-5. A median of four distinct probability values per question
+makes the deterministic tie rule relevant. The explicit Choice answer comes
+first, followed by descending probability and then seeded presentation order.
+Probabilities from different questions are not globally comparable, so no
+global tournament Pairwise Accuracy is reported. These diagnostics describe
+saved paths; they do not establish that ordering or tie-breaking caused the
+outcome or that an alternative tournament would recover the optima.
+
+### Recorded usage and reproducibility
+
+| ResNet-50 accounting item | Recorded value |
+|---|---:|
+| Successful live / cached requests | 631 / 42 |
+| New live input tokens | 95,175,703 |
+| Historical cached input tokens | 5,585,849 |
+| New live output tokens | 1,061,953 |
+| Estimated new input cost at $0.042/million | $3.997380 |
+| Sum of recorded decision latencies, including cached cases | 1,133.868 seconds |
+
+This is an input-only estimate, not a total invoice. Output charges,
+unobserved retries/failures, and billing adjustments are excluded. Confirm
+current provider pricing and reconcile usage before reporting actual monetary
+cost. Recorded decision time is inference/client latency, not ResNet execution.
+
+The [protocol](tenset-paper-protocol.md), [run guide](run-tenset-paper-resnet50.md),
+and [four-slide workflow/results contribution](presentations/tenset-rq1/README.md)
+provide reproduction and presentation details. The experiment remains bound
+to its original commit and artifact hashes. Integration changes alter code
+fingerprints; historical execution/resume must use the recorded checkout and
+dependencies, and must not rewrite old provenance to match newer code.
 
 ## Completed E5 single-question results
 
@@ -226,7 +352,7 @@ representative samples or explanations of why specific transformations
 succeed. Tensor shapes and complete selected/oracle schedule transformations
 still require the context-aware case export from the prepared data.
 
-## Completed Platinum tournament results
+## Completed historical Platinum tutorial tournament results
 
 The run at commit `ed73f19` evaluated both models on all 484 retained workloads
 and 187,679 reconstructed test records. Reviewed exports and figures are in
@@ -280,9 +406,9 @@ times for Jev and seven for Random. We do not claim that Jev avoids failed
 configurations. Schedule-level semantic explanations remain to be completed
 from the prepared workload metadata.
 
-## Decision cost and latency
+## Historical tutorial and E5 decision cost and latency
 
-| Platinum accounting item | Recorded value |
+| Platinum tutorial accounting item | Recorded value |
 |---|---:|
 | Live / cached requests in the full run | 1,840 / 16 |
 | New live input tokens | 179,522,529 |
@@ -312,57 +438,14 @@ latencies in the uploaded exports are 243.222 ms and 342.073 ms at 16 and
 32 schedules. The historical 50-schedule mean of 426.488 ms includes cached
 cases, so this is not a controlled latency-scaling experiment.
 
-## Prepared main-paper ResNet-50 extension
-
-Section 5.2/Table 4 of the paper [5] reports an MLP + Ranking loss model on
-ResNet-50, batch 1, image resolution 224, using Platinum-8272 measurements:
-
-| External published model | ResNet-50 Top-1 | ResNet-50 Top-5 |
-|---|---:|---:|
-| MLP + Ranking loss | 0.8823 | 0.9456 |
-
-These are reference values, not a locally evaluated model or a new Jev
-result. The paper trains its models excluding the union of tasks from five
-held-out networks. This extension targets only the ResNet-50 column; it does
-not reproduce the entire five-network experiment or the original checkpoint.
-
-The pinned network evaluator [6] reads all records for the network's task
-inventory and weights each task by its occurrence count. It recovers latency
-from float32-origin throughput labels with a `1e-5` floor, then computes the
-ratio of weighted oracle latency to weighted best-of-K selected latency.
-Top-5 is the best of five endpoint choices. It is not the prefix-average
-score used in the completed experiments above, nor a record-weighted average.
-The old 484-workload aggregate cannot be inserted into this network table.
-
-The [source-audited protocol](tenset-paper-protocol.md) and
-[Mac run guide](run-tenset-paper-resnet50.md) define preparation, the three-task
-pilot, complete-network execution, and offline token/cost scenarios. They use
-the existing CPU ZIP and safe task/weight/graph decoding without installing
-TVM or training a baseline. The CLI defaults to offline preflight; live
-execution uses `--execute`. The Mac's prepared data are needed for real task
-counts and estimates. No paid request or actual experiment for this extension
-has been performed as part of its implementation.
-
-Complete new runs will report separately named
-`paper_network_best_of_1_score` and `paper_network_best_of_5_score` alongside
-the external reference, with original inventory/checkpoint identity marked
-unverified. Jev versus Random on the same locally frozen full-record pools
-remains the paired comparison. Pilot scores cannot be compared with the full
-published network. The supplemental appendices were inaccessible during
-the audit; detailed numerical conventions follow the pinned executable
-network evaluator rather than claiming independent appendix verification.
-The full-run comparison export will contain three explicitly sourced rows:
-Jev and Random from the local frozen pools, and MLP + Ranking loss from the
-published Table 4 reference. The external row will not be represented as a
-locally evaluated model or included in paired significance calculations.
-
-## Remaining required analyses and prepared work
+## Remaining report deliverables and optional experiments
 
 The implementation and completed results cover the requested Top-1/Top-5,
 Pairwise Accuracy, regret, per-workload predictions, aggregate exports,
 candidate-size comparison, and an E5 operation-signature breakdown under
-their stated protocols. Reviewed size results and post-hoc performance
-examples are published. The following evidence still needs completion:
+their stated protocols. The complete ResNet-50 network result, saved-output
+audits, Random-choice variability, tournament diagnostics, and presentation
+are also finished. The following report deliverables still need completion:
 
 - Export the full selected/oracle schedule and tensor metadata using the
   context-aware case analyzer on the Mac. The uploaded E5 operation labels
@@ -372,39 +455,52 @@ examples are published. The following evidence still needs completion:
   operation names alone.
 - If extending type-level conclusions to the Platinum study, export and review
   its own metadata/type breakdown. E5 labels do not describe that separate cohort.
+- Integrate this RQ1 section, the primary ResNet-50 results, and the separate
+  historical studies into the team report; agree on cross-dataset metric labels
+  and complete final proofreading.
+- Verify the provider tariff, output-token charges, and invoice reconciliation
+  before replacing the explicitly labelled input-cost estimates with actual costs.
 
-The [finish guide](run-tenset-finish-rq1.md) supplies the commands. Additional
-field-description, context/order, forced-group controls, fresh repeats, and
-all-source-schedule tournaments remain optional extensions. Changing platform
-and workload/pool policies between the E5 and Platinum experiments is not a
-candidate-size ablation. No specialized-baseline training is required for this
-revised RQ1 scope.
+The [finish guide](run-tenset-finish-rq1.md) supplies offline case-export commands.
+Fresh Jev repeats and controlled field-description, context, presentation-order,
+tie-breaking, and grouping ablations remain optional extensions. Additional
+networks or expanded historical cohorts would be new experiments; the primary
+ResNet-50 run already uses complete declared task pools. Changing platform and
+pool policies between existing studies is not a candidate-size ablation.
+Training or reproducing a matched specialized model is outside the current
+scope; the paper MLP stays an external published reference.
 
 ## Limitations and interpretation
 
-The completed runs show a modest Jev ranking signal across all three E5
-budgets and a positive weighted Top-1 signal on the Platinum test
-reconstruction. E5 Top-1/Top-5 improvements and Platinum Top-5 gains remain
+The primary ResNet-50 run has a small observed Jev Top-1 lead and a lower
+Top-5 score than saved Random. The Top-1 lead is sensitive to individual tasks;
+the offline Random reference does not establish reliable model superiority.
+The historical runs show a modest ranking signal across all three E5 budgets
+and a positive weighted Top-1 signal on the tutorial test reconstruction.
+E5 Top-1/Top-5 improvements and historical Platinum Top-5 gains remain
 uncertain under the exploratory intervals. E5 mean regret is lower for Jev
 at 32 schedules under an unadjusted interval; the other budgets
 remain uncertain. This is evidence conditional on selected workloads and API
 responses, not proof of broad superiority across tensor programs or hardware.
 Fresh API repeatability has not been measured. Fixed sampling seeds and cached
 replay do not establish that new live responses will be identical.
-The protocols differ in target, split, pool size, invalid-record handling,
+The three protocols differ in target, split, pool size, invalid-record handling,
 presentation, field definitions, algorithm, and aggregation. Their difference
 cannot identify the contribution of any one of those factors.
 
 No new kernel execution was performed. Recorded runtimes and source/request
 fingerprints were audited for saved-record consistency. Raw measurements,
-prepared shards, private float32 throughput labels, and actual API request
-payloads were not supplied for independent content verification. Runtime-ratio
-recomputation agrees with the uploaded Platinum weighted scores within
-5.3e-10, but that is not exact reconstruction of the private labels. The
-portable reader fails on unsupported semantic formats rather than silently
+prepared shards, complete private source labels, and actual API request
+payloads were not supplied for independent content verification. All 108
+ResNet-50 endpoint decompositions match runtime-based float32-label
+reconstruction exactly. Separately, recomputation agrees with the historical
+tutorial weighted scores within 5.3e-10; that historical check is not exact
+reconstruction of its private labels. The portable reader fails on unsupported
+semantic formats rather than silently
 removing them. Local byte/token guards are planning policies, not guarantees
-of service admission. Optional legacy tools and historical numerical
-comparisons do not change the current Jev-versus-Random research question.
+of service admission. The published MLP provides external context without
+changing the paired Jev-versus-Random research question. Optional legacy tools
+do not imply a requirement to train a matching specialized model.
 
 ## References
 

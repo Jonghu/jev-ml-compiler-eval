@@ -1,42 +1,118 @@
-# TenSet contribution: three slides
+# TenSet ResNet-50 contribution: four slides
 
-Scope: Jev versus Random only. Updated with the completed 16/32/50 E5 candidate-size analysis. The main Platinum selection study and E5 single-question sweep are reported separately. Charts and text are editable; suggested speaking time is about 2–3 minutes.
+Order: setup → workflow → results → diagnosis. This is the primary four-slide ResNet-50 contribution. The earlier 484-workload Platinum and E5 candidate-size studies remain available separately; their scores are not pooled with this network evaluation.
 
-## Slide 1: Two experiment setups
+The PPTX uses native editable drawing bars, text and line shapes. Google account authorization was blocked, so no account-level Google Slides file was created; no cross-application import test was performed.
 
-Our comparison is Jev against Random, using recorded TenSet runtimes. The main Platinum selection study has 484 workloads and 187,679 test records, with a within-workload record split. Jev uses field definitions, long context, and a tournament. Separately, we have now completed the E5 candidate-size sweep on the same 120 workloads, using nested pools of 16, 32, and 50 valid schedules. Those runs use one question per workload. The hardware, candidate policies, and aggregation differ, so we report the two studies separately.
+Primary evidence: [reviewed ResNet-50 results](../../results/tenset/paper-resnet50/README.md). Historical evidence: [Platinum tutorial study](../../results/tenset/tutorial-500-platinum-test/README.md), [E5 candidate-size study](../../results/tenset/size-sweep/README.md), and [E5 50-candidate study](../../results/tenset/w120-c50-s42-long-context/metrics.csv).
 
-### Presenter reference
+## Slide 1
 
-A workload is a tensor program; a schedule is a compiler configuration. Main study: 500 batch-size-1 workload files sampled with seed 0, 484 retained after the 48-record minimum, 6–400 test records per workload. The reverse-order within-task split uses int(0.9*N) training records and approximately 10% test records. Neither model trains on the training portion. Failed measurement records are retained: 2,013 are reported. 468 workloads used two tournament rounds and 16 used one. The Mac runs the evaluation client; Jev inference is served by the API.
-Separate E5-2673 study: 120 project-held-out workloads, valid distinct schedules, seed 42, no field definitions, long context, and one question per workload. The 16/32/50 pools are nested on the same frozen artifact SHA 1f949c2c9f788b507c4e395925720c7beaa7063c3efb6ac09ae5ed4855db6275. The 50-schedule responses are historical archived results; fixed cached responses do not measure fresh-call repeatability. Do not pool E5 and Platinum metrics or attribute their differences to one input factor.
-Sources: main uploaded experiment.yaml/manifest.json; size-sweep plot-data.csv, plot-method.json and analysis exports. Raw per-request records for the new size runs were not included in this upload.
-Dataset source: https://github.com/tlc-pack/tenset/blob/35774ed373f9693cc6efcbe83f5703141e8ab0c8/README.md
+Suggested narration:
+We now evaluate one reconstructed ResNet-50 network rather than the earlier sampled-workload studies. It contains 27 distinct tensor tasks, occurring 56 times, and 100,126 measured schedule records. Jev and Random use the same local candidate pools. Jev is zero-shot, using field descriptions, long context and a tournament. Random is our paired baseline. The paper's trained MLP is a separate external reference.
 
-## Slide 2: Main Platinum selection results
+Protocol and score definition:
+ResNet-50, batch 1, input (1,3,224,224), declared Platinum-8272 CPU measurements. Twenty-five task pools have 4,000 records, one has 20, and one has 106. This run uses all available records in the declared task inventory: no within-task train/test split, error filtering or deduplication. It is not the 500-file tutorial test split. Declared source provenance is checked against supplied exports; original prepared task pickle/source records were not uploaded for an independent source inventory check.
+Jev 1.14.0 uses structured program and schedule context, field descriptions, opaque candidate aliases, long context and a max-255-choice, top-5-promoting tournament. Candidate records/runtimes/input hashes agree across Jev and Random in supplied exports. Saved Random-0 rankings replay exactly. Jev inference is served by the API; the Mac runs the client, not the benchmarked CPU kernels. No task-specific Jev training is performed.
+For task t let w_t be its occurrence count, m_t the oracle latency proxy and ell_t(c) the evaluator's latency proxy for schedule c. Score@K = sum_t(w_t*m_t) / sum_t(w_t*min_{c in first K choices} ell_t(c)). Weights sum to 56. The evaluator reconstructs normalized float32-origin labels and floors throughput at 1e-5, then accumulates in float64. This is a weighted network best-of-K ENDPOINT score; Top-5 is not the prefix-average Top-5 used in the earlier Platinum/E5 studies. It is neither an accuracy percentage nor a newly measured end-to-end ResNet speedup.
+The published comparator is MLP + Ranking loss: a trained neural-network cost model; ranking loss learns to order schedules by performance. Its published result is not a locally evaluated paired baseline.
 
-In the main Platinum study, Jev's weighted Top-1 score was 0.2694, compared with 0.2350 for Random. Top-5 was nearly tied at 0.3882 and 0.3850. The exploratory paired Top-1 interval is positive, while the Top-5 interval crosses zero. These are normalized throughput scores, not accuracy percentages or average speedups. Logged input usage corresponds to about 7 dollars and 62 cents under the assumed rate, including the pilot responses.
+Sources:
+resnet50-audit/audit-summary.json; numerical/numerical-audit.json; protocol/protocol-audit.json. Pinned evaluator: https://github.com/tlc-pack/tenset/blob/35774ed373f9693cc6efcbe83f5703141e8ab0c8/scripts/eval_model_on_dataset.py
 
-### Presenter reference
+## Slide 2
 
-Exact record-weighted Random Top-1 0.235045432987, Top-5 0.385020869616; Jev Top-1 0.269355564550, Top-5 0.388244862250.
-Weight each workload by its number of test records. Top-1 is optimal test-pool runtime / selected runtime; Top-5 averages prefix-best throughput ratios for the first five choices. Runtime-based recomputation agrees with the uploaded private-label summary within 5.3e-10; original private labels and prepared shards were not supplied for an exact label audit.
-Bootstrap: 50,000 paired-workload resamples, record weights retained, seed 20261116, percentile intervals. These are exploratory, unadjusted and conditional on saved responses and the sampled workload cohort. Family dependence is unmodeled. Top-1 wins 278/484, optimum hits Jev 9/484 versus Random 6/484. Failure-sentinel selections are Jev 8 and Random 7; global tournament Pairwise Accuracy and physical sentinel regret are not reported. An analytical exact Random expectation gives Top-1 0.2394043892 and Top-5 0.3783793707; the positive Top-1 signal remains, while Top-5 stays uncertain.
-Platinum usage: 179,522,529 live input tokens and 1,880,950 cached prior pilot tokens; 181,403,479 stored-response inputs. New successful-call input estimate 7.539946 USD; total including pilot 7.618946 USD. Do not add these totals. 1,840 live requests plus 16 cached responses. The 7.62 USD figure covers the Platinum study, not all historical E5 runs. No invoice supplied.
-Main prediction checksum: 53e2662aeb7480af284abcd2b302264d3760288060c512803ed67c25ca978179.
+Suggested narration:
+We begin with all available records for the declared ResNet-50 task inventory.
+The serializer provides program and tensor features plus schedule transformation
+steps, field descriptions and opaque shuffled candidate IDs. Measured runtimes
+bypass Jev and are used only by the scorer. Each candidate group becomes a Jev
+question. Groups have at most 255 options and may be smaller because of token
+limits. The top five per group advance, repeatedly, until one final question.
+We then save Top-1 and Top-5 choices and score their network-level latency proxies.
 
-## Slide 3: Completed E5 candidate-size comparison
+Dataset and protocol:
+27 distinct ResNet-50 tasks, 56 task occurrences, 100,126 schedule records from
+the declared Platinum-8272 CPU source. Twenty-five pools have 4,000 records, one
+has 20 and one has 106. This run uses full available task records, not a 90/10
+within-task train/test split and not the earlier 500-file tutorial test portion.
+The Mac runs the evaluation/API client; kernels are not newly timed on the Mac.
 
-The candidate-size comparison is now completed on the same 120 E5 workloads. Jev's mean Top-1 scores were 0.4569, 0.3946, and 0.3369 at 16, 32, and 50 candidates. Random's scores were 0.4074, 0.3482, and 0.3324. The observed Top-1 gap is smaller at 50 candidates, but all Top-1 and Top-5 gain intervals cross zero. The strict Pairwise Accuracy intervals are positive at all three budgets. Pairwise Accuracy and regret means are shown below. Each budget has its own fastest candidate, and fresh-call repeatability has not been established.
+Serialization:
+Structured JSON includes workload metadata, tensor shapes/DAG/target and schedule
+transformation steps. Field descriptions accompany these inputs. Candidate IDs
+are opaque aliases with seeded shuffled presentation order. The measured runtime
+labels are excluded from the Jev decision input by the implementation contract.
+The dashed bypass illustrates this contract; actual raw request bodies and raw
+source/prepared records were not supplied for independent wire-content/source
+identity verification. Saved input hashes/pools/rankings and implementation
+consistency were checked, which is a narrower claim.
 
-### Presenter reference
+Tournament and ranking:
+Jev 1.14.0, long context; each question returns an explicit choice and probabilities
+for its presented options. Max 255 options is a ceiling, not an invariant group
+size: token guards may split smaller. Within each question, the explicit choice
+comes first, then descending probability; exact ties retain seeded presented
+order. The top five per group advance, and rounds repeat until a single final
+question. Actual tasks used 23 two-round, two one-round and two three-round
+tournaments (673 total questions). Probabilities from different questions are
+not globally comparable. Final Top-1/Top-5 saved choices use this same choice-first
+ranking rule; this is not pure global probability sorting. A global tournament
+Pairwise Accuracy is not reported for the synthetic tail ranking.
 
-This is a separate valid-only E5-2673, single-question, long-context study. All budgets use the same 120 project-test workloads, seed 42, fixed prepared artifact, nested candidate pools, and workload-macro aggregation. Do not pool across budgets or combine these values with the record-weighted Platinum study. The 50-candidate row reuses archived responses; it is not a fresh repeat of the API. The uploaded plot method explicitly reports that overall pooled scores were not used. Statistical analysis uses 50,000 common paired-workload resamples, seed 20261116, with exploratory unadjusted workload-level intervals; a separate hash-group sensitivity is described below. At all three budgets, Top-1 and Top-5 gain intervals include zero. Strict Pairwise Accuracy intervals are positive: 16 [0.002708,0.055625], 32 [0.010232,0.042104], and 50 [0.014293,0.040789]. The 32-candidate regret delta interval [-2.647424,-0.112540] excludes zero without multiple-comparison adjustment; 16/50 regret intervals include zero. All relative-advantage contrasts between 16/32 and 50 candidates include zero. These results do not prove that smaller pools produce a larger Jev advantage.
-A separate exploratory cluster sensitivity uses the historical leading DAG-hash mapping for these same 120 E5 workloads: 56 hash groups, largest group 25 workloads. It resamples groups together across budgets (50,000 shared group draws, seed 20261116), retains every member, and recomputes macro means as a ratio of sums. Strict Pairwise Accuracy delta intervals remain positive: 16 [0.000926,0.057576] (a small margin above zero), 32 [0.010891,0.041882], and 50 [0.014962,0.042180]. All Top-1 and Top-5 gain intervals include zero. The 32-candidate regret delta interval is [-2.518198,-0.329685]; the other regret intervals include zero. All eight between-budget advantage-contrast intervals include zero. These leading hash groups are dependence proxies, not verified independent networks, so this remains an exploratory sensitivity check. Source: docs/results/tenset/size-sweep/family-cluster-sensitivity.json.
-Budget 16: Jev/Random Top-1 0.456949413750/0.407439045673; Top-5 0.645309239385/0.615892071825; Pairwise Accuracy 0.533402777778/0.504097222222; regret 3.535878997457/5.308322378305.
-Budget 32: Jev/Random Top-1 0.394553197609/0.348192847142; Top-5 0.563147921271/0.553469695042; Pairwise Accuracy 0.529536290323/0.503461021505; regret 3.993303818026/5.317561479902.
-Budget 50: Jev/Random Top-1 0.336866610073/0.332439916161; Top-5 0.512829281218/0.498774699827; Pairwise Accuracy 0.519455782313/0.491959183673; regret 5.081010615177/6.058853797631.
-The normalized score oracle is recomputed within each nested candidate pool. A lower score at a larger budget does not by itself prove that absolute selected runtime became slower. A regret reduction is not a measured runtime speedup. Raw new API requests and source records were not attached to the analysis upload, so the analysis-level checks are not an independent wire-input audit. API response variation remains unmeasured.
-Uploaded operation analysis supplies 27 literal ComputeOp signatures. The largest signature, PaddedInput+Conv2dOutput+T_add+T_relu, accounts for 40/120 workloads; its Top-1 deltas are approximately +0.0171, +0.0214, and +0.0521 at 16/32/50. Some smaller groups reverse direction. These labels are not a validated taxonomy of independent workload families, and small-group findings remain descriptive. Full tensor-shape and selected/oracle schedule explanations still require the prepared-data case export.
-The two new 16/32 runs have a preliminary logged input total of 7,006,679 tokens, corresponding to 0.294280518 USD under the same assumed rate. The historical 50-candidate cost is not an incremental charge for this sweep. Cost is an estimate, not an invoice.
-Follow-up tasks: finish shape/schedule case studies, inspect subgroup coverage, and optionally run independent fresh-call repetitions. Field/context/order ablations and an all-raw-schedule run are optional extensions under the stated Jev-versus-Random scope.
+Score and comparisons:
+For task t, w_t is its frequency in the network (weights sum to 56), m_t is its
+oracle latency proxy and ell_t(c) the evaluator latency proxy of candidate c.
+Score@K = sum_t(w_t*m_t) / sum_t(w_t*min_{c in first K}ell_t(c)), K in {1,5}.
+The evaluator reconstructs normalized float32-origin labels with throughput floor
+1e-5 and float64 accumulation. This is a task-frequency weighted NETWORK endpoint
+ratio, not a record-weighted score or mean prefix-best score. Higher is better.
+These proxies are not newly measured end-to-end ResNet wall times or accuracy.
+Random uses the same local candidate pools. MLP + Ranking loss values are external
+published paper aggregates, not a locally trained paired model; exact paper pool
+and checkpoint identity remain unverified. Provenance stays in presenter notes
+in accordance with the team's concise visible slide style. No new Jev inference,
+timing experiment or fresh API replication was performed to make this diagram.
+
+Sources:
+resnet50-audit/audit-summary.json; protocol/protocol-audit.json;
+tournament/tournament-audit.json; numerical/numerical-audit.json.
+Pinned evaluator: https://github.com/tlc-pack/tenset/blob/35774ed373f9693cc6efcbe83f5703141e8ab0c8/scripts/eval_model_on_dataset.py
+
+## Slide 3
+
+Suggested narration:
+On our fixed local pools, Jev's network Top-1 score is 0.0977 versus Random's 0.0915, a small lead. Jev's Top-5 is lower: 0.2746 versus 0.3771. Separately, the paper reports MLP plus ranking loss at 0.8823 and 0.9456. The table is an external published reference, not a paired locally trained comparator.
+
+Exact scores:
+Jev Top-1 0.097724226968282; Top-5 0.274582561989127.
+Random-0 Top-1 0.091461940469530; Top-5 0.377121152526418.
+Jev minus saved Random: Top-1 +0.006262286498751463; Top-5 -0.10253859053729059.
+Published MLP + Ranking loss: Top-1 0.8823; Top-5 0.9456, Section 5.2, Table 4, ResNet50 column, printed page 7. It is a trained neural-network schedule-cost model. These published scores are numerically higher, but exact original task/candidate inventory and trained checkpoint identity have not been independently matched. The published model was not trained or run locally for this experiment. Do not interpret the comparison as a paired statistical effect or claim an accuracy/speedup percentage.
+One reconstructed network and one saved Jev response set are available. The small saved Top-1 lead does not establish reliable superiority. Global tournament Pairwise Accuracy is not meaningful because unranked eliminated candidates have a synthetic tail order; no global PA is reported here. Runtime-weighted latency terms are evaluator proxies, not newly executed full-network timing.
+Original source records, prepared shards/task pickle and actual request bodies were not supplied. Numerical audits establish consistency of saved scores, candidate pools, rankings, manifest and implementation, not independent original source or transmitted payload identity. The original paper pool/checkpoint remain unverified. No fresh Jev response replication has been run.
+
+Sources:
+resnet50-audit/audit-summary.json endpoint_scores and published_reference; numerical/numerical-audit.json; raw paper-network-summary.json.
+Paper: https://datasets-benchmarks-proceedings.neurips.cc/paper_files/paper/2021/file/a684eceee76fc522773286a895bc8436-Paper-round1.pdf#page=7
+
+Chart display update:
+Both native editable charts show all three point estimates: Random and Jev are paired local measurements, while the gray MLP + Ranking loss bar is an external published aggregate. Its label is inside the bar to keep 0.8823/0.9456 visible near the axis maximum. Shared display axes do not establish matched original candidate pools, checkpoints or a paired statistical comparison with MLP. Provenance and limitations remain in presenter notes to match the team slide style.
+
+Google Slides import edition:
+The two result charts use native editable rectangles, text boxes and line shapes on a 0–1 scale. Scores, model names, tables and provenance are unchanged. This preserves drawing-object editability when importing the PPTX into Google Slides; these are not data-linked Google Sheets chart objects. No account-level Google Slides file was created and no cross-application import test was performed.
+
+## Slide 4
+
+Suggested narration:
+The audit points to a selection bottleneck. Twenty-five of 27 final questions have a tie at the Top-5 boundary, while the fastest surviving finalist makes the reported Top-5 in only two tasks. Questions have a median of four distinct probability levels. In a separate offline Random-choice reference, 95.3 percent of 100,000 draws beat this fixed Jev Top-5 score. This is not a statistical significance test or a fresh Jev repeat. A useful next experiment is randomized tie-breaking and presentation order, followed by independent Jev calls.
+
+Diagnostics, precisely:
+Across 673 saved questions, median distinct probability values per question = 4. Final Top-5 boundary ties occur in 25/27 tasks. The runtime-best surviving finalist is included in the actual Top-5 in 2/27 tasks; it is tied at the cutoff but excluded in 14 tasks and below the cutoff probability in 11. The best-finalist claim is based on runtime equivalence, not only one arbitrarily chosen tied candidate ID. These 25 boundary ties should not be confused with the 14 exclusions of a best finalist by a boundary tie. All 25 multi-round tasks lose an original oracle schedule in round 0: 22 below the probability cutoff and 3 tied at it but excluded. This is descriptive evidence from saved decisions, not a causal presentation-order experiment.
+The retrospective oracle-aware network ceiling within surviving final pools is 0.742401408413135 versus actual Jev Top-5 0.2745825619891273. The final-ranking stage accounts for 86.866% of the saved Top-5 excess weighted latency proxy. These are post hoc upper bounds/decompositions requiring runtime labels, not attainable predictions, model reruns or measured speedups. They are deliberately omitted from the headline slide to avoid conflating oracle information with achieved results.
+Random reference: 100,000 offline uniform ordered samples without replacement per task, NumPy default_rng seed 20261118, fixed local pools/occurrence weights/fixed Jev output. Exactly 95,320 draws have a strictly higher Top-5 network score than saved Jev; no ties were observed. The Random central 95% percentile range is [0.26344452871103907,0.4405937504224168]. This is a Random-choice reference distribution, not a confidence interval, p-value, population effect estimate or API repeatability result. Saved Jev Top-1 exceeds 77.934% of such draws; this does not establish a stable advantage.
+Usage: 673 stored questions, 631 live requests and 42 cached prior responses. New successful live input count is 95,175,703 tokens; at the assumed USD 0.042/million input tokens this is USD 3.997379526. Cached inputs are 5,585,849 historical tokens and are not new charges for this run. The slide says new INPUT estimate, not total invoice. Live outputs (1,061,953 tokens), hidden retries/failures, and invoice reconciliation are outside this estimate; no output charge is assumed in the displayed input-only estimate. Decision latency totals 1,133.87 seconds in the saved metadata.
+Limitations: one fixed reconstructed network and one saved Jev outcome; no fresh response replication, random-order rerun or causal tie-breaking test. Raw source records/task pickle/prepared shards and wire request/response files were not uploaded. Saved numerical/protocol/accounting consistency passed; raw source and transmitted input identity remain unverified. Artificial failure proxies must not be interpreted as physical inference time.
+
+Sources:
+resnet50-audit/tournament/tournament-audit.json; tournament/finalist-selection-diagnostics.json; random-reference/random-reference.json; audit-summary.json; numerical/numerical-audit.json.

@@ -1,0 +1,114 @@
+{
+  "status": "Saved score, ranking, paired-pool and implementation checks passed; source/payload identity not independently verified",
+  "coverage": {
+    "distinct_tasks": 27,
+    "task_occurrences": 56,
+    "candidate_records": 100126
+  },
+  "endpoint_scores": [
+    {
+      "model": "Jev",
+      "evidence": "local paired saved decisions",
+      "top_1": 0.09772422696828181,
+      "top_5": 0.2745825619891273,
+      "same_local_pool_verified": true
+    },
+    {
+      "model": "Random",
+      "evidence": "local paired saved decisions",
+      "top_1": 0.09146194046953035,
+      "top_5": 0.37712115252641787,
+      "same_local_pool_verified": true
+    },
+    {
+      "model": "MLP + Ranking loss",
+      "evidence": "external published reference",
+      "top_1": 0.8823,
+      "top_5": 0.9456,
+      "same_local_pool_verified": false
+    }
+  ],
+  "random_reference": {
+    "paper_network_best_of_1_score": {
+      "jev_score": 0.09772422696828181,
+      "saved_random_seed_0_score": 0.09146194046953035,
+      "random_mean_score": 0.07409310328051742,
+      "random_median_score": 0.0720306267950716,
+      "random_central_95_percentile_range": [
+        0.017545504225938837,
+        0.14166360693862282
+      ],
+      "fraction_random_draws_below_fixed_jev": 0.77934,
+      "fraction_random_draws_below_saved_random": 0.72049,
+      "jev_minus_random_score_mean": 0.023631123687764398,
+      "jev_minus_random_central_95_percentile_range": [
+        -0.043939379970340996,
+        0.08017872274234288
+      ]
+    },
+    "paper_network_best_of_5_score": {
+      "jev_score": 0.2745825619891273,
+      "saved_random_seed_0_score": 0.37712115252641787,
+      "random_mean_score": 0.34794880543426027,
+      "random_median_score": 0.34656960912462315,
+      "random_central_95_percentile_range": [
+        0.26344452871103907,
+        0.4405937504224168
+      ],
+      "fraction_random_draws_below_fixed_jev": 0.0468,
+      "fraction_random_draws_below_saved_random": 0.74588,
+      "jev_minus_random_score_mean": -0.07336624344513296,
+      "jev_minus_random_central_95_percentile_range": [
+        -0.16601118843328952,
+        0.011138033278088223
+      ]
+    }
+  },
+  "tournament": {
+    "questions": 673,
+    "multi_round_oracle_loss_round0": "25/25",
+    "final_top5_boundary_ties": "25/27",
+    "median_probability_levels": 4,
+    "oracle_aware_finalist_ceiling": 0.742401408413135,
+    "final_selection_fraction_of_excess_top5_weighted_latency": 0.8686622237396191
+  },
+  "usage": {
+    "requests": 673,
+    "live_requests": 631,
+    "cached_requests": 42,
+    "all_stored_input_tokens": 100761552,
+    "live_input_tokens": 95175703,
+    "cached_input_tokens": 5585849,
+    "live_output_tokens": 1061953,
+    "stored_output_tokens": 1153303,
+    "api_latency_seconds_including_cache_reads": 1075.251674898,
+    "decision_latency_seconds": 1133.867633044,
+    "rate_limit_wait_seconds": 0.0,
+    "estimated_new_input_cost_usd_at_0.042_per_million": 3.997379526
+  },
+  "execution_commit": "f6a2a49f6b2d0dc8b3ae2e9f87ca6b3250d929ea",
+  "source_evaluator": "https://github.com/tlc-pack/tenset/blob/35774ed373f9693cc6efcbe83f5703141e8ab0c8/scripts/eval_model_on_dataset.py",
+  "published_reference": {
+    "model": "MLP + Ranking loss",
+    "top_1": 0.8823,
+    "top_5": 0.9456,
+    "paper_location": "Section5.2, Table4, ResNet50 column, printed page7",
+    "source_url": "https://datasets-benchmarks-proceedings.neurips.cc/paper_files/paper/2021/file/a684eceee76fc522773286a895bc8436-Paper-round1.pdf#page=7",
+    "comparison_type": "external published reference only, not a paired baseline",
+    "original_test_inventory_verified": false,
+    "original_checkpoint_verified": false
+  },
+  "source_sha256": {
+    "paper-task-decompositions.csv": "58eebade5f71719ed00cd0f91865ba5f7f11a805f84e32ea267bee231ab789d0",
+    "predictions.jsonl": "a87404603313bf84f3057ce91cd9363fb8e61ba7af90ac28c58e168d09201fcc",
+    "paper-network-summary.json": "cc16e48fa1097fce92e3c3b22500f148088fd6e4d91f8e0e2c03bb41d76954f0",
+    "manifest.json": "f3d6f73a3af166042707837b4ab7ff34526ee87fe26ba22d359ffbb2eb1dae5c"
+  },
+  "limits": [
+    "One reconstructed network and one saved Jev response set",
+    "Random Monte Carlo ranges are reference distributions, not confidence intervals or p-values",
+    "Paper MLP is external and unpaired",
+    "Raw source and transmitted API contents were not uploaded",
+    "Weighted latency terms are offline proxies, not measured end-to-end inference"
+  ]
+}

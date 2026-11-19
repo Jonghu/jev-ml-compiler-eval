@@ -1,8 +1,16 @@
 # Project status
 
-This checklist separates implemented software, audited TenSet experiments,
-and the benchmark evidence still needed for the final report. See the
-[macOS TenSet guide](run-tenset-on-macos.md) for the current execution workflow.
+Status reviewed **2026-11-19**. This checklist separates implemented software,
+completed experiments, reviewed artifacts, and remaining report work. Both
+benchmark implementations are integrated in this revision. TpuGraphs PR #1
+entered `origin/main` at `fbd67c1`; this integration retains that implementation
+alongside the completed TenSet work. The combined local suite passes **740
+tests**, with Ruff formatting and lint checks. The pull request records the
+final pre-commit and hosted CI outcome.
+
+See the [TenSet finish guide](run-tenset-finish-rq1.md),
+[RQ1 report](rq1-report.md), and [TpuGraphs run log](runlog.md) for evidence and
+commands. Historical run logs retain the observations made at each run.
 
 ## Shared repository and infrastructure — Person A
 
@@ -28,14 +36,17 @@ and the benchmark evidence still needed for the final report. See the
 - [x] Cache successful requests without storing credentials.
 - [x] Reuse and close the TypeSafe client across workload decisions.
 - [x] Serialize generic workload context and candidate configurations.
-- [x] Convert Choice probabilities into complete candidate rankings.
+- [x] Convert single-question Choice probabilities into complete rankings;
+  keep tournament probabilities scoped to their individual questions.
 - [x] Record resolved model, confidence, probabilities, token usage, request ID,
   cache status, and latency.
 - [x] Add configurable TenSet candidate/workload budgets and a local input-byte
   guard.
-- [ ] Validate TypeSafe service limits and agree on policies across datasets.
-- [ ] Add candidate batching or staged selection if a benchmark exceeds those
-  limits.
+- [x] Implement token-aware candidate grouping, multi-question request packing,
+  tournament advancement, and client-side request/token rate limits.
+- [x] Exercise the recorded budgets in full TpuGraphs validation and TenSet runs.
+- [ ] Independently verify a current provider limit/pricing snapshot and review
+  actual request payloads where the uploaded evidence does not include them.
 
 ### Shared evaluation
 
@@ -46,30 +57,44 @@ and the benchmark evidence still needed for the final report. See the
 - [x] Run multiple models on identical candidate sets.
 - [x] Implement and test the TenSet Top-1/Top-5 Score and Pairwise Accuracy
   definitions.
-- [ ] Integrate and validate TpuGraphs metrics in the shared main branch.
-- [ ] Convert token usage into monetary cost using a recorded pricing snapshot.
+- [x] Implement shared TpuGraphs Top-1/5/10 Error and Kendall's Tau; these are
+  present in the merged TpuGraphs implementation.
+- [x] Convert recorded live/cached input usage into explicitly assumed-rate cost
+  estimates; keep cached prior charges separate from new successful usage.
+- [ ] Verify those estimates against a dated provider price or billing record.
 - [x] Add deterministic TenSet candidate sampling and evaluation budgets.
-- [ ] Agree on candidate sampling and budgets across both benchmarks.
-- [ ] Support `fail_fast: false` with explicit partial-result semantics.
+- [x] Version each benchmark's seed, candidate policy, token budgets, and scope.
+- [ ] Finalize the cross-dataset reporting rationale for the different sampling,
+  API modes, metrics, and aggregation policies.
+- [ ] Optional: support `fail_fast: false` with explicit partial-result semantics;
+  current experiments deliberately use fail-fast execution.
 - [x] Implement TenSet comparison tables and plots from saved result bundles.
 - [ ] Generate reviewed benchmark comparison tables and plots across datasets.
 
 ### Integration and final analysis
 
-- [x] Review and merge the TenSet workstream into main.
-- [ ] Review and merge the TpuGraphs workstream.
-- [ ] Verify reproducibility across both benchmark pipelines.
-- [ ] Analyze the overall performance-cost tradeoff.
-- [ ] Consolidate cross-dataset tables and plots for the final report.
+- [x] Merge the earlier TenSet implementation into main and prepare the later
+  audited studies, analysis tooling, and presentations for integration.
+- [x] Merge the TpuGraphs workstream into main through PR #1 (`fbd67c1`).
+- [x] Resolve shared-code conflicts and validate the combined TenSet/TpuGraphs
+  implementation with all 740 tests.
+- [x] Preserve per-run configurations, implementation identities, input hashes,
+  and reviewed TenSet prediction/summary audits.
+- [ ] Consolidate the project-wide performance-cost narrative and final tables;
+  component run logs and an earlier cross-dataset table already exist.
 
 ## RQ1: TVM TenSet — Person B
 
-The current research question is **Jev versus Random**. Specialized-model
-comparison and training are outside the agreed RQ1 scope. Completed evidence
-includes the E5 120-workload single-question experiment, its 16/32/50-candidate
-size study, and the Platinum 484-workload record-test tournament. Their
-protocols and aggregations remain separate. The new size-study upload contains
-analysis exports; it does not include the new raw prediction/manifest bundles.
+The local empirical comparison is **Jev versus Random**. Published learned-model
+values may be shown as explicitly external literature references; they are not
+locally trained or paired baselines. Matching or training those models is not a
+required blocker for the agreed report scope.
+
+Completed evidence includes the E5 120-workload single-question experiment, its
+16/32/50-candidate size study, the Platinum 484-workload record-test tournament,
+and the main-paper-protocol ResNet-50 network evaluation. Their scopes, metric
+formulas, and aggregations remain separate. The size-study upload contains
+analysis exports rather than new raw prediction/manifest bundles.
 
 The [RQ1 report](rq1-report.md) now contains the completed methodology, results,
 uncertainty, cost, and limitations. The [run log](tenset-runlog.md) retains
@@ -216,28 +241,49 @@ limited by the supplied artifacts.
 - [x] Incorporate the completed size and operation-name analyses into the report.
 - [ ] Add and review concrete tensor/schedule explanations for the selected cases.
 
-### Prepared main-paper ResNet-50 comparison
+### Completed main-paper ResNet-50 network evaluation
 
-The [new workflow](run-tenset-paper-resnet50.md) targets one main-paper Table 4
-column: ResNet-50, batch 1, input224, Platinum-8272. Its MLP + Ranking loss
-reference is 0.8823/0.9456 for Top-1/Top-5. This reference is separate from
-the completed tutorial experiment and remains unverified against the original
-checkpoint and record inventory.
+The [ResNet-50 workflow](run-tenset-paper-resnet50.md) has completed at commit
+`f6a2a49`. It covers all 27 network tasks, total occurrence weight 56, and
+100,126 candidate records (25 pools of 4,000 records, plus pools of 20 and 106)
+on Platinum-8272. Both models use the same complete pools.
 
-- [x] Prepare complete network task/weight/record inventories from ZIP or raw data.
-- [x] Reconstruct the pinned network-weighted best-of-K endpoint evaluator.
-- [x] Keep intermediate prefix metrics separate and suppress full-network
-  reference comparisons for pilot subsets.
-- [x] Prepare a three-row full-run comparison export: local Jev, local Random,
-  and the separately labelled published MLP + Ranking loss reference.
-- [x] Provide offline-first validation and token/cost scenarios, plus explicitly
-  selected execution with verified per-task resume.
-- [ ] Run local-data preflight and review the actual scope and estimated cost.
-- [ ] Execute and review the pilot and full-network Jev/Random experiment.
+The primary endpoint is the pinned evaluator's task-frequency-weighted network
+best-of-K score, including its throughput floor. It differs from the E5 macro
+prefix score and the 484-workload record-weighted prefix score; do not compare
+those aggregates as one metric.
 
-No new benchmark outcome or paid model usage is claimed. The
-[protocol audit](tenset-paper-protocol.md) documents the inaccessible appendices,
-native label/error behavior and remaining limits of the published comparison.
+| Model | Network best-of-1 Score | Network best-of-5 Score |
+|---|---:|---:|
+| Random-0 | 0.091462 | 0.377121 |
+| Jev tournament | 0.097724 | 0.274583 |
+| Published MLP + Ranking loss, external reference | 0.8823 | 0.9456 |
+
+Jev's single-run Top-1 score is slightly higher than Random's, while its Top-5
+score is lower. In 100,000 offline uniform-Random draws, approximately 95.3%
+score above the fixed Jev Top-5 result. That is a conditional random-reference
+frequency, not a p-value or an estimate of fresh Jev response variation.
+Only 2/27 task selections put the best available finalist in the first five;
+25/27 final questions have a probability tie at the fifth-place cutoff. These
+are recorded-path diagnostics, not proof that a different algorithm would win.
+
+The audit reproduces all 108 saved network task decompositions and checks 40
+recorded implementation hashes. The full run records 673 stored responses:
+631 live and 42 cached. Its 95,175,703 new input tokens correspond to an
+estimated $3.997380 at the assumed $0.042 per million input tokens with free
+output. Raw measurement/feature and original paper-checkpoint identity limits
+remain explicit. The external MLP values are a literature reference, not a
+locally reproduced or paired model result.
+
+- [x] Complete local-data preparation, preflight, and full-network evaluation.
+- [x] Verify full task/weight coverage, candidate identity, and endpoint arithmetic.
+- [x] Audit saved scores, request usage, finalists, and probability-cutoff ties.
+- [x] Prepare the current four-slide presentation and reviewed network outputs.
+
+See [reviewed ResNet-50 results](results/tenset/paper-resnet50/README.md),
+[protocol notes](tenset-paper-protocol.md), and the
+[current presentation](presentations/tenset-rq1/README.md). No additional paid
+experiment is implied by the remaining report tasks.
 
 ### Optional extensions and retained tooling
 
@@ -245,10 +291,11 @@ Field-only ablations, context/order controls, forced-group tournament controls,
 fresh Jev repeats, and all-source-schedule experiments remain available in the
 [follow-up guide](run-tenset-followup-experiments.md). They are useful extensions,
 not required completion items under the present Jev-versus-Random scope.
-The specialized-model adapter remains optional legacy code; its training,
-artifacts, and numerical comparison are not RQ1 blockers. Historical tutorial
-commands may still acknowledge external-reference provenance without changing
-the measured comparison to a three-model study.
+The specialized-model adapter remains optional legacy code. Published MLP
+values are clearly labelled external references in the network study; local
+specialized-model training or matching artifacts is optional reproduction work,
+not an agreed RQ1 completion blocker. Historical tutorial status fields are
+provenance rather than a requirement to execute another model.
 
 ### RQ1 deliverables
 
@@ -260,57 +307,65 @@ the measured comparison to a three-model study.
 
 ## RQ2: XLA TpuGraphs — Person C
 
-The separate [TpuGraphs branch](https://github.com/Jonghu/jev-ml-compiler-eval/tree/tpu-graph)
-at `031371e` contains a `tile:xla` downloader, graph/configuration serialization,
-official-validation-split experiment profiles, and Top-K Error/Kendall's Tau
-implementations. That work has not been merged into main. The unchecked items
-below remain main-branch integration or experiment deliverables; they do not
-mean that the separate branch has no implementation. The GraphSAGE baseline
-and final RQ2 results remain pending.
+The `tile:xla` pipeline and experiments R1–R7 are implemented and recorded in
+[the run log](runlog.md). TpuGraphs PR #1 is merged into `origin/main` at
+`fbd67c1`; both implementations are present in this integration revision.
+The previous status text describing an unmerged `031371e` branch was obsolete.
 
-### Dataset preparation
+### Completed dataset, serialization, and metrics
 
-- [ ] Download and set up TpuGraphs.
-- [ ] Explore graph representations, candidate configurations, and runtime
-  labels.
-- [ ] Start with the `tile:xla` collection.
-- [ ] Expand to layout configurations only if time and feasibility permit.
-- [ ] Extract graph features, configuration parameters, and runtime labels.
-- [ ] Use and document the official dataset splits.
+- [x] Implement the official `v0` train/valid/test downloader with archive
+  checksum verification.
+- [x] Evaluate on labelled official `valid`: 676 kernels from seven programs.
+  The public `test` runtime labels are zero and are not used for scored runs.
+- [x] Serialize node opcodes, shapes/dtypes, graph connectivity, layouts,
+  convolution dimensions, and tile-configuration bounds without timing labels.
+- [x] Compact serialization by removing trailing padding and derivable features.
+- [x] Preserve the official runtime-normalizer ranking target and document
+  merging duplicate configuration rows using the fastest normalized timing.
+- [x] Implement Top-1/5/10 Error, runtime regret, Top-1 accuracy, and Kendall's Tau.
+- [x] Exercise the serialization and budgets on the complete labelled split.
+- [ ] Optional: extend beyond `tile:xla` to layout configurations or graph summaries.
 
-### Graph serialization
+### Completed experiments and interpretation
 
-- [ ] Represent operation types, graph connectivity, tensor shapes, and tile
-  sizes in `Workload.context` and `Candidate.configuration`.
-- [ ] Develop a compact summary for graphs that exceed Jev input limits.
-- [ ] Validate serialized representations against source data.
-- [ ] Verify that measured runtimes never appear in model-visible data.
-- [ ] Analyze the effect of serialization and input size on decisions.
+- [x] R1–R4: Random and Jev connection/subset runs, including a fresh five-kernel
+  rerun that observed changed probabilities despite unchanged Top-1 choices.
+- [x] R5: separate no-context and shuffled-order variants on 120 kernels.
+- [x] R6: field-description comparison on the same 120-kernel candidate pools.
+- [x] R7: blind shuffled-ID tournament on all 676 validation kernels and all
+  1,038,376 distinct configurations, using at most 255 choices per question.
+- [x] Report per-program and candidate-count breakdowns, probability ties,
+  selection failures, outliers, latency, cache status, and input/output usage.
+- [x] Record completed bundle paths in the run log and commit the log/configs;
+  generated raw bundles remain outside Git.
 
-### GNN baseline
+R6 reduced Jev's mean Top-1 error from 4.237 to 0.904 on the fixed subset;
+Random's was 0.766. In full R7, Jev has mean Top-1 error **413.6%** versus
+Random's **268.4%**, but lower Top-5 error **48.9% versus 57.6%** and lower
+Top-10 error **24.2% versus 35.1%**. R7 reports 1,819 requests, including 16
+cached probe responses; estimated input cost is approximately $2.25 new or
+$2.28 including the probe, using the recorded assumed rate. These are run-log
+reports; the raw TpuGraphs result bundles were not supplied for the independent
+TenSet-style audit.
 
-- [ ] Set up the official TpuGraphs GNN performance-prediction baseline.
-- [ ] Train or load the provided GraphSAGE model where feasible.
-- [ ] Generate candidate rankings.
-- [ ] Integrate the GNN through `BaseDecisionModel`.
+The R7 global Kendall value is diagnostic only: eliminated candidates are not
+a globally learned ranking. The comparison has the paper's overall validation
+scope but merges duplicate configurations, so it must not be described as an
+identical original-paper evaluation pool.
 
-### Experiments and analysis
+### References and remaining report work
 
-- [ ] Evaluate Jev, Random, and GNN on identical candidate sets.
-- [ ] Implement and compute official Top-1 Error.
-- [ ] Implement and compute Top-5/10 Error and Kendall's Tau.
-- [ ] Compute runtime regret.
-- [ ] Compare graph sizes, configuration types, and candidate-set sizes.
-- [ ] Investigate Jev success and failure cases.
-- [ ] Export per-graph predictions and aggregate results.
-- [ ] Write the RQ2 results and discussion section.
-
-### RQ2 deliverables
-
-- [ ] TpuGraphs preprocessing and graph serialization pipeline.
-- [ ] GNN performance-model baseline.
-- [ ] TpuGraphs result tables and plots.
-- [ ] RQ2 report section.
+- [x] Cite published EarlySAGE/GraphSAGE paper values as external references.
+- [x] Analyze compiler-default configuration selection offline as a project
+  reference; it is not a registered decision model.
+- [ ] Optional: train/load/integrate a local GraphSAGE model if a paired learned
+  baseline reproduction is chosen. No such model or training run is implemented.
+- [ ] Write the standalone RQ2 final report section from the completed run log
+  and review its reference/metric caveats with the team.
+- [ ] Incorporate reviewed RQ2 figures and exports into the final team report.
+- [ ] Optional: extend fresh-request variance and field/ID-order causal controls;
+  the existing five-kernel repeat and combined R7 changes do not isolate all effects.
 
 ## Cross-team experiment agreement
 
@@ -318,17 +373,20 @@ and final RQ2 results remain pending.
 
 - [x] Define the common decision interface and result format.
 - [x] Ensure models receive identical candidate sets within an experiment.
-- [ ] Agree on candidate sampling strategies, evaluation budgets, and random
-  seeds for both benchmarks.
+- [x] Record benchmark-specific candidate policies, evaluation budgets, and seeds
+  in version-controlled configurations.
+- [ ] Explain those differences in the final cross-dataset reporting agreement.
 - [x] Confirm TenSet's official metric formulas and references with parity tests.
 - [ ] Complete the cross-dataset metric and reporting agreement, including the
   different TenSet Top-5 Score and TpuGraphs Top-5 Error definitions.
 
 ### During benchmark experiments
 
-- [ ] Review each workstream's implementation and methodology.
-- [ ] Review serialization design and API-limit handling.
-- [ ] Maintain experiment logs for runtime, latency, usage, and cost.
+- [x] Maintain both workstreams' run logs, configurations, latency and usage records.
+- [x] Implement candidate/label separation, cache-order identity, and token-aware
+  tournament handling; retain the limitations of raw-payload evidence.
+- [ ] Complete final integration validation and the shared methodology review.
+- [ ] Verify current pricing assumptions and final performance-cost comparisons.
 
 ### Final report
 

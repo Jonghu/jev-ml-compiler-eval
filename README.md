@@ -19,11 +19,10 @@ University of Illinois Urbana-Champaign.
 - **RQ2:** Can Jev make competitive layout and tiling configuration decisions
   on XLA workloads?
 
-The RQ1 evaluation uses TenSet to compare Jev with Random. TenSet provides
-recorded runtime labels and metric definitions; specialized-model comparison
-and training are outside the current RQ1 scope. The retained local XGBoost
-adapter is optional legacy tooling. The RQ2 evaluation uses TpuGraphs and
-plans to compare Jev with Random and a GNN performance model.
+Both workstreams directly compare Jev with Random on fixed local candidate
+pools. TenSet's published MLP and TpuGraphs' published GNN/MLP values provide
+external references; those trained checkpoints were not reproduced locally.
+The retained local XGBoost adapter is optional legacy tooling.
 
 ## Current status
 
@@ -41,22 +40,35 @@ separately in the [RQ1 report](docs/rq1-report.md), with
 [candidate-size results](docs/results/tenset/size-sweep/README.md) and
 [tournament results](docs/results/tenset/tutorial-500-platinum-test/README.md).
 
-Remaining TenSet work includes concrete tensor/schedule case narratives,
-execution of the prepared paper-comparison extension, and final report review. The
+The primary [ResNet-50 evaluation](docs/results/tenset/paper-resnet50/README.md)
+is also complete: 27 distinct tasks, 56 task occurrences and 100,126 schedule
+records. Jev's network Top-1/Top-5 endpoint scores are **0.0977 / 0.2746**,
+versus Random's **0.0915 / 0.3771**. This is a small observed Top-1 gain and a
+Top-5 deficit. The published MLP + Ranking loss reference is **0.8823 / 0.9456**;
+its original inventory and checkpoint remain unverified. The network metric
+differs from the earlier workload-prefix metrics.
+
+The TpuGraphs pipeline is included in this tree. Its logged full `tile:xla`
+validation experiment covers **676 kernels from seven programs**, with
+1,038,376 deduplicated configurations. Jev has higher mean Top-1 error than
+Random (413.6% versus 268.4%) and lower Top-5 error (48.9% versus 57.6%). See
+the [experiment log](docs/runlog.md); these are logged RQ2 results, not a new
+independent raw-bundle audit.
+
+Remaining work includes concrete TenSet tensor/schedule case narratives,
+the consolidated RQ2/team report, metric reconciliation and final review. The
 [finish guide](docs/run-tenset-finish-rq1.md) distinguishes those steps from
 reproduction commands for already completed paid runs. Offline analysis uses
 the saved prepared data and result bundles; further Jev runs require credentials.
-The TpuGraphs implementation is on the separate `tpu-graph` branch and awaits
-integration.
-
-A separate [main-paper ResNet-50 extension](docs/run-tenset-paper-resnet50.md)
-is now prepared for a comparison with the published MLP + Ranking loss
-reference. It uses full per-kernel record pools and weighted network endpoint
-scores rather than the tutorial's record-weighted prefix scores. Preparation
-and cost preflight work offline; no new benchmark results are claimed.
+The [ResNet-50 guide](docs/run-tenset-paper-resnet50.md) documents preparation,
+offline preflight and optional reproduction. Preserve each historical run's
+code/data hashes: merged implementation changes do not turn an old frozen
+collection into a resumable new-code experiment.
 
 See [Project status](docs/project-status.md) for the completed-work checklist
 and the remaining tasks for each benchmark.
+The [one-page progress report](docs/reports/progress-2026-11-19.pdf) summarizes
+the repository review, results and remaining work as of 19 November 2026.
 
 ## Development setup
 
@@ -133,7 +145,7 @@ docs/                     Interfaces, configuration, protocol, and status
 
 - [TenSet completed runs and reviewed results](docs/tenset-runlog.md)
 - [Completed TenSet 16/32/50 candidate-size results](docs/results/tenset/size-sweep/README.md)
-- [Prepare the main-paper ResNet-50 comparison and estimate cost offline](docs/run-tenset-paper-resnet50.md)
+- [Completed main-paper ResNet-50 comparison and reproduction guide](docs/run-tenset-paper-resnet50.md)
 - [Main-paper protocol and metric source audit](docs/tenset-paper-protocol.md)
 - [Finish the Jev-versus-Random RQ1 analyses](docs/run-tenset-finish-rq1.md)
 - [Run the reconstructed TenSet 500-file tutorial test pools](docs/run-tenset-tutorial-reference.md)

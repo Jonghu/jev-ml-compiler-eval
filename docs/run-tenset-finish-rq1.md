@@ -1,35 +1,45 @@
 # Finish RQ1: Jev versus Random
 
-For the newly prepared main-paper ResNet-50 comparison, use the separate
-[paper run guide](run-tenset-paper-resnet50.md) and
-[protocol audit](tenset-paper-protocol.md). Its full-record test pool and
-network endpoint metric differ from the completed studies below. It has not
-been executed yet.
+The main-paper-aligned ResNet-50 run is **completed and audited**. It contains
+27 tasks, 56 occurrences, and 100,126 schedule records. Jev's network endpoint
+Top-1/Top-5 are 0.097724/0.274583 versus paired Random's 0.091462/0.377121.
+Use the [audited results](results/tenset/paper-resnet50/README.md),
+[paper reproduction guide](run-tenset-paper-resnet50.md), and
+[protocol](tenset-paper-protocol.md). The run was executed at
+`f6a2a49f6b2d0dc8b3ae2e9f87ca6b3250d929ea`; no new paid run is needed to
+prepare its final report.
 
-The current research comparison is **Jev versus Random**. No specialized-model
-training, checkpoint, or published-model comparison is required. Keep the two
-completed studies separate:
+The paired research comparison is **Jev versus Random**. The paper's MLP +
+Ranking loss values, 0.8823/0.9456, are a separate external reference rather
+than a locally trained paired baseline. Matching its checkpoint or training
+another specialized model is outside scope. Keep all three completed studies
+and their metrics separate:
 
 | Study | Purpose | Metrics to report |
 |---|---|---|
+| ResNet-50 on Platinum-8272, 27 tasks/56 occurrences/100,126 records | Primary reconstruction of one main-paper network column | Task-frequency-weighted best-of-K network endpoint scores |
 | E5-2673, 120 workloads at 16/32/50 valid schedules | Single-question ranking and completed candidate-size comparison | Top-1, Top-5, Pairwise Accuracy, runtime regret |
 | Platinum-8272, 484 workloads and 187,679 test records | Larger tournament selection study | Record-weighted Top-1/Top-5, failure and elimination diagnostics |
 
-The tournament's eliminated tail is a deterministic presentation order, not a
+The tournament's eliminated tail uses a deterministic elimination order, not a
 global learned ranking. Its retained failed-measurement costs are placeholders,
 not physical execution latencies. Do not manufacture tournament Pairwise
 Accuracy or interpret a mean sentinel-based regret as a measured slowdown.
 
-The [RQ1 report](rq1-report.md), [run log](tenset-runlog.md), and
+The [RQ1 report](rq1-report.md), [run log](tenset-runlog.md),
+[primary ResNet-50 results](results/tenset/paper-resnet50/README.md), and
 [reviewed Platinum results](results/tenset/tutorial-500-platinum-test/README.md)
 contain the completed numerical results. The user has now completed the 16/32
 conditions and uploaded their analysis together with the reused 50-candidate
 anchor. The [size-study results](results/tenset/size-sweep/README.md) include
 720 per-workload rows, per-operation tables, and the dedicated size figure.
 The remaining substantive export is the concrete tensor/schedule case analysis.
-Sections 3–4 retain reproduction commands; the size runs are not pending work.
+Team-report integration and validation of actual tariff/output charges and
+billing also remain. Sections 3–4 retain historical reproduction commands;
+the size runs are not pending work.
 
-The revised three-slide contribution is also available as an
+The revised four-slide setup/workflow/results/diagnosis contribution is
+available as an
 [editable PowerPoint](presentations/tenset-rq1/tenset_rq1_slides.pptx),
 [PDF](presentations/tenset-rq1/tenset_rq1_slides.pdf), and
 [speaker notes](presentations/tenset-rq1/speaker_notes.md).
@@ -39,7 +49,7 @@ The revised three-slide contribution is also available as an
 ```bash
 cd "$HOME/Projects/jev-ml-compiler-eval"
 git fetch origin
-git switch feat/tenset-rq1-completion
+git switch main
 git pull --ff-only
 uv sync --locked --extra tenset
 ```
@@ -61,7 +71,24 @@ metric successes and failures, but does not contain tensor shapes or selected
 schedule arguments. The commands below add that missing semantic context and
 can also provide Platinum operation/type breakdowns.
 
-Run the context-aware analyzer on the complete Platinum study:
+First export concrete cases from the completed primary ResNet-50 study:
+
+```bash
+uv run python scripts/analyze_tenset_cases.py \
+  --results results/tenset/paper-resnet50/full \
+  --dataset data/tenset/paper-resnet50-platinum/index.json \
+  --output-dir results/tenset/paper-resnet50/semantic-case-analysis
+```
+
+Use the complete saved Mac result directory, including `experiment.yaml`,
+`metrics.json`, predictions, and manifest; the four-file uploaded numerical
+audit alone is not a replacement for that bundle or the prepared collection.
+The case export's task-level Top-1/Top-5 are prefix diagnostics for comparing
+cases. They do not replace the separately audited `paper-network-summary.json`
+endpoint network scores. Inspect the selected Jev, Random, and oracle
+configurations to write semantic explanations; retain the full network result.
+
+Also analyze the historical Platinum tutorial study:
 
 ```bash
 uv run python scripts/analyze_tenset_cases.py \
@@ -224,7 +251,8 @@ candidate-count effects, because workload identity changes between those groups.
 
 ## 5. Complete the report checklist
 
-- [x] State the Jev-versus-Random scope and distinguish the two completed studies.
+- [x] State paired Jev-versus-Random scope, the external MLP reference, and three distinct completed protocols.
+- [x] Complete and audit the primary ResNet-50 network run and publish its endpoint scores.
 - [x] Publish Top-1/Top-5, the E5 Pairwise Accuracy/regret, and reproducible metrics.
 - [x] Include paired uncertainty and a separately labelled exact Random expectation.
 - [x] Record failure-sentinel choices, tournament attrition, tokens, and cached usage.
@@ -232,10 +260,14 @@ candidate-count effects, because workload identity changes between those groups.
 - [x] Complete the user-run 16/32 conditions and analyze them with the reused 50 anchor.
 - [x] Review per-budget metrics, operation-name breakdowns, and the dedicated size plot.
 - [ ] Export full tensor/schedule context and write the semantic case narratives.
+- [ ] Integrate the current results into the team report and finish metric-label agreement/proofreading.
+- [ ] Verify actual provider pricing, output charges, and billing before claiming invoice totals.
 
-Fresh API repeatability checks, field-description/context/order ablations, and
-expansion to all raw schedules are useful optional extensions. Finish the
-semantic case exports and final narrative before expanding scope.
+Fresh API repeatability checks and controlled field-description, context,
+presentation-order, tie-breaking, and grouping ablations are optional extensions.
+The primary ResNet-50 run already uses all declared task records; additional
+networks or expanded historical cohorts would be new studies. Finish semantic
+case exports, the final narrative, and pricing validation before expanding scope.
 
 For final review, the compact Mac exports to share are `by_operation.csv`,
 `by_operation_family.csv`, `per_workload.csv`, and `case_studies.json` from each

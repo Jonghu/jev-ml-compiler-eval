@@ -1,4 +1,4 @@
-# Prepare the TenSet paper's ResNet-50 network evaluation
+# Completed TenSet ResNet-50 evaluation and reproduction guide
 
 This extension targets one column of the main paper's Section 5.2/Table 4:
 ResNet-50, batch 1, input `(1, 3, 224, 224)`, using recorded Platinum-8272
@@ -8,23 +8,43 @@ checkpoint and exact original test inventory have not been matched.
 
 The [protocol and source audit](tenset-paper-protocol.md) explains the full
 record pools, task-frequency weights, numerical conventions, and limits of
-the comparison. This setup is implemented and tested offline. No new Jev
-benchmark results or measured cost estimates have been produced yet.
+the comparison. The user completed this run at commit
+`f6a2a49f6b2d0dc8b3ae2e9f87ca6b3250d929ea`; its aggregate manifest is dated
+2026-11-18. The [audited results](results/tenset/paper-resnet50/README.md),
+[run log](tenset-runlog.md#r6--completed-main-paper-aligned-resnet-50-network-study),
+and [four-slide contribution](presentations/tenset-rq1/README.md) are available.
 
-## 1. Update the Mac checkout
+The full run contains **27 tasks, 56 occurrences, and 100,126 schedule records**.
+Jev's network endpoint Top-1/Top-5 are **0.097724/0.274583**, versus paired
+Random-0 **0.091462/0.377121**. Its 631 live and 42 cached requests contain
+95,175,703 new input tokens, estimated at **$3.997380 input-only** using the
+assumed $0.042/million rate. Output charges and invoice reconciliation remain
+outside this estimate. No new calls were made to audit or publish the run.
 
-From your repository folder:
+Sections 1–4 document reproduction and new experiments. The completed run does
+not need to be executed again to obtain its results. For remaining offline
+tensor/schedule cases and final report integration, use the
+[finish guide](run-tenset-finish-rq1.md).
+
+## 1. Preserve the historical checkout for exact replay or resume
+
+The existing data, result bundles, and caches must remain intact. Historical
+resume is bound to the original source files, effective configuration,
+Python version, and package versions. Integration changes code fingerprints;
+do not rewrite old provenance to make changed code accept old execution state.
+For historical reproduction from a clean repository folder:
 
 ```bash
 git fetch origin
-git switch feat/tenset-paper-resnet50
-git pull --ff-only
-uv sync --locked --extra tenset
+git switch --detach f6a2a49f6b2d0dc8b3ae2e9f87ca6b3250d929ea
+uv sync --locked --extra tenset --python 3.11.18
 ```
 
-Keep the earlier prepared data, results, and caches. If Git refuses a switch
-because of local edits, preserve those edits before continuing. This extension
-writes to new paths and does not resume or overwrite the older experiments.
+If Git refuses the switch because of local edits, preserve those edits first.
+Check the archived manifest's environment before resuming. For a deliberately
+changed experiment under current integrated code, prepare a fresh collection
+and choose new configuration/result paths; the default paths below belong to
+the original completed experiment and must not be overwritten.
 
 ## 2. Prepare the full network offline
 
@@ -120,10 +140,11 @@ Share `results/tenset/paper-resnet50/preflight-full.txt` to review the actual
 scope and estimates before making a new paid run. It contains local file paths
 and hashes but no API key. The CPU ZIP and prepared shards need not be uploaded.
 
-## 4. Execute later using the prepared profiles
+## 4. Reproduction only: execute the prepared profiles
 
-The commands in this section **make paid Jev API calls**. They are execution
-instructions, not evidence that those runs have already happened.
+The commands in this section **make paid Jev API calls**. The original full run
+has already completed. Use them only for an intended new execution or an
+interrupted historical run with its exact recorded identity.
 
 The existing `TYPESAFE_API_KEY` in the repository-root `.env` is used for live
 execution. An exported shell value takes precedence over `.env`; unset it if
@@ -184,7 +205,7 @@ reference. No global Pairwise Accuracy is inferred from the tournament tail.
 Reported weighted latency terms reconstruct the reference evaluator's proxy;
 they are not new measured end-to-end network inference latencies.
 
-A completed full run can be discussed against the published MLP reference as
+The completed full run can be discussed against the published MLP reference as
 a reconstruction aligned with the pinned network evaluator. It does not
 establish a locally paired comparison with the original checkpoint or exact
 Table 4 reproduction. Jev versus Random on the frozen local pools is the paired
@@ -198,3 +219,20 @@ source and whether its candidate pool is verified against the local experiment.
 The MLP row is external, not an additional locally evaluated model. Only Jev
 versus Random supplies paired results. These comparison tables are omitted
 for the pilot.
+
+## 6. Finish analysis and reporting without another paid run
+
+Saved-output checks confirm identical paired pools, exact Random replay,
+and all 108 task/K decompositions. The small Top-1 lead is sensitive to
+individual tasks; Top-5 is lower than Random. In 100,000 offline Random-choice
+draws on the same fixed network, 95.320% exceed saved Jev Top-5. That fraction
+is a reference distribution, not a p-value or fresh Jev repeatability check.
+The original paper inventory/checkpoint and raw transmitted request contents
+remain unverified; that limit is not a demonstrated scoring defect.
+
+Remaining deliverables are concrete tensor/schedule case exports and reviewed
+semantic narratives, integration into the team report, and verification of
+actual pricing/output charges and billing. The published MLP is a trained
+neural-network ranking model used as an external reference; training a matched
+model is outside the current scope. Fresh Jev, presentation-order, tie-breaking,
+context, and grouping experiments remain optional follow-ups.
