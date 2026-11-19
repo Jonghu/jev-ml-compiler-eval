@@ -78,7 +78,12 @@ def _archive_path(member: ZipInfo) -> PurePosixPath:
     return path
 
 
-def _selected_path(path: PurePosixPath, platform: str) -> Path | None:
+def _selected_path(
+    path: PurePosixPath,
+    platform: str,
+    *,
+    include_network_tasks: bool = False,
+) -> Path | None:
     parts = path.parts
     for index in range(len(parts)):
         tail = parts[index:]
@@ -90,6 +95,13 @@ def _selected_path(path: PurePosixPath, platform: str) -> Path | None:
             return Path(*tail)
         if tail == ("network_info", "all_tasks.pkl"):
             return Path(*tail)
+        if (
+            include_network_tasks
+            and len(tail) == 2
+            and tail[0] == "network_info"
+            and tail[1].endswith(".task.pkl")
+        ):
+            return Path(*tail)
     return None
 
 
@@ -99,6 +111,7 @@ def extract_cpu_archive(
     *,
     platform: str = "e5-2673",
     expected_sha256: str | None = None,
+    include_network_tasks: bool = False,
 ) -> dict[str, object]:
     """Extract selected measurements atomically and record archive/file hashes.
 
@@ -106,6 +119,8 @@ def extract_cpu_archive(
     come from a separately trusted source; no official checksum is invented.
     """
     archive_path, output_dir = Path(archive_path), Path(output_dir)
+    if type(include_network_tasks) is not bool:
+        raise ValueError("include_network_tasks must be a boolean")
     if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_-]*", platform):
         raise ValueError("platform must be a single directory name")
     if output_dir.is_symlink() or (
@@ -131,7 +146,9 @@ def extract_cpu_archive(
                 path = _archive_path(member)
                 if member.is_dir():
                     continue
-                relative = _selected_path(path, platform)
+                relative = _selected_path(
+                    path, platform, include_network_tasks=include_network_tasks
+                )
                 if relative is None:
                     continue
                 if relative in destinations:
@@ -164,6 +181,8 @@ def extract_cpu_archive(
             "platform": platform,
             "files": sorted(extracted, key=lambda item: item["path"]),
         }
+        if include_network_tasks:
+            manifest["include_network_tasks"] = True
         (staging / "download-manifest.json").write_text(
             json.dumps(manifest, indent=2) + "\n", encoding="utf-8"
         )

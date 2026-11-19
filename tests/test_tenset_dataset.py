@@ -282,6 +282,35 @@ def test_rejects_oversized_input_without_silently_truncating_candidates(tmp_path
         dataset.load()
 
 
+def test_field_descriptions_preserve_cases_and_change_only_visible_context(tmp_path):
+    path, root = prepared_file(tmp_path, [record(index) for index in range(8)])
+    config = {"path": str(path), "split": "all", "candidate_limit": 8}
+    original = TenSetDataset(config).load()[0]
+    dataset = TenSetDataset({**config, "describe_config_fields": True})
+    described = dataset.load()[0]
+    assert described.workload.workload_id == original.workload.workload_id
+    assert described.candidates == original.candidates
+    assert described.runtimes == original.runtimes
+    fields = described.workload.context["configuration_fields"]
+    assert fields
+    assert {
+        key: value
+        for key, value in described.workload.context.items()
+        if key != "configuration_fields"
+    } == dict(original.workload.context)
+    assert dataset.manifest_metadata()["describe_config_fields"] is True
+    assert serialized_input_bytes(described.workload, described.candidates) > (
+        serialized_input_bytes(original.workload, original.candidates)
+    )
+    assert json.loads(path.read_text()) == root
+
+
+@pytest.mark.parametrize("value", [None, 0, 1, "true"])
+def test_field_descriptions_require_boolean(value):
+    with pytest.raises(ValueError, match="describe_config_fields.*boolean"):
+        TenSetDataset({"path": "unused.json", "describe_config_fields": value})
+
+
 def test_workload_budget_excludes_oversized_unselected_inputs(tmp_path):
     path, root = prepared_file(
         tmp_path,

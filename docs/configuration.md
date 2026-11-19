@@ -82,36 +82,75 @@ and implementation-specific `config`. Multiple entries may use the same type
 with different configurations.
 
 Random accepts only `seed`. Jev requires `model`, `cache_dir`, `max_retries`,
-and `request_timeout_seconds`. Jev also accepts optional ablation settings:
+and `request_timeout_seconds`. It also accepts the optional boolean
+`long_context` (default `false`). When enabled, the client sends
+`TypeSafe-Danger-Zone-Long-Context: true`, separates its cache from default-mode
+requests, and records `long_context: true` in prediction metadata.
 
-| Setting | Default | Effect |
-|---|---|---|
-| `include_context` | `true` | `false` sends only the workload ID as state, without `Workload.context`. |
-| `candidate_order` | `original` | `shuffled` sends candidates in a random order, seeded per workload. |
-| `order_seed` | — | Integer seed; required with, and only allowed with, `candidate_order: shuffled`. |
+[TypeSafe's model documentation](https://docs.typesafe.ai/models#long-context)
+lists default limits of 64k tokens per request and 32k per question, including
+the shared state. The long-context header raises both limits to 262k tokens.
+TypeSafe documents slower and less accurate behavior at longer contexts, with
+the same price per input token. Record the mode as an experiment condition.
+The dataset's `max_input_bytes` is a local byte budget, not a token count.
 
-The defaults reproduce earlier requests exactly, so existing cache entries
-remain valid. Shuffled runs record the presented order as
-`presented_candidate_ids` in prediction metadata. Ties in Jev probabilities
-are still broken by the dataset's candidate order, not the presented order.
+Jev also accepts `include_context` (boolean, default `true`) and
+`candidate_order` (`original` or `shuffled`, default `original`). A shuffled
+order requires an integer `order_seed`; an original order rejects an unused
+order seed. The shuffle is deterministic per workload. Cache schema v3 hashes
+the exact request order and retains the sent body; old cache files are not
+automatically migrated. Use a new cache directory for these controls.
+
+`type: jev-tournament` groups candidates into token-budgeted Choice questions,
+advances each group's top candidates, and repeats until one final question.
+It accepts long context explicitly and records probabilities per question,
+alongside request usage and cache references. Its eliminated-candidate tail is
+a deterministic bookkeeping order rather than a globally scored ranking.
+Use selection metrics instead of global Pairwise Accuracy for this model.
+The committed [TenSet follow-up profiles](run-tenset-followup-experiments.md)
+provide complete settings, offline preflight, and collection execution commands.
+
+TenSet additionally accepts the boolean dataset setting
+`describe_config_fields` (default `false`). It adds the pinned TVM syntax and
+argument definitions to the workload context without changing IDs, sampling,
+schedule configurations, or measured values. Full-candidate collections use
+`scripts/run_tenset_collection.py` with a completed collection index instead of
+loading all candidate pools through the ordinary runner at once.
+
+Single-question Jev records shuffled input IDs as `presented_candidate_ids`.
+Its probability ties preserve original dataset order. The tournament instead
+uses each question's seeded presentation order for probability ties and records
+`last_question_probabilities`; those values are not a global score map.
 
 ### `metrics`
 
-Each metric is computed per workload and averaged across workloads. Every
-model must rank all candidates, so ranking metrics see the full ranking.
+The shared runner computes metrics per workload and averages them across
+workloads. Tournament rankings include a deterministic eliminated-candidate
+tail: selection metrics remain meaningful, but global ranking metrics do not.
 
 | Name | Definition |
 |---|---|
 | `runtime_regret` | Selected runtime divided by optimal runtime, minus one. |
 | `top_1_accuracy` | One when the selected candidate ties for the optimal runtime. |
+| `top_1_score`, `top_5_score` | TenSet prefix-average performance ratios; higher is better. |
+| `pairwise_accuracy` | TenSet's strict pairwise comparison convention. |
+| `pairwise_accuracy_tie_aware` | Separate pairwise diagnostic with explicit tie handling. |
 | `top_1_error`, `top_5_error`, `top_10_error` | Fastest runtime among the K highest-ranked candidates divided by optimal runtime, minus one. Zero when a workload has at most K candidates. |
 | `kendall_tau` | Kendall's tau-b between ranking positions and runtimes; one means the ranking is ordered from fastest to slowest. |
 
 `top_1_error` equals `runtime_regret`. The Top-K errors and Kendall's tau
 follow the TpuGraphs definitions (Phothilimthana et al., arXiv:2308.13490).
 `kendall_tau` raises an error for workloads with fewer than two candidates or
-identical runtimes, where it is undefined. TenSet Top-1 Score, Top-5 Score,
-and Pairwise Accuracy are not yet implemented.
+identical runtimes, where it is undefined. The runner rejects global Pairwise
+Accuracy for tournaments; tournament Kendall's tau is at most a historical
+manufactured-order diagnostic, not a learned full-ranking result.
+
+The [ResNet-50 workflow](run-tenset-paper-resnet50.md) separately exports
+`paper_network_best_of_1_score` and `paper_network_best_of_5_score`, using
+task-frequency-weighted network latency sums and the best-of-K endpoint.
+These are not the shared runner's macro/prefix-average scores. Only for the
+same network aggregation is proxy regret `1 / network_score - 1`; do not apply
+that transformation to a macro mean of per-workload scores.
 
 ### `execution`
 

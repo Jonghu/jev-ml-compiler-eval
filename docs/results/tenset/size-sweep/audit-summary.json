@@ -1,0 +1,106 @@
+{
+  "aggregate_checks": {
+    "aggregate": {
+      "all_values_recomputed": true,
+      "groups": 6
+    },
+    "by_candidate_count": {
+      "all_values_recomputed": true,
+      "groups": 6
+    },
+    "by_operation": {
+      "all_values_recomputed": true,
+      "groups": 162
+    },
+    "by_run": {
+      "all_values_recomputed": true,
+      "groups": 6
+    },
+    "overall": {
+      "all_values_recomputed": true,
+      "groups": 2
+    }
+  },
+  "candidate_budgets": [
+    16,
+    32,
+    50
+  ],
+  "frozen_manifest_checksum_reference": "369bb85d6c730c14b38dc96fa324a887d7a171aee16138bd522885dec659c9ee",
+  "frozen_manifest_uploaded": false,
+  "historical_anchor_check": {
+    "all_five_metrics_and_latency_match": true,
+    "independent_c50_raw_prediction_comparison": true,
+    "note": "This verifies c50 continuity only, not raw c16/c32 decisions or labels.",
+    "rows": 240,
+    "source_predictions_sha256": "f7f1787cb3a3650d46850bc6b720d593c5277a57aaf2df4aad988c0ad2c35c0f",
+    "supplied": true
+  },
+  "model_rows_per_budget": 120,
+  "new_c16_c32_raw_predictions_available": false,
+  "operation_labels_consistent_across_budgets_and_models": true,
+  "operation_signature_counts": {
+    "PadInput+conv2d_transpose_nhwc+T_multiply+T_add+T_relu": 1,
+    "PaddedInput+Conv2dOutput": 6,
+    "PaddedInput+Conv2dOutput+T_add": 8,
+    "PaddedInput+Conv2dOutput+T_add+T_add": 7,
+    "PaddedInput+Conv2dOutput+T_add+T_add+T_relu": 6,
+    "PaddedInput+Conv2dOutput+T_add+T_relu": 40,
+    "PaddedInput+Conv2dOutput+T_add+compile_engine_const+T_add+compute+compile_engine_const+T_divide+T_multiply": 3,
+    "PaddedInput+Conv2dOutput+T_add+compute": 3,
+    "PaddedInput+Conv3dOutput+T_multiply+T_add": 1,
+    "PaddedInput+Conv3dOutput+T_multiply+T_add+T_add+T_relu": 1,
+    "PaddedInput+Conv3dOutput+T_multiply+T_add+T_relu": 6,
+    "PaddedInput+DepthwiseConv2d+T_add+T_relu": 3,
+    "PaddedInput+DepthwiseConv2d+T_add+compile_engine_const+T_add+compute+compile_engine_const+T_divide+T_multiply": 5,
+    "PaddedInput+DepthwiseConv2d+T_add+compute": 3,
+    "T_dense+T_relu": 1,
+    "T_softmax_maxelem+T_softmax_exp+T_softmax_expsum+T_softmax_norm": 1,
+    "T_subtract+T_multiply+T_multiply_red+T_divide": 2,
+    "compute": 2,
+    "compute+T_add": 1,
+    "compute+T_add+T_add": 2,
+    "compute+T_add+compile_engine_const+compile_engine_const+T_multiply+T_fast_erf+compile_engine_const+T_multiply+T_add+T_multiply": 3,
+    "data_pad+input_tile+B+data_pack+bgemm+A+inverse+conv2d_winograd+T_add+T_add+T_relu": 2,
+    "data_pad+input_tile+B+data_pack+bgemm+A+inverse+conv2d_winograd+T_add+T_relu": 1,
+    "pad_temp+compute+T_add+T_relu": 3,
+    "pad_temp+tensor": 1,
+    "placeholder_red+T_divide": 1,
+    "tensor+tensor": 7
+  },
+  "operation_signatures": 27,
+  "original_method_hash_fields_verified": [
+    "analysis_summary_sha256",
+    "by_candidate_count_sha256",
+    "per_workload_sha256",
+    "plot_data_sha256"
+  ],
+  "per_case_metric_identities_and_strict_pair_count_granularity_verified": true,
+  "rows": 720,
+  "source_limitations": [
+    "The uploaded export does not include raw c16/c32 predictions, saved model configurations, API bodies or frozen sweep manifest.",
+    "Raw new-run rankings, probabilities, labels, input hashes and actual candidate prefix nesting cannot be independently rechecked.",
+    "Prepared-data SHA agrees with the historical audited cohort reference; the actual prepared file is not uploaded.",
+    "Scores and usage are audited from derived tables, not a fresh hardware benchmark or model run.",
+    "overall.csv pools 360 decisions per model from only 120 distinct workloads; it is not a candidate-size comparison."
+  ],
+  "source_sha256": {
+    "analysis/aggregate.csv": "08e1407cb1adf76aaceabc00115f34eda62334e629b98cb3e2d624c0dad71aa9",
+    "analysis/by_candidate_count.csv": "08e1407cb1adf76aaceabc00115f34eda62334e629b98cb3e2d624c0dad71aa9",
+    "analysis/by_operation.csv": "da9f65575d850783b32377785cab7ec805c17bd3fe1ac8a4ca469f2f3a0052b5",
+    "analysis/by_run.csv": "c8c5b7dfea524d0784cae2348601c3209df8ebe6ed3117cd1e13dc386fb688c9",
+    "analysis/comparison.png": "7cf520a08233ab992aa97ee9dfdc63cbf7872fb3129c746e79b3d12844187283",
+    "analysis/comparison.svg": "ed5846281243b0c3f4fa04411e529ee8f7cfba79fcda12a7a601d8f5ddc6cce8",
+    "analysis/decision_accounting.csv": "5ae7d54c5c06b3d4ed31f8a0b467e6716ff8ef66f00c9ec926c6a5ad8e791844",
+    "analysis/jev_cases.csv": "4a85824d00cba8385f0def4c43e133c18b0b99b5ca76f25084097491a8778a67",
+    "analysis/overall.csv": "eff0e24fa5ba4c0b1ada7d213a95797f91de65b91c96b695d3efffede10b290c",
+    "analysis/per_workload.csv": "c91e3b33ce9d2a9800c4cb50f9a38e6418e73fd26d68338a3078570886fd2099",
+    "analysis/summary.json": "bc0d9f9cf3cc49b2980c135a2866ef938398020ddb6947ebae73c14107576f3e",
+    "size-comparison/size-sweep-metrics.png": "24df1deed7605e7bfabd201e68f852be0846a8107c8dd0f18b8324914ecd9859",
+    "size-comparison/size-sweep-metrics.svg": "3f1a370e170e48ad66a507d266c347b2c882537ee2e76647d4ce9aec0e194a35",
+    "size-comparison/size-sweep-plot-data.csv": "dcc54f1169611197949b6e035b9839b5034fdd39a52cae4d467513e859d71635",
+    "size-comparison/size-sweep-plot-method.json": "fbdb829b85e13acd23f2c92c24be20c9ae2f8bc6b338a976f2d7ccdedb998131"
+  },
+  "status": "passed_export_consistency_checks",
+  "workloads": 120
+}

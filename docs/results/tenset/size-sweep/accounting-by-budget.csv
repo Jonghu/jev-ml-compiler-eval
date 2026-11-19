@@ -1,0 +1,4 @@
+candidate_count,workloads,usage_scope,live_requests,cached_requests,response_input_tokens,response_output_tokens,live_input_tokens,live_output_tokens,estimated_live_input_cost_usd_at_0_042_per_million
+16,120,new_size_budget_usage_as_reported,120,0,2750775,60329,2750775,60329,0.11553255
+32,120,new_size_budget_usage_as_reported,120,0,4255904,115911,4255904,115911,0.17874796800000003
+50,120,historical_c50_usage_not_new_sweep_calls,110,10,5943452,178485,5418271,163609,0.227567382

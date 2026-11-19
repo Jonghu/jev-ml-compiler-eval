@@ -1,0 +1,5 @@
+model,top_k,endpoint_score,network_latency_proxy_ratio,network_regret,definition,same_task_weights_and_oracle_as_score,physical_measured_network_runtime
+Jev,1,0.09772422696828181,10.232877056418857,9.232877056418857,weighted selected latency proxy / weighted oracle proxy - 1,True,False
+Jev,5,0.2745825619891273,3.6418918694465283,2.6418918694465283,weighted selected latency proxy / weighted oracle proxy - 1,True,False
+Random,1,0.09146194046953035,10.933509554535858,9.933509554535858,weighted selected latency proxy / weighted oracle proxy - 1,True,False
+Random,5,0.37712115252641787,2.651667755310937,1.6516677553109371,weighted selected latency proxy / weighted oracle proxy - 1,True,False

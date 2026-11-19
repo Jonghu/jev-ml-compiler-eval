@@ -1,0 +1,41 @@
+schema_version: 1
+experiment:
+  name: tenset-jev-field-descriptions-w120-c50
+  description: Exploratory field-description ablation on the frozen test cohort; same seed,
+    candidates and long-context mode
+  seed: 42
+  output_dir: results/tenset/jev-field-descriptions-w120-c50
+dataset:
+  type: tenset
+  config:
+    path: data/tenset/prepared-w120-c50-s42-metadata.json
+    split: test
+    candidate_limit: 50
+    max_workloads: 120
+    seed: 42
+    max_input_bytes: 262144
+    require_program_metadata: true
+    describe_config_fields: true
+candidate_selection:
+  strategy: all
+models:
+- id: random-42
+  type: random
+  config:
+    seed: 42
+- id: jev-1.14.0-field-descriptions-long-context
+  type: jev
+  config:
+    model: jev-1.14.0
+    cache_dir: .cache/jev-tenset-v3-long-context
+    max_retries: 0
+    request_timeout_seconds: 120.0
+    long_context: true
+metrics:
+- top_1_score
+- top_5_score
+- pairwise_accuracy
+- pairwise_accuracy_tie_aware
+- runtime_regret
+execution:
+  fail_fast: true

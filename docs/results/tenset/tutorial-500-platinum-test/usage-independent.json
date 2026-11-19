@@ -1,0 +1,248 @@
+{
+  "audit_method": "Streamed predictions.jsonl one line at a time. Independently recomputed request/token/latency accounting from per-request reports. Source files were not modified and no API calls were made.",
+  "pricing_assumption": {
+    "usd_per_million_input_tokens": 0.042,
+    "usd_per_million_output_tokens": 0,
+    "source": "Assumed rate used for this audit; no invoice or dated provider pricing artifact supplied"
+  },
+  "records": {
+    "prediction_rows": 968,
+    "jev_workloads": 484,
+    "candidate_counts": {
+      "n": 484,
+      "mean": 387.7665289256198,
+      "median": 400.0,
+      "p90": 400.0,
+      "p95": 400.0,
+      "min": 6,
+      "max": 400,
+      "sum": 187679
+    },
+    "workload_count_by_request_mode": {
+      "all_cached_workloads": 3,
+      "all_live_workloads": 481,
+      "mixed_workloads": 0
+    },
+    "requests_per_workload": {
+      "n": 484,
+      "mean": 3.834710743801653,
+      "median": 4.0,
+      "p90": 4.0,
+      "p95": 4.0,
+      "min": 1,
+      "max": 8,
+      "sum": 1856
+    },
+    "round_count_distribution": {
+      "2": 468,
+      "1": 16
+    },
+    "questions_per_request_distribution": {
+      "1": 1856
+    }
+  },
+  "usage": {
+    "live": {
+      "requests": 1840,
+      "input_tokens": 179522529,
+      "output_tokens": 1974500,
+      "request_latency_ms": {
+        "n": 1840,
+        "mean": 1021.8588565461956,
+        "median": 1118.061667,
+        "p90": 1648.6565045000002,
+        "p95": 1763.8912853999998,
+        "min": 114.777209,
+        "max": 7354.080041,
+        "sum": 1880220.296045
+      },
+      "actual_input_tokens_per_request": {
+        "n": 1840,
+        "mean": 97566.59184782609,
+        "median": 114085.5,
+        "p90": 147643.4,
+        "p95": 151309.5,
+        "min": 7960,
+        "max": 160192,
+        "sum": 179522529
+      },
+      "estimated_input_tokens_per_request": {
+        "n": 1840,
+        "mean": 112363.38369565217,
+        "median": 130018.5,
+        "p90": 171094.0,
+        "p95": 175278.2,
+        "min": 11625,
+        "max": 179985,
+        "sum": 206748626
+      }
+    },
+    "cached": {
+      "requests": 16,
+      "input_tokens": 1880950,
+      "output_tokens": 13018,
+      "request_latency_ms": {
+        "n": 16,
+        "mean": 9.264651,
+        "median": 8.4902505,
+        "p90": 10.712375000000002,
+        "p95": 16.19943725,
+        "min": 1.66625,
+        "max": 32.285,
+        "sum": 148.234416
+      },
+      "actual_input_tokens_per_request": {
+        "n": 16,
+        "mean": 117559.375,
+        "median": 116057.5,
+        "p90": 148191.0,
+        "p95": 148727.75,
+        "min": 22760,
+        "max": 148793,
+        "sum": 1880950
+      },
+      "estimated_input_tokens_per_request": {
+        "n": 16,
+        "mean": 135503.25,
+        "median": 131757.0,
+        "p90": 171519.0,
+        "p95": 172135.25,
+        "min": 28327,
+        "max": 172268,
+        "sum": 2168052
+      }
+    }
+  },
+  "cost_estimate_usd": {
+    "new_successful_responses": 7.539946218000001,
+    "stored_cached_response_equivalent": 0.07899990000000001,
+    "all_stored_responses_equivalent": 7.618946118000001,
+    "caveat": "Successful logical requests only. SDK retry attempts, unsuccessful requests, prior cached-response charges, and provider invoice adjustments cannot be independently reconstructed from these reports."
+  },
+  "decision_latency_ms": {
+    "all": {
+      "n": 484,
+      "mean": 4102.157450464876,
+      "median": 3855.0441255,
+      "p90": 5310.1932838,
+      "p95": 5870.3823143,
+      "min": 40.138292,
+      "max": 14791.831416,
+      "sum": 1985444.206025
+    },
+    "all_cached": {
+      "n": 3,
+      "mean": 88.02544466666667,
+      "median": 70.170833,
+      "p90": 137.0479338,
+      "p95": 145.4075714,
+      "min": 40.138292,
+      "max": 153.767209,
+      "sum": 264.07633400000003
+    },
+    "all_live": {
+      "n": 481,
+      "mean": 4127.193616821206,
+      "median": 3856.7925,
+      "p90": 5310.743209,
+      "p95": 5870.809208,
+      "min": 117.847583,
+      "max": 14791.831416,
+      "sum": 1985180.129691
+    }
+  },
+  "round_totals": {
+    "0": {
+      "workloads": 484,
+      "candidates": 187679,
+      "questions": 1388,
+      "requests": 1388,
+      "live_requests": 1375,
+      "cached_requests": 13,
+      "live_input_tokens": 167807529,
+      "cached_input_tokens": 1722233
+    },
+    "1": {
+      "workloads": 468,
+      "candidates": 6860,
+      "questions": 468,
+      "requests": 468,
+      "live_requests": 465,
+      "cached_requests": 3,
+      "live_input_tokens": 11715000,
+      "cached_input_tokens": 158717
+    }
+  },
+  "request_identity": {
+    "request_id_count": 1856,
+    "unique_request_ids": 1856,
+    "unique_request_sha256": 1856,
+    "unique_cache_paths": 1856
+  },
+  "estimated_to_actual_input_token_ratio": {
+    "n": 1856,
+    "mean": 1.1746515006295168,
+    "median": 1.141299330842688,
+    "p90": 1.2450421442366064,
+    "p95": 1.273669714443945,
+    "min": 1.1193065146929673,
+    "max": 1.461413179654222,
+    "sum": 2180.153185168383
+  },
+  "rate_limiting": {
+    "workloads_with_recorded_wait": 75,
+    "total_wait_ms": 31575.208329992165
+  },
+  "failed_measurement_candidates": {
+    "runtime_ms_ge_1e10": 2013,
+    "workloads_with_such_values": 145,
+    "distinct_large_runtime_values": {
+      "10000000000000.0": 2013
+    },
+    "selected_large_runtime_count": {
+      "random": 7,
+      "jev": 8
+    },
+    "manifest_test_error_records": 2013,
+    "caveat": "Large values are inspected as possible failure sentinels; manifest provides the failure-record count, but raw measurement records are not attached."
+  },
+  "context_mode": {
+    "config_include_context": "absent; source default is True",
+    "config_long_context": true,
+    "prediction_long_context_count": 484,
+    "per_request_context_mode_recorded": false,
+    "notes": "Experiment YAML omits include_context. Inspected Jev tournament source includes workload.context when this option defaults True; per-request bodies are not supplied, so full-context usage is inferred from saved configuration and code rather than independently decoded from wire payloads.",
+    "inspected_source_sha256": "f95e4199e54b50a13f2762c28cc295211a1b64ac8e7809faea08cb96e79cd073",
+    "recorded_source_sha256": "f95e4199e54b50a13f2762c28cc295211a1b64ac8e7809faea08cb96e79cd073",
+    "source_hash_matches": true
+  },
+  "protocol_provenance": {
+    "candidate_count": 187679,
+    "candidate_selection": "all_tutorial_test_records_preserving_duplicates_and_errors",
+    "counts_note": "Counts describe the frozen tutorial-derived preparation. They do not independently establish identity with the historical tutorial's original records; the empirical model comparison here is Jev versus Random on identical saved pools.",
+    "experiment_protocol": "tenset_500file_tutorial_record_test_reconstruction",
+    "observed_counts": {
+      "eligible_workloads": 484,
+      "excluded_records": 340,
+      "retained_records": 1876701,
+      "sampled_files": 500,
+      "test_duplicate_configurations": 0,
+      "test_error_records": 2013,
+      "test_records": 187679,
+      "training_records": 1689022
+    },
+    "original_test_inventory_verified": false,
+    "platform": "platinum-8272",
+    "preparation_fingerprint": "70160a6f4d2a20cd8766c276ffd1368f276178ace5d56deb567acfb8b0a86efe",
+    "published_counts_match": true,
+    "published_tutorial_counts": {
+      "eligible_workloads": 484,
+      "sampled_files": 500,
+      "test_records": 187679,
+      "training_records": 1689022
+    },
+    "seed": 0,
+    "target": "llvm -keys=cpu -link-params=0 -mcpu=skylake-avx512 -model=platinum-8272"
+  },
+  "violations": []
+}

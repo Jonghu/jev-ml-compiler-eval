@@ -1,0 +1,144 @@
+{
+  "study": "Jev versus Random on the frozen E5 candidate-size cohort",
+  "publication_status": "Reviewed analysis exports; raw c16/c32 result bundles were not supplied",
+  "dataset": "tenset",
+  "platform": "e5-2673",
+  "target": "llvm -keys=cpu -link-params=0 -mcpu=core-avx2 -model=e5-2673",
+  "prepared_sha256": "1f949c2c9f788b507c4e395925720c7beaa7063c3efb6ac09ae5ed4855db6275",
+  "seed": 42,
+  "candidate_budgets": [
+    16,
+    32,
+    50
+  ],
+  "workloads_per_budget": 120,
+  "unique_workloads_across_all_budgets": 120,
+  "prediction_rows_across_models_and_budgets": 720,
+  "aggregation": "Unweighted workload mean separately within each budget",
+  "reported_protocol": {
+    "candidate_pool_design": "Nested prefixes of the same frozen 50-schedule pool",
+    "model": "jev-1.14.0",
+    "decision_method": "Single question",
+    "long_context": true,
+    "field_definitions": false,
+    "c50_source": "Historical completed 120-by-50 result reused without new sweep calls"
+  },
+  "metrics": [
+    "top_1_score",
+    "top_5_score",
+    "pairwise_accuracy",
+    "pairwise_accuracy_tie_aware",
+    "runtime_regret"
+  ],
+  "metric_definitions": {
+    "top_5_definition": "mean prefix-best runtime ratio over first min(5,n) trials",
+    "pairwise_definition": "official strict comparisons in original candidate order",
+    "oracle": "minimum runtime among the candidates in each prediction",
+    "ranking_ties": "Top-K follows returned order; reported pairwise metrics use model score ties. Tournament selection metrics do not assume global probabilities."
+  },
+  "per_budget_metrics": [
+    {
+      "model_id": "jev-1.14.0-long-context",
+      "model_type": "jev",
+      "candidate_count": 16,
+      "decisions": 120,
+      "unique_workloads": 120,
+      "top_1_score": 0.4569494137497769,
+      "top_5_score": 0.6453092393845117,
+      "pairwise_accuracy": 0.5334027777777778,
+      "pairwise_accuracy_tie_aware": 0.5337152777777778,
+      "runtime_regret": 3.535878997456817,
+      "decision_latency_ms": 243.22241173333333
+    },
+    {
+      "model_id": "jev-1.14.0-long-context",
+      "model_type": "jev",
+      "candidate_count": 32,
+      "decisions": 120,
+      "unique_workloads": 120,
+      "top_1_score": 0.3945531976090914,
+      "top_5_score": 0.5631479212712076,
+      "pairwise_accuracy": 0.5295362903225806,
+      "pairwise_accuracy_tie_aware": 0.5299395161290322,
+      "runtime_regret": 3.9933038180255704,
+      "decision_latency_ms": 342.07297954166665
+    },
+    {
+      "model_id": "jev-1.14.0-long-context",
+      "model_type": "jev",
+      "candidate_count": 50,
+      "decisions": 120,
+      "unique_workloads": 120,
+      "top_1_score": 0.3368666100730691,
+      "top_5_score": 0.5128292812182336,
+      "pairwise_accuracy": 0.5194557823129252,
+      "pairwise_accuracy_tie_aware": 0.519704081632653,
+      "runtime_regret": 5.081010615176733,
+      "decision_latency_ms": 426.487659025
+    },
+    {
+      "model_id": "random-42",
+      "model_type": "random",
+      "candidate_count": 16,
+      "decisions": 120,
+      "unique_workloads": 120,
+      "top_1_score": 0.4074390456728438,
+      "top_5_score": 0.615892071824956,
+      "pairwise_accuracy": 0.5040972222222222,
+      "pairwise_accuracy_tie_aware": 0.5040972222222222,
+      "runtime_regret": 5.308322378305485,
+      "decision_latency_ms": 0.010852025
+    },
+    {
+      "model_id": "random-42",
+      "model_type": "random",
+      "candidate_count": 32,
+      "decisions": 120,
+      "unique_workloads": 120,
+      "top_1_score": 0.3481928471417064,
+      "top_5_score": 0.5534696950417357,
+      "pairwise_accuracy": 0.5034610215053763,
+      "pairwise_accuracy_tie_aware": 0.5034610215053763,
+      "runtime_regret": 5.317561479902047,
+      "decision_latency_ms": 0.011388541666666667
+    },
+    {
+      "model_id": "random-42",
+      "model_type": "random",
+      "candidate_count": 50,
+      "decisions": 120,
+      "unique_workloads": 120,
+      "top_1_score": 0.332439916160719,
+      "top_5_score": 0.4987746998271794,
+      "pairwise_accuracy": 0.4919591836734694,
+      "pairwise_accuracy_tie_aware": 0.4919591836734694,
+      "runtime_regret": 6.058853797630897,
+      "decision_latency_ms": 0.013210375
+    }
+  ],
+  "raw_c16_c32_verification_limits": [
+    "Original predictions, manifests, saved configurations, cache responses and sweep manifest were not uploaded.",
+    "Per-workload CSVs can establish reported cohort/aggregate consistency, not independently verify actual candidate identities, nesting, API settings or runtime labels.",
+    "A plotted hash of the missing sweep manifest is a recorded reference, not verification of its contents.",
+    "Archived c50 results have their separate prior audit; the new c16/c32 exports require a distinct verification status."
+  ],
+  "interpretation": [
+    "These are fixed saved responses, not measurements of fresh API repeatability.",
+    "Each candidate budget has its own oracle; curve changes are not physical runtime speedups.",
+    "The 720 rows represent two models at three budgets over 120 workloads, not 720 independent workloads.",
+    "Do not pool budgets into a main overall result or combine them with the separate 484-workload Platinum tournament.",
+    "Operation names are recorded composite tensor-program names; small groups are descriptive."
+  ],
+  "uncertainty": {
+    "primary": "50000 paired-workload bootstrap resamples, seed 20261116; common workload draws across all budgets",
+    "sensitivity": "50000 leading-DAG-hash cluster bootstrap resamples over 56 proxy groups, seed 20261116; not verified independent network families",
+    "multiplicity": "Exploratory unadjusted intervals for 12 within-budget differences and 8 between-budget contrasts in each analysis",
+    "finding": "All Top-1/Top-5 and relative-advantage between-budget intervals include zero in both analyses; no significant scaling effect established",
+    "conditioning": "One saved Jev outcome and one Random seed per workload/budget; missing raw c16/c32 artifacts remain a verification limit"
+  },
+  "omitted_upload_outputs": [
+    "analysis/overall.csv",
+    "analysis/comparison.png",
+    "analysis/comparison.svg"
+  ]
+}

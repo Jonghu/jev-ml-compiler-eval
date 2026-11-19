@@ -53,6 +53,92 @@ def test_extracts_only_selected_platform_and_registry_with_provenance(tmp_path: 
         assert sha256_file(output / entry["path"]) == entry["sha256"]
 
 
+@pytest.mark.parametrize("include_network_tasks", [False, True])
+def test_network_task_inventory_requires_explicit_opt_in(
+    tmp_path: Path, include_network_tasks: bool
+):
+    archive = make_archive(
+        tmp_path,
+        {
+            "dataset/measure_records/platinum-8272/workload.json": b"records",
+            "dataset/measure_records/e5-2673/other.json": b"not selected",
+            "dataset/network_info/all_tasks.pkl": b"registry",
+            "dataset/network_info/resnet.task.pkl": b"task inventory",
+            "dataset/network_info/bert.task.pkl": b"another task inventory",
+            "dataset/network_info/resnet.relay.pkl": b"not selected",
+        },
+    )
+    destination = tmp_path / "raw"
+    manifest = extract_cpu_archive(
+        archive,
+        destination,
+        platform="platinum-8272",
+        include_network_tasks=include_network_tasks,
+    )
+    expected = {
+        "measure_records/platinum-8272/workload.json",
+        "network_info/all_tasks.pkl",
+    }
+    if include_network_tasks:
+        expected.update({"network_info/resnet.task.pkl", "network_info/bert.task.pkl"})
+        assert manifest["include_network_tasks"] is True
+    else:
+        assert "include_network_tasks" not in manifest
+    assert {entry["path"] for entry in manifest["files"]} == expected
+    assert not (destination / "network_info/resnet.relay.pkl").exists()
+    for entry in manifest["files"]:
+        assert sha256_file(destination / entry["path"]) == entry["sha256"]
+
+
+@pytest.mark.parametrize("invalid", [None, 0, 1, "true", [], {}])
+def test_network_task_option_rejects_non_booleans(tmp_path: Path, invalid):
+    with pytest.raises(ValueError, match="must be a boolean"):
+        extract_cpu_archive(
+            tmp_path / "unused.zip",
+            tmp_path / "raw",
+            include_network_tasks=invalid,
+        )
+    assert not (tmp_path / "raw").exists()
+
+
+def test_network_task_destinations_reject_duplicate_archive_prefixes(tmp_path: Path):
+    archive = make_archive(
+        tmp_path,
+        {
+            "one/measure_records/platinum-8272/good.json": b"records",
+            "one/network_info/resnet.task.pkl": b"first",
+            "two/network_info/resnet.task.pkl": b"second",
+        },
+    )
+    with pytest.raises(ValueError, match="duplicate archive destination"):
+        extract_cpu_archive(
+            archive,
+            tmp_path / "raw",
+            platform="platinum-8272",
+            include_network_tasks=True,
+        )
+    assert not (tmp_path / "raw").exists()
+
+
+def test_network_task_option_preserves_unselected_entry_validation(tmp_path: Path):
+    archive = make_archive(
+        tmp_path,
+        {
+            "dataset/measure_records/platinum-8272/good.json": b"records",
+            "dataset/network_info/good.task.pkl": b"task inventory",
+            "unselected/../bad.relay.pkl": b"unsafe",
+        },
+    )
+    with pytest.raises(ValueError, match="unsafe archive path"):
+        extract_cpu_archive(
+            archive,
+            tmp_path / "raw",
+            platform="platinum-8272",
+            include_network_tasks=True,
+        )
+    assert not (tmp_path / "raw").exists()
+
+
 @pytest.mark.parametrize(
     "unsafe",
     [

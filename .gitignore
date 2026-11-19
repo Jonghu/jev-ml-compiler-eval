@@ -13,3 +13,4 @@ data/*
 !data/README.md
 results/*
 !results/README.md
+experiments/tenset/local/

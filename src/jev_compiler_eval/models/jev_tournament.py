@@ -41,7 +41,7 @@ REQUIRED_CONFIG_KEYS = frozenset(
         "max_tokens_per_second",
     }
 )
-OPTIONAL_CONFIG_KEYS = frozenset({"include_context"})
+OPTIONAL_CONFIG_KEYS = frozenset({"include_context", "long_context"})
 # Fixed allowance for JSON framing and per-question fields in token estimates.
 QUESTION_OVERHEAD_TOKENS = 40
 
@@ -133,6 +133,7 @@ class JevTournamentModel(BaseDecisionModel):
                 request_timeout_seconds=cast(
                     float, self.config["request_timeout_seconds"]
                 ),
+                long_context=cast(bool, self.config.get("long_context", False)),
             )
         )
         self._limiter = RateLimiter(
@@ -181,6 +182,8 @@ class JevTournamentModel(BaseDecisionModel):
         positive_number("request_timeout_seconds")
         integer("order_seed", -(2**63))
         max_options = integer("max_options", 2)
+        if max_options > 255:
+            raise ValueError("Jev Choice questions accept at most 255 options")
         advance = integer("advance_per_question", 1)
         # With at most max_options per group and at least two groups, advancing
         # at most half of max_options per group always shrinks the field.
@@ -205,6 +208,8 @@ class JevTournamentModel(BaseDecisionModel):
             )
         if not isinstance(self.config.get("include_context", True), bool):
             raise ValueError("Jev tournament include_context must be a boolean")
+        if not isinstance(self.config.get("long_context", False), bool):
+            raise ValueError("Jev tournament long_context must be a boolean")
 
     def close(self) -> None:
         """Close the shared Jev API client."""
@@ -278,20 +283,23 @@ class JevTournamentModel(BaseDecisionModel):
             requests.append(current)
         return requests
 
-    # Ranking -------------------------------------------------------------
-
-    def rank(
+    def _prepare_inputs(
         self,
         workload: Workload,
         candidates: Sequence[Candidate],
-    ) -> DecisionResult:
+    ) -> tuple[
+        dict[str, object],
+        list[Candidate],
+        list[str],
+        dict[str, str],
+        dict[str, Mapping[str, object]],
+    ]:
         if len(candidates) < 2:
             raise ValueError("Jev tournament requires at least two candidates")
         original_ids = [candidate.candidate_id for candidate in candidates]
         if len(original_ids) != len(set(original_ids)):
             raise ValueError("Jev tournament candidate IDs must be unique")
 
-        started_at = time.perf_counter_ns()
         presented = list(candidates)
         Random(f"{self.config['order_seed']}:{workload.workload_id}").shuffle(presented)
         if self.config["candidate_ids"] == "opaque":
@@ -307,11 +315,87 @@ class JevTournamentModel(BaseDecisionModel):
             alias: candidate.configuration
             for alias, candidate in zip(aliases, presented, strict=True)
         }
-        presented_index = {alias: index for index, alias in enumerate(aliases)}
-
         state: dict[str, object] = {"workload_id": workload.workload_id}
         if self.config.get("include_context", True):
             state["context"] = workload.context
+        return state, presented, aliases, to_original, configurations
+
+    def _assert_progress(self, pool: list[str], questions: list[_Question]) -> None:
+        advance = cast(int, self.config["advance_per_question"])
+        if len(questions) > 1 and sum(
+            min(advance, len(question.aliases)) for question in questions
+        ) >= len(pool):
+            raise ValueError(
+                "tournament token budgets leave no candidates to eliminate; "
+                "increase the token budgets or reduce advance_per_question"
+            )
+
+    @classmethod
+    def plan(
+        cls,
+        workload: Workload,
+        candidates: Sequence[Candidate],
+        config: Mapping[str, object],
+    ) -> dict[str, object]:
+        """Validate and estimate the first round without constructing an API client.
+
+        This shares the execution splitter, packing rules, and presentation order.
+        Character-based estimates are local budgets, not exact tokenizer counts or
+        a guarantee of service acceptance. Later rounds depend on returned choices
+        and recheck the same budgets and progress requirement during execution.
+        """
+        planner = cls.__new__(cls)
+        BaseDecisionModel.__init__(planner, config)
+        state, _, aliases, _, configurations = planner._prepare_inputs(
+            workload, candidates
+        )
+        state_tokens = planner._tokens(_compact_json_length(state))
+        questions = planner._split(aliases, configurations, state_tokens, 0)
+        planner._assert_progress(aliases, questions)
+        packed = planner._pack(questions, state_tokens)
+        request_tokens = [
+            state_tokens + sum(question.estimated_tokens for question in request)
+            for request in packed
+        ]
+        return {
+            "workload_id": workload.workload_id,
+            "candidate_count": len(candidates),
+            "include_context": planner.config.get("include_context", True),
+            "long_context": planner.config.get("long_context", False),
+            "estimated_state_tokens": state_tokens,
+            "first_round_questions": len(questions),
+            "first_round_requests": len(packed),
+            "first_round_question_sizes": [len(q.aliases) for q in questions],
+            "max_estimated_state_question_tokens": max(
+                state_tokens + question.estimated_tokens for question in questions
+            ),
+            "max_estimated_request_tokens": max(request_tokens),
+            "estimated_first_round_input_tokens": sum(request_tokens),
+            "chars_per_token": planner.config["chars_per_token"],
+            "configured_max_options": planner.config["max_options"],
+            "configured_max_request_tokens": planner.config["max_request_tokens"],
+            "configured_max_state_question_tokens": planner.config[
+                "max_state_question_tokens"
+            ],
+            "warnings": [
+                "Character-based token estimates do not guarantee service acceptance.",
+                "Later rounds depend on model choices and are not planned here.",
+            ],
+        }
+
+    # Ranking -------------------------------------------------------------
+
+    def rank(
+        self,
+        workload: Workload,
+        candidates: Sequence[Candidate],
+    ) -> DecisionResult:
+        started_at = time.perf_counter_ns()
+        initial_wait_seconds = self._limiter.waited_seconds
+        state, presented, aliases, to_original, configurations = self._prepare_inputs(
+            workload, candidates
+        )
+        presented_index = {alias: index for index, alias in enumerate(aliases)}
         state_tokens = self._tokens(_compact_json_length(state))
 
         advance = cast(int, self.config["advance_per_question"])
@@ -330,9 +414,12 @@ class JevTournamentModel(BaseDecisionModel):
         api_latency_ms = 0.0
         resolved_models: set[str] = set()
         request_ids: list[str] = []
+        request_reports: list[dict[str, object]] = []
+        question_reports: list[dict[str, object]] = []
         round_index = 0
         while True:
             questions = self._split(pool, configurations, state_tokens, round_index)
+            self._assert_progress(pool, questions)
             packed = self._pack(questions, state_tokens)
             orders: dict[str, list[str]] = {}
             final_confidence = 0.0
@@ -360,11 +447,47 @@ class JevTournamentModel(BaseDecisionModel):
                 resolved_models.add(response.model)
                 if response.request_id:
                     request_ids.append(response.request_id)
+                request_index = len(request_reports)
+                request_reports.append(
+                    {
+                        "round": round_index,
+                        "question_ids": [q.question_id for q in request_questions],
+                        "request_id": response.request_id,
+                        "request_sha256": response.request_sha256,
+                        "cache_path": response.cache_path,
+                        "cache_hit": response.cache_hit,
+                        "resolved_model": response.model,
+                        "estimated_input_tokens": estimate,
+                        "input_tokens": response.input_tokens,
+                        "output_tokens": response.output_tokens,
+                        "api_latency_ms": response.request_latency_ms,
+                    }
+                )
                 for question in request_questions:
                     orders[question.question_id], confidence = self._answer_order(
                         response, question, presented_index, probabilities
                     )
                     final_confidence = confidence
+                    order = orders[question.question_id]
+                    question_reports.append(
+                        {
+                            "round": round_index,
+                            "question_id": question.question_id,
+                            "request_index": request_index,
+                            "candidate_ids": [
+                                to_original[alias] for alias in question.aliases
+                            ],
+                            "ranked_candidate_ids": [
+                                to_original[alias] for alias in order
+                            ],
+                            "selected_candidate_id": to_original[order[0]],
+                            "confidence": confidence,
+                            "probabilities": {
+                                to_original[alias]: probabilities[alias]
+                                for alias in question.aliases
+                            },
+                        }
+                    )
 
             rounds.append(
                 {
@@ -403,6 +526,24 @@ class JevTournamentModel(BaseDecisionModel):
             metadata={
                 "requested_model": self.config["model"],
                 "resolved_models": sorted(resolved_models),
+                "ranking_scope": "finalists_then_elimination_round",
+                "probability_scope": "within_question_only",
+                "ranking_tie_break": (
+                    "choice_first_then_probability_then_presented_order"
+                ),
+                "elimination_order": (
+                    "later_round_then_question_rank_then_presented_order"
+                ),
+                "finalist_candidate_ids": [to_original[alias] for alias in final_order],
+                "eliminated_candidates": [
+                    {
+                        "candidate_id": to_original[alias],
+                        "round": eliminated[alias][0],
+                        "question_rank": eliminated[alias][1] + 1,
+                        "presented_index": eliminated[alias][2],
+                    }
+                    for alias in losers
+                ],
                 "candidate_ids": self.config["candidate_ids"],
                 "presented_candidate_ids": [c.candidate_id for c in presented],
                 "rounds": rounds,
@@ -412,11 +553,18 @@ class JevTournamentModel(BaseDecisionModel):
                 "final_probabilities": {
                     to_original[alias]: probabilities[alias] for alias in final_order
                 },
-                "probabilities": {
+                # Different questions and rounds have different comparison sets.
+                # These values must never masquerade as globally comparable scores.
+                "last_question_probabilities": {
                     to_original[alias]: value for alias, value in probabilities.items()
                 },
+                "question_reports": question_reports,
+                "request_reports": request_reports,
                 "request_ids": request_ids,
-                "rate_limit_wait_seconds": self._limiter.waited_seconds,
+                "rate_limit_wait_seconds": (
+                    self._limiter.waited_seconds - initial_wait_seconds
+                ),
+                **({"long_context": True} if self.config.get("long_context") else {}),
             },
         )
 

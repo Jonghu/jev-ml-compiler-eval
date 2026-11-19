@@ -18,6 +18,7 @@ class FakeJevClient:
     cache_hit = False
 
     def __init__(self, config: JevClientConfig) -> None:
+        self.config = config
         self.calls: list[dict[str, object]] = []
         self.closed = False
         self.__class__.instances.append(self)
@@ -50,6 +51,8 @@ class FakeJevClient:
             request_id=f"request-{len(self.calls)}",
             cache_hit=self.cache_hit,
             request_latency_ms=1.0,
+            request_sha256=f"request-hash-{len(self.calls)}",
+            cache_path=f"fake-cache/request-hash-{len(self.calls)}.json",
         )
 
     def close(self) -> None:
@@ -89,6 +92,12 @@ def candidates(count: int) -> tuple[Candidate, ...]:
 
 def test_tournament_model_is_registered() -> None:
     assert get_model_class("jev-tournament") is JevTournamentModel
+
+
+def test_option_limit_is_checked_before_client_construction(tmp_path: Path) -> None:
+    with pytest.raises(ValueError, match="at most 255"):
+        JevTournamentModel(config(tmp_path, max_options=256))
+    assert FakeJevClient.instances == []
 
 
 def test_small_workload_uses_one_question(tmp_path: Path) -> None:
@@ -202,6 +211,159 @@ def test_cache_hits_do_not_count_as_live(tmp_path: Path) -> None:
     assert result.metadata["requests"] == 2
 
 
+@pytest.mark.parametrize("long_context", [False, True])
+def test_long_context_mode_reaches_client_and_prediction_metadata(
+    tmp_path: Path, long_context: bool
+) -> None:
+    model = JevTournamentModel(config(tmp_path, long_context=long_context))
+
+    result = model.rank(Workload("w", {}), candidates(6))
+
+    assert FakeJevClient.instances[0].config.long_context is long_context
+    assert (result.metadata.get("long_context") is True) is long_context
+
+
+@pytest.mark.parametrize("value", [None, 0, 1, "true", "false", [], {}])
+def test_rejects_non_boolean_long_context_before_constructing_client(
+    tmp_path: Path, value: object
+) -> None:
+    with pytest.raises(ValueError, match="long_context.*boolean"):
+        JevTournamentModel(config(tmp_path, long_context=value))
+
+    assert FakeJevClient.instances == []
+
+
+def test_question_probabilities_remain_local_and_tail_is_labeled(
+    tmp_path: Path,
+) -> None:
+    from jev_compiler_eval.metrics import pairwise_accuracy, runtime_regret
+    from jev_compiler_eval.types import EvaluationCase, RuntimeRecord
+
+    model = JevTournamentModel(config(tmp_path))
+    options = candidates(45)
+    workload = Workload("w", {})
+
+    result = model.rank(workload, options)
+
+    assert "probabilities" not in result.metadata
+    assert "scores" not in result.metadata
+    assert result.metadata["probability_scope"] == "within_question_only"
+    assert result.metadata["ranking_scope"] == "finalists_then_elimination_round"
+    last = cast(Mapping[str, float], result.metadata["last_question_probabilities"])
+    assert set(last) == {candidate.candidate_id for candidate in options}
+    # This actual multi-round example has scores that are not globally ordered.
+    assert any(
+        last[left] < last[right]
+        for left, right in zip(
+            result.ranked_candidate_ids, result.ranked_candidate_ids[1:]
+        )
+    )
+    finalists = cast(list[str], result.metadata["finalist_candidate_ids"])
+    eliminated = cast(list[dict[str, object]], result.metadata["eliminated_candidates"])
+    assert result.ranked_candidate_ids[: len(finalists)] == tuple(finalists)
+    assert set(finalists).isdisjoint(entry["candidate_id"] for entry in eliminated)
+    assert len(finalists) + len(eliminated) == len(options)
+    case = EvaluationCase(
+        workload,
+        options,
+        tuple(
+            RuntimeRecord(
+                "w",
+                candidate.candidate_id,
+                1 / cast(int, candidate.configuration["tile"]),
+            )
+            for candidate in options
+        ),
+    )
+    assert runtime_regret(case, result) == 0.0
+    # This is explicitly a total-rank diagnostic, without cross-question scores.
+    assert 0 <= pairwise_accuracy(case, result) <= 1
+
+
+def test_reports_preserve_each_round_answer_and_cache_reference(tmp_path: Path) -> None:
+    model = JevTournamentModel(config(tmp_path))
+
+    result = model.rank(Workload("w", {}), candidates(45))
+
+    requests = cast(list[dict[str, object]], result.metadata["request_reports"])
+    questions = cast(list[dict[str, object]], result.metadata["question_reports"])
+    assert len(requests) == 2
+    assert len(questions) == 6
+    for index, request in enumerate(requests, 1):
+        assert request["request_sha256"] == f"request-hash-{index}"
+        assert request["cache_path"] == f"fake-cache/request-hash-{index}.json"
+        assert request["cache_hit"] is False
+        assert request["input_tokens"] == 100
+    assert [question["request_index"] for question in questions] == [0] * 5 + [1]
+    early = next(
+        question
+        for question in questions
+        if question["round"] == 0 and "config_44" in question["candidate_ids"]
+    )
+    final = questions[-1]
+    early_probabilities = cast(Mapping[str, float], early["probabilities"])
+    final_probabilities = cast(Mapping[str, float], final["probabilities"])
+    assert early_probabilities["config_44"] != final_probabilities["config_44"]
+    assert early["selected_candidate_id"] == "config_44"
+    assert final["selected_candidate_id"] == "config_44"
+    assert result.metadata["final_probabilities"] == final_probabilities
+
+
+def test_token_budget_that_prevents_elimination_fails_before_request(
+    tmp_path: Path,
+) -> None:
+    model = JevTournamentModel(
+        config(tmp_path, max_request_tokens=180, max_state_question_tokens=180)
+    )
+
+    with pytest.raises(ValueError, match="no candidates to eliminate"):
+        model.rank(Workload("w", {}), candidates(45))
+
+    assert FakeJevClient.instances[0].calls == []
+
+
+def test_offline_plan_constructs_no_client_and_matches_first_round(
+    tmp_path: Path,
+) -> None:
+    values = config(
+        tmp_path,
+        long_context=True,
+        max_request_tokens=600,
+        max_state_question_tokens=600,
+    )
+    workload = Workload("w", {})
+    options = candidates(45)
+
+    plan = JevTournamentModel.plan(workload, options, values)
+
+    assert FakeJevClient.instances == []
+    assert plan["candidate_count"] == 45
+    assert plan["first_round_question_sizes"] == [9] * 5
+    assert plan["first_round_questions"] == 5
+    assert plan["first_round_requests"] == 3
+    assert plan["long_context"] is True
+    assert plan["max_estimated_state_question_tokens"] <= 600
+    assert plan["max_estimated_request_tokens"] <= 600
+    model = JevTournamentModel(values)
+    result = model.rank(workload, options)
+    first = cast(list[dict[str, object]], result.metadata["rounds"])[0]
+    assert first["question_sizes"] == plan["first_round_question_sizes"]
+    assert first["requests"] == plan["first_round_requests"]
+
+
+def test_offline_plan_fails_for_oversized_context_without_client(
+    tmp_path: Path,
+) -> None:
+    with pytest.raises(ValueError, match="state is too large"):
+        JevTournamentModel.plan(
+            Workload("w", {"text": "x" * 1_000}),
+            candidates(4),
+            config(tmp_path, max_request_tokens=100, max_state_question_tokens=100),
+        )
+
+    assert FakeJevClient.instances == []
+
+
 @pytest.mark.parametrize(
     ("overrides", "message"),
     [
@@ -213,6 +375,7 @@ def test_cache_hits_do_not_count_as_live(tmp_path: Path) -> None:
         ({"chars_per_token": 0}, "chars_per_token must be a positive number"),
         ({"order_seed": True}, "order_seed must be an integer"),
         ({"include_context": "yes"}, "include_context must be a boolean"),
+        ({"long_context": "true"}, "long_context must be a boolean"),
         ({"temperature": 0}, "unknown Jev tournament config keys"),
     ],
 )
@@ -285,3 +448,18 @@ def test_rate_limiter_release_frees_a_cache_hit_reservation() -> None:
     limiter.acquire(90)
 
     assert clock.sleeps == []
+
+
+def test_reused_model_reports_only_each_workloads_rate_limit_wait(
+    tmp_path: Path,
+) -> None:
+    clock = FakeClock()
+    model = JevTournamentModel(config(tmp_path))
+    model._limiter = RateLimiter(1, 1_000_000, clock=clock, sleep=clock.sleep)
+
+    first = model.rank(Workload("first", {}), candidates(45))
+    second = model.rank(Workload("second", {}), candidates(45))
+
+    assert first.metadata["rate_limit_wait_seconds"] == pytest.approx(60)
+    assert second.metadata["rate_limit_wait_seconds"] == pytest.approx(120)
+    assert model._limiter.waited_seconds == pytest.approx(180)

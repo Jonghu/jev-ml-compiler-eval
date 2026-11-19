@@ -3,6 +3,22 @@
 A chronological record of every evaluation run and offline analysis for the
 TpuGraphs workstream. Add a new entry for each run; never edit past results.
 
+## Status note — 2026-11-19
+
+This is a chronological record. Earlier setup summaries and findings describe
+what was known at their respective runs. R7 subsequently completed the full
+676-kernel labelled validation scope with all distinct configurations. The
+TpuGraphs implementation and this log are merged into `origin/main` through
+PR #1 (`fbd67c1`); the current revision is integrating the later TenSet work,
+with final integration validation still pending.
+
+The local empirical models are Jev and Random. Paper GNN values are external
+references; no local GraphSAGE training/checkpoint evaluation is implemented.
+The compiler default is an offline project reference, not a registered model.
+Those optional reproductions are not required blockers when the report clearly
+labels the accepted external references. See the current
+[project status](project-status.md) for report completion work.
+
 ## Setup shared by all runs
 
 | Item | Value |
@@ -542,33 +558,41 @@ Observations:
    lose resolution beyond about 50 options, so large questions rank mostly by
    tie order.
 
-## TODO
+## TODO — reconciled 2026-11-19
 
-- [x] Commit the cache schema v2 change (`957d15a`).
-- [ ] Commit this run log.
-- [ ] Decide as a team whether result bundles and `.cache/jev` are committed.
-- [x] Run the 120-kernel Random versus Jev baseline (R4).
-- [ ] Decide whether GNN values are cited from the paper or reproduced.
-- [ ] Design candidate batching so all 676 kernels with all configurations
-      can be evaluated, as in the paper.
-- [ ] Add the compiler default as a decision model.
-- [ ] Decide how probability ties are broken in Jev rankings (ties in 111 of
-      120 kernels in R4).
-- [x] Test position bias by shuffling candidate order (R5).
-- [x] Test whether Jev uses the graph context (R5).
-- [ ] Test whether the `config_0` ID name drives its high rank by renaming
-      candidate IDs.
-- [x] Test prompt and serialization variants that explain what tile fields
-      mean; keep R4 as the unchanged baseline (R6, official definitions).
-- [ ] Split the R6 descriptions: field definitions only versus the tile size
-      selection sentence only.
-- [ ] Repeat R6 with shuffled candidate order to separate the size preference
-      from the `config_0` and first-position preference.
-- [ ] Inspect the `resnet50.4x4.fp16` outliers in R6.
-- [ ] Measure response variance by repeating identical requests.
-- [ ] Confirm the meaning of Jev `confidence` versus the maximum probability.
-- [ ] Verify the Jev context limit and choose candidate sampling to cover
-      more than 120 kernels.
-- [ ] Set up the official GNN baseline and integrate it through
-      `BaseDecisionModel`.
-- [ ] Report results per program, since Inception-v3 is 39% of `valid`.
+Completed implementation and experiment items:
+
+- [x] Commit the cache changes and this chronological run log.
+- [x] Keep generated raw bundles and caches outside Git under the repository's
+  generated-data policy; publish only reviewed report outputs.
+- [x] Complete the 120-kernel Random-versus-Jev baseline (R4).
+- [x] Implement and run candidate grouping, request batching, and a full
+  676-kernel blind tournament (R7).
+- [x] Define deterministic question-local tie handling and record presented order.
+- [x] Run no-context and shuffled-order variants (R5).
+- [x] Run the field-description variant (R6).
+- [x] Evaluate neutral shuffled candidate identifiers in R7, while preserving
+  the distinction between that combined change and an ID-only causal test.
+- [x] Report per-program, candidate-count, elimination, probability-tie, and
+  outlier summaries in R4–R7.
+- [x] Record the two-largest-kernel probe and budgets that completed all R7 cases.
+- [x] Retain paper GNN numbers as explicitly external references.
+
+Remaining report work and optional extensions:
+
+- [ ] Incorporate the RQ2 results, figures, limitations, and source references
+  into the final report and cross-dataset comparison.
+- [ ] Verify the assumed input-token price against a dated provider or billing
+  record before treating estimates as monetary measurements.
+- [ ] Optional: inspect concrete graph/configuration explanations for the
+  largest R6/R7 failures in addition to the completed aggregate diagnostics.
+- [ ] Optional: separate R6 field definitions from its tile-selection sentence,
+  and isolate field, identifier, and order effects on fixed candidate pools.
+- [ ] Optional: extend identical-request repetitions beyond the five-kernel
+  R2/R3 pilot and investigate confidence calibration.
+- [ ] Optional: implement the compiler default as a reusable decision model.
+- [ ] Optional: reproduce a local GraphSAGE baseline and integrate its rankings
+  only if the team elects a paired learned-model comparison.
+
+R1–R7 are preserved above; this reconciliation does not alter their reported
+measurements or claim that optional follow-ups have been run.

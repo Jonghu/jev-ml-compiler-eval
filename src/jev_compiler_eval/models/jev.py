@@ -18,7 +18,9 @@ DECISION_INSTRUCTIONS = (
 REQUIRED_CONFIG_KEYS = frozenset(
     {"model", "cache_dir", "max_retries", "request_timeout_seconds"}
 )
-OPTIONAL_CONFIG_KEYS = frozenset({"include_context", "candidate_order", "order_seed"})
+OPTIONAL_CONFIG_KEYS = frozenset(
+    {"include_context", "candidate_order", "order_seed", "long_context"}
+)
 CANDIDATE_ORDERS = ("original", "shuffled")
 
 
@@ -35,6 +37,7 @@ class JevModel(BaseDecisionModel):
                 request_timeout_seconds=cast(
                     float, self.config["request_timeout_seconds"]
                 ),
+                long_context=cast(bool, self.config.get("long_context", False)),
             )
         )
 
@@ -52,6 +55,8 @@ class JevModel(BaseDecisionModel):
         unknown = keys - REQUIRED_CONFIG_KEYS - OPTIONAL_CONFIG_KEYS
         if unknown:
             raise ValueError(f"unknown Jev model config keys: {sorted(unknown)}")
+        if not isinstance(self.config.get("long_context", False), bool):
+            raise ValueError("Jev long_context must be a boolean")
 
         model = self.config["model"]
         if not isinstance(model, str) or not model.strip():
@@ -153,10 +158,18 @@ class JevModel(BaseDecisionModel):
         )
         latency_ms = (perf_counter_ns() - started_at) / 1_000_000
         metadata: dict[str, object] = {}
+        if not self.config.get("include_context", True):
+            metadata["include_context"] = False
         if self.config.get("candidate_order", "original") != "original":
             metadata["presented_candidate_ids"] = [
                 candidate.candidate_id for candidate in presented
             ]
+            metadata["candidate_order"] = self.config["candidate_order"]
+            metadata["order_seed"] = self.config["order_seed"]
+            metadata["ranking_tie_break"] = "original_candidate_order"
+        if response.request_sha256 is not None:
+            metadata["request_sha256"] = response.request_sha256
+            metadata["cache_path"] = response.cache_path
         return DecisionResult(
             ranked_candidate_ids=ranking,
             decision_latency_ms=latency_ms,
@@ -171,6 +184,7 @@ class JevModel(BaseDecisionModel):
                 "request_id": response.request_id,
                 "cache_hit": response.cache_hit,
                 "api_latency_ms": response.request_latency_ms,
+                **({"long_context": True} if self.config.get("long_context") else {}),
             },
         )
 

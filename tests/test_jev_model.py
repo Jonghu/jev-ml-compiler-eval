@@ -142,6 +142,53 @@ def test_returns_api_metadata_and_reuses_client(tmp_path: Path) -> None:
     }
 
 
+@pytest.mark.parametrize("long_context", [False, True])
+def test_propagates_long_context_mode_and_records_opt_in_only(
+    tmp_path: Path, long_context: bool
+) -> None:
+    config = {**model_config(tmp_path), "long_context": long_context}
+    model = JevModel(config)
+
+    result = model.rank(Workload("workload-1", {}), candidates())
+
+    assert FakeJevClient.instances[0].config.long_context is long_context
+    if long_context:
+        assert result.metadata["long_context"] is True
+    else:
+        assert "long_context" not in result.metadata
+    assert result.ranked_candidate_ids == (
+        "candidate-b",
+        "candidate-c",
+        "candidate-a",
+    )
+    assert result.metadata["probabilities"] == {
+        "candidate-a": 0.1,
+        "candidate-b": 0.6,
+        "candidate-c": 0.3,
+    }
+
+
+def test_default_model_keeps_long_context_disabled(tmp_path: Path) -> None:
+    model = JevModel(model_config(tmp_path))
+
+    result = model.rank(Workload("workload-1", {}), candidates())
+
+    assert FakeJevClient.instances[0].config.long_context is False
+    assert "long_context" not in result.metadata
+
+
+@pytest.mark.parametrize("value", [None, 0, 1, "true", "false", [], {}])
+def test_rejects_non_boolean_long_context_before_constructing_client(
+    tmp_path: Path, value: object
+) -> None:
+    config = {**model_config(tmp_path), "long_context": value}
+
+    with pytest.raises(ValueError, match="long_context.*boolean"):
+        JevModel(config)
+
+    assert FakeJevClient.instances == []
+
+
 def test_runtime_labels_cannot_be_passed_to_jev_rank(tmp_path: Path) -> None:
     model = JevModel(model_config(tmp_path))
 

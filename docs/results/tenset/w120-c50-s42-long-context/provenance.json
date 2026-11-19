@@ -1,0 +1,39 @@
+{
+  "artifact_status": "Reviewed derived results; not a copy of the original five-file experiment bundle",
+  "experiment_name": "tenset-e5-2673-random-vs-jev-w120-c50-s42-long-context",
+  "run_git_commit": "6a4fe91585df2f91e347bfbc7be2fb8bde325df0",
+  "created_at_utc": "2026-11-12T05:20:00.163188+00:00",
+  "created_at_america_chicago": "2026-11-11T23:20:00.163188-06:00",
+  "source_artifacts": {
+    "predictions.jsonl": {
+      "sha256": "f7f1787cb3a3650d46850bc6b720d593c5277a57aaf2df4aad988c0ad2c35c0f",
+      "uploaded_for_audit": true,
+      "raw_contents_committed": false
+    },
+    "manifest.json": {
+      "sha256": "b2bca5ea07e0a87a23f17ec74e9721ee7c789cc84295a1157e373910e322a30e",
+      "uploaded_for_audit": true,
+      "raw_contents_committed": false
+    }
+  },
+  "prepared_file_sha256": "1f949c2c9f788b507c4e395925720c7beaa7063c3efb6ac09ae5ed4855db6275",
+  "reference_config_at_run_commit": "experiments/tenset/jev-vs-random-w120-c50-s42-long-context.yaml",
+  "reference_config_status": "Tracked reference at the recorded code commit; the original saved experiment.yaml was not uploaded for this run",
+  "package_versions": {
+    "jev-ml-compiler-eval": "0.1.0",
+    "typesafe-sdk": "0.7.5",
+    "numpy": "2.4.6",
+    "matplotlib": "3.11.2"
+  },
+  "python_version": "3.11.18",
+  "dataset_settings": {
+    "prepared_file_sha256": "1f949c2c9f788b507c4e395925720c7beaa7063c3efb6ac09ae5ed4855db6275",
+    "split": "test",
+    "seed": 42,
+    "candidate_limit": 50,
+    "max_workloads": 120,
+    "max_input_bytes": 262144,
+    "require_program_metadata": true
+  },
+  "published_derivation_note": "The expected-random-family-sensitivity source field is changed from its temporary local path to the relative published JSON filename; numerical values are unchanged."
+}

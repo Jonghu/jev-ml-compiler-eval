@@ -1,0 +1,398 @@
+{
+  "source_sha256": {
+    "predictions.jsonl": "53e2662aeb7480af284abcd2b302264d3760288060c512803ed67c25ca978179",
+    "manifest.json": "9e36427bc46ca3644feedadec4afbe81eb9194e034ee9e1aac1dea964a401de2"
+  },
+  "method": {
+    "independent_runtime_recomputation": true,
+    "official_label_limitation": "Private official_throughput labels and source pools were not supplied. Runtime ratios cancel normalization algebraically, but exported float32 official labels can differ by rounding; CSV agreement verified to 1e-7, not exact original label reconstruction.",
+    "bootstrap_replicates": 50000,
+    "bootstrap_seed": 20261116,
+    "bootstrap_unit": "Resample 484 workload pairs together; retain the test-record count weight of each sampled workload. Weighted ratio-of-sums recalculated for each resample.",
+    "ci": "percentile 2.5 and 97.5; exploratory, unadjusted; conditional on one fixed file sample and the saved model responses",
+    "cluster_limitation": "No recoverable leading DAG hash family mapping identified in supplied predictions or manifest; no family-cluster bootstrap performed."
+  },
+  "counts": {
+    "prediction_rows": 968,
+    "paired_workloads": 484,
+    "test_records": 187679,
+    "candidate_count_min": 6,
+    "candidate_count_max": 400,
+    "candidate_count_median": 400.0,
+    "runtime_tied_optimum_workloads": 0,
+    "suspected_failure_sentinel_candidates_total": 2013
+  },
+  "runtime_metric_recomputation_max_absolute_error": {
+    "top_1_score": 0,
+    "top_5_score": 0
+  },
+  "models": {
+    "jev": {
+      "model_id": "jev-1.14.0-tutorial-tournament-fields-long-context",
+      "workloads": 484,
+      "test_records": 187679,
+      "runtime_recomputed_weighted_scores": {
+        "top_1_score": 0.2693555649867857,
+        "top_5_score": 0.388244862359658
+      },
+      "runtime_recomputed_macro_scores": {
+        "top_1_score": 0.28299768175179524,
+        "top_5_score": 0.40094012454476735
+      },
+      "uploaded_official_label_weighted_scores": {
+        "top_1_score": 0.26935556454967097,
+        "top_5_score": 0.3882448622497107
+      },
+      "uploaded_official_label_macro_scores": {
+        "top_1_score": 0.2829976812303397,
+        "top_5_score": 0.400940124367707
+      },
+      "official_vs_runtime_roundoff_differences": {
+        "weighted_top_1_score": -4.3711473329821615e-10,
+        "macro_top_1_score": -5.214555454102765e-10,
+        "weighted_top_5_score": -1.0994727350777111e-10,
+        "macro_top_5_score": -1.770603663686643e-10
+      },
+      "optimal_hit_count": 9,
+      "top_5_hit_count": 19,
+      "suspected_failure_sentinel_selected_count": 8,
+      "selected_true_rank_mean": 169.9896694214876,
+      "selected_true_rank_median": 164.0,
+      "median_selected_runtime_ms": 0.46640013169962913,
+      "max_selected_runtime_ms": 10000000000000.0
+    },
+    "random": {
+      "model_id": "random-0",
+      "workloads": 484,
+      "test_records": 187679,
+      "runtime_recomputed_weighted_scores": {
+        "top_1_score": 0.23504543298337027,
+        "top_5_score": 0.3850208695001388
+      },
+      "runtime_recomputed_macro_scores": {
+        "top_1_score": 0.2499479744347092,
+        "top_5_score": 0.39953205227354416
+      },
+      "uploaded_official_label_weighted_scores": {
+        "top_1_score": 0.23504543298685907,
+        "top_5_score": 0.38502086961629045
+      },
+      "uploaded_official_label_macro_scores": {
+        "top_1_score": 0.24994797437506916,
+        "top_5_score": 0.3995320523263606
+      },
+      "official_vs_runtime_roundoff_differences": {
+        "weighted_top_1_score": 3.4887925881577075e-12,
+        "macro_top_1_score": -5.964004290426317e-11,
+        "weighted_top_5_score": 1.1615164385858634e-10,
+        "macro_top_5_score": 5.281641790588765e-11
+      },
+      "optimal_hit_count": 6,
+      "top_5_hit_count": 14,
+      "suspected_failure_sentinel_selected_count": 7,
+      "selected_true_rank_mean": 198.09297520661158,
+      "selected_true_rank_median": 205.0,
+      "median_selected_runtime_ms": 0.5702144117094576,
+      "max_selected_runtime_ms": 10000000000000.0
+    }
+  },
+  "paired_comparisons": {
+    "top_1_score": {
+      "weighted_mean_delta_jev_minus_random": 0.034310132003415414,
+      "paired_workload_bootstrap_weighted_delta_95ci": [
+        0.00901450020717709,
+        0.05973910639973973
+      ],
+      "macro_mean_delta_jev_minus_random": 0.03304970731708602,
+      "paired_workload_bootstrap_macro_delta_95ci": [
+        0.00816046678935053,
+        0.0580420993974627
+      ],
+      "median_per_workload_delta_jev_minus_random": 0.03510483405194732,
+      "wins": 278,
+      "ties": 0,
+      "losses": 206,
+      "paired_sign_test_two_sided_p": 0.001226927842233258
+    },
+    "top_5_score": {
+      "weighted_mean_delta_jev_minus_random": 0.003223992859519226,
+      "paired_workload_bootstrap_weighted_delta_95ci": [
+        -0.018343688338460003,
+        0.024936006248024025
+      ],
+      "macro_mean_delta_jev_minus_random": 0.0014080722712231499,
+      "paired_workload_bootstrap_macro_delta_95ci": [
+        -0.019638910502503687,
+        0.02270229704794854
+      ],
+      "median_per_workload_delta_jev_minus_random": -0.002938018077923349,
+      "wins": 238,
+      "ties": 0,
+      "losses": 246,
+      "paired_sign_test_two_sided_p": 0.7503844943107562
+    }
+  },
+  "selected_runtime_outcomes": {
+    "jev_slower": 206,
+    "jev_faster": 278
+  },
+  "optimal_hit_contingency": {
+    "neither": 469,
+    "random_only": 6,
+    "jev_only": 9
+  },
+  "failure_status_limitation": "source_error_code is absent from supplied predictions; selected runtime >=1e12 ms only flags the expected 1e10-second failure sentinel. It does not independently establish original record failure status. Source manifest reports 2013 test error records.",
+  "reference_alignment": {
+    "candidate_count": 187679,
+    "candidate_selection": "all_tutorial_test_records_preserving_duplicates_and_errors",
+    "counts_note": "Counts describe the frozen tutorial-derived preparation. They do not independently establish identity with the historical tutorial's original records; the empirical model comparison here is Jev versus Random on identical saved pools.",
+    "experiment_protocol": "tenset_500file_tutorial_record_test_reconstruction",
+    "observed_counts": {
+      "eligible_workloads": 484,
+      "excluded_records": 340,
+      "retained_records": 1876701,
+      "sampled_files": 500,
+      "test_duplicate_configurations": 0,
+      "test_error_records": 2013,
+      "test_records": 187679,
+      "training_records": 1689022
+    },
+    "original_test_inventory_verified": false,
+    "platform": "platinum-8272",
+    "preparation_fingerprint": "70160a6f4d2a20cd8766c276ffd1368f276178ace5d56deb567acfb8b0a86efe",
+    "published_counts_match": true,
+    "published_tutorial_counts": {
+      "eligible_workloads": 484,
+      "sampled_files": 500,
+      "test_records": 187679,
+      "training_records": 1689022
+    },
+    "seed": 0,
+    "target": "llvm -keys=cpu -link-params=0 -mcpu=skylake-avx512 -model=platinum-8272"
+  },
+  "top_5_largest_top1_gains": [
+    {
+      "workload_id": "tenset-tutorial-2704c85c39570f5e8ff86cb2",
+      "test_records": 400,
+      "jev_top_1_score": 1.0,
+      "jev_top_5_score": 1.0,
+      "jev_selected_runtime_ms": 0.044838499889010563,
+      "jev_optimal_runtime_ms": 0.044838499889010563,
+      "jev_optimal_hit": 1,
+      "jev_top_5_hit": 1,
+      "jev_selected_true_rank": 1,
+      "jev_suspected_failure_sentinel_selected": 0,
+      "random_top_1_score": 0.053677315788457795,
+      "random_top_5_score": 0.2027097797996406,
+      "random_selected_runtime_ms": 0.8353342418558896,
+      "random_optimal_runtime_ms": 0.044838499889010563,
+      "random_optimal_hit": 0,
+      "random_top_5_hit": 0,
+      "random_selected_true_rank": 307,
+      "random_suspected_failure_sentinel_selected": 0,
+      "top_1_score_jev_minus_random": 0.9463226842115422,
+      "top_5_score_jev_minus_random": 0.7972902202003593
+    },
+    {
+      "workload_id": "tenset-tutorial-b5d858fb89e8d536e2e96b0a",
+      "test_records": 400,
+      "jev_top_1_score": 1.0,
+      "jev_top_5_score": 1.0,
+      "jev_selected_runtime_ms": 0.05869726010132581,
+      "jev_optimal_runtime_ms": 0.05869726010132581,
+      "jev_optimal_hit": 1,
+      "jev_top_5_hit": 1,
+      "jev_selected_true_rank": 1,
+      "jev_suspected_failure_sentinel_selected": 0,
+      "random_top_1_score": 0.06284655509180113,
+      "random_top_5_score": 0.2849656158458042,
+      "random_selected_runtime_ms": 0.9339773678220809,
+      "random_optimal_runtime_ms": 0.05869726010132581,
+      "random_optimal_hit": 0,
+      "random_top_5_hit": 0,
+      "random_selected_true_rank": 265,
+      "random_suspected_failure_sentinel_selected": 0,
+      "top_1_score_jev_minus_random": 0.9371534449081989,
+      "top_5_score_jev_minus_random": 0.7150343841541957
+    },
+    {
+      "workload_id": "tenset-tutorial-3a803ec63274391ef27c5360",
+      "test_records": 400,
+      "jev_top_1_score": 0.9375236877150858,
+      "jev_top_5_score": 0.9445031640570068,
+      "jev_selected_runtime_ms": 0.6522577605210245,
+      "jev_optimal_runtime_ms": 0.6115071009844542,
+      "jev_optimal_hit": 0,
+      "jev_top_5_hit": 0,
+      "jev_selected_true_rank": 41,
+      "jev_suspected_failure_sentinel_selected": 0,
+      "random_top_1_score": 0.027390032025359987,
+      "random_top_5_score": 0.5425699228492625,
+      "random_selected_runtime_ms": 22.325899451971054,
+      "random_optimal_runtime_ms": 0.6115071009844542,
+      "random_optimal_hit": 0,
+      "random_top_5_hit": 0,
+      "random_selected_true_rank": 387,
+      "random_suspected_failure_sentinel_selected": 0,
+      "top_1_score_jev_minus_random": 0.9101336556897258,
+      "top_5_score_jev_minus_random": 0.4019332412077443
+    },
+    {
+      "workload_id": "tenset-tutorial-deeec0c8aa5d3ed0882f3746",
+      "test_records": 400,
+      "jev_top_1_score": 1.0,
+      "jev_top_5_score": 1.0,
+      "jev_selected_runtime_ms": 0.26522850384935737,
+      "jev_optimal_runtime_ms": 0.26522850384935737,
+      "jev_optimal_hit": 1,
+      "jev_top_5_hit": 1,
+      "jev_selected_true_rank": 1,
+      "jev_suspected_failure_sentinel_selected": 0,
+      "random_top_1_score": 0.09483412133679953,
+      "random_top_5_score": 0.18331469433215408,
+      "random_selected_runtime_ms": 2.796762390062213,
+      "random_optimal_runtime_ms": 0.26522850384935737,
+      "random_optimal_hit": 0,
+      "random_top_5_hit": 0,
+      "random_selected_true_rank": 216,
+      "random_suspected_failure_sentinel_selected": 0,
+      "top_1_score_jev_minus_random": 0.9051658786632004,
+      "top_5_score_jev_minus_random": 0.8166853056678459
+    },
+    {
+      "workload_id": "tenset-tutorial-ec6fea95c13ac121fe09df7c",
+      "test_records": 400,
+      "jev_top_1_score": 0.9130630197562443,
+      "jev_top_5_score": 0.9130630197562443,
+      "jev_selected_runtime_ms": 0.025144667233689688,
+      "jev_optimal_runtime_ms": 0.022958665795158595,
+      "jev_optimal_hit": 0,
+      "jev_top_5_hit": 0,
+      "jev_selected_true_rank": 4,
+      "jev_suspected_failure_sentinel_selected": 0,
+      "random_top_1_score": 0.011444027460312763,
+      "random_top_5_score": 0.2660207845663659,
+      "random_selected_runtime_ms": 2.00617010705173,
+      "random_optimal_runtime_ms": 0.022958665795158595,
+      "random_optimal_hit": 0,
+      "random_top_5_hit": 0,
+      "random_selected_true_rank": 387,
+      "random_suspected_failure_sentinel_selected": 0,
+      "top_1_score_jev_minus_random": 0.9016189922959315,
+      "top_5_score_jev_minus_random": 0.6470422351898784
+    }
+  ],
+  "top_5_largest_top1_losses": [
+    {
+      "workload_id": "tenset-tutorial-28d2918f35d54b937518f52f",
+      "test_records": 400,
+      "jev_top_1_score": 0.09950641381284926,
+      "jev_top_5_score": 0.3243973226500664,
+      "jev_selected_runtime_ms": 8.255600929260254,
+      "jev_optimal_runtime_ms": 0.8214852423407137,
+      "jev_optimal_hit": 0,
+      "jev_top_5_hit": 0,
+      "jev_selected_true_rank": 319,
+      "jev_suspected_failure_sentinel_selected": 0,
+      "random_top_1_score": 0.9152289578698584,
+      "random_top_5_score": 0.9152289578698584,
+      "random_selected_runtime_ms": 0.8975734817795455,
+      "random_optimal_runtime_ms": 0.8214852423407137,
+      "random_optimal_hit": 0,
+      "random_top_5_hit": 0,
+      "random_selected_true_rank": 4,
+      "random_suspected_failure_sentinel_selected": 0,
+      "top_1_score_jev_minus_random": -0.8157225440570091,
+      "top_5_score_jev_minus_random": -0.590831635219792
+    },
+    {
+      "workload_id": "tenset-tutorial-b4a35d103075773a65b8d624",
+      "test_records": 400,
+      "jev_top_1_score": 0.204208828323945,
+      "jev_top_5_score": 0.204208828323945,
+      "jev_selected_runtime_ms": 0.2880672400351614,
+      "jev_optimal_runtime_ms": 0.05882587356609292,
+      "jev_optimal_hit": 0,
+      "jev_top_5_hit": 0,
+      "jev_selected_true_rank": 113,
+      "jev_suspected_failure_sentinel_selected": 0,
+      "random_top_1_score": 1.0,
+      "random_top_5_score": 1.0,
+      "random_selected_runtime_ms": 0.05882587356609292,
+      "random_optimal_runtime_ms": 0.05882587356609292,
+      "random_optimal_hit": 1,
+      "random_top_5_hit": 1,
+      "random_selected_true_rank": 1,
+      "random_suspected_failure_sentinel_selected": 0,
+      "top_1_score_jev_minus_random": -0.7957911716760551,
+      "top_5_score_jev_minus_random": -0.7957911716760551
+    },
+    {
+      "workload_id": "tenset-tutorial-6f50889df8427489ecd464b0",
+      "test_records": 400,
+      "jev_top_1_score": 0.15786023473760724,
+      "jev_top_5_score": 0.5329045255396867,
+      "jev_selected_runtime_ms": 0.8989671478047967,
+      "jev_optimal_runtime_ms": 0.14191116497386247,
+      "jev_optimal_hit": 0,
+      "jev_top_5_hit": 0,
+      "jev_selected_true_rank": 248,
+      "jev_suspected_failure_sentinel_selected": 0,
+      "random_top_1_score": 0.9473976116053539,
+      "random_top_5_score": 0.9473976116053539,
+      "random_selected_runtime_ms": 0.1497905032010749,
+      "random_optimal_runtime_ms": 0.14191116497386247,
+      "random_optimal_hit": 0,
+      "random_top_5_hit": 0,
+      "random_selected_true_rank": 8,
+      "random_suspected_failure_sentinel_selected": 0,
+      "top_1_score_jev_minus_random": -0.7895373768677466,
+      "top_5_score_jev_minus_random": -0.41449308606566715
+    },
+    {
+      "workload_id": "tenset-tutorial-82d187207b33fd58b976c46c",
+      "test_records": 400,
+      "jev_top_1_score": 0.06615854433750852,
+      "jev_top_5_score": 0.41854442115635637,
+      "jev_selected_runtime_ms": 4.541781265288591,
+      "jev_optimal_runtime_ms": 0.30047763721086085,
+      "jev_optimal_hit": 0,
+      "jev_top_5_hit": 0,
+      "jev_selected_true_rank": 298,
+      "jev_suspected_failure_sentinel_selected": 0,
+      "random_top_1_score": 0.8333785095372106,
+      "random_top_5_score": 0.8333785095372106,
+      "random_selected_runtime_ms": 0.3605536185204983,
+      "random_optimal_runtime_ms": 0.30047763721086085,
+      "random_optimal_hit": 0,
+      "random_top_5_hit": 0,
+      "random_selected_true_rank": 8,
+      "random_suspected_failure_sentinel_selected": 0,
+      "top_1_score_jev_minus_random": -0.767219965199702,
+      "top_5_score_jev_minus_random": -0.4148340883808542
+    },
+    {
+      "workload_id": "tenset-tutorial-f69899d8ff49f0da9a3b19f9",
+      "test_records": 400,
+      "jev_top_1_score": 0.14002670510785317,
+      "jev_top_5_score": 0.1683458913754461,
+      "jev_selected_runtime_ms": 0.15802700363565236,
+      "jev_optimal_runtime_ms": 0.022128000637167133,
+      "jev_optimal_hit": 0,
+      "jev_top_5_hit": 0,
+      "jev_selected_true_rank": 146,
+      "jev_suspected_failure_sentinel_selected": 0,
+      "random_top_1_score": 0.9044101099767425,
+      "random_top_5_score": 0.9044101099767425,
+      "random_selected_runtime_ms": 0.02446677717671264,
+      "random_optimal_runtime_ms": 0.022128000637167133,
+      "random_optimal_hit": 0,
+      "random_top_5_hit": 0,
+      "random_selected_true_rank": 3,
+      "random_suspected_failure_sentinel_selected": 0,
+      "top_1_score_jev_minus_random": -0.7643834048688893,
+      "top_5_score_jev_minus_random": -0.7360642186012964
+    }
+  ],
+  "study_scope": "Jev versus Random only"
+}

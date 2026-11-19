@@ -1,0 +1,4 @@
+accounting_scope,requests_or_responses,input_tokens,output_tokens,estimated_input_cost_usd,cost_status
+new_live_requests_in_full_run,1840,179522529,1974500,7.539946218000001,new successful input usage
+previous_cached_pilot_responses,16,1880950,13018,0.07899990000000001,"previous usage, not new charges"
+all_distinct_stored_responses_including_pilot,1856,181403479,1987518,7.618946118000001,total equivalent including previous pilot; do not add to new-usage estimate

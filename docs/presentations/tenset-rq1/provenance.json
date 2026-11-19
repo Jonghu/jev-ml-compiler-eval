@@ -1,0 +1,57 @@
+{
+  "publication": "Primary four-slide TenSet ResNet-50 contribution",
+  "slide_order": [
+    "setup",
+    "workflow",
+    "results",
+    "diagnosis"
+  ],
+  "source_files": {
+    "TenSet-ResNet50-with-workflow.pptx": {
+      "sha256": "6765d79f1eb1a957382a85d06d09081dc7b94a36385d75f2f9c109e636fb8a03",
+      "bytes": 58014
+    },
+    "TenSet-ResNet50-with-workflow.pdf": {
+      "sha256": "db89e3c6bc9ccf512fa19f7c933915c03798bdea10f30c45804e0f9877667eeb",
+      "bytes": 218106
+    },
+    "speaker_notes.md": {
+      "sha256": "e8d99fdc63f9dd9703813b39fa69c0047857ae2ac389e05a418ed56763760b36",
+      "bytes": 13013
+    }
+  },
+  "published_files": {
+    "tenset_rq1_slides.pptx": {
+      "sha256": "6765d79f1eb1a957382a85d06d09081dc7b94a36385d75f2f9c109e636fb8a03",
+      "bytes": 58014
+    },
+    "tenset_rq1_slides.pdf": {
+      "sha256": "db89e3c6bc9ccf512fa19f7c933915c03798bdea10f30c45804e0f9877667eeb",
+      "bytes": 218106
+    },
+    "speaker_notes.md": {
+      "sha256": "75dfccbeb9ed0e2714b4af04e4696be6de73ef25dcb2b01b4b8b9077e01611a3",
+      "bytes": 13692
+    },
+    "README.md": {
+      "sha256": "f16fd9828e3733b4dfd953d92b1f95ea9363e3f302830f6f01bf53baa881a764",
+      "bytes": 2782
+    }
+  },
+  "copy_policy": "PowerPoint and PDF preserve supplied artifact bytes exactly. Markdown speaker notes add repository navigation and publication context without changing numerical claims.",
+  "presentation_format": {
+    "slides": 4,
+    "pdf_pages": 4,
+    "charts": "Native editable rectangles, text boxes and line shapes; no chart screenshots or data-linked chart objects",
+    "logo_images_per_slide": 1,
+    "visible_office_chart_objects": 0
+  },
+  "google_slides": {
+    "account_file_created": false,
+    "reason": "Account authorization blocked",
+    "cross_application_import_test_performed": false
+  },
+  "scope": "Jev versus Random on the same reconstructed network pools; MLP + Ranking loss is an external published aggregate, not a locally evaluated paired model",
+  "new_model_api_requests_for_publication": 0,
+  "privacy_review": "Published PPTX XML and relationships, PDF metadata/text, Markdown and provenance checked for private local paths, request IDs and credential patterns; no matches."
+}

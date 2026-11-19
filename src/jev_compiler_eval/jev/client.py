@@ -3,7 +3,7 @@
 import hashlib
 import json
 from collections.abc import Mapping
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from math import isfinite
 from pathlib import Path
 from time import perf_counter_ns
@@ -51,8 +51,11 @@ class JevClientConfig:
     max_retries: int = 3
     request_timeout_seconds: float = 30.0
     base_url: str = "https://api.typesafe.ai"
+    long_context: bool = False
 
     def __post_init__(self) -> None:
+        if not isinstance(self.long_context, bool):
+            raise ValueError("Jev long_context must be a boolean")
         if not self.model.strip():
             raise ValueError("Jev model must not be empty")
         if isinstance(self.max_retries, bool) or not isinstance(self.max_retries, int):
@@ -81,6 +84,8 @@ class JevApiResult:
     request_id: str | None
     cache_hit: bool
     request_latency_ms: float
+    request_sha256: str | None = None
+    cache_path: str | None = None
 
 
 class JevApiClient:
@@ -144,10 +149,16 @@ class JevApiClient:
         if cache_path.exists():
             return self._read_cache(cache_path, cache_key, started_at)
 
+        extra = (
+            {"extra_headers": {"TypeSafe-Danger-Zone-Long-Context": "true"}}
+            if self.config.long_context
+            else {}
+        )
         try:
             response = self._sdk_client.system_one(
                 state=state,  # type: ignore[arg-type]
                 questions=questions,  # type: ignore[arg-type]
+                **extra,
             )
         except TypeSafeAPITimeoutError as error:
             raise JevClientError("Jev API request timed out") from error
@@ -164,7 +175,11 @@ class JevApiClient:
 
         if not isinstance(response, SystemOneResponse):
             raise JevClientError("Jev API returned an unexpected response type")
-        result = self._result_from_response(response, started_at)
+        result = replace(
+            self._result_from_response(response, started_at),
+            request_sha256=cache_key,
+            cache_path=str(cache_path),
+        )
         self._write_cache(cache_path, cache_key, cache_request, result)
         return result
 
@@ -174,12 +189,15 @@ class JevApiClient:
         state: object,
         questions: Mapping[str, Mapping[str, object]],
     ) -> dict[str, object]:
-        return {
+        request = {
             "base_url": self.config.base_url,
             "model": self.config.model,
             "state": state,
             "questions": questions,
         }
+        if self.config.long_context:
+            request["long_context"] = True
+        return request
 
     @staticmethod
     def _cache_key(request: Mapping[str, object]) -> str:
@@ -273,6 +291,8 @@ class JevApiClient:
             request_id=request_id,
             cache_hit=True,
             request_latency_ms=(perf_counter_ns() - started_at) / 1_000_000,
+            request_sha256=expected_key,
+            cache_path=str(path),
         )
 
     def _write_cache(

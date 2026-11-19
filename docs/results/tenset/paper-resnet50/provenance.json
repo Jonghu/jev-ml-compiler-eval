@@ -1,0 +1,96 @@
+{
+  "publication": "Reviewed derived ResNet-50 network endpoint results",
+  "publication_date_utc": "2026-11-19",
+  "execution_commit": "f6a2a49f6b2d0dc8b3ae2e9f87ca6b3250d929ea",
+  "comparison_scope": "Jev versus Random on identical reconstructed local network pools",
+  "coverage": {
+    "distinct_tasks": 27,
+    "task_occurrences": 56,
+    "candidate_records": 100126
+  },
+  "external_reference": {
+    "model": "MLP + Ranking loss",
+    "top_1": 0.8823,
+    "top_5": 0.9456,
+    "paper_location": "Section5.2, Table4, ResNet50 column, printed page7",
+    "source_url": "https://datasets-benchmarks-proceedings.neurips.cc/paper_files/paper/2021/file/a684eceee76fc522773286a895bc8436-Paper-round1.pdf#page=7",
+    "comparison_type": "external published reference only, not a paired baseline",
+    "original_test_inventory_verified": false,
+    "original_checkpoint_verified": false
+  },
+  "original_uploaded_source_sha256": {
+    "paper-task-decompositions.csv": "58eebade5f71719ed00cd0f91865ba5f7f11a805f84e32ea267bee231ab789d0",
+    "predictions.jsonl": "a87404603313bf84f3057ce91cd9363fb8e61ba7af90ac28c58e168d09201fcc",
+    "paper-network-summary.json": "cc16e48fa1097fce92e3c3b22500f148088fd6e4d91f8e0e2c03bb41d76954f0",
+    "manifest.json": "f3d6f73a3af166042707837b4ab7ff34526ee87fe26ba22d359ffbb2eb1dae5c"
+  },
+  "reviewed_audit_input_sha256": {
+    "comparison.csv": "e9a04ef112c947ea1fe8d57d4109300a806d85f45fba67c795126ea0f612ddd0",
+    "audit-summary.json": "0f65e773fd55c4e29c636353ec4be70057c8e9be218dd925277d5b2f718e05ea",
+    "numerical/endpoint-scores.csv": "ee8c663027c4e1cab21a148608c2f5932ea381e6d58fa41dc3375806898efd57",
+    "numerical/paired-task-contributions.csv": "b5c28f36ae7e22c2d6d38cd32d637047ec10677346de147556df7a925d74fab2",
+    "numerical/numerical-audit.json": "24ae3f6efcf36345b11f6f978faf59380945060f1b5bdad94c7b75b907286822",
+    "numerical/leave-out-sensitivity.csv": "3e8fc83b6f776bc6ba2885f530ebdc4384e68a081dd656382ee9412e1fc4e44e",
+    "tournament/tournament-audit.json": "01b4f2e6fde4d4bc5e8190c6b3d1fae698decf55cac29b530e8f62cb69ed6120",
+    "tournament/finalist-selection-diagnostics.json": "9567538df1fe52185cbe1f1caab0faba0c4dd589d948f94bc22d0e862f3eeaf4",
+    "tournament/tasks.csv": "2798b2920b704a4d84c877dfb8259ba63f85ac2c84b6ab2f57ea0ee4f6b1bb9c",
+    "tournament/questions.csv": "066790d97a1e3c2c67883034f8977d3bfec9088335fc421ca955eb18e3595eb8",
+    "tournament/request-accounting.csv": "157a295ce2264134d8d6a90cc4ce5b5f3a79c1a9e18f56c4bb7960a36c485455",
+    "random-reference/random-reference.json": "eff46649913d04b6ddac7ec4c58ffb5bec8e282f9f7f454de088f2625a44413e",
+    "protocol/protocol-audit.json": "b9e4d6315c7eb896fae7f9a54644c063c5ff6429ff89bfd950b56c7719be1d37",
+    "figures/endpoint-comparison.png": "e2b8553c410fc44996b9ab7b3ec14390f56dfeba4a4da39cfff7ef0ea96d2df0",
+    "figures/endpoint-comparison.svg": "69a42f5a46d39df8a5574d832b692568b283624c858b44c511280f2faaabab9c",
+    "figures/random-choice-distributions.png": "ef3cdfa5dde7c21b1dca572d2d7b27a0f6bd8af2dfe5fd8c386e53778cd2fbb4",
+    "figures/random-choice-distributions.svg": "bbb1569d92253bb4b5a77d447bec87980fa53ef5a95372d4196ea6860e78bf70",
+    "figures/task-contributions.png": "f546b5d14db552b11cf7230e57fd5c4482a5ecfa4d8d6089270529f327ae847f",
+    "figures/task-contributions.svg": "012e16fa30c4c20bf24a32e51997505bd6072290a129f3246eb99edac97fe1cc"
+  },
+  "published_files_sha256": {
+    "audit-summary.json": "0f65e773fd55c4e29c636353ec4be70057c8e9be218dd925277d5b2f718e05ea",
+    "comparison.csv": "9ca12e7bdb04c632729277c929706f8e8aa1ba8ca05043daee2ca53518e7aeef",
+    "figures/endpoint-comparison.png": "e2b8553c410fc44996b9ab7b3ec14390f56dfeba4a4da39cfff7ef0ea96d2df0",
+    "figures/endpoint-comparison.svg": "79c87a66f54000ce0c8e613c7a918b72e10037d72868073f719d8d383b3a672a",
+    "figures/random-choice-distributions.png": "ef3cdfa5dde7c21b1dca572d2d7b27a0f6bd8af2dfe5fd8c386e53778cd2fbb4",
+    "figures/random-choice-distributions.svg": "1ebe118acbd1776da2bf7a17634af605aa981d19b73a82e5edd5d263c7825e02",
+    "figures/task-contributions.png": "f546b5d14db552b11cf7230e57fd5c4482a5ecfa4d8d6089270529f327ae847f",
+    "figures/task-contributions.svg": "56b9ef40569c2c1d79995cfb2ce58bed1b1f811b7d85fee08e0cb1b31d51df06",
+    "network-regret.csv": "3a55bb5dc283aa8ad9e0e70939aca910af759d36597a176b27cd3a3302ececb2",
+    "numerical/endpoint-scores.csv": "ee8c663027c4e1cab21a148608c2f5932ea381e6d58fa41dc3375806898efd57",
+    "numerical/leave-out-sensitivity.csv": "3e8fc83b6f776bc6ba2885f530ebdc4384e68a081dd656382ee9412e1fc4e44e",
+    "numerical/numerical-audit.json": "24ae3f6efcf36345b11f6f978faf59380945060f1b5bdad94c7b75b907286822",
+    "numerical/paired-task-contributions.csv": "b5c28f36ae7e22c2d6d38cd32d637047ec10677346de147556df7a925d74fab2",
+    "protocol/protocol-audit.json": "b9e4d6315c7eb896fae7f9a54644c063c5ff6429ff89bfd950b56c7719be1d37",
+    "random-reference/random-reference.json": "eff46649913d04b6ddac7ec4c58ffb5bec8e282f9f7f454de088f2625a44413e",
+    "tournament/finalist-selection-diagnostics.json": "9567538df1fe52185cbe1f1caab0faba0c4dd589d948f94bc22d0e862f3eeaf4",
+    "tournament/questions.csv": "36f66848dc6e427e927b158699376f2eae7ca75c76ada820dec03e5c82b39045",
+    "tournament/request-accounting.csv": "e023e10ef2a80ce27f76b6ef0944d6ce30fe113d957041607b301dac325a4c51",
+    "tournament/tasks.csv": "9adce796a40be9e3514319825d9688811706f6fb715e133d09a3c6f180248a0b",
+    "tournament/tournament-audit.json": "01b4f2e6fde4d4bc5e8190c6b3d1fae698decf55cac29b530e8f62cb69ed6120"
+  },
+  "derivation_notes": [
+    "CSV line endings are normalized to LF; all copied field values are preserved.",
+    "JSON fields and numerical values are preserved; trailing whitespace is normalized.",
+    "PNG files are copied unchanged; SVG trailing whitespace is normalized.",
+    "No request IDs, credentials or private local paths occur in the selected reviewed audit outputs; request-accounting.csv already contains only workload/round indices and numeric accounting.",
+    "Opaque workload/candidate IDs and leading DAG hashes are retained where needed to join audit tables and preserve recorded task diagnostics.",
+    "network-regret.csv is newly derived for local Jev/Random scores as 1/endpoint_score - 1 with the same weights, oracle and latency proxy; it is not a new model run or physical end-to-end timing.",
+    "Original uploaded source hashes identify the excluded raw result files; they do not independently verify unavailable original dataset records or API payloads."
+  ],
+  "excluded_from_publication": [
+    "Original predictions.jsonl (approximately 55 MB)",
+    "Original manifest.json, paper-network-summary.json and paper-task-decompositions.csv raw bundle files; their SHA256 values are retained above",
+    "CPU dataset archive, original task pickle, prepared shards and collection index/state",
+    "Cache files, request bodies, .env files, API keys, request IDs and private local source paths",
+    "resnet50-audit-bundle.zip and original uploaded archive",
+    "Random Monte Carlo draw NPZ; the compact reference summary is published instead",
+    "Audit report PDF and builder scripts; the reviewed compact tables/figures are published here"
+  ],
+  "verification_limits": [
+    "One reconstructed network and one saved Jev response set",
+    "Random Monte Carlo ranges are reference distributions, not confidence intervals or p-values",
+    "Paper MLP is external and unpaired",
+    "Raw source and transmitted API contents were not uploaded",
+    "Weighted latency terms are offline proxies, not measured end-to-end inference"
+  ],
+  "new_api_requests_by_publication": 0
+}

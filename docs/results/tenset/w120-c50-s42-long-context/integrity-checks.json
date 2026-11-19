@@ -1,0 +1,53 @@
+{
+  "failures": [],
+  "prediction_rows": 240,
+  "unique_workloads": 120,
+  "random_exact_seed42_reproductions": 120,
+  "jev_probability_rankings_verified": 120,
+  "selected_source_groups": 120,
+  "skipped_source_groups": [
+    {
+      "workload_key": "[\"65b62664005b79209deaf87fd70be8dc\", 1, 16, 16, 672, 1, 1, 1, 672]",
+      "distinct_candidates": 19,
+      "selected": false
+    },
+    {
+      "workload_key": "[\"69115f188984ae34ede37c3b8ca40b43\", 1, 7, 7, 2048, 1, 1, 1, 2048]",
+      "distinct_candidates": 20,
+      "selected": false
+    }
+  ],
+  "model_input_bytes_range": [
+    26287,
+    221763
+  ],
+  "actual_input_tokens_range": [
+    15936,
+    138439
+  ],
+  "long_context_count": 120,
+  "cache_hits": 10,
+  "cache_hit_positions": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10
+  ],
+  "unique_request_ids": 120,
+  "probability_sum_range": [
+    1.0000000000000002,
+    1.0000000000000007
+  ],
+  "probability_top_tie_count": 30,
+  "probability_distinct_values_per_case_range": [
+    3,
+    9
+  ],
+  "prepared_sha256": "1f949c2c9f788b507c4e395925720c7beaa7063c3efb6ac09ae5ed4855db6275"
+}

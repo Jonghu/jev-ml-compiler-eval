@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="763.2pt" height="345.6pt" viewBox="0 0 763.2 345.6" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:date>2026-11-16T22:52:56.088992</dc:date>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.11.2, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 345.6
+L 763.2 345.6
+L 763.2 0
+L 0 0
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 267.12 262.656
+L 717.408 262.656
+L 717.408 96.768
+L 267.12 96.768
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g id="matplotlib.axis_1">
+    <g id="xtick_1">
+     <g id="line2d_1">
+      <path d="M 267.12 262.656
+L 267.12 96.768
+" clip-path="url(#pe9b9a4dc2e)" style="fill: none; stroke: #e1e7ec; stroke-width: 0.7; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_2"/>
+     <g id="text_1">
+      <text style="font-size: 10.5px; font-family: 'DejaVu Sans'; text-anchor: middle" x="267.12" y="274.133539" transform="rotate(-0 267.12 274.133539)">0</text>
+     </g>
+    </g>
+    <g id="xtick_2">
+     <g id="line2d_3">
+      <path d="M 353.026593 262.656
+L 353.026593 96.768
+" clip-path="url(#pe9b9a4dc2e)" style="fill: none; stroke: #e1e7ec; stroke-width: 0.7; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_4"/>
+     <g id="text_2">
+      <text style="font-size: 10.5px; font-family: 'DejaVu Sans'; text-anchor: middle" x="353.026593" y="274.133539" transform="rotate(-0 353.026593 274.133539)">100</text>
+     </g>
+    </g>
+    <g id="xtick_3">
+     <g id="line2d_5">
+      <path d="M 438.933187 262.656
+L 438.933187 96.768
+" clip-path="url(#pe9b9a4dc2e)" style="fill: none; stroke: #e1e7ec; stroke-width: 0.7; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_6"/>
+     <g id="text_3">
+      <text style="font-size: 10.5px; font-family: 'DejaVu Sans'; text-anchor: middle" x="438.933187" y="274.133539" transform="rotate(-0 438.933187 274.133539)">200</text>
+     </g>
+    </g>
+    <g id="xtick_4">
+     <g id="line2d_7">
+      <path d="M 524.83978 262.656
+L 524.83978 96.768
+" clip-path="url(#pe9b9a4dc2e)" style="fill: none; stroke: #e1e7ec; stroke-width: 0.7; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_8"/>
+     <g id="text_4">
+      <text style="font-size: 10.5px; font-family: 'DejaVu Sans'; text-anchor: middle" x="524.83978" y="274.133539" transform="rotate(-0 524.83978 274.133539)">300</text>
+     </g>
+    </g>
+    <g id="xtick_5">
+     <g id="line2d_9">
+      <path d="M 610.746374 262.656
+L 610.746374 96.768
+" clip-path="url(#pe9b9a4dc2e)" style="fill: none; stroke: #e1e7ec; stroke-width: 0.7; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_10"/>
+     <g id="text_5">
+      <text style="font-size: 10.5px; font-family: 'DejaVu Sans'; text-anchor: middle" x="610.746374" y="274.133539" transform="rotate(-0 610.746374 274.133539)">400</text>
+     </g>
+    </g>
+    <g id="text_6">
+     <text style="font-size: 10.5px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #142b43" x="492.264" y="288.634359" transform="rotate(-0 492.264 288.634359)">Workloads</text>
+    </g>
+   </g>
+   <g id="matplotlib.axis_2">
+    <g id="ytick_1">
+     <g id="line2d_11"/>
+     <g id="text_7">
+      <text style="font-size: 10.5px; font-family: 'DejaVu Sans'; text-anchor: end" x="263.62" y="124.792089" transform="rotate(-0 263.62 124.792089)">Eliminated in round 0</text>
+     </g>
+    </g>
+    <g id="ytick_2">
+     <g id="line2d_12"/>
+     <g id="text_8">
+      <text style="font-size: 10.5px; font-family: 'DejaVu Sans'; text-anchor: end" x="263.62" y="183.70118" transform="rotate(-0 263.62 183.70118)">Advanced, but not selected</text>
+     </g>
+    </g>
+    <g id="ytick_3">
+     <g id="line2d_13"/>
+     <g id="text_9">
+      <text style="font-size: 10.5px; font-family: 'DejaVu Sans'; text-anchor: end" x="263.62" y="242.610271" transform="rotate(-0 263.62 242.610271)">Selected in the final</text>
+     </g>
+    </g>
+   </g>
+   <g id="patch_3">
+    <path d="M 267.12 137.297455
+L 646.827143 137.297455
+L 646.827143 104.308364
+L 267.12 104.308364
+z
+" clip-path="url(#pe9b9a4dc2e)" style="fill: #c0784b"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 267.12 196.206545
+L 284.301319 196.206545
+L 284.301319 163.217455
+L 267.12 163.217455
+z
+" clip-path="url(#pe9b9a4dc2e)" style="fill: #738293"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 267.12 255.115636
+L 272.274396 255.115636
+L 272.274396 222.126545
+L 267.12 222.126545
+z
+" clip-path="url(#pe9b9a4dc2e)" style="fill: #087f8c"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 267.12 262.656
+L 717.408 262.656
+" style="fill: none; stroke: #e1e7ec; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="text_10">
+    <text style="font-weight: 700; font-size: 10.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #142b43" x="652.840604" y="123.530448" transform="rotate(-0 652.840604 123.530448)">442</text>
+   </g>
+   <g id="text_11">
+    <text style="font-weight: 700; font-size: 10.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #142b43" x="290.31478" y="182.439539" transform="rotate(-0 290.31478 182.439539)">20</text>
+   </g>
+   <g id="text_12">
+    <text style="font-weight: 700; font-size: 10.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #142b43" x="278.287857" y="241.34863" transform="rotate(-0 278.287857 241.34863)">6</text>
+   </g>
+  </g>
+  <g id="text_13">
+   <text style="font-weight: 700; font-size: 15px; font-family: 'DejaVu Sans'; fill: #142b43" transform="translate(219.099609 23.267121)">Where the test-pool optimum was lost</text>
+   <text style="font-weight: 700; font-size: 15px; font-family: 'DejaVu Sans'; fill: #142b43" transform="translate(113.702344 41.271223)">442 of 468 two-round workloads (94.4%) lost it before the final</text>
+  </g>
+  <g id="text_14">
+   <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; fill: #536576" transform="translate(19.08 306.208)">All 484 saved test-pool optima were unique. Of 16 single-question workloads, three selected the optimum.</text>
+   <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; fill: #536576" transform="translate(19.08 321.408)">This attributes observed decision paths; it does not prove how a different tournament or final choice would perform.</text>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="pe9b9a4dc2e">
+   <rect x="267.12" y="96.768" width="450.288" height="165.888"/>
+  </clipPath>
+ </defs>
+</svg>

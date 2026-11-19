@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "experiment_protocol": "tenset_500file_tutorial_record_test_reconstruction",
+  "collection_index_sha256": "abf85aa03b562462893c8babceab74839cc42112803dc6760ee5464339f23072",
+  "predictions_sha256": "53e2662aeb7480af284abcd2b302264d3760288060c512803ed67c25ca978179",
+  "aggregation": "weight each workload by its number of test records",
+  "score_definition": "mean prefix-best throughput / max throughput in test pool",
+  "arithmetic": "Python float64 recomputation of exported official label values",
+  "canonical_metrics_note": "The ordinary metrics.json remains runtime-based and workload-macro. These label-based scores can differ by floating-point roundoff.",
+  "global_tournament_pairwise_accuracy_reported": false,
+  "models": [
+    {
+      "model_id": "random-0",
+      "model_type": "random",
+      "workloads": 484,
+      "test_records": 187679,
+      "record_weighted_metrics": {
+        "top_1_score": 0.23504543298685907,
+        "top_5_score": 0.38502086961629045
+      },
+      "macro_metrics": {
+        "top_1_score": 0.24994797437506916,
+        "top_5_score": 0.3995320523263606
+      }
+    },
+    {
+      "model_id": "jev-1.14.0-tutorial-tournament-fields-long-context",
+      "model_type": "jev-tournament",
+      "workloads": 484,
+      "test_records": 187679,
+      "record_weighted_metrics": {
+        "top_1_score": 0.26935556454967097,
+        "top_5_score": 0.3882448622497107
+      },
+      "macro_metrics": {
+        "top_1_score": 0.2829976812303397,
+        "top_5_score": 0.400940124367707
+      }
+    }
+  ],
+  "study_scope": "Jev versus Random only",
+  "publication_status": "Reviewed derived summary, not an original result-bundle file"
+}

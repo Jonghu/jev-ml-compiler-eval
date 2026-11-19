@@ -1,0 +1,69 @@
+{
+  "all_stored_input_estimate_usd": 0.543905502,
+  "all_stored_responses_including_historical_anchor_inputs": 12950131,
+  "by_budget": {
+    "16": {
+      "cached_decisions": 0,
+      "cached_requests": 0,
+      "live_decisions": 120,
+      "live_input_tokens": 2750775,
+      "live_output_tokens": 60329,
+      "live_requests": 120,
+      "logged_live_input_estimate_usd": 0.11553255,
+      "mean_decision_latency_ms": 243.22241173333333,
+      "mean_live_api_latency_ms": 231.24577464166666,
+      "median_live_api_latency_ms": 201.1095625,
+      "response_input_tokens": 2750775,
+      "response_output_tokens": 60329,
+      "scope": "new_size_sweep_run",
+      "stored_response_input_estimate_usd": 0.11553255,
+      "workloads": 120
+    },
+    "32": {
+      "cached_decisions": 0,
+      "cached_requests": 0,
+      "live_decisions": 120,
+      "live_input_tokens": 4255904,
+      "live_output_tokens": 115911,
+      "live_requests": 120,
+      "logged_live_input_estimate_usd": 0.17874796800000003,
+      "mean_decision_latency_ms": 342.07297954166665,
+      "mean_live_api_latency_ms": 325.2931763916667,
+      "median_live_api_latency_ms": 295.32162500000004,
+      "response_input_tokens": 4255904,
+      "response_output_tokens": 115911,
+      "scope": "new_size_sweep_run",
+      "stored_response_input_estimate_usd": 0.17874796800000003,
+      "workloads": 120
+    },
+    "50": {
+      "cached_decisions": 10,
+      "cached_requests": 10,
+      "live_decisions": 110,
+      "live_input_tokens": 5418271,
+      "live_output_tokens": 163609,
+      "live_requests": 110,
+      "logged_live_input_estimate_usd": 0.227567382,
+      "mean_decision_latency_ms": 426.487659025,
+      "mean_live_api_latency_ms": 462.8180693181818,
+      "median_live_api_latency_ms": 450.913979,
+      "response_input_tokens": 5943452,
+      "response_output_tokens": 178485,
+      "scope": "reused_historical_50_anchor",
+      "stored_response_input_estimate_usd": 0.24962498400000002,
+      "workloads": 120
+    }
+  },
+  "historical_scope_note": "The c50 anchor's 110 live/10 cached status describes its original run, not new calls made for this sweep. Do not charge c50 again as new usage.",
+  "limitations": "Counts are independently summed from exported accounting tables; raw new c16/c32 responses are unavailable. Estimates cover logged successful input usage at the stated rate, not invoices or unlogged failed calls.",
+  "new_c16_c32_input_estimate_usd": 0.29428051800000005,
+  "new_c16_c32_inputs": 7006679,
+  "new_c16_c32_live_requests": 240,
+  "new_c16_c32_outputs": 176240,
+  "pricing_assumption": {
+    "invoice_available": false,
+    "output_free_assumed": true,
+    "usd_per_million_input_tokens": 0.042
+  },
+  "unique_stored_request_ids": 360
+}

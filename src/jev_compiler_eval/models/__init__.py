@@ -9,8 +9,8 @@ from jev_compiler_eval.models.tenset_xgb import TenSetXGBModel
 
 register_model("random", RandomModel)
 register_model("jev", JevModel)
-register_model("tenset_xgb", TenSetXGBModel)
 register_model("jev-tournament", JevTournamentModel)
+register_model("tenset_xgb", TenSetXGBModel)
 
 __all__ = [
     "BaseDecisionModel",

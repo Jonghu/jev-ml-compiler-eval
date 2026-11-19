@@ -5,6 +5,10 @@ Downloads folder. It runs Random and Jev on the same measured CPU schedules,
 with program metadata exported by the portable Python reader. You do not need a
 GPU, TVM installation, Docker, or an XGBoost checkpoint for this workflow.
 
+After the completed 120 x 50 comparison, use the
+[follow-up experiment guide](run-tenset-followup-experiments.md) for field
+definitions, context/order controls, and a resumable full-candidate tournament.
+
 The first run evaluates one workload with eight candidate schedules. Treat it
 as a pipeline pilot. A larger experiment and a complete report are separate
 steps. All commands below run in Terminal from the repository root unless a
@@ -432,3 +436,62 @@ as external context; they are not a matched baseline on your sampled workloads.
 See [the TenSet method and metric reference](tenset.md),
 [the RQ1 report section](rq1-report.md), and
 [the shared experiment protocol](experiment-protocol.md) before writing results.
+
+## Troubleshoot `max_tokens_exceeded`
+
+A 400 response with `error_type: max_tokens_exceeded` means the combined
+workload state and candidate question exceeded the service context limit.
+Increasing retries, timeouts, or the local byte cap does not fix that limit.
+
+To retain a 50-candidate experiment, use Jev's documented long-context option:
+
+```yaml
+models:
+  - id: jev-1.14.0-long-context
+    type: jev
+    config:
+      model: jev-1.14.0
+      cache_dir: .cache/jev-long-context
+      max_retries: 0
+      request_timeout_seconds: 120.0
+      long_context: true
+```
+
+Keep the existing Random entry, dataset path, split, seed, and candidate count.
+Use a new experiment name and result directory for this mode. Run a small
+workload check before the full comparison. Long-context responses have distinct
+cache keys even if both modes share a cache directory. The runner records the
+flag in prediction metadata and saves the model configuration with results.
+
+The [official documentation](https://docs.typesafe.ai/models#long-context)
+raises both context limits to 262k tokens with this option, and describes slower
+and less accurate behavior at longer contexts. Report the mode and measured
+usage explicitly. Successful responses before a failed run may remain cached;
+the runner writes a complete result bundle only after all model decisions
+succeed. Keep existing caches and prepared data.
+
+If the frozen `data/tenset/prepared-w120-c50-s42-metadata.json` artifact already
+exists from the 120-workload setup, the committed profiles preserve that cohort
+and candidate sampling. Run the ten-workload check first:
+
+```bash
+uv run python scripts/run_experiment.py \
+  --config experiments/tenset/jev-vs-random-w10-c50-s42-long-context.yaml
+```
+
+After it succeeds, run the full comparison:
+
+```bash
+uv run python scripts/run_experiment.py \
+  --config experiments/tenset/jev-vs-random-w120-c50-s42-long-context.yaml
+
+uv run python scripts/analyze_tenset.py \
+  --results results/tenset/random-vs-jev-w120-c50-s42-long-context \
+  --dataset data/tenset/prepared-w120-c50-s42-metadata.json \
+  --output-dir results/tenset/random-vs-jev-w120-c50-s42-long-context-analysis
+```
+
+Both profiles use the same cache, zero automatic retries, a 120-second request
+timeout, and new result directories. Successful long-context responses from
+the smaller check can be reused by the full run. These profiles reference
+existing prepared data; they do not download or prepare a new cohort.
