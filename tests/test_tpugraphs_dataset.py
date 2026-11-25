@@ -5,7 +5,10 @@ import numpy as np
 import pytest
 
 from jev_compiler_eval.datasets import TpuGraphsTileDataset, get_dataset_class
-from jev_compiler_eval.datasets.tpugraphs import CONFIG_FIELD_DESCRIPTIONS
+from jev_compiler_eval.datasets.tpugraphs import (
+    CONFIG_FIELD_DESCRIPTIONS,
+    GRAPH_FIELD_DESCRIPTIONS,
+)
 from jev_compiler_eval.datasets.tpugraphs_features import (
     HLO_OPCODE_NAMES,
     NODE_FEATURE_NAMES,
@@ -258,10 +261,48 @@ def test_adds_config_field_descriptions_before_nodes(tmp_path: Path) -> None:
     )
 
 
+def test_adds_graph_field_descriptions_after_config_fields(tmp_path: Path) -> None:
+    _write_graph(tmp_path / "graph_1.npz", configs=[[1], [2]], runtimes=[2, 1])
+
+    (case,) = TpuGraphsTileDataset(
+        {
+            "path": str(tmp_path),
+            "max_candidates": 100,
+            "describe_config_fields": True,
+            "describe_graph_fields": True,
+        }
+    ).load()
+
+    keys = list(case.workload.context)
+    assert case.workload.context["graph_fields"] == GRAPH_FIELD_DESCRIPTIONS
+    assert (
+        keys.index("configuration_fields")
+        < keys.index("graph_fields")
+        < keys.index("nodes")
+    )
+    assert all(
+        "runtime" not in text.lower() for text in GRAPH_FIELD_DESCRIPTIONS.values()
+    )
+
+
+def test_graph_field_descriptions_do_not_require_config_fields(
+    tmp_path: Path,
+) -> None:
+    _write_graph(tmp_path / "graph_1.npz", configs=[[1], [2]], runtimes=[2, 1])
+
+    (case,) = TpuGraphsTileDataset(
+        {"path": str(tmp_path), "max_candidates": 100, "describe_graph_fields": True}
+    ).load()
+
+    assert "configuration_fields" not in case.workload.context
+    assert "graph_fields" in case.workload.context
+
+
 @pytest.mark.parametrize(
     ("extra", "message"),
     [
         ({"describe_config_fields": "yes"}, "describe_config_fields must be a boolean"),
+        ({"describe_graph_fields": 1}, "describe_graph_fields must be a boolean"),
         ({"shuffle": True}, "unknown tpugraphs-tile dataset config keys"),
     ],
 )

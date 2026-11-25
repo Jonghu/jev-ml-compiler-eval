@@ -1,0 +1,92 @@
+# Ablation A2 of docs/tpugraphs-ablation-plan.md.
+# Kernels with at most 50 distinct configurations (120 valid kernels), so every
+# kernel is one Choice question. Every variant is blind: neutral IDs and a
+# shuffled order seeded by "42:<workload_id>".
+schema_version: 1
+
+experiment:
+  name: tpugraphs-ablation-small-a2-graph-fields
+  description: >-
+    A2: graph + candidates + graph field specification.
+  seed: 42
+  output_dir: results/tpugraphs/ablation-small/runs/a2-graph-fields
+
+dataset:
+  type: tpugraphs-tile
+  config:
+    path: data/tpugraphs/npz/tile/xla/valid
+    max_candidates: 50
+    describe_config_fields: false
+    describe_graph_fields: true
+
+candidate_selection:
+  strategy: all
+
+models:
+  - id: a2-graph-fields-rep1
+    type: jev-tournament
+    config:
+      model: jev-1.14.0
+      # One cache directory per repeat: identical requests of different
+      # repeats are sent live, so the repeats measure response variation.
+      cache_dir: results/tpugraphs/ablation-small/jev-cache/rep1
+      max_retries: 3
+      request_timeout_seconds: 60.0
+      order_seed: 42
+      candidate_ids: opaque
+      max_options: 255
+      advance_per_question: 5
+      max_request_tokens: 56000
+      max_state_question_tokens: 28000
+      chars_per_token: 1.4
+      max_requests_per_minute: 960
+      max_tokens_per_second: 200000
+
+  - id: a2-graph-fields-rep2
+    type: jev-tournament
+    config:
+      model: jev-1.14.0
+      # One cache directory per repeat: identical requests of different
+      # repeats are sent live, so the repeats measure response variation.
+      cache_dir: results/tpugraphs/ablation-small/jev-cache/rep2
+      max_retries: 3
+      request_timeout_seconds: 60.0
+      order_seed: 42
+      candidate_ids: opaque
+      max_options: 255
+      advance_per_question: 5
+      max_request_tokens: 56000
+      max_state_question_tokens: 28000
+      chars_per_token: 1.4
+      max_requests_per_minute: 960
+      max_tokens_per_second: 200000
+
+  - id: a2-graph-fields-rep3
+    type: jev-tournament
+    config:
+      model: jev-1.14.0
+      # One cache directory per repeat: identical requests of different
+      # repeats are sent live, so the repeats measure response variation.
+      cache_dir: results/tpugraphs/ablation-small/jev-cache/rep3
+      max_retries: 3
+      request_timeout_seconds: 60.0
+      order_seed: 42
+      candidate_ids: opaque
+      max_options: 255
+      advance_per_question: 5
+      max_request_tokens: 56000
+      max_state_question_tokens: 28000
+      chars_per_token: 1.4
+      max_requests_per_minute: 960
+      max_tokens_per_second: 200000
+
+metrics:
+  - runtime_regret
+  - top_1_accuracy
+  - top_1_error
+  - top_5_error
+  - top_10_error
+  - kendall_tau
+
+execution:
+  fail_fast: true

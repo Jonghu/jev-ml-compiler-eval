@@ -531,6 +531,77 @@ Observations:
   question only, so round-0 probabilities of finalists are not stored there.
   The complete per-question answers are in the Jev cache.
 
+### A4 — Rationale for a large-tile candidate filter (no experiment run)
+
+- Date: 2026-11-24 · Commit: `fbd67c1` plus staged R7 analysis code
+- Live Jev calls: none. Computed from the dataset with ground-truth runtimes.
+- Purpose: justify, before any ablation run, a candidate filtering step that
+  keeps the largest tiles. A2 found that large tiles are fast, but A2 looked
+  at `valid` labels, so a filter justified only by A2 would be tuned on the
+  evaluation split. This entry checks the same pattern on the `train` split,
+  which no evaluated model sees, and records the domain rationale.
+
+Tile size is the product of the `output_bounds` and `kernel_bounds` entries
+(as in A2). The filter keeps the K largest candidates of each kernel; ties
+keep the original candidate order. Kernels with at most K candidates are
+unchanged. Spearman correlation is computed per kernel with average ranks for
+ties.
+
+Does tile size predict runtime?
+
+| Check | `train` (5,709 kernels) | `valid` (676 kernels) |
+|---|---|---|
+| Median within-kernel Spearman(tile size, runtime) | −0.803 | −0.819 |
+| Kernels with a negative correlation | 98.3% | 99.3% |
+| Median size percentile of the optimum (1 = largest) | 0.94 | 0.95 |
+| Optimum in the larger half of the candidates | 90.0% | 91.3% |
+
+Is "always pick the largest tile" enough? (Top-1 error, %)
+
+| Rule | `train` mean (median) | `train` optimal | `valid` mean (median) | `valid` optimal |
+|---|---|---|---|---|
+| Pick the largest tile | 23.2 (11.7) | 7.0% | 20.6 (7.9) | 16.1% |
+
+Largest-K filter (Top-1 error, %; "oracle" picks the best kept candidate,
+"Random" is the expected error of a uniform pick among kept candidates):
+
+| K | `train` best kept | `train` oracle | `train` Random | `valid` best kept | `valid` oracle | `valid` Random |
+|---|---|---|---|---|---|---|
+| 25 | 47.0% | 3.3 | 32.7 | 60.5% | 3.6 | 42.2 |
+| 50 | 60.5% | 2.0 | 41.3 | 70.3% | 2.6 | 54.4 |
+| 100 | 73.9% | 1.1 | 56.8 | 80.0% | 1.6 | 70.4 |
+
+For comparison on `valid`: unfiltered Random 268.4% (A1), a random 50-candidate
+subsample with a uniform pick 272.6%, Jev R7 413.6%, and the paper's best GNN
+10.5%.
+
+Rationale:
+
+- **Data.** On `train`, larger tiles are faster in almost every kernel, and the
+  optimum is usually among the largest tiles. The `valid` pattern matches, so
+  the filter is not an artifact of the evaluation split.
+- **Domain.** The TpuGraphs paper describes tile size selection as choosing an
+  output tile that maximizes hardware compute efficiency while the data still
+  fit in local memory (the sentence used in R6). Larger tiles raise compute
+  efficiency until the memory limit binds, which predicts the pattern above.
+- **Why a filter rather than a rule.** The largest tile is optimal in only
+  7.0% of `train` kernels. The optimum lies just below the largest sizes, where
+  the memory limit and tile shape matter. A filter keeps that region and leaves
+  the final choice to the decision model.
+- **Why K = 50 (proposed).** R7 shows that Jev's Choice probabilities keep
+  resolution only up to about 50 options. With K = 50 every kernel needs one
+  question and no tournament, and the oracle error on `train` is 2.0%, so the
+  filter leaves enough headroom.
+
+Consequences for reporting a filtered Jev run:
+
+- The filter is a hand-crafted heuristic and carries most of the gain on its
+  own. A filtered Jev run must be reported with the same filter followed by a
+  Random pick and by the largest-tile pick. Jev's contribution is its
+  improvement over those baselines, not over unfiltered Jev.
+- K was chosen from `train` statistics and the R7 option limit, not from the
+  `valid` results in this table.
+
 ## Findings so far
 
 1. The compiler default is a far stronger reference than Random. It is a
