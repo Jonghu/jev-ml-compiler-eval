@@ -45,6 +45,7 @@ PAIRS = (
     ("a3-both-fields", "a4-size-descending"),
     ("a4-size-ascending", "a4-size-descending"),
     ("a3-both-fields", "a5-keep-largest-10"),
+    ("random", "a5-keep-largest-50"),
 )
 _REPEAT = re.compile(r"^(?P<variant>.+)-rep(?P<repeat>\d+)$")
 
@@ -244,13 +245,17 @@ def _percent(value: float) -> str:
     return f"{100 * value:.1f}"
 
 
-def summarize(root: Path, dataset_dir: Path, keep_largest: int) -> Path:
+def summarize(
+    root: Path, dataset_dir: Path, keep_largest: int, max_candidates: int = 50
+) -> Path:
     """Write the ablation summary tables and return the summary directory."""
 
     records = read_runs(root / "runs")
     if not records:
         raise ValueError(f'no predictions.jsonl found below "{root / "runs"}"')
-    dataset = TpuGraphsTileDataset({"path": str(dataset_dir), "max_candidates": 50})
+    dataset = TpuGraphsTileDataset(
+        {"path": str(dataset_dir), "max_candidates": max_candidates}
+    )
     cases = {case.workload.workload_id: case for case in dataset.load()}
 
     runs: list[dict[str, object]] = []
@@ -396,8 +401,14 @@ def main() -> None:
         "--dataset", type=Path, default=Path("data/tpugraphs/npz/tile/xla/valid")
     )
     parser.add_argument("--keep-largest", type=int, default=10)
+    parser.add_argument(
+        "--max-candidates",
+        type=int,
+        default=50,
+        help="dataset max_candidates of the runs (10000 for the full split)",
+    )
     args = parser.parse_args()
-    out = summarize(args.root, args.dataset, args.keep_largest)
+    out = summarize(args.root, args.dataset, args.keep_largest, args.max_candidates)
     print(f"Ablation summary saved to {out}")
 
 

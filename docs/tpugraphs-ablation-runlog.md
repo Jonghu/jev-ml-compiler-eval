@@ -139,6 +139,102 @@ kernels.
 - A5's filter comes from a heuristic derived from training labels (main run
   log, A4), and K = 10 was chosen for this subset.
 
+## AB2 — A5 (K = 50) on the full `valid` split, three repeats
+
+- Date: 2026-11-25 (about 19:13–19:20 UTC) · Commit: `16a227e` plus
+  uncommitted changes (this config; `--max-candidates` of the summary script)
+- Config: `experiments/tpugraphs/ablation/a5-full-valid-keep-largest-50.yaml`
+- Output: `results/tpugraphs/ablation-full-valid/` (not in Git; layout in its
+  `README.md`). Tables: `summary/summary.md`; raw Jev requests and responses:
+  `jev-cache/rep{1,2,3}/`.
+- Scope: all 676 `valid` kernels and all distinct configurations, as in R7
+  and the paper. Context as A3 (candidate definitions and graph
+  specification), blind, with only the 50 largest tiles shown, so every
+  kernel is one Choice question. The 120 kernels with at most 50
+  configurations are not filtered; their request is the AB1 A3 request.
+- Jev calls: 3 × 676 = 2,028 live requests, no errors, no stall.
+- Tokens: 3,890,067 input and 288,366 output per repeat; 11,670,201 input in
+  total, about $0.49 at the R7 rate (≈ $0.042 per million input tokens).
+- Latency: median decision latency 104–114 ms per repeat, maximum 0.38 s.
+
+### Results
+
+Percent, mean over the 676 kernels. A5 is mean ± standard deviation over three
+repeats; paper values are from Table 2 (median of three training runs).
+
+| Model | Top-1 err | Top-1 median | Top-5 err | Top-10 err | Top-1 acc |
+|---|---|---|---|---|---|
+| Paper EarlySAGE, ListMLE | 10.5 | — | 3.0 | 1.8 | — |
+| Paper MLP, ListMLE | 84.5 | — | 39.7 | 25.6 | — |
+| **Jev A5, largest-50 filter (AB2)** | **64.9 ± 0.4** | 17.0 | **10.7** | **6.0** | 0.061 |
+| Jev R7, no filter, R6 context | 413.6 | 80.3 | 48.9 | 24.2 | — |
+| Random (seed 42) | 268.4 | 111.7 | 57.6 | 35.1 | 0.019 |
+
+Offline heuristics on the same 676 kernels; the filter rows use exactly the
+pools A5 showed Jev:
+
+| Baseline | Top-1 err | Top-1 median | P(optimal pick) |
+|---|---|---|---|
+| Compiler default (`config_0`) | 2.4 | 0.6 | 0.330 |
+| Largest tile | 20.6 | 7.9 | 0.161 |
+| Largest-50 filter + random pick (expected) | 54.5 | 39.3 | 0.023 |
+| Largest-50 filter + oracle pick | 2.6 | 0.0 | 0.704 |
+| Random pick (expected) | 272.9 | 213.3 | 0.015 |
+
+Paired per-kernel comparisons (A5 Top-1 error averaged over repeats; "better"
+means A5 has the lower error; two-sided exact sign test, ties excluded):
+
+| A5 against | A5 better | A5 worse | Ties | Mean change (pp) | p |
+|---|---|---|---|---|---|
+| Random (seed 42) | 510 | 155 | 11 | −203.5 | 4e-45 |
+| R7 Jev | 426 | 121 | 129 | −348.7 | 8e-41 |
+| Filter + random pick (expected) | 469 | 207 | 0 | +10.5 | 3e-24 |
+| Largest tile | 224 | 391 | 61 | +44.4 | 2e-11 |
+
+Top-1 error by number of distinct configurations:
+
+| Configurations | Kernels | A5 | R7 | Filter + random | Largest tile |
+|---|---|---|---|---|---|
+| ≤ 50 (not filtered) | 120 | 160.8 | 107.2 | 85.0 | 9.2 |
+| 51–255 | 143 | 46.0 | 539.4 | 54.9 | 18.8 |
+| 256–1,000 | 152 | 36.7 | 519.3 | 42.9 | 18.2 |
+| 1,001–9,988 | 261 | 47.7 | 424.1 | 46.9 | 28.2 |
+
+The shown pool contains an optimum in 476 of 676 kernels. Repeat spread is
+small (Top-1 error 64.6–65.3%), and 77% of kernels get the same pick in all
+three repeats.
+
+### Observations
+
+- **A5 is the best Jev result on the paper's scope.** Top-1 error falls from
+  413.6% (R7) to 64.9%, better in 426 kernels and worse in 121. It beats the
+  paper's MLP on Top-1 (64.9 vs 84.5), Top-5 (10.7 vs 39.7), and Top-10 (6.0 vs
+  25.6), but stays far behind EarlySAGE (10.5, 3.0, 1.8).
+- **The gain is mostly the filter's.** The filter with a random pick already
+  reaches 54.5%, lower in the mean than A5. Per kernel, Jev beats the random
+  pick in 469 of 676 kernels and halves the median (17.0% vs 39.3%), but loses
+  on the mean because of the 120 unfiltered kernels.
+- **The 120 unfiltered kernels dominate A5's mean.** On them A5 is A3, whose
+  error is 160.8% here (155.3% in AB1), against 85.0% for a random pick. On the
+  556 filtered kernels A5 is close to or better than a random pick inside the
+  pool (36.7–47.7% vs 42.9–54.9%).
+- **The largest-tile rule still wins.** It reaches 20.6% and beats A5 in 391
+  of 676 kernels; the compiler default (2.4%) remains far better. Inside the
+  filtered pool an oracle would reach 2.6%, so Jev uses little of the pool's
+  headroom.
+- **Kendall τ (+0.50) is inflated by construction**, as in AB1: hidden
+  candidates are ranked last in size order. Compare by Top-K error.
+
+### Limitations
+
+- A5 relies on a large-tile filter derived from `train` labels, so the
+  comparison with the paper's learned models is not a pure zero-shot
+  comparison; the MLP and EarlySAGE are trained on the same labels.
+- Identical configuration rows are merged (see `tpugraphs.md`), which the
+  paper does not do. Paper values are the median of three training runs.
+- K = 50 leaves the smallest kernels unfiltered, which mixes two behaviors in
+  the overall mean.
+
 ## Findings so far
 
 1. Explaining what the candidate fields mean is the only description that
@@ -153,3 +249,7 @@ kernels.
    a random pick inside the filtered pool.
 5. No variant approaches the largest-tile rule (9.2%) or the compiler default
    (2.1%) on these kernels.
+6. On the full `valid` split, A5 with K = 50 cuts Jev's Top-1 error from
+   413.6% (R7) to 64.9% and beats the paper's MLP on Top-1, Top-5, and Top-10
+   error, but not EarlySAGE (AB2). The filter with a random pick already
+   reaches 54.5%, and the largest-tile rule (20.6%) still beats A5.

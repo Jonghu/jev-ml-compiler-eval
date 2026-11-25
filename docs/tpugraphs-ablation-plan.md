@@ -160,6 +160,36 @@ The offline planner estimates 9.3M input tokens, an overestimate because it
 assumes 1.4 characters per token (R4 measured about 1.53). At the R7 rate
 (≈ $0.042 per million input tokens) the run costs at most about $0.40.
 
+## Follow-up: A5 on the full `valid` split
+
+After the subset ablation, A5 (the best Jev variant there) is run once more on
+the paper's evaluation scope, so the best context setting can be compared
+with R7 and the paper.
+
+| Setting | Value |
+|---|---|
+| Kernels | all 676 `valid` kernels, all distinct configurations (as R7) |
+| Context | A3: candidate feature definitions and graph field specification |
+| Filter | `keep_largest: 50`; every kernel becomes one Choice question |
+| Repeats | 3, one cache directory per repeat |
+| Config | `ablation/a5-full-valid-keep-largest-50.yaml` (includes Random, seed 42) |
+| Output | `results/tpugraphs/ablation-full-valid/` |
+
+K = 50 instead of 10 follows A4 of the main run log: Jev's Choice
+probabilities keep resolution up to about 50 options, and on `train` the
+largest 50 tiles leave an oracle Top-1 error of 2.0%. K = 10 was chosen for
+the subset only. The comparison targets are the paper's learned models (Table
+2), R7 (blind Jev without a filter), and the same filter followed by a random
+or largest-tile pick.
+
+```bash
+uv run python scripts/run_experiment.py --config experiments/tpugraphs/ablation/a5-full-valid-keep-largest-50.yaml
+uv run python scripts/summarize_tpugraphs_ablation.py --root results/tpugraphs/ablation-full-valid --keep-largest 50 --max-candidates 10000
+```
+
+Offline estimate: 4.9M input tokens per repeat (≈ 3.8M at the measured
+characters per token), about $0.6 for three repeats.
+
 ## Limitations
 
 - The subset favors small kernels and Inception-v3; conclusions may not carry
