@@ -1,0 +1,38 @@
+{
+  "protocol": "tenset_context_ablation_v1",
+  "study_sha256": "ba60b097373e6c097d4523dd1717654d465bb1bdad4f4b9f2ef622d566394a54",
+  "phase_filter": null,
+  "decisions": 2601,
+  "runs": 24,
+  "variants": 8,
+  "warnings": [],
+  "unreported_phases": [],
+  "output_dir": ".",
+  "usage": {
+    "live_requests": 2601,
+    "cached_requests": 0,
+    "live_input_tokens": 119921175,
+    "cached_input_tokens": 0,
+    "live_output_tokens": 1097262,
+    "cached_output_tokens": 0,
+    "unknown_input_usage_requests": 0
+  },
+  "input_cost_estimate": {
+    "usd_per_million_input_tokens": 0.042,
+    "known_live_input_cost_usd": 5.0366893500000005,
+    "output_cost_included": false,
+    "retries_not_recorded_in_reports_included": false,
+    "complete_input_usage": true
+  },
+  "metric_notes": {
+    "top_5_score": "mean of normalized best runtimes over prefixes 1..min(5,n)",
+    "endpoint_top_5_score": "original-pool reference / fastest runtime in the first five picks",
+    "paper_network_scores": "ratio of sums of task-frequency-weighted private normalizers and recovered selected latencies; separate from macro scores",
+    "pilot_network_scores": "partial-inventory ratios are named pilot_network; they are not complete paper-network results",
+    "filtered_pairwise_metrics": "omitted; unshown tails are not model rankings",
+    "repeat_std": "sample standard deviation of run aggregates, not a confidence interval",
+    "paired_tests": "exploratory unadjusted sign tests of repeat-averaged within-workload differences",
+    "cost": "recorded token counts only; cached tokens are historical, not newly charged"
+  },
+  "publication_note": "Output directory sanitized for publication; original source hash is in provenance.json."
+}

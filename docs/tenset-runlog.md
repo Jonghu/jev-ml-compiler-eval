@@ -709,3 +709,112 @@ into the team report, and pricing/billing validation. Fresh Jev calls and
 controlled order, tie-breaking, context/field-description, and grouping
 ablations are optional follow-ups. Matching trained-baseline reproduction
 is outside the current scope; the MLP reference remains external.
+
+## R7 — Completed three-repeat context ablation and filtered network follow-up
+
+This entry updates the historical prepared-only follow-up status recorded
+above without rewriting those earlier observations. Results were reviewed on
+2026-11-25 from the uploaded `tenset-context-ablation-summary` bundle. The
+[reviewed publication](results/tenset/context-ablation/README.md) contains the
+compact descriptor of the frozen study, derived CSV summaries and PNG/SVG figures; the
+[workflow guide](run-tenset-context-ablation.md) retains execution commands.
+
+- Protocol: `tenset_context_ablation_v1`; model `jev-1.14.0`, long context,
+  opaque aliases and seed 42.
+- Frozen study identity:
+  `5b7e11785c8e2deaa109d8226a663e5e2e4c02fc6dc01aa1bf32245c4abed3bd`.
+- Small stage: the existing E5 120 × 50 original pools; A0 naive, A1 candidate
+  definitions, A2 graph specification, A3 both, A4 ascending/descending
+  structural order and A5 structural diversity filtering to ten schedules.
+- Three fresh repeats per condition with fixed presentation seed; every shown
+  pool fits one Choice question. The uploaded accounting reports no cache hits.
+- Required full stage: three A5 repeats on all 27 ResNet-50 task pools,
+  occurrence weight 56 and 100,126 original candidate records; at most 50
+  schedules are shown per task. This is not a full-network factorial or the
+  whole TenSet dataset.
+- Ordering/filtering use schedule structure without runtime labels. The
+  diversity filter is a different rule from TpuGraphs' large-tile heuristic.
+- All scores retain the original pool denominator. Full-stage scoring uses
+  the private float32 normalizers and throughput floor of the pinned paper
+  evaluator. Hidden filter tails do not support global Pairwise Accuracy.
+
+### Small-stage observations
+
+Mean scores over the fixed 120 workloads; Top-1 ± is the sample standard
+deviation across three run means. Prefix Top-5 averages the first five
+prefix-best ratios; endpoint Top-5 uses the best of the first five picks.
+
+| Condition | Top-1 Score, mean ± SD | Prefix Top-5 | Endpoint Top-5 | Mean regret |
+|---|---:|---:|---:|---:|
+| A0 naive | 0.358186 ± 0.004510 | 0.518579 | 0.629279 | 5.073117 |
+| A1 candidate definitions | 0.321786 ± 0.002126 | 0.500551 | 0.613974 | 5.374682 |
+| A2 graph specification | 0.355713 ± 0.002391 | 0.522320 | 0.634412 | 4.960330 |
+| A3 both | 0.331918 ± 0.007598 | 0.497509 | 0.604623 | 5.222691 |
+| A4 ascending structural order | 0.338018 ± 0.004870 | 0.503314 | 0.618841 | 4.537227 |
+| A4 descending structural order | 0.317597 ± 0.020314 | 0.483385 | 0.601717 | 7.087368 |
+| A5 diversity filter | 0.340978 ± 0.003721 | 0.495122 | 0.597623 | 5.520364 |
+| Random-42, one seeded draw | 0.332440 | 0.498775 | 0.622915 | 6.058854 |
+
+A1 and A3 have lower cohort mean Top-1 than A0 in every repeat. Across
+workloads, A1 improves 32, worsens 41 and ties 47; A3 improves 34, worsens 39
+and ties 47. Their exploratory sign-test p-values are 0.349 and 0.640. These
+win/loss tests do not test mean-effect magnitude: a nonsignificant sign test
+is not evidence that the observed mean decline is random. A2 differs little
+from A0 on Top-1 and has a small endpoint Top-5 advantage. The results do not
+establish a general benefit from adding candidate or graph descriptions.
+
+Ascending structural order has lower mean regret than descending, but the
+per-workload Top-1 direction is mixed: descending improves 54 cases, worsens
+60 and ties six relative to ascending. The Pairwise Accuracy gap
+(0.519934 versus 0.508059) has an unadjusted sign-test p = 0.0353 among many
+comparisons. Structural order must not be read as TPU tile size. Unfiltered
+same-pick agreement over the three repeats ranges from 65.0% to 70.8%; A5
+agreement is 82.5%. These are limited fresh-response repetitions, not a claim
+that the service is deterministic.
+
+A5 retains an original-pool optimum on 22/120 workloads. Exact uniform Random
+inside its retained pool has Top-1 score 0.308215 and endpoint Top-5 score
+0.601597. Jev's Top-1 is higher, but its endpoint Top-5 is slightly lower.
+A5 uses about 60.1% fewer input tokens than A3; the mean run-median decision
+latency is 189.1 ms versus 485.7 ms. Its endpoint Top-5 is also lower
+(0.597623 versus 0.604623), so this is a cost/coverage tradeoff rather than
+an across-the-board quality gain.
+
+### Full-stage observations
+
+| Model | Weighted network Top-1 | Weighted network Top-5 |
+|---|---:|---:|
+| A5, three-repeat mean ± SD | 0.113422 ± 0.007755 | 0.343155 ± 0.024797 |
+| Random-42, one seeded draw | 0.137327 | 0.406334 |
+
+A5 is below this paired Random draw on both network endpoints. The separate
+macro task scores are 0.267820/0.433057 and must not replace the weighted
+network values. The filter retains an optimum on 1/27 tasks; its weighted
+filter-oracle score ceiling is 0.713744. Full-stage first-pick agreement is
+66.7% over three repeats. The earlier R6 Jev tournament result
+0.097724/0.274583 and Random-0 result 0.091462/0.377121 remain historical
+measurements: changing context, seed and selection algorithm prevents treating
+the cross-run difference as a controlled filter-only effect.
+
+### Usage, review limits and remaining work
+
+| Phase | Live requests | Input tokens | Output tokens | Input-cost estimate |
+|---|---:|---:|---:|---:|
+| Small: seven conditions × three repeats | 2,520 | 115,674,831 | 1,059,840 | $4.858342902 |
+| Full: A5 × three repeats | 81 | 4,246,344 | 37,422 | $0.178346448 |
+| Complete study | 2,601 | 119,921,175 | 1,097,262 | $5.036689350 |
+
+The assumed input rate is $0.042/million tokens. These completed-study totals
+include saved pilot decisions reused through the runner's receipt-based
+resume; do not add an earlier pilot estimate again. The upload reports zero
+cached requests. Output fees, unrecorded retries and invoice reconciliation
+are excluded. No additional Jev calls were made for this review/publication.
+
+Only the frozen study manifest and derived summaries were uploaded. Their
+aggregate arithmetic and coverage can be reviewed, but raw predictions,
+completion receipts and request/response caches are still needed to reproduce
+request-level integrity and label-boundary checks independently. Raw archive
+sharing with Jonghu remains a manual delivery step; this publication does
+not send it. The RQ1 report incorporates the findings. Concrete semantic
+schedule cases, team-report integration, billing validation and any update
+to the historical presentation remain separate tasks.

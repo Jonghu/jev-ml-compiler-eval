@@ -1,0 +1,110 @@
+{
+  "publication": "Reviewed derived TenSet context-ablation summary exports",
+  "publication_date": "2026-11-25",
+  "publication_timezone": "America/Chicago",
+  "source_archive": {
+    "filename": "tenset-context-ablation-summary.zip",
+    "sediment_file_id": "file_00000000f7dc81f598fc8c8c7771b226",
+    "sha256": "cc3358645477a8dd06d03c029adf8ba01144d4286497fab32560e2cc831477bd",
+    "bytes": 3887589,
+    "archive_committed": false
+  },
+  "original_study_sha256": "ba60b097373e6c097d4523dd1717654d465bb1bdad4f4b9f2ef622d566394a54",
+  "original_study_identity": "5b7e11785c8e2deaa109d8226a663e5e2e4c02fc6dc01aa1bf32245c4abed3bd",
+  "original_source_files_sha256": {
+    "study.json": "ba60b097373e6c097d4523dd1717654d465bb1bdad4f4b9f2ef622d566394a54",
+    "summary/baseline-aggregates.csv": "3037c12a3321a6b125092a9f8a8cff158775b6653912fc85b44413bf4a4f89c6",
+    "summary/baselines.csv": "499c9b5f650f85987a4106e50cc24de159f1f238acd632306d746af83d94e324",
+    "summary/full-comparison.png": "94e669ab99480b765ebac380f24f7237a2d12711d2ad8e4e260a1ae0d5432c30",
+    "summary/full-comparison.svg": "f97df0cac482fbab1689f05662429fc5999b51b581c60dad8fe2b90b889faf36",
+    "summary/paired.csv": "2252bd4f5e550e46da89411c6c6200845744c3cde9a14087213d6c7c45bdcd23",
+    "summary/per_workload.csv": "2c6df67617e438153cf4d603cd2392d5609b0fe647f685a7abc2f567247c0c3e",
+    "summary/random-per-workload.csv": "47a8cfaed96ffa9639de0766e88623b9243e19bf7ad29646fa2b6d726c8b6b1a",
+    "summary/random-reference.csv": "d0d3c2f0179ccf019adba29d476a4fd81dec21406a47db23dee84bf366d0f604",
+    "summary/runs.csv": "6c915340e5caf695ef82206f94f9876ffb1c183408589fcd3ef876a010089952",
+    "summary/small-comparison.png": "2b137f7516de206aa2e03980bc87c160f1192bab06554ca48ed6533486aa796c",
+    "summary/small-comparison.svg": "7b1ad8567877afffec8c88d2defe7cf9ec6bdc3dfddfdc88747fe0ccf683f31a",
+    "summary/summary.json": "444d6b50f0dfd7f9acbc0b8d4719e1d7ee55f7b4b6cd204767386c13a18dfe59",
+    "summary/summary.md": "4193a040e233ab53768bea3a7bc3f872e66f4665af3d71c5d534cedc4576fde3",
+    "summary/variants.csv": "95f9a5eba9aac016b377bff9436518d21c1de45f30983a5a3cd07ceb8ecbdb2c"
+  },
+  "frozen_execution_implementation_sha256": {
+    "datasets/tenset.py": "e537a724019c78926c2d56a95abf587b69630738b35f30d08ff9b1d3c5d9048c",
+    "datasets/tenset_ablation_descriptions.py": "0a1757029749cea95fed8c805b817ae79ad701618484cbac0790fe71dc820b0a",
+    "datasets/tenset_collection.py": "1159eb3586e023c95427ff7a78c519a4bf0437027a52b16fd0b6b1b550efe00f",
+    "datasets/tenset_descriptions.py": "e0d183be2062dee16caaf5f45372aebf6f4a1e64b443ce8481eac60a1c84ac27",
+    "datasets/tenset_paper.py": "1168308ce3ce0d66c684495f7d0370aa5953fdaf3e2f558b3f1321b8d54aae6a",
+    "evaluation/tenset_ablation.py": "6818d228c1d43f4c2e589bf794774a731fef9ca1197f8c5945d130a2d5f86651",
+    "evaluation/tenset_ablation_features.py": "f599700df3896dba44ed99f129453d742516828d90e44e912029f28a3c96306b",
+    "evaluation/tenset_paper_metrics.py": "2b2d56ff4eee713eda53d1b8a72452e606e945f1921ba6c03cf96de82b329fe2",
+    "jev/client.py": "af316d1922f9362117c62763ff12cf41523f7a79f2160f7c61a79698fbeaa6e7",
+    "metrics.py": "f530ab1c442c84b1ceb586760426a34bd7c4bab2b28a6513609d45fca609d313",
+    "models/base.py": "b8404b8ca5245cdf7a16747ef7f9ea64d0f01404ee3955537426ce4092d08365",
+    "models/jev.py": "f4b8cabe69b408c692d30708d442a54f5aec889107302bc6cc8536d722530d10",
+    "models/jev_tournament.py": "f95e4199e54b50a13f2762c28cc295211a1b64ac8e7809faea08cb96e79cd073",
+    "models/random.py": "d886ae510d76455e66feecf88342735d148af0b6de4e505bc7feb0e2d246e692",
+    "types.py": "424df5309356a05a03dd6d5be1a3b9fa3c8f2cdf2a71c301a5bc98af0cf74659",
+    "uv.lock": "4213df685a7df2cc37ba0d4e0af64b85fd15aa622478b60e93d41abb2245fd23"
+  },
+  "implementation_files_match_current_tree": true,
+  "verified_implementation_file_count": 16,
+  "prepared_dataset_sha256": {
+    "full": "d010a639fdd0d499511e4c9ac6b5137dd7825dae660c87211c4e143e3b28bb3c",
+    "small": "1f949c2c9f788b507c4e395925720c7beaa7063c3efb6ac09ae5ed4855db6275"
+  },
+  "derivation_notes": [
+    "CSV line endings are normalized to LF; field values are preserved.",
+    "summary.json output_dir is replaced with a relative publication directory; all original numerical values remain unchanged.",
+    "audit-summary.json independently checks supplied inventory, aggregate metrics, repeat SDs, paired sign tests, seeded Random order, network endpoint arithmetic and usage totals.",
+    "The weighted filter-oracle ceiling is newly derived from supplied per-workload oracle scores and frozen task weights/normalizers; it is a retrospective bound, not a model result.",
+    "No local source paths, environment files, credentials, raw candidate configurations, complete rankings or request caches are published.",
+    "protocol.json is a compact derivative of the frozen study: model/seed/repeat/pricing settings, phase design, workload counts/weights/normalizers and input/label fingerprints are preserved; absolute paths, candidate ID lists, schedules and rankings are omitted. It is not an executable replacement for study.json.",
+    "Markdown and copied SVG trailing whitespace is normalized; the small-comparison PNG is unchanged. The full-comparison PNG/SVG are redrawn from supplied full variant means/SDs and Random-42 network endpoints because the uploaded original clipped both Random reference lines above the y-axis limits. Corrected axes include the Random line and all error bars; original upload hashes remain preserved."
+  ],
+  "excluded_from_publication": [
+    "study.json full candidate inventory and private absolute dataset paths",
+    "random-per-workload.csv full candidate rankings",
+    "original ZIP archives, source dataset records, prepared shards and collection indexes",
+    "raw predictions.jsonl, completion receipts, API request/response caches and credentials"
+  ],
+  "verification_limits": [
+    "Only the uploaded study and derived summaries/figures were available; no independent raw prediction, receipt, cache or original measurement audit was possible.",
+    "Per-workload timing scores and exact Random expectation formulas cannot be independently recomputed from unavailable raw labels.",
+    "Three fresh Jev repeats provide a small response-variation sample; SDs are not confidence intervals and exploratory sign tests are unadjusted.",
+    "The full phase evaluates only filtered A5 on all 27 ResNet-50 tasks; it is not a full-network seven-condition factorial.",
+    "The structural diversity filter differs from the TpuGraphs train-informed largest-tile heuristic.",
+    "The paper latency recovery includes the pinned float32 throughput floor; offline network ratios are not physically measured end-to-end timings.",
+    "Input-only public-rate estimates exclude output fees, unlogged retries, custom pricing and billing reconciliation."
+  ],
+  "new_api_requests_by_publication": 0,
+  "published_files_sha256": {
+    "README.md": "a948924d00683e9b8937559be017b6cfb3a5ddc76bff190ab363b9bed192bf2a",
+    "audit-summary.json": "eea85176451dd91a4c5240112c30d2404419183bcf899a1b7bad51e5b0a67cfc",
+    "baseline-aggregates.csv": "c9c80a06f0f6efa39a7457a3edcddb662a42e4cdd4b7cc6f7b2b673705fef64b",
+    "baselines.csv": "e4f1926f41c11746b331185770c68ed3a09733163a8f3f3dee1a95b8ebfd25ac",
+    "full-comparison.png": "db98af65cbe740339ba47bfa4c9c30305163a8b8d27077d7a11718d0694c6cad",
+    "full-comparison.svg": "dde79378baf6a7fb5e155b648c6a51cabb3d69eb3350b42826cd3cea4d5ed9ae",
+    "paired.csv": "b9ff7da2a7d4d1e18ed1bbdec6f6b521ad835438a76edfa7e5b217b0234257c1",
+    "per_workload.csv": "ca6c621b7f344318beeddebfafc22351faaeec28cf87e3f146a7231d8de2de85",
+    "protocol.json": "1561fc1cb3a101ccd884f45542c56eea4c16bbe51a33e5d606633f283fd076d6",
+    "random-reference.csv": "83aeb29a91c6a4f3d0e76121961c9acc7ff10ded9f327dee4bdae30c21775e20",
+    "runs.csv": "ef765b875f3975a5cb50f7a3c26b7e9194cfce8b262569b3f3ee74a0d4fefd88",
+    "small-comparison.png": "2b137f7516de206aa2e03980bc87c160f1192bab06554ca48ed6533486aa796c",
+    "small-comparison.svg": "67de16f484aa90192a39d29c0057c003db32dfae8bcc613ee029faa8421c7a01",
+    "summary.json": "a181569ed336915d06a3a08448c5ca1aa0d0c0da3cbbe17ff59631fc3d037bcc",
+    "summary.md": "4193a040e233ab53768bea3a7bc3f872e66f4665af3d71c5d534cedc4576fde3",
+    "variants.csv": "80e700ec9f5606574d8bd85dac8f10a73dc06fab2b1a0b58fa3c7158afffb3dd"
+  },
+  "source_implementation_reference_commit": "f133de9f3e8d871c1b1e85b1dc2bf2a35eb2cff5",
+  "publication_renderer": {
+    "module": "src/jev_compiler_eval/evaluation/tenset_ablation_analysis.py",
+    "sha256": "89c1d0e4dcbcf6a0c3a219ad7d53d3af4127bfceed60b3b33796a12638d37682",
+    "function": "_plot",
+    "numeric_inputs": [
+      "variants.csv: full/a5",
+      "random-reference.csv: full/random-42"
+    ],
+    "correction": "Axis limits include both the Random reference and all Jev error bars.",
+    "original_execution_implementation_fingerprints_unchanged": true
+  }
+}

@@ -1,0 +1,102 @@
+{
+  "audit_scope": "Derived-summary consistency review; raw predictions, receipts, caches and original dataset files were unavailable.",
+  "status": "All checked supplied aggregates reconcile.",
+  "verification_checks": {
+    "baseline_workload_counts": 16,
+    "candidate_counts": 2601,
+    "complete_decision_inventory": 1,
+    "decision_count": 1,
+    "filtered_pairwise_omitted": 438,
+    "frozen_implementation_files": 16,
+    "full_network_coverage": 3,
+    "full_network_task_weight": 3,
+    "input_cost_arithmetic": 1,
+    "paired_mean_differences": 88,
+    "paired_sign_counts": 88,
+    "paired_sign_p_values": 88,
+    "paired_workload_coverage": 88,
+    "random_workload_counts": 2,
+    "recomputed_baseline_aggregates": 176,
+    "recomputed_random_macro_metrics": 16,
+    "recomputed_random_network_scores": 2,
+    "recomputed_run_metric_means": 228,
+    "recomputed_variant_mean_sd": 204,
+    "recomputed_weighted_network_scores": 6,
+    "replayed_seeded_random_candidate_order": 147,
+    "reported_completion": 1,
+    "run_count": 1,
+    "run_mean_decision_latency": 24,
+    "run_median_decision_latency": 24,
+    "run_workload_count": 24,
+    "same_pick_share": 8,
+    "selected_membership": 2601,
+    "shown_counts": 2601,
+    "source_study_hash": 1,
+    "study_identity": 1,
+    "task_weights": 2601,
+    "top1_metric_identity": 2601,
+    "top1_regret_identity": 2601,
+    "top5_error_identity": 2601,
+    "unique_decisions": 1,
+    "usage_reconciliation": 7,
+    "variant_count": 1,
+    "variant_repeat_counts": 8
+  },
+  "coverage": {
+    "full": {
+      "workloads": 27,
+      "variants": [
+        "a5"
+      ],
+      "repeats": 3,
+      "decisions": 81,
+      "original_candidates": 100126,
+      "a5_shown_candidates": 1320
+    },
+    "small": {
+      "workloads": 120,
+      "variants": [
+        "a0",
+        "a1",
+        "a2",
+        "a3",
+        "a4-asc",
+        "a4-desc",
+        "a5"
+      ],
+      "repeats": 3,
+      "decisions": 2520,
+      "original_candidates": 6000,
+      "a5_shown_candidates": 1200
+    }
+  },
+  "filter_diagnostics": {
+    "full": {
+      "retained_optimum_workloads": 1,
+      "workloads": 27,
+      "macro_filter_oracle_top_1_score": 0.7614151438077291,
+      "weighted_network_filter_oracle_ceiling": 0.713743530770859
+    },
+    "small": {
+      "retained_optimum_workloads": 22,
+      "workloads": 120,
+      "macro_filter_oracle_top_1_score": 0.7223314565054908
+    }
+  },
+  "usage": {
+    "live_requests": 2601,
+    "cached_requests": 0,
+    "live_input_tokens": 119921175,
+    "cached_input_tokens": 0,
+    "live_output_tokens": 1097262,
+    "cached_output_tokens": 0,
+    "unknown_input_usage_requests": 0
+  },
+  "assumed_input_price_per_million_usd": 0.042,
+  "known_successful_input_cost_estimate_usd": 5.0366893500000005,
+  "raw_model_requests_independently_verified": false,
+  "raw_runtime_labels_independently_verified": false,
+  "exact_per_workload_random_expectations_recomputed_from_raw_labels": false,
+  "published_mlp_checkpoint_or_pool_reproduced": false,
+  "new_api_requests_by_publication": 0
+}

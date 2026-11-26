@@ -1,0 +1,35 @@
+# Both phases are required. Preparation and preflight never call Jev.
+schema_version: 1
+study:
+  name: tenset-context-ablation-v1
+  seed: 42
+  repeats: 3
+  output_dir: results/tenset/context-ablation
+model:
+  model: jev-1.14.0
+  long_context: true
+  max_retries: 0
+  request_timeout_seconds: 120.0
+  max_options: 255
+  advance_per_question: 5
+  max_request_tokens: 200000
+  max_state_question_tokens: 180000
+  chars_per_token: 1.4
+  max_requests_per_minute: 960
+  max_tokens_per_second: 200000
+pricing:
+  input_per_million_usd: 0.042
+phases:
+  small:
+    path: data/tenset/prepared-w120-c50-s42-metadata.json
+    expected_sha256: 1f949c2c9f788b507c4e395925720c7beaa7063c3efb6ac09ae5ed4855db6275
+    workloads: 120
+    candidate_limit: 50
+    keep: 10
+    variants: [a0, a1, a2, a3, a4-asc, a4-desc, a5]
+  full:
+    path: data/tenset/paper-resnet50-platinum/index.json
+    workloads: 27
+    candidate_limit: null
+    keep: 50
+    variants: [a5]

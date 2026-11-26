@@ -1,12 +1,13 @@
 # Project status
 
-Status reviewed **2026-11-19**. This checklist separates implemented software,
+Status reviewed **2026-11-25**, including the completed TenSet context ablation.
+This checklist separates implemented software,
 completed experiments, reviewed artifacts, and remaining report work. Both
 benchmark implementations are integrated in this revision. TpuGraphs PR #1
 entered `origin/main` at `fbd67c1`; this integration retains that implementation
-alongside the completed TenSet work. The combined local suite passes **740
-tests**, with Ruff formatting and lint checks. The pull request records the
-final pre-commit and hosted CI outcome.
+alongside the completed TenSet work. The 2026-11-19 integration passed **740
+tests**, with Ruff formatting and lint checks. The current integration pull
+request records the additional ablation checks and final hosted CI outcome.
 
 See the [TenSet finish guide](run-tenset-finish-rq1.md),
 [RQ1 report](rq1-report.md), and [TpuGraphs run log](runlog.md) for evidence and
@@ -92,9 +93,10 @@ required blocker for the agreed report scope.
 
 Completed evidence includes the E5 120-workload single-question experiment, its
 16/32/50-candidate size study, the Platinum 484-workload record-test tournament,
-and the main-paper-protocol ResNet-50 network evaluation. Their scopes, metric
-formulas, and aggregations remain separate. The size-study upload contains
-analysis exports rather than new raw prediction/manifest bundles.
+the main-paper-protocol ResNet-50 network evaluation, and the completed
+three-repeat context ablation with its filtered full-network follow-up. Their
+scopes, metric formulas, and aggregations remain separate. The size-study upload
+contains analysis exports rather than new raw prediction/manifest bundles.
 
 The [RQ1 report](rq1-report.md) now contains the completed methodology, results,
 uncertainty, cost, and limitations. The [run log](tenset-runlog.md) retains
@@ -287,10 +289,12 @@ experiment is implied by the remaining report tasks.
 
 ### Optional extensions and retained tooling
 
-Field-only ablations, context/order controls, forced-group tournament controls,
-fresh Jev repeats, and all-source-schedule experiments remain available in the
-[follow-up guide](run-tenset-followup-experiments.md). They are useful extensions,
-not required completion items under the present Jev-versus-Random scope.
+The controlled candidate-definition, graph-specification, presentation-order,
+and structural-filter study with three fresh repeats is completed; see the
+[reviewed ablation results](results/tenset/context-ablation/README.md). The older
+no-program-context profile, forced-group tournament and tie-breaking controls,
+repeats on other cohorts, and expanded-network experiments remain extensions
+in the [follow-up guide](run-tenset-followup-experiments.md).
 The specialized-model adapter remains optional legacy code. Published MLP
 values are clearly labelled external references in the network study; local
 specialized-model training or matching artifacts is optional reproduction work,
@@ -398,3 +402,60 @@ identical original-paper evaluation pool.
 - [ ] Person C: TpuGraphs experiment, results, and RQ2 discussion.
 - [ ] All members: introduction, related work, limitations, conclusions, and
   final proofreading.
+
+## Completed TenSet context-engineering ablation (2026-11-25)
+
+Integration validation passes all 818 local tests, Ruff formatting and linting.
+The reporting regression checks cover Random reference lines and complete
+error bars in the comparison plots. Publication required no new Jev calls.
+
+The [context-ablation workflow](run-tenset-context-ablation.md) has completed
+seven conditions with three fresh repeats on the frozen E5 120 × 50 cohort,
+followed by the required three-repeat, filtered full ResNet-50 evaluation.
+Candidate and graph descriptions are independent factors. Ordering and
+filtering use runtime-blind schedule structure; this diversity filter differs
+from TpuGraphs' large-tile heuristic. The full stage covers 27 ResNet-50 task
+pools, occurrence weight 56 and 100,126 original candidate records; it shows
+at most 50 schedules per task. It is not a full-network factorial or the whole
+TenSet dataset.
+
+The small phase favors naive context on mean Top-1 score (0.358186), versus
+0.321786 with candidate definitions, 0.355713 with graph specification and
+0.331918 with both. Graph specification has the highest endpoint Top-5 mean
+(0.634412). Ordering effects are uneven across workloads. The filter retains
+a pool optimum on 22/120 small-phase workloads and 1/27 full-phase tasks;
+its full-network oracle score ceiling is 0.713744.
+
+| Full ResNet-50 follow-up | Network Top-1 score | Network Top-5 score |
+|---|---:|---:|
+| A5 structural diversity filter, mean ± sample SD | 0.113422 ± 0.007755 | 0.343155 ± 0.024797 |
+| Random-42, one seeded draw | 0.137327 | 0.406334 |
+
+The uploaded accounting reports 2,601 live requests, zero cached requests,
+119,921,175 input tokens and an input-cost estimate of **$5.03668935** at the
+assumed $0.042/million rate. This completed-study accounting includes its
+saved pilot decisions; a separate pilot charge must not be added again.
+The small/full-stage estimates are $4.858342902/$0.178346448. Output fees,
+unrecorded retries and billing reconciliation are not included.
+
+- [x] Prepare the study configuration, offline cost preflight, and explicit
+  paid-execution commands.
+- [x] Complete the Mac preparation, preflight, pilot and both experiment stages.
+- [x] Complete all seven small-stage conditions and the full-stage A5 condition,
+  with three fresh repeats each.
+- [x] Review the uploaded derived summaries, paired comparisons, filter baselines,
+  usage and figures; incorporate them into the RQ1 report.
+- [ ] Optional independent verification: supply raw predictions, completion
+  receipts and Jev caches for a request-level audit. The summary-only upload
+  limits verification, but does not make the completed runs incomplete.
+- [ ] Manually share the raw experiment archive with Jonghu; no delivery is
+  claimed by this repository update.
+
+See the [reviewed ablation publication](results/tenset/context-ablation/README.md)
+for source identity and tables. Three-repeat variation is now measured on
+these fixed inputs. Exploratory sign tests address workload win/loss directions;
+they are not tests of mean-effect magnitude or guarantees of broad generalization.
+The earlier four-slide contribution remains the historical ResNet-50 deck and
+has not been regenerated for this ablation publication. Semantic tensor/schedule
+case narratives, final team-report integration and billing validation remain
+separate report tasks.
