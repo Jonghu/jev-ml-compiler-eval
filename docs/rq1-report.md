@@ -4,16 +4,18 @@
 
 Can Jev select faster tensor schedules than uniform Random from serialized
 program and schedule descriptions? The current RQ1 comparison is **Jev versus
-Random** on identical candidate pools within each experiment. The primary
-completed study reconstructs the main paper's ResNet-50 network evaluator.
+Random** on the same original evaluation pools within each experiment.
+Filtered conditions also report uniform Random inside the retained pools. The
+primary completed study reconstructs the main paper's ResNet-50 network evaluator.
 The published MLP + Ranking loss result is a separate external reference;
 that model was not trained or evaluated locally and is not a paired baseline.
 
-Three evaluation protocols have completed: the ResNet-50 network study, the
-E5 120-workload single-question study with a 16/32/50 candidate-size sweep,
-and the Platinum 484-workload tutorial test-record tournament. Their uploaded
-results answer related questions and are reported separately because their
-cohorts, candidate policies, and aggregation rules differ.
+Completed evidence includes the ResNet-50 network study, the E5 120-workload
+single-question study with a 16/32/50 candidate-size sweep, the Platinum
+484-workload tutorial test-record tournament, and a controlled three-repeat
+context ablation with a filtered full-network follow-up. Their uploaded results
+answer related questions and are reported separately because their cohorts,
+candidate policies, and aggregation rules differ.
 The [run log](tenset-runlog.md) records their provenance; the
 [finish guide](run-tenset-finish-rq1.md) provides the execution and remaining
 semantic case-analysis commands. The 16- and 32-schedule runs are completed
@@ -21,8 +23,11 @@ measurements; the original 50-schedule results are reused.
 
 The [audited ResNet-50 results](results/tenset/paper-resnet50/README.md) and
 [four-slide contribution](presentations/tenset-rq1/README.md) describe the
-completed primary experiment. No new Jev requests were made to audit or
-publish these saved results.
+completed historical primary experiment. The
+[context-ablation publication](results/tenset/context-ablation/README.md) adds
+the completed repeated study. The existing slides have not been regenerated
+for that addition. No new Jev requests were made to review or publish the
+saved results.
 
 ## Dataset, serialization, and evaluation protocols
 
@@ -90,7 +95,8 @@ runtime_regret = selected_runtime / t* - 1
 Their Top-5 averages the prefix-best scores. The ResNet-50 network study
 instead uses the best-of-five endpoint described below. Scores are normalized
 performance ratios, not
-optimum-hit accuracy. The oracle is restricted to each presented test pool.
+optimum-hit accuracy. The oracle is restricted to each original evaluated
+pool; the new filtered conditions retain that original-pool denominator.
 For these historical task metrics, the reciprocal relationship between Top-1
 and regret applies per workload, not by inverting an aggregate mean.
 
@@ -438,14 +444,141 @@ latencies in the uploaded exports are 243.222 ms and 342.073 ms at 16 and
 32 schedules. The historical 50-schedule mean of 426.488 ms includes cached
 cases, so this is not a controlled latency-scaling experiment.
 
+## Completed controlled context-engineering ablation
+
+### Design and evidence
+
+The completed [context-ablation study](results/tenset/context-ablation/README.md)
+uses the same frozen E5 120-workload, 50-schedule pools as the historical anchor,
+with three fresh Jev requests per workload and condition. A0 contains the raw
+program and candidate schedules, A1 adds candidate definitions, A2 adds a
+separate graph-field specification, and A3 adds both. A4 changes only the
+presentation order of A3, using ascending or descending lexicographic schedule
+features. A5 retains a deterministic structurally diverse subset of ten schedules
+and uses the A3 descriptions. The question, pinned model, long-context mode,
+opaque aliases, source pools, seed 42 and original-pool scoring denominator
+remain fixed. Each shown pool fits one question.
+
+Ordering and filtering use transformation/annotation/split structure rather
+than measured timings. The diversity rule was fixed without fitting training
+labels or using test runtimes. It differs from TpuGraphs' training-informed
+large-tile heuristic, so the two filtering studies test different rules.
+The three repeats keep input order fixed and measure fresh API variation;
+separate repeat caches prevent a cached response from posing as a new repeat.
+
+The supplied frozen manifest and derived summaries report all 24 planned
+runs: seven small-stage conditions × three repeats, plus three full-stage A5
+runs. Raw predictions, completion receipts and request/response caches were
+not uploaded. Our review can reconcile summary arithmetic and planned coverage;
+it cannot independently repeat the runner's receipt, private-label or
+request-body checks. The [workflow guide](run-tenset-context-ablation.md) gives
+reproduction, preflight and archive commands.
+
+### Small-stage results
+
+These are macro workload means on 120 × 50 original schedules. The ± values
+are sample standard deviations across three run means, not confidence intervals.
+The prefix Top-5 and endpoint Top-5 definitions are kept separate.
+
+| Condition | Top-1 Score, mean ± SD | Prefix Top-5 Score | Endpoint Top-5 Score | Mean runtime regret |
+|---|---:|---:|---:|---:|
+| A0 naive | 0.358186 ± 0.004510 | 0.518579 | 0.629279 | 5.073117 |
+| A1 candidate definitions | 0.321786 ± 0.002126 | 0.500551 | 0.613974 | 5.374682 |
+| A2 graph specification | 0.355713 ± 0.002391 | 0.522320 | 0.634412 | 4.960330 |
+| A3 both | 0.331918 ± 0.007598 | 0.497509 | 0.604623 | 5.222691 |
+| A4 ascending structural order | 0.338018 ± 0.004870 | 0.503314 | 0.618841 | 4.537227 |
+| A4 descending structural order | 0.317597 ± 0.020314 | 0.483385 | 0.601717 | 7.087368 |
+| A5 diversity filter, keep 10 | 0.340978 ± 0.003721 | 0.495122 | 0.597623 | 5.520364 |
+| Random-42, one seeded draw | 0.332440 | 0.498775 | 0.622915 | 6.058854 |
+
+Candidate definitions reduce mean Top-1 score by 0.036399 relative to A0;
+both descriptions reduce it by 0.026267. Every A1 and A3 aggregate Top-1 repeat
+is below every A0 repeat, so those fixed-cohort mean differences exceed the
+observed repeat spread. Their workload effects are mixed: A1 improves 32,
+worsens 41 and ties 47 cases; A3 improves 34, worsens 39 and ties 47.
+The corresponding exploratory sign-test p-values are 0.349 and 0.640.
+These tests concern win/loss direction, not mean-effect magnitude; they neither
+prove the observed mean declines are random nor establish uniform harm.
+A2 is close to A0 on Top-1 (difference −0.002472, 28 wins/27 losses/65 ties),
+with a small endpoint Top-5 advantage of 0.005133. More description is not a
+consistent improvement under this serialization.
+
+Ordering changes which losses dominate the mean. Ascending and descending
+structural orders have mean regret 4.537227 and 7.087368, but the descending
+Top-1 score is higher on 54 workloads, lower on 60 and tied on six. The mean
+gap is not evidence of a uniform ordering advantage. Pairwise Accuracy is
+0.519934 ascending versus 0.508059 descending; its sign-test p = 0.0353 is an
+unadjusted exploratory result among many comparisons. These structural orders
+must not be interpreted as TPU tile-size orders. Across unfiltered variants,
+65.0–70.8% of workloads keep the same first choice in all three repeats;
+A5 has 82.5% agreement. Aggregate stability does not imply deterministic choices.
+Top-1 Score is a performance ratio, not optimum-hit accuracy: A0's actual
+optimum-pick accuracy is 3.61%.
+
+Filtering trades input cost for lost search coverage. It retains a pool
+optimum in 22/120 workloads. Filtered-pool uniform Random has expected Top-1
+score 0.308215 and endpoint Top-5 score 0.601597, versus A5's 0.340978 and
+0.597623. Thus Jev adds Top-1 selection signal within the retained pools but
+has no observed endpoint Top-5 advantage over that exact expectation. Filtered
+or heuristic-completed tails are not used to claim full-ranking Pairwise Accuracy.
+
+### Required full ResNet-50 follow-up
+
+The full stage applies A5 with at most 50 shown schedules to all 27 declared
+ResNet-50 task pools: occurrence weight 56 and 100,126 original candidate
+records. It preserves the private float32 normalizers and throughput floor
+used by the pinned network evaluator. Both Jev and Random are scored against
+the original complete pools. This stage is not a full-network factorial,
+not an evaluation of every TenSet workload, and not an unchanged repeat of
+the historical full-pool tournament.
+
+| Model | Weighted network Top-1 Score | Weighted network Top-5 Score |
+|---|---:|---:|
+| A5 diversity filter, three-repeat mean ± SD | 0.113422 ± 0.007755 | 0.343155 ± 0.024797 |
+| Random-42, one seeded draw | 0.137327 | 0.406334 |
+
+Jev is below this paired Random draw on both weighted network endpoints.
+Its separate task-macro Top-1/endpoint Top-5 means are 0.267820/0.433057;
+these must not replace the weighted values above. The filter retains a
+pool optimum on only 1/27 tasks. Its frequency-weighted filter-oracle score
+ceiling is 0.713744, showing headroom beyond both the filter's exclusions and
+Jev's achieved choices. The historical Jev tournament's 0.097724/0.274583 and
+Random-0's 0.091462/0.377121 remain a separate saved experiment; their seed,
+context and selection procedure differ, so a cross-run difference is not a
+controlled filter-only effect.
+
+### Usage and scope of completion
+
+The uploaded accounting reports 2,601 live requests, zero cached requests,
+119,921,175 input tokens and 1,097,262 output tokens. At the assumed
+$0.042/million input rate, the complete study's input estimate is
+**$5.03668935**: $4.858342902 for the 2,520-request small stage and
+$0.178346448 for the 81-request full stage. Completed-study totals already
+include saved pilot decisions; do not add a separate pilot estimate again.
+Output fees, unrecorded retries and billing reconciliation are excluded.
+
+Small-stage A3 uses 18,353,679 input tokens across its three repeats, versus
+7,318,197 for A5, approximately 60.1% fewer. Mean run-median decision latency
+falls from 485.7 ms to 189.1 ms, while endpoint Top-5 falls from 0.604623 to
+0.597623. This is the measured performance-cost tradeoff for this particular
+filter, not evidence that filtering improves schedule quality generally.
+
+All requested ablation conditions and the required full-stage follow-up are
+completed under these scopes. Raw archive sharing with Jonghu remains manual;
+no transmission is claimed. Semantic tensor/schedule explanations and team
+report integration remain distinct deliverables. The historical presentation
+has not been regenerated for these new results.
+
 ## Remaining report deliverables and optional experiments
 
 The implementation and completed results cover the requested Top-1/Top-5,
 Pairwise Accuracy, regret, per-workload predictions, aggregate exports,
-candidate-size comparison, and an E5 operation-signature breakdown under
-their stated protocols. The complete ResNet-50 network result, saved-output
-audits, Random-choice variability, tournament diagnostics, and presentation
-are also finished. The following report deliverables still need completion:
+candidate-size comparison, an E5 operation-signature breakdown, and the
+controlled three-repeat context/order/filter ablation with a full-network
+filtered follow-up under their stated protocols. The historical ResNet-50
+result, saved-output audits, Random-choice variability, tournament diagnostics
+and its presentation are finished; the deck has not been updated for the
+new ablation results. The following report deliverables still need completion:
 
 - Export the full selected/oracle schedule and tensor metadata using the
   context-aware case analyzer on the Mac. The uploaded E5 operation labels
@@ -462,9 +595,10 @@ are also finished. The following report deliverables still need completion:
   before replacing the explicitly labelled input-cost estimates with actual costs.
 
 The [finish guide](run-tenset-finish-rq1.md) supplies offline case-export commands.
-Fresh Jev repeats and controlled field-description, context, presentation-order,
-tie-breaking, and grouping ablations remain optional extensions. Additional
-networks or expanded historical cohorts would be new experiments; the primary
+The three-repeat candidate-definition, graph-specification, presentation-order
+and filtering study is completed. The older no-program-context control,
+tie-breaking/grouping ablations, fresh repeats on other cohorts, and additional
+networks or expanded historical cohorts remain new extensions; the primary
 ResNet-50 run already uses complete declared task pools. Changing platform and
 pool policies between existing studies is not a candidate-size ablation.
 Training or reproducing a matched specialized model is outside the current
@@ -482,17 +616,24 @@ uncertain under the exploratory intervals. E5 mean regret is lower for Jev
 at 32 schedules under an unadjusted interval; the other budgets
 remain uncertain. This is evidence conditional on selected workloads and API
 responses, not proof of broad superiority across tensor programs or hardware.
-Fresh API repeatability has not been measured. Fixed sampling seeds and cached
-replay do not establish that new live responses will be identical.
-The three protocols differ in target, split, pool size, invalid-record handling,
-presentation, field definitions, algorithm, and aggregation. Their difference
-cannot identify the contribution of any one of those factors.
+Fresh API repeatability was not measured for the historical one-run studies.
+The new context ablation supplies three fresh repeats on its fixed inputs,
+with 65.0–82.5% identical first picks across the small-stage conditions and
+66.7% in the full stage. Three repeats describe limited response variation;
+fixed sampling seeds and cached replay do not establish deterministic new
+responses. The historical protocols differ in target, split, pool size,
+invalid-record handling, presentation, field definitions, algorithm, and aggregation. Their difference
+cannot identify the contribution of any one factor; the new small-stage
+factorial isolates its stated context changes within the frozen E5 cohort.
 
 No new kernel execution was performed. Recorded runtimes and source/request
 fingerprints were audited for saved-record consistency. Raw measurements,
 prepared shards, complete private source labels, and actual API request
-payloads were not supplied for independent content verification. All 108
-ResNet-50 endpoint decompositions match runtime-based float32-label
+payloads were not supplied for independent content verification. The context
+ablation upload contains derived summaries and a frozen manifest rather than
+raw predictions, completion receipts or caches, so its independent review is
+limited to summary-level consistency. All 108 ResNet-50 endpoint
+decompositions match runtime-based float32-label
 reconstruction exactly. Separately, recomputation agrees with the historical
 tutorial weighted scores within 5.3e-10; that historical check is not exact
 reconstruction of its private labels. The portable reader fails on unsupported

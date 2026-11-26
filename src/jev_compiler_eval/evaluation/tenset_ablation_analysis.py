@@ -757,20 +757,25 @@ def _plot(
             metric_names,
             labels,
         ):
+            means = [row[f"{metric}_mean"] for row in members]
+            deviations = [row[f"{metric}_std"] for row in members]
             axis.bar(
                 [row["variant"] for row in members],
-                [row[f"{metric}_mean"] for row in members],
-                yerr=[row[f"{metric}_std"] for row in members],
+                means,
+                yerr=deviations,
                 color="#E84B36",
                 capsize=3,
             )
             axis.set_ylabel(label)
-            axis.set_ylim(bottom=0)
             axis.tick_params(axis="x", rotation=30)
+            lower = min(0, *(value - sd for value, sd in zip(means, deviations)))
+            upper = max(value + sd for value, sd in zip(means, deviations))
             random_reference = next(
                 (row for row in random_runs if row["phase"] == phase), None
             )
             if random_reference is not None and metric in random_reference:
+                lower = min(lower, random_reference[metric])
+                upper = max(upper, random_reference[metric])
                 axis.axhline(
                     random_reference[metric],
                     color="#13294B",
@@ -778,6 +783,14 @@ def _plot(
                     label="Random (one seeded draw)",
                 )
                 axis.legend(fontsize=8)
+            # Setting limits before axhline disables autoscaling, which can hide
+            # a stronger Random baseline above every Jev bar. Include the entire
+            # bar/error range and reference before choosing explicit limits.
+            span = upper - lower or 1.0
+            axis.set_ylim(
+                bottom=lower - 0.05 * span if lower < 0 else 0,
+                top=upper + 0.1 * span,
+            )
         fig.suptitle(f"TenSet context ablation: {phase} (repeat mean ± sample SD)")
         fig.savefig(output / f"{phase}-comparison.png", dpi=180)
         fig.savefig(output / f"{phase}-comparison.svg")

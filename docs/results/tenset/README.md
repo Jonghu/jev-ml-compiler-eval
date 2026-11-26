@@ -34,15 +34,40 @@ larger Top-1 advantage at smaller budgets is not established by the paired
 cross-budget intervals. Full tensor/schedule explanations still need the
 offline prepared-data case export.
 
-## Prepared main-paper ResNet-50 extension
+## Completed main-paper ResNet-50 network study
 
-The [paper run guide](../../run-tenset-paper-resnet50.md) prepares one Table 4
-network column and an offline token/cost preflight. The
+The [reviewed ResNet-50 publication](paper-resnet50/README.md) covers 27 network
+task types, occurrence weight 56 and 100,126 candidate records. The historical
+full-pool Jev tournament scores are 0.097724/0.274583 at network Top-1/Top-5,
+versus Random-0 at 0.091462/0.377121. The
 [source audit](../../tenset-paper-protocol.md) defines the full-record pools,
-occurrence-weighted best-of-K network score, and external MLP + Ranking loss
-reference. This is a prepared workflow, not a published new experiment.
-The existing 484-workload and candidate-size scores use different aggregation
-and cannot be substituted for this network result.
+occurrence-weighted best-of-K endpoint and external MLP + Ranking loss reference.
+The [paper run guide](../../run-tenset-paper-resnet50.md) retains reproduction and
+offline preflight instructions. Tutorial and candidate-size scores use different
+aggregations and cannot substitute for these network results.
+
+## Completed context-engineering ablation and filtered network follow-up
+
+The [context-ablation publication](context-ablation/README.md) contains seven
+conditions × three fresh repeats on the same E5 120 × 50 pools, plus three
+repeats of structural diversity filtering on the complete declared ResNet-50
+inventory. Candidate definitions, graph specification and both are tested
+separately; ordering uses schedule structure, and filtering is compared with
+Random inside the retained pool and a filter-oracle bound.
+
+Naive context has the highest small-phase mean Top-1 score (0.358186); graph
+specification has the highest endpoint Top-5 mean (0.634412). Added candidate
+definitions do not improve the cohort mean. The full filtered-stage network
+scores are 0.113422 ± 0.007755 and 0.343155 ± 0.024797, versus one Random-42 draw
+at 0.137327 and 0.406334. This full stage is A5 only, not a full factorial or
+the whole TenSet benchmark. It is distinct from the older Random-0 tournament.
+
+The uploaded summaries report 2,601 live requests and 119,921,175 input tokens,
+an estimated $5.03668935 at $0.042/million input tokens, including the study's
+saved pilot decisions. Only derived summaries and the frozen study manifest
+were provided; raw predictions, completion receipts and caches were not uploaded
+for independent request-level audit. Raw sharing with Jonghu remains a manual
+step. The existing presentation has not been regenerated for these new results.
 
 ## 120 test workloads x 50 schedules, long context
 

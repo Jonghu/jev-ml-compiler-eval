@@ -1,0 +1,1407 @@
+{
+  "format": "tenset-context-ablation-compact-protocol-v1",
+  "derivative_note": "Compact review descriptor; not an executable frozen study or a replacement for the original study.json.",
+  "original_frozen_study_identity": "5b7e11785c8e2deaa109d8226a663e5e2e4c02fc6dc01aa1bf32245c4abed3bd",
+  "original_study_sha256": "ba60b097373e6c097d4523dd1717654d465bb1bdad4f4b9f2ef622d566394a54",
+  "protocol": "tenset_context_ablation_v1",
+  "name": "tenset-context-ablation-v1",
+  "seed": 42,
+  "repeats": 3,
+  "model": {
+    "advance_per_question": 5,
+    "chars_per_token": 1.4,
+    "long_context": true,
+    "max_options": 255,
+    "max_request_tokens": 200000,
+    "max_requests_per_minute": 960,
+    "max_retries": 0,
+    "max_state_question_tokens": 180000,
+    "max_tokens_per_second": 200000,
+    "model": "jev-1.14.0",
+    "request_timeout_seconds": 120.0
+  },
+  "pricing": {
+    "input_per_million_usd": 0.042
+  },
+  "feature_version": "tenset-structural-diversity-v1",
+  "phases": {
+    "full": {
+      "variants": [
+        "a5"
+      ],
+      "workloads": 27,
+      "candidate_limit": null,
+      "keep": 50,
+      "expected_sha256": "d010a639fdd0d499511e4c9ac6b5137dd7825dae660c87211c4e143e3b28bb3c",
+      "cases": [
+        {
+          "workload_id": "tenset-paper-6d3d58cf56f0585505cf8066",
+          "task_weight": 1,
+          "runtime_basis": "paper_f32_recovered_throughput_floor",
+          "input_sha256": "ce4cf5f44838bd7fa4465e4333ab07b50ccd1e9510528cf51415676f80b5ca22",
+          "labels_sha256": "1e2eb6b875f02f84aa77a5bcc4b8c0a30797679d1f4e5795bb2597bdd83ee263",
+          "candidate_count": 4000,
+          "a5_shown_count": 50,
+          "paper_normalizer_ms": 0.09096375288208947
+        },
+        {
+          "workload_id": "tenset-paper-1c5419984309e95b85f5a727",
+          "task_weight": 1,
+          "runtime_basis": "paper_f32_recovered_throughput_floor",
+          "input_sha256": "b2a94cbeafa63fc14c3b68897967c6872dfbcff58147f828c441167378d81d88",
+          "labels_sha256": "99631a3628cc59bcfb79e2c5246af6cc0ae36b0e99563152d9b67893eb0bb354",
+          "candidate_count": 20,
+          "a5_shown_count": 20,
+          "paper_normalizer_ms": 0.0035212121929362183
+        },
+        {
+          "workload_id": "tenset-paper-68d88d7d2494653237641be5",
+          "task_weight": 3,
+          "runtime_basis": "paper_f32_recovered_throughput_floor",
+          "input_sha256": "59537f305e363abf5064630276ed0cc31b807cdf8bb15639d84c22afd51ccda9",
+          "labels_sha256": "515f309f8b8ecc435665d20f754b9301357fc67b60e399e757874f534880dad7",
+          "candidate_count": 4000,
+          "a5_shown_count": 50,
+          "paper_normalizer_ms": 0.17377750191371888
+        },
+        {
+          "workload_id": "tenset-paper-ce41a62275688a21716cbebe",
+          "task_weight": 2,
+          "runtime_basis": "paper_f32_recovered_throughput_floor",
+          "input_sha256": "3bf2e78ae843b8fbf35c9d5a082ee11b9f8ef0d82ff9c88355a02262da17767b",
+          "labels_sha256": "f68561c0fce80eac829851ee8554c9d96eeb8d7eea378e14da41e3b0e43f706c",
+          "candidate_count": 4000,
+          "a5_shown_count": 50,
+          "paper_normalizer_ms": 0.37274250644259155
+        },
+        {
+          "workload_id": "tenset-paper-bdf5f6c82b3a906e319087f3",
+          "task_weight": 2,
+          "runtime_basis": "paper_f32_recovered_throughput_floor",
+          "input_sha256": "4b94410db26437edaf3379d3cfd0cf94816ec215822da30b2a52bbff06335aa9",
+          "labels_sha256": "15307f36edf7245668acf823d26de10cf7b3251f48eebe58ef39160f645a44a1",
+          "candidate_count": 4000,
+          "a5_shown_count": 50,
+          "paper_normalizer_ms": 0.16182675608433783
+        },
+        {
+          "workload_id": "tenset-paper-9329bc3862c9c8b57fd695ca",
+          "task_weight": 1,
+          "runtime_basis": "paper_f32_recovered_throughput_floor",
+          "input_sha256": "033ab95d7a9aa260598259a97c944876d3ff491e84b013ab0c91bb7e1c84e28f",
+          "labels_sha256": "60e6e4b9297911c9fd1c7999887b14310a6e61d4ad4eba1aac2ce3affb42f39a",
+          "candidate_count": 4000,
+          "a5_shown_count": 50,
+          "paper_normalizer_ms": 0.44824337237514555
+        },
+        {
+          "workload_id": "tenset-paper-20a2437e02e135e177833304",
+          "task_weight": 1,
+          "runtime_basis": "paper_f32_recovered_throughput_floor",
+          "input_sha256": "b556a43a15541f2ad21b4e93d8c142c651c184a88904910f455205327a6766f3",
+          "labels_sha256": "7245914f405de394c319e00dbdef1e74378e5a49d810df5795c97163141ac58c",
+          "candidate_count": 4000,
+          "a5_shown_count": 50,
+          "paper_normalizer_ms": 0.2843294059857726
+        },
+        {
+          "workload_id": "tenset-paper-bd30ca2a4fac3b7cdd630021",
+          "task_weight": 6,
+          "runtime_basis": "paper_f32_recovered_throughput_floor",
+          "input_sha256": "b6f1a1f54e757801aabc2dd2688fbd63ccd87f6c97a409e297780f73e675285f",
+          "labels_sha256": "83077651cf18acd6938c39010b28230bc450591220bd77031d68079f1f0c1436",
+          "candidate_count": 4000,
+          "a5_shown_count": 50,
+          "paper_normalizer_ms": 0.18042762530967593
+        },
+        {
+          "workload_id": "tenset-paper-aef9cfd759c0c2f72259af06",
+          "task_weight": 5,
+          "runtime_basis": "paper_f32_recovered_throughput_floor",
+          "input_sha256": "d115df4eb0c21cffd9eaf9c1e552198f38570febac98a247ca4a2cd774dc4af3",
+          "labels_sha256": "2d9535ba9fde3d6e9adcae1e4d3ae7cb4834095ef90030517d54a00c62f6d932",
+          "candidate_count": 4000,
+          "a5_shown_count": 50,
+          "paper_normalizer_ms": 0.3607427643146366
+        },
+        {
+          "workload_id": "tenset-paper-22a8a1e1c5447d1ec866918b",
+          "task_weight": 5,
+          "runtime_basis": "paper_f32_recovered_throughput_floor",
+          "input_sha256": "71ba0b20a50c16a776743bee85ae2bbdab205ac437c3017191ad85830b2d48db",
+          "labels_sha256": "81f71110623323c1a98843c557a9f1b7a379236e6e02c90a98b8c770233e8ffd",
+          "candidate_count": 4000,
+          "a5_shown_count": 50,
+          "paper_normalizer_ms": 0.15441399591509253
+        },
+        {
+          "workload_id": "tenset-paper-dbfc8d54add09c56fba58e47",
+          "task_weight": 1,
+          "runtime_basis": "paper_f32_recovered_throughput_floor",
+          "input_sha256": "f00764a9af1a94065c5bd9a4667b5ea1a9cc5c7da5766b4a62fbd66ca318718f",
+          "labels_sha256": "f31a2dd5de291034305cce755f5a7adf32e4e85ca312fdb8e409b24bbb8960ae",
+          "candidate_count": 4000,
+          "a5_shown_count": 50,
+          "paper_normalizer_ms": 0.2903031127061695
+        },
+        {
+          "workload_id": "tenset-paper-d3b85770761aa9f7ec0848d6",
+          "task_weight": 1,
+          "runtime_basis": "paper_f32_recovered_throughput_floor",
+          "input_sha256": "adeb289e51c9080b769ba201fdb94ef0420faacf20ce184966fc7fd8502acba6",
+          "labels_sha256": "09ac26700ffe2d6c7d2ee02464c978fc1a871895289e963afaea66770e5d19bd",
+          "candidate_count": 4000,
+          "a5_shown_count": 50,
+          "paper_normalizer_ms": 0.24870425113476813
+        },
+        {
+          "workload_id": "tenset-paper-df9eb3048e6de0f013d3ec47",
+          "task_weight": 4,
+          "runtime_basis": "paper_f32_recovered_throughput_floor",
+          "input_sha256": "3c458c73b4ce4383a106b8ef75c4e410399fb22bbd0c1b10d3113d9a113039fb",
+          "labels_sha256": "bd1670fbd3f41a153e8bc6ae946471d5af000a6ec9cd75da107cd0332de2d249",
+          "candidate_count": 4000,
+          "a5_shown_count": 50,
+          "paper_normalizer_ms": 0.17506499716546386
+        },
+        {
+          "workload_id": "tenset-paper-45a83cfc2b04dc11106ee15c",
+          "task_weight": 3,
+          "runtime_basis": "paper_f32_recovered_throughput_floor",
+          "input_sha256": "6fe5a5256d81fba0608b5e6aa2c12cd7d82350065215644a5e4dbeb9a0b65f3b",
+          "labels_sha256": "4d0253ff4dc18dc799df8287eb2ad565ee3535cc393a5651c8739e4c0e15171e",
+          "candidate_count": 4000,
+          "a5_shown_count": 50,
+          "paper_normalizer_ms": 0.24290337751153857
+        },
+        {
+          "workload_id": "tenset-paper-ea1406d65f643cb12696d47b",
+          "task_weight": 3,
+          "runtime_basis": "paper_f32_recovered_throughput_floor",
+          "input_sha256": "2a02fd29a33e50e5eff82597079a5902cf7c6f2d23ff717797ef8c325638aca7",
+          "labels_sha256": "ccdcd0bc5ebbe43f6c3f3cec3e2954450dda4197b16a3980439eb2c98206f231",
+          "candidate_count": 4000,
+          "a5_shown_count": 50,
+          "paper_normalizer_ms": 0.1530934969196096
+        },
+        {
+          "workload_id": "tenset-paper-b6305c6b97a1af1dbf55b090",
+          "task_weight": 1,
+          "runtime_basis": "paper_f32_recovered_throughput_floor",
+          "input_sha256": "c7ec7a74e2b386f9b88d5c79b7b33bb9aa0f9d4a5b506e9527c9fa7cbe73bb66",
+          "labels_sha256": "909cbd4d047d3dd25db8ea3bf0f43c5e539cc8a143f6dd3cd658220c625913b3",
+          "candidate_count": 4000,
+          "a5_shown_count": 50,
+          "paper_normalizer_ms": 0.2692151174414903
+        },
+        {
+          "workload_id": "tenset-paper-710c1c387a9c928394f0f8b0",
+          "task_weight": 1,
+          "runtime_basis": "paper_f32_recovered_throughput_floor",
+          "input_sha256": "a2a59f4e1d5505972bc3c3811e65e564bbb252462daf4bdcd65207651e9eae19",
+          "labels_sha256": "dd8a14e1dfedd743a0a3200b2b2c5689348079fbd23257876a8a72fbd953e0b1",
+          "candidate_count": 4000,
+          "a5_shown_count": 50,
+          "paper_normalizer_ms": 0.24991575628519058
+        },
+        {
+          "workload_id": "tenset-paper-2ffea87ad25307e2284f51ce",
+          "task_weight": 3,
+          "runtime_basis": "paper_f32_recovered_throughput_floor",
+          "input_sha256": "c8f2e2638d526baa4cf14ccaae3ddbda813e7a5df4f1d2e236f37e395cbf8940",
+          "labels_sha256": "06c8eacff9fdae15f0e2448df919bc7d507f715bf14bc00d90f33fe406ea8128",
+          "candidate_count": 4000,
+          "a5_shown_count": 50,
+          "paper_normalizer_ms": 0.20578988187480718
+        },
+        {
+          "workload_id": "tenset-paper-6856dfad598a13e165ce2e0f",
+          "task_weight": 3,
+          "runtime_basis": "paper_f32_recovered_throughput_floor",
+          "input_sha256": "ebaf8b777c9250684c1c5f1dd3fc166566325720b7d7bba7b8682f6893de3135",
+          "labels_sha256": "171613502efe0b96e8088b38c614320c4e2d5559158ef68fc17a31a086caedce",
+          "candidate_count": 4000,
+          "a5_shown_count": 50,
+          "paper_normalizer_ms": 0.2578148851171136
+        },
+        {
+          "workload_id": "tenset-paper-d00c6117aa3034c189c4ea97",
+          "task_weight": 2,
+          "runtime_basis": "paper_f32_recovered_throughput_floor",
+          "input_sha256": "491ee38a374d236a309043be2313444debf9900516be2d062386d47aa6c8e8d7",
+          "labels_sha256": "9240cbf83bbc51252f5313a7bbdd293c8702b028f646f69608f02435361b44ec",
+          "candidate_count": 4000,
+          "a5_shown_count": 50,
+          "paper_normalizer_ms": 0.16696899547241628
+        },
+        {
+          "workload_id": "tenset-paper-a7b32a208797b8887cf3baa3",
+          "task_weight": 1,
+          "runtime_basis": "paper_f32_recovered_throughput_floor",
+          "input_sha256": "43d10b2a6b9774bec5f9b547e5d8b9f86133d2f27f52897dae34352cbfafe65f",
+          "labels_sha256": "80963e5394c28cb7bdb93b5c85651ebf1f33170d8a93051fdfbe937e4ffdb391",
+          "candidate_count": 4000,
+          "a5_shown_count": 50,
+          "paper_normalizer_ms": 0.07696782995481044
+        },
+        {
+          "workload_id": "tenset-paper-bb6223cdcb16d251b89729f8",
+          "task_weight": 1,
+          "runtime_basis": "paper_f32_recovered_throughput_floor",
+          "input_sha256": "a9e62665efd62c7fe45c01c71a632826ba843efdb37418bef775c558d4a91d9e",
+          "labels_sha256": "e30f553cf14db0cbfdd82c47e4d0dd690a75ab2e0744840e8624f35a5f3baf6f",
+          "candidate_count": 106,
+          "a5_shown_count": 50,
+          "paper_normalizer_ms": 0.035260200093034655
+        },
+        {
+          "workload_id": "tenset-paper-fd4579ca1755bc6892707f9e",
+          "task_weight": 1,
+          "runtime_basis": "paper_f32_recovered_throughput_floor",
+          "input_sha256": "7f752d4cfeb2464bd4ff0a05e5c0369858083100c387dbb38419b0473e56c5fd",
+          "labels_sha256": "df770220bb0ef445d5df4436a072f1300112958d7da1b07e09a6908ad82bab7e",
+          "candidate_count": 4000,
+          "a5_shown_count": 50,
+          "paper_normalizer_ms": 0.31817948911339045
+        },
+        {
+          "workload_id": "tenset-paper-4f8bce554a21a0c0ff712ac0",
+          "task_weight": 1,
+          "runtime_basis": "paper_f32_recovered_throughput_floor",
+          "input_sha256": "1ce5348fe914e97c27d7091d4b40203a7fe1f574f4c854eb652db2e0157211c8",
+          "labels_sha256": "9e04d2aec8c256e3e93a1ae40367edc6c94f7661757e78ca6c0a939d24c205c4",
+          "candidate_count": 4000,
+          "a5_shown_count": 50,
+          "paper_normalizer_ms": 0.18377687956672162
+        },
+        {
+          "workload_id": "tenset-paper-af3477587f63503438345732",
+          "task_weight": 1,
+          "runtime_basis": "paper_f32_recovered_throughput_floor",
+          "input_sha256": "256454aa52703753fdf6c796804a00ea749dd7fab84d47d276619e870b872682",
+          "labels_sha256": "540fd3dc037da167080f9fe0131568b6be997aa17059a0d79f535ced473a65f4",
+          "candidate_count": 4000,
+          "a5_shown_count": 50,
+          "paper_normalizer_ms": 0.2807672426570207
+        },
+        {
+          "workload_id": "tenset-paper-a7c02090d1e1bc67685fdfab",
+          "task_weight": 1,
+          "runtime_basis": "paper_f32_recovered_throughput_floor",
+          "input_sha256": "d22b0ca434490447a5ad30e76354908411f34174d70db295ece4a713eb15cc26",
+          "labels_sha256": "43818e56d25e1e3f7a8454c82ac6c042f02cbe87659cc5456c7a26a0600e3997",
+          "candidate_count": 4000,
+          "a5_shown_count": 50,
+          "paper_normalizer_ms": 0.30115325353108346
+        },
+        {
+          "workload_id": "tenset-paper-24ade43104f80ba53b65b6e7",
+          "task_weight": 1,
+          "runtime_basis": "paper_f32_recovered_throughput_floor",
+          "input_sha256": "90c177e296c03059e3b17e4e4756b3541aca83873cacf1a48b2290567fd07d71",
+          "labels_sha256": "78cea3a5cda0a909b77512ce1ace96cc14255dc238a076e7315808ea5662638e",
+          "candidate_count": 4000,
+          "a5_shown_count": 50,
+          "paper_normalizer_ms": 0.33631487167440355
+        }
+      ]
+    },
+    "small": {
+      "variants": [
+        "a0",
+        "a1",
+        "a2",
+        "a3",
+        "a4-asc",
+        "a4-desc",
+        "a5"
+      ],
+      "workloads": 120,
+      "candidate_limit": 50,
+      "keep": 10,
+      "expected_sha256": "1f949c2c9f788b507c4e395925720c7beaa7063c3efb6ac09ae5ed4855db6275",
+      "cases": [
+        {
+          "workload_id": "tenset-77da9bfdaab1deb713268ecc",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "4ab8167abb0ca05d7806f978cf27f3f993f5dba3e4ad379805c72d72de8b95fe",
+          "labels_sha256": "ea505cb85cae073a98dcc50a78501d0090f28591e13f9c1639790f1a6be3133f",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-6308af8976eb4fd2875dd49a",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "5f99732cc8f9917d5f963fca88fab8cbdf3ec4ec96a085cd2e22d7f313fb3569",
+          "labels_sha256": "1858b807de3f9fb1b4e09f9ae0ba37dd4fd8841e8fdcfc04498c7e3cf0da7e16",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-7e97e6e138ff7d07e428ec43",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "9788880c59e137f65e9be130dac40d84c6ac4eefde8d29b8dc88512a51fff413",
+          "labels_sha256": "3ff140025b6ba1a4e8752cb2dec65f02ebdb98761700d4e12a24e81ae3d7dbd1",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-19173a9e314d24b638068029",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "0ec601aa8f7693e9516617081c515ed68cea9bfc882222254f5e873b1bb708bb",
+          "labels_sha256": "1edfb7a059c0bdd92978a3fbaa7884c01f28e94e1f3ee0ac9e895933061b942b",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-cda4177fbd8ef83624528817",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "877f72a3cf77c476e71310e980c846d33289e9ed8129df9c764ab0fe94662e41",
+          "labels_sha256": "dc49670ea6fb9362257d8c6cb50080b47e0dd8aad5e013240e9cd96ce9ff5b57",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-0b59f27e417cf9effd85b214",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "f1ebc721da8c6e1e854e3aefa44ebb8be5ef125a55ef6beff4265104732fc084",
+          "labels_sha256": "136144f2f98697378dd798871104f372a8805fcee6a8915ff2867e8c14bc7f55",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-39f0a1c98b244c3cc847d759",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "b839c51d065bd085d46e7e1f104e8db9d94ef9d3ce6acff63b20982f8bc0c0ee",
+          "labels_sha256": "fb51584971ae585d149136a9095023b1fd00497b30e39b5c09acce8df6908215",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-6671773214713fc571a8bf12",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "b53601cc11d43521445b02b7e8e3efc9d6e96ba63ddbf5c714f60eeccaa40bba",
+          "labels_sha256": "5c4c15799097871eb606e8ace015d75f010a7900f0af41133fd141f7b389d3c8",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-ee843a8624b63bb0ca54c7ff",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "c495b91f374fb353aab0e4462d7c89055116581cd0d8ef333031497319930149",
+          "labels_sha256": "234906c877fe84cc20634424c0272df82c94223152e8fe0e48388df7172d267e",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-56998206c132a0fd7fbbec5a",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "69f1032b967fa20ed8ad0ac189426135b3288d4e9d5739787074a41666645856",
+          "labels_sha256": "924730a18c9b5e8a8ccfe5fdc6a5aa0c8c8a77f515395c2ec48a65dded761350",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-8af951afa2f37592ceef86bb",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "92ff93209fb9d27db5505afa6dc4e6c62e9bcdcb34c81ab905d1bfbf60cc25d1",
+          "labels_sha256": "727d9e3749b9985a4a21ced8be5d1811292938e0e542638f6bd049779ea7a928",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-d9721264d94c2b02b6b76ff7",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "a2692c94b1cb56361458817311d131ccf99791d60198e289ff4123adeca325b1",
+          "labels_sha256": "9b7aaf9c399c6077071449ccb454442eae93d76f6f3ace2d34d67ede879568c8",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-5c4c5bc280131376e40a6a35",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "5653d1592804d1f3257c0b6791b01ce4ba6e26e0d61fc2de1092ad5cf3a0a43e",
+          "labels_sha256": "323874050228dab436549f2eadddd216c61810edd76d6a8c39236b36a2632250",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-b3da5219baee4e22c2274708",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "e929c18d07412cb8471c4fc0360c83dd9e998f9f91d58840c295d6d3f18d628c",
+          "labels_sha256": "670a581754bf7fb6b288ef982e67784e206cfd829fd3fb56d0f9aeb5b07a9ee1",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-126ef63ec265508a028ca3f1",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "23a16821244c8e0316acb3c88b0b6c0876b9695521956eda47d2a3c1d1f94f57",
+          "labels_sha256": "37d5da55a859b393c78d470606ab532fc7c94e077976defedf5eb092f35fdcfe",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-a1e1d5822c9c2e951070d7f9",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "f6bcf7d4eaa5784618cdafd6404a5707ce1fe07d8deb40a13d38f4844e43c424",
+          "labels_sha256": "5763d5d66113135e8ab2b3da66aadf6795a510878adc9f0d39ffa5c131ab89de",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-401261ae157993d3c35c1ad1",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "ab85b4e7e5306d0442a5bb5acf6460ee4712d2d3de4bda9c5db9ba3034164b9b",
+          "labels_sha256": "b580f1c70b35fb18af6363eb442a3364e62cb65dbf628cd008a70a99d8469962",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-1b8bb7ea70083e2af62f1857",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "b7a8ec4da273e651b1cd62eadba49674c0e26d5e5863c26491a9e333a2cfcddf",
+          "labels_sha256": "d555b7c6939c4ca502d9efabe0a45ad74deaafd994e7ca00946c96679056e653",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-705c3ede939935929217450f",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "70b3a2df05a44791affc296f71c0d759fc6cb72e4e9f0e645d944db3cbaf9cae",
+          "labels_sha256": "9aee10123c85b4b65b25717c06a8aafb05a3c703cd777bec4dabeeeb4f8199a7",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-eff2f9b1e7815c2586d1d1ee",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "5a190bd40d625561357b5ffe9c1179c1884bc5e7a518c73954711897812dfee3",
+          "labels_sha256": "59273e47b755817197dd6d82e248d3b01be127992bc727e559c000482eaa32a2",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-e12ec96e9007d3e94b9783d0",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "f5d9267cf2386a9acd7d3d05843bd6401f9bc6738dc474988ddf12bb3ccfa4b0",
+          "labels_sha256": "4f7358ba28040860efacfd6ebbce3b81836d9c84f641e899981b270612d61717",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-fb2180ae8628e57cf8c5a90f",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "af7dc49da29314ad5af74260a0654c4b5928a6ab105a4ddd4b3723beb3c831af",
+          "labels_sha256": "3a979647c3bcfd7bb1d5a3bd0650e9a032867f022e177ae3daef2aacce643527",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-0e761c111a604dc0731479bf",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "ef5e0dc45e96a609ad8b0b31d741363047a77077d7326bf4261936c2bc4f811b",
+          "labels_sha256": "7dff6c5ab0987777479f7a082a4fe9ab090c8eec255d8609f7aa3857fc2ca1a9",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-5fe9581d7ef78bc11b236dec",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "b3b63f1450470b2b84c8cbb593dc3405d76b52283b800dc0a034e85d169d912c",
+          "labels_sha256": "745d7b6baa5ce0143f127c952661b103b2ab0207bc7d85142fdf0a4a4c4e978d",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-780acd6a0e90cdad12877b48",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "2e20bac3a1d0cc085c221d108ea78a1d3181950e240e733a0a35fd151be04ad8",
+          "labels_sha256": "17fba8de7f3dc68538dc5da02fda0beff15ff1c2eeff0cd0a4274027b4ec2e3f",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-aa4dcb43787385b12268d73f",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "fae03d77ddb47017961dc217b0a5f35ae103f1622246aa402ebf822728ffd819",
+          "labels_sha256": "d1b6663970e0bd33d2190eac487447907df7370e1cea2421df77fd6c46832826",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-9ad12b11192b7e455ff2a00a",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "054014d77117bce0eb507e48f0001ae77f0b06bacd942244933a33a98697de45",
+          "labels_sha256": "9bc23e2aa6f277f9472a3b4d36ad0381b6dd2b0d19b2fe63c3e2a07434ce7e86",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-af28a7bc0064e78e676de617",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "fbb4009c08e6173078259deed5a799c91df15258dda96eff49c20244f463aa15",
+          "labels_sha256": "03034c6b79be2e32eecdc22a0993a95b74bd0d677ac424063fa477e4a82ef1fb",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-dbce08c6e9223dddd2ecd081",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "a070aee05f4f1c2addf02c282b0c935f2308ca2bcddbc35ffc70edf46daf7d3b",
+          "labels_sha256": "9ede73f33dd3fd8047b7ec8854f223957d3d5a388c25999f6c9a1412d06c389c",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-3e1bd3050d4131b325aed460",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "cdf2c9e52f0391dc81e82dab37bf02f0428e8bfe15236519205e99460da5e378",
+          "labels_sha256": "d34eddabb0795070210803738c8c5ff2ba678fd534a0eadcbe81a280eab8fbb9",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-b0bdadb20c008c3aa187e5e3",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "f6a40c5b60ecdcda39d021314b51f0fa13a38b5f76521a8a6e6371c160786702",
+          "labels_sha256": "8860daffb51ef46f1da1a33e109089191e7359975c276bf11c1e4a71f84f9c63",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-9f08736863e043e0027570f7",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "37581d3fa57bc0e9f1ffb2ff3c5d7fd78c8a2e2c5029c1fe7dc52f1f7b100e7b",
+          "labels_sha256": "576426205e562bdbc4773cebee45772916517d124609000fc556740f4a1eda42",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-b3d8fc42e72f69c14949fc65",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "c76051b115956e50e929840287f6cd6a80f195e2852b171dffbada6e2da0ea54",
+          "labels_sha256": "df50da165301013e7fd942783b2ccb48a9ad06e4895462501e0c8c8ed8798bf1",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-29287dba7fddc56fab608c73",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "ce4de60cfb88ec6e0e2842e8c50b695d41b9432518ec3a332a7fa5c32351dd9c",
+          "labels_sha256": "6f09abb2e9de4ea7a73a7840fc3bdd8a302dfbf30e452b3d151afad90659d12c",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-eaf65c7fa74cd53739bbc484",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "75037bbc8c12088df49e5f70efe3a5c7e07d75d54d0a88656898c64a3dd0a808",
+          "labels_sha256": "99ca84c3a0c894b09c6a73e9b259d0cc2734483b31977ff2709dc56b9fece2d2",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-c597b51283ced533b6ee0481",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "1063392938fdb27a43d9b555e338a2a05025a491b5484bb890ddcc4fe9bee92c",
+          "labels_sha256": "c4275fac0de87a83a2c61e1b726fd1902863b46dda74c9690ad39794c357367a",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-617776070c27dc65a03af81f",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "0f3c5865eb186b8dda67fe143f69f02373019100b7e04f0a4ce9390aeaf21353",
+          "labels_sha256": "c7273069dc422e034fc22d1d86ccdb2fde2a65f0ffc3c54d15e17694711fc7c7",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-006a0e3b0b43c66259010c87",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "5415a7f66607775cb91a48456803768e708bb6717464f31d0a739316ac647a95",
+          "labels_sha256": "f712b6ec303fb9d2b5580821a58b59f536a441a94394ed95f12167ac94633020",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-e89628f154df988428fa910a",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "dd750ace6e788a9ad6958fefbcb765c3a82089d2f7de8923b357bcf0e0ec920e",
+          "labels_sha256": "dfa0d48ce3d7726bbced5e94ab0a64db2077cb37a3e44ebb9c32859e319344c8",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-cd04caf8b544a1d9308a0d0d",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "5fe1e8eec81864605e135c0d53902554cc539b7572a41f05dc374a3788810e70",
+          "labels_sha256": "35c3ac24c250704530e388998527e3a1eaa9440db8f45da8ea7a13b8d185c7dd",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-9a76b3a543c7bf842652e671",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "b23eda7c08525345fa5947e24a072f005319f1ce7a45b5010c212ab7b3ac41f0",
+          "labels_sha256": "e8d9c702bf7588d4f99a2ae467eedfeddd11d8309b4d428f16d5ecd30f331e9e",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-c60108949ea2c725ec7482ef",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "98a3995d77e453b1b969f34ebb753ff0701d53ff5e95b94c58585a75dd34df30",
+          "labels_sha256": "ec8a5aaf12b903846049fb0ad246e336ca84a67c163240611e810340baaad8ef",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-5fa63a945d8e2bb367b24924",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "edaf0caee71cc49518d1d6e4aa7725b61c155812e580ef303d37527111ed22c4",
+          "labels_sha256": "537ef9c702ca6139e0a0584f375008a5340069a00fb8d7b59640c52fd6677bea",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-f040b0beb23f153814d0682f",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "f36be38cf04fca4629aea6e1b23bafa892aad47fcdd21564d7ae6e01edcb7564",
+          "labels_sha256": "2a769390157c36c6df9e86f2073904527a5012b81d7581cd7c96dedd238426da",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-9cf6f40e676715c0836f94fc",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "86bf5b3d779c2e2251d4d4167a7c451d4eae1678b06b7a7a6266d118b4b0bdb9",
+          "labels_sha256": "4759152c22102d1853475bb42d43c53048f81c5073aafb41be83c212fef6f638",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-b742422b306341c69597bc21",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "6902b9375f5293e4d0fe862a7ea13496d591d2b12048489cd9029a2765e2bd19",
+          "labels_sha256": "a14b452d61cf116207e70c59ddc4902064ac6bd4eb46ea6fe14a80ad2e42e53f",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-37433fa026016fa6acffca19",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "4a6c8613715664814ff0210eefd454d16855b09df656eaf1e82195cdc1b50115",
+          "labels_sha256": "e9e855d396f27fe371159ffb44f06020c11ec2d2a926f1e8cb5f21d838d34a74",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-85c2867e668837d23ec414fd",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "6d2ae136fe1a989d5fa598b876df122880354d35f4d93a191584ba8f6e2d12e9",
+          "labels_sha256": "ae1f87e84d6679e3829b42d6e47e508c2fbb8dbbf905a16db21a2b124b80f31a",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-1c06dd347db18aa8ffcdc91b",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "b536abc7a3cd2c16c19222b31f5971d14a380b6f5195cba51f46c69aa854192d",
+          "labels_sha256": "c22d5565985923df55f3a19e0bcaaa6564244a7ff783a71e7754cc6c06cc24f3",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-2c060f83f2a87ace4db5ea48",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "a62a8e9bf142cc0827fbb3aad452292363a9f9a9631c2ab604e23d6dd1fff0d5",
+          "labels_sha256": "81a27bc65e2dff899d293bb03d0a12e58250e2aff91605d8ae72f401e00e4e7d",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-83826a6e43db39e2b0b8c43c",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "7dc0d5af324d3eef81b15bfae06cd9272b01321b247486e3055241e9ed2c1d78",
+          "labels_sha256": "ec24107bd51839a160a4bde0c31de9e8c7a675ad4b69d5e190ea8c7cb6ad9bdc",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-8071f866d1b462ddb870185b",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "858c1b638ad7e23c2db03081a6058e1c5009dcee6e3933c046a856f293e9f2b4",
+          "labels_sha256": "ff86a036f19f05071f76d8b9e915dd0fd4248192c673b56eaee556e358479f83",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-d43aef5b1436c9130ac2fa5a",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "8a7e42946132505035e49151ca774832a7a6ad33d6dd240faf83eb13b3fcd803",
+          "labels_sha256": "927b747be43ee7f32a05b6c38991eb0d5fb2531a31312b39fed8cebfb397f15d",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-144e26872d47c6189bf795a7",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "5ee680bae3f4fcc6fa463f68077c7884384ce96bce9afbfb8b81ff192b4fb03c",
+          "labels_sha256": "c4cedde6e773fa48c8b7fc2100fafbdec16c4ca5dd2765efbf2da8bf09992bf8",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-8da014a5ca7b56a3c50d14fc",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "06272aad4ff7def0060a4edc3da61c1292dd8b119b94b8e1f10c0b19fedd361f",
+          "labels_sha256": "bdced05bdb34040baa4e7dff086c9b4bbdd7a828ca317baa5485660a04846133",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-1d5e75a221131c568dcb1bcf",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "95340e6bcabd7615db85653e16786595c30e2130f3cd7a7d81edf8cecdb43e7e",
+          "labels_sha256": "30809fb52801c13c47ebf400e61cc6cb8a49dcf39eaad4d6a727660bfbdab895",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-42abf3f9a4802401baa9691b",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "befd7bccc9a97f01f40e1b6016dcc3fdca9389ee25c9bd69334ce1f2c3401f23",
+          "labels_sha256": "5c427c3566e83bf2c5779d03f6ffbfd09ed0981fd7eef305a153ac49bb70640a",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-b23d871419294d2d5a529d0a",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "e3d904a94d4dadc4051b304ba4dc186bf8e5dfc6d3d09242c2804402636cf671",
+          "labels_sha256": "83992ce648cf554e06de9c1812ae1848d609a71b393d0cc4f6bba2e34ee12ca5",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-1730cf1f3646150cda11acd7",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "f02cf17bd4c96e30b2a9a207913cc5dc71206c21ef2a3e96761d603dbd2befd6",
+          "labels_sha256": "dfd2c47ab8d3b5d208dc71d3ffda4a2f2c4c30427a9824b90082bd827ac8b746",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-d1b94181cbcd3c6a62dbe3f9",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "4098024b7e70ba034bd6d6083fe0209ec1e5cb00335e0d26bc0c7c30115bbe41",
+          "labels_sha256": "156ba28b8f475b34e8666f5306b4d3a3ccfbc59dee50d3abd7273f4b69b72c72",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-218874f0ed0a9123e5f45364",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "f44d3ba79705df315281aa49b6126ba088f947f70309df1656acc5bd7692ba08",
+          "labels_sha256": "9472389f3ab50bbbff69c19a0b894359c5a50c018639547baa3bf5b35a9fdc4f",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-cd2aac9bc3a338208471be92",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "3cc23e5b02e55b91b93a86c10358c86a679f78c55efc07fd7b7469b49f847634",
+          "labels_sha256": "499acedaff0a8bc0b06aa64d12cf9f134dca9900d33fd74c86d44e3f65454c64",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-609089b7bf4e58390d74fb5b",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "09d6c933ccac55fb6cfb065c6a8222451818ef3a191b287fffa4c17233896424",
+          "labels_sha256": "dc2749b6eb7beaaa344924345f3714ed6ab5f38c8641c4af69fbceb89a2fc074",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-707ed54343f56850e86e4069",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "f1a8b35f5ae4b15a4adf4bf79aa94bf075af1d92984c7f4074a1781a675c16a9",
+          "labels_sha256": "fd60665e29fac175488984dfe22a6b2bd18fb207aba1820f515f8a334fbb7e46",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-c894700f98ae3df214e8598e",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "20b10accf8e4cebb99118367ed959e371b40bb1085dfd1478bfe230482a20613",
+          "labels_sha256": "992a1849ec2bb83bd732284cdca4f6a450d20465d4176fc28fb280cdc4c96269",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-f97cb3f117cc422be00e55c6",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "9706a7ba8b6d73c9c2a135acb0351420b3fbdd3d55dcb139d40a672f0d96a283",
+          "labels_sha256": "1f20d989f0ec786ecbff7474557549e7d617edba326a384aa9b7bd16e374f60b",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-612e767d5f9076967c9384d4",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "7728cd9df2838709cbb7c521e7c1bb67bfed81f8a46efe8dd5b4bf60d8808502",
+          "labels_sha256": "f83f7d41c625aacb8f62700b02b0f7ade328eeb499c378e5ab127d97271e3ae8",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-5a90c3621266f9e4b5730e9d",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "b7b5c61950e5bdbf264fbd68d51eafb7ab4b46c42f25aecf9f575234858809c5",
+          "labels_sha256": "46295bebb4710473506277145e9b4ac2b2f97587e46d97d49106938b49b2fa54",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-db56ae2ae4876d6ee3fa0b43",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "0498af836add9468fb63dbc13b43adcf61620a1015617b73bb4a2003172f18a8",
+          "labels_sha256": "b0d45afccc8fa7b69206b6b2a9890665c5d0f4d930a6eed23af0e2444509777f",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-4999c172a645c5fa11fc89be",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "d6d9f20bc127fe41098e7a94a8f79ca092e2aa4b5386d34854b74250236fb01f",
+          "labels_sha256": "2284b8b8af9693502962198306a3b6f9dcf0b0bb9979dc7c254c65f28f9dfa9c",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-e6424f7e7595c1df834b7b95",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "111bf56e6358dc0d13e4e4e7a98031ca5c7b86614e7dc35078fa8f6cd253ed67",
+          "labels_sha256": "c6de690a17a362276a5940a1bf671141c6f8ac6a6035f48b59e51da25d16a2f3",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-de8a6c9b182885d76fbe7eb6",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "73ff4b0b8119307353d6628ecb2dc8f4a88cd7f6bf70f912d426d20cf737c945",
+          "labels_sha256": "c8dd7432594d5ab6279ee9aaabb22b33c899ee9b7650e4befd130380befc4b44",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-2291af69d2513ee9d5fc9ee5",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "c57eaa5f007615bdf1ea9500cad4a6e5860d473d0c66333e308d575c73638d57",
+          "labels_sha256": "067035895eb4d4e3b18cddf4e4b5277f92d39e61b8c84abb545d18c9036e11ac",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-bcee392de9e26abb7fde8006",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "350420892f305a84dfb806cdc6e2e80d690ddac7aac8892c5fa75cf8b991c457",
+          "labels_sha256": "c349ed39a45563b674122bffc52927681cb0508084f251c9538a0036daef6bd4",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-3fdc8598f5f484cc1a51c801",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "767411e572a7a63d94c35ea374a4e1a53519d15154106fd1c22c34ce414722d2",
+          "labels_sha256": "92c8996f9099fcc4453edc812ce6718973433c8c847f4a1ad1f9c17597d6df22",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-49b0c0f2da212fa3d2ad2f4d",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "0a3040ec63daa0d1773ba0c7174dfe9eb8b6ebea7bd1ccea126afcf3713123c6",
+          "labels_sha256": "e69e97c3000eaee5d8df03120afd4dba61099a3a79059c4e6bc972cd54851dd0",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-a09086b64a17b2acb759abab",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "badee63688dd413aff6ca93cabca0fa920b17c77a26ee135252b23bd252a8a02",
+          "labels_sha256": "0e502bd5741cd06ddac9d8bda425ef0bea564502b3836d832ac559d57f8b77e7",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-7014dc30fe9421a269244607",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "7bccd286bd8ee612d641551d37de7b8c9d527c88aa3eac7bcfb3b56dd82f2dab",
+          "labels_sha256": "0b10fe8c8b91f5bf95d4c63ab106d701e39701e82517ee83e1b522ca87bd02f7",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-d7274a3de6e9af3310c41da4",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "919954fb845f56b0ea60b340c2134759f5eaeb3eb1878743ed6d504d50834416",
+          "labels_sha256": "4f8629d1fea4ca6e1847a5fa205e79432cce3cfeff7e3901823bce5bcc4bf8b9",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-419fec4831d60b67d10fa93f",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "cf1dc3d7f17b4289d51240efcf084651e9bfdc65540f54b56dc237e114af867e",
+          "labels_sha256": "90e51b63a687014276dda8c18993d8632f5d8edbc2f9a0087f8942f051841c69",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-40b14642425f0726c0e1a861",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "32241c3967621156771e3e04aaafc8abd3acb258faf4701c8a76f31e7f892236",
+          "labels_sha256": "e06cda6d33f283d116643057f75917d09f167824d1fd7689f40e95ab40ee26f4",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-eb95e18174f55486d4440adc",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "36f77fed50276904b89c353f1936773c07383e433062afccb402c08ba334a9b4",
+          "labels_sha256": "c1f8572b61ffe511ab68b9e217a35474fbb3ed5360702b2fca3ba01bac9f82bd",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-0baf83e047ce853188730e10",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "8e0e9372e81e72cd8c471a83d2858e1b5a350670b5058078503391d75f045409",
+          "labels_sha256": "542cc7147e67a312212b8576c9706372362463f626dc6dfbed513ae5cff071d4",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-8ff3572391bb0b1bceddce81",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "4f8b69669ab5971b5f4ce0da1b9bb5c10965ac6ff46ef74b84220e9007779127",
+          "labels_sha256": "33ca4ea2b5225a80e2b92df5be14bd6292e0ef5f7f0a3c55299a25ff10d5d5e1",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-39aa9f958c7c0cfbe04d047d",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "b4d7c29e928aedfcbb941c227b152f2994a23e543df977011e1a40249175106d",
+          "labels_sha256": "c96a25ab15da3652239b2a1c6b9e9ab1dd243670e09621611e8c5b0a1b959e11",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-16d6f553355caefc86d440ac",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "c8b2369f4e1349c6e3976dfb9e41db714aa7f94ea68cb0c1641a874483cd1a5a",
+          "labels_sha256": "b9fd450da1fb03c67908d7fb17b21250b41ce1467376d7afec6ddde5750ede9c",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-7e38f99ebfdb0ea3ec0ca4c7",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "94bef585d7bc1f5abea0a293c65acddaa647c2e17f06ce6dbac93c49bc6e2a11",
+          "labels_sha256": "91a33bf6ed41c91dfd27b225eba572b0722b37064a12b10c1dfe26ac01c7159e",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-03080621599410bd1568e462",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "b405b9376ea545c5e0eb9dd0282e79c2986169b101432de4e7f994e867fa480c",
+          "labels_sha256": "6d10a9047c484ed2ba8077da750ff14d1872aa74b7ebeace71c3f91e8df837e7",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-2f1b34217165f1d2ba31463e",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "a2e360a1bd51720ceba86b88c55b4c202ea7d494fe648dfe0b0743aa3406968d",
+          "labels_sha256": "8ce4f36d6eb2d93f6315535ef5ec0e9acf60ad57ee191ce5649a80d89f1cb075",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-82369931ee560e6125f084df",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "6a10602b5538e7c902ad94e6e203f8b018c3c44384bdf12c990b096a8b2b60f7",
+          "labels_sha256": "c89d9157070c5c9a182be9917ecec28da79443841345977cfea283437813a1bb",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-093ee18e2bc242708bb4770d",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "bdaad26e6956695ceeb522565f0caf1648f5eb625d9b1ac75fa2d84dae284d54",
+          "labels_sha256": "f75d6dc3c639a4425dc399340c7b683f889c5bad35acbe523577373d0e7241ba",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-bdd3337a0943b34e9cbf79e3",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "d1298018ca7d0efd26c349bd732d51a11dc0fa0b7dac1b6e5efd0f20e0d554e6",
+          "labels_sha256": "80ee9de23d1c9d2db4c00c68013070e73c3ec62eac707cc3004087cf33fe76d3",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-91ba2d3131eb0abba0d211bf",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "38084acaeb9fc1518ca0f7632fd76fb9acc6a4c37be17a30a58959ee2aa77b6c",
+          "labels_sha256": "23e0e589a268acb106646a132778cbcf0e3e3eb849cf07fe6c9da7ed9ac1076c",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-daf66160904c8ca61c10c90e",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "6190160fea0e03ae913a377c765907664c62e8871a6fa466f3132e2348a2f8eb",
+          "labels_sha256": "bf442c4a275d8362ed37649c0ec04fde98f10438ae80afb9b838fdf94c7ea615",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-0dc8d7972c9050391a256bdb",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "6db62b131a7e8555342474681b95078aa293a998383e7b2b2463cec35633fbbc",
+          "labels_sha256": "84a6ebd5edff599f2aef069db7cacecc7adc06fbf49718eb7f24f5988120d0d8",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-a9e6bba7e6410e0450c3f66a",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "1f9c519495cfd3d84b985fa72423f4dc77e510be520f63a27923d76eeda9163e",
+          "labels_sha256": "3e83450a365c8b1918bdfb81d6982510d1411076719d01955ed570f5c3aba393",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-1a66347ec8fb594bdd2bcd45",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "f4aee8ec272ce70c9a801ecac05030f7a48df494d07931ed5b98187baaef7367",
+          "labels_sha256": "dbe3421e345e03dee4f31e3724f89f8c3068c92e4663150626887cff8daae5e5",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-37ea9606dad34388f43f6204",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "fefed2ed2f558a367538c15c2e6a2b006744a36fe926275a2bec4048dec57ebb",
+          "labels_sha256": "457f587c25cb4572fc9dc600e4aea43947e0439d6198dc14b98ef29370e61e8b",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-b1bf1082ca47c1269d2b6580",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "2386ed1e9561d8a477a41e161126219ae494fd9eecdaa20ee3dc09a4ed1eaa55",
+          "labels_sha256": "f2cd6028246f8731d323400d556dcc99fac28c2764d578ea1e3dbbc3dd7d5fa0",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-b6be07e6610d4ff9f53d0c64",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "18c37cd2e2544daa0b027df42ce51e2cd8d61bc83096d2af73ee87532bd55f49",
+          "labels_sha256": "1bc7e4a081a54bb2e86d30a02203e95a9bbf5cc3ff588dba9b8dbe13f47fe50f",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-6cc74337ee072cd3c2941fdc",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "06bc13ea287399a376f1fb3603e0ffdfbd05853975b03bd9acdecb0df221e5f2",
+          "labels_sha256": "1cbd575d3ebd6bdfefef76ae52b1a14cac738d4874bc46ffe2618d880544c774",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-e5bbdb9a5c2012d34c064d75",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "84f9466612cebc669296fcadfc1c3139c775bb3398e452e73d8176bf832f5df2",
+          "labels_sha256": "be58ae060cec1efd3efaefe23a0837d986f76db22779190c13d75025e8b27302",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-cef3425d9e6981c1c45d2270",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "5aecdae5d2f05b2ececaf230d0e67717862c451698a8050bcf7e6dd137efd1dc",
+          "labels_sha256": "012ff0fc6b8ae7dd977593601ff4974abd1b5972e24867810c71e1c8fbd8c7b4",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-acb6180691e0888d4fa4d360",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "3506b480b256c29f76edc6ab2220071979215fb21d6cc7a21bf75c15a508eb02",
+          "labels_sha256": "db70981e42489dc91615e88d0092f1b58c10f967da8cee48f884750b68f993b0",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-b19e219f0e9c3245ecacdf59",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "7da6a707c614fb9aebee434b5a33b26e7feb53e49c694d739424a18fccb37ef9",
+          "labels_sha256": "f441bdafaf2fababab124d1dbc93ddbe1afb3b67dc859abefbb331a5232413f8",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-e6cd98ac634fba7bab1d171c",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "b34b5fdb9147b95267d6ccb969f1380dab4afcf29d59ab6f6bb74096747609a6",
+          "labels_sha256": "8ed15c94d694eb3e5db153326cba8f26a30e74fcf15cfc22ebccdda2c6741647",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-36be4fa74a940924f755d1e7",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "00f0ac445cd5eedabbb6755f2c16abe13f07366dd6ad2ddf583c1be054d0bba7",
+          "labels_sha256": "f607e1c16971acf97c94d1a12600dfe90c12230393a734e365f5211b9f28b41d",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-09fe40890a98477917f1cd85",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "1455c4486ebf1321072c64f4b843d9ecb474d5ecaa7aee1704079299887e05ab",
+          "labels_sha256": "4f88f6cbf50275a0ec04cdf2df6a1921b96b4506837a5c9569832e5830f7f066",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-8fe4093576ea4d4a7fba0cae",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "fda63be174234e97bf9f8bfe8d96ba8b13a7c3575c4b8cb32d0e3147734e47a8",
+          "labels_sha256": "f28a68544b923ab2364418671bb7670c1644692825dc994ad8cbc0dff17ec1d7",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-107579e1e938604a05b91442",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "00da62f127fd7f999d9b367eaaf8cc3d1a246b5287dd1920699b925096db65bf",
+          "labels_sha256": "1cf0ade4608cfa8b17620ff47f8c65b5c0d47bec2689d0e86913f7ed4ed650b4",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-f0123e6425aa9597bdff64c2",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "f5a7f35c581b20b3a53115601fd920fda4f685c5583ad6e9c07aafa86b08b3e7",
+          "labels_sha256": "ec7cbdac9633d78f7d12c78dcf05edf6473eda193880cac82790ae4c8de1a422",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-6a22d07a9bee5cba3e6f51db",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "af41eb218619c4f2bd864744dc4e408b518549dd49fd99acf8f9637fbd016527",
+          "labels_sha256": "49b3f63f3c19e7a32dd1c057191d0a06d99935fb744ef033cbe3513b8cc153b1",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-3a65b4582ed3ddf1a81b11d3",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "ffe96ef6dfedc9da5faa960d76b8743fa1f7c377f7d94f44dc4b05420e40d66c",
+          "labels_sha256": "7566b981dcee8c6bb95bbbcc595e4e9238d07a28c846e4f40c4cf3252dd08f92",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-adc945681353d01ef3bbc3d1",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "632ec9fff9d0f1a0158b7651ce134d7a415dec13feca009fbe00c585bdb80570",
+          "labels_sha256": "39b647bb3e5a039fd50244e38c9fb6f38a94b61120963b668718e86f20d1f25d",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-408995cd806e74ae08f4a9a0",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "62e600107bd85ff9de28f757e654fe50a06f699179744687b1ec15e4c2025091",
+          "labels_sha256": "c92c86f0ffb2a8bdabfa26fed8c3875146e0fcec0ed182da2bfa2c2949b84b9d",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-6b9e8b89f02589b1fbba9e2f",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "61dd070046db12dd6ad92aa81b1b2a79b1215629c9f7c544c749604dd8da408c",
+          "labels_sha256": "64353cbd61df75931185d70229d4cd9e7c8c58102fe572cc2c7d6dfad53c97aa",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-7fbb67e756acd29143eb208b",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "ea8c413f5dcdc1a7d988fb66a0bef7dfd13b02cfc7f0670534601f2834bbe83b",
+          "labels_sha256": "30dfed1c8abb362c2722568ef2f93fe9d5701d62148bfd5fc272221c0eafa6bd",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-de06270ce33ed6eb15a10c37",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "212ff9a1a5cd4946d7b550611d0a6cb13857c9ed5d61544df1b37b298e1816a7",
+          "labels_sha256": "3e65292571bbe9ce7f4c522160d7434058b11469de0e873f5be00a36b4cb0404",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-956a29560052e010542db92a",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "3aa0897b5633a909033b6440b92895d8bb7d6434dba8cc7fc56fa4d272ed1506",
+          "labels_sha256": "9bac4d2b825fa9cca82d1eabd81279fb72f707d614ba24d146d63c212d864509",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        },
+        {
+          "workload_id": "tenset-b17085864f5cc316b95c3b92",
+          "task_weight": 1,
+          "runtime_basis": "measured_milliseconds",
+          "input_sha256": "ce7b96a36687432c5e240d6ec6e72762ebf4add7c77c3c853f3cb7e6509dbbff",
+          "labels_sha256": "eaf1fe2e7002270b495682b2a1c53f0ac08b3ca327c986cd16794339b87d6de5",
+          "candidate_count": 50,
+          "a5_shown_count": 10
+        }
+      ]
+    }
+  }
+}

@@ -48,6 +48,20 @@ Top-5 deficit. The published MLP + Ranking loss reference is **0.8823 / 0.9456**
 its original inventory and checkpoint remain unverified. The network metric
 differs from the earlier workload-prefix metrics.
 
+The [controlled context-ablation study](docs/results/tenset/context-ablation/README.md)
+is complete: seven conditions with three fresh repeats on the frozen E5
+120-workload, 50-schedule cohort, plus three repeats of filtered A5 on all
+27 ResNet-50 task pools. Naive input has the highest small-study mean Top-1
+score (0.3582 versus the saved Random draw's 0.3324); additional descriptions
+do not provide consistent gains. The new filtered network scores are
+**0.1134 / 0.3432**, below the current Random-42 reference's
+**0.1373 / 0.4063**. These are separate from the historical Random-0 comparison
+above. All 2,601 requests were live, with an estimated **$5.04 in input cost**
+at the recorded assumed rate. The
+[ablation guide](docs/run-tenset-context-ablation.md) documents offline
+preflight, paid execution, resume, and result sharing. The TenSet structural
+diversity filter differs from TpuGraphs' large-tile heuristic.
+
 The TpuGraphs pipeline is included in this tree. Its logged full `tile:xla`
 validation experiment covers **676 kernels from seven programs**, with
 1,038,376 deduplicated configurations. Jev has higher mean Top-1 error than
@@ -145,6 +159,8 @@ docs/                     Interfaces, configuration, protocol, and status
 
 - [TenSet completed runs and reviewed results](docs/tenset-runlog.md)
 - [Completed TenSet 16/32/50 candidate-size results](docs/results/tenset/size-sweep/README.md)
+- [Completed TenSet context, order, and filtering ablation](docs/results/tenset/context-ablation/README.md)
+- [Context-ablation execution, cost preflight, and sharing guide](docs/run-tenset-context-ablation.md)
 - [Completed main-paper ResNet-50 comparison and reproduction guide](docs/run-tenset-paper-resnet50.md)
 - [Main-paper protocol and metric source audit](docs/tenset-paper-protocol.md)
 - [Finish the Jev-versus-Random RQ1 analyses](docs/run-tenset-finish-rq1.md)

@@ -460,3 +460,48 @@ def test_receipt_only_pilot_is_provisional_and_not_a_complete_network_score(tmp_
     assert "paper_network_top_1_score" not in runs[0]
     assert float(runs[0]["pilot_network_top_1_score"]) == 0.5
     assert runs[0]["complete_network_coverage"] == "False"
+
+
+@pytest.mark.parametrize(
+    ("means", "deviations", "references"),
+    (
+        ((0.113422, 0.343155), (0.007755, 0.024797), (0.137327, 0.406334)),
+        ((0.3, 0.4), (0.2, 0.25), (0.1, 0.2)),
+        ((0.01, 0.02), (0.03, 0.04), (0.015, 0.025)),
+    ),
+    ids=("random_above_bars", "errors_above_reference", "errors_below_zero"),
+)
+def test_plot_limits_keep_random_and_complete_error_bars_visible(
+    tmp_path, monkeypatch, means, deviations, references
+):
+    pytest.importorskip("matplotlib")
+    from matplotlib.figure import Figure
+
+    from jev_compiler_eval.evaluation.tenset_ablation_analysis import _plot
+
+    variants = [{"phase": "full", "variant": "a5"}]
+    random = [{"phase": "full", "variant": "random-42"}]
+    for index, k in enumerate((1, 5)):
+        metric = f"paper_network_top_{k}_score"
+        variants[0][f"{metric}_mean"] = means[index]
+        variants[0][f"{metric}_std"] = deviations[index]
+        random[0][metric] = references[index]
+    checked = []
+
+    def inspect_axes(figure, *_args, **_kwargs):
+        for index, axis in enumerate(figure.axes):
+            lower, upper = axis.get_ylim()
+            assert lower <= references[index] < upper
+            assert lower <= means[index] - deviations[index]
+            assert upper > means[index] + deviations[index]
+            line = next(
+                line
+                for line in axis.lines
+                if line.get_label() == "Random (one seeded draw)"
+            )
+            assert all(lower <= value < upper for value in line.get_ydata())
+        checked.append(True)
+
+    monkeypatch.setattr(Figure, "savefig", inspect_axes)
+    _plot(tmp_path, variants, random)
+    assert len(checked) == 2  # Both PNG and SVG use the corrected final limits.
