@@ -398,3 +398,27 @@ identical original-paper evaluation pool.
 - [ ] Person C: TpuGraphs experiment, results, and RQ2 discussion.
 - [ ] All members: introduction, related work, limitations, conclusions, and
   final proofreading.
+
+## TenSet context-engineering ablation preparation (2026-11-25)
+
+The [context-ablation workflow](run-tenset-context-ablation.md) prepares seven
+conditions with three fresh repeats on the frozen E5 120 × 50 cohort, followed
+by a required three-repeat, filtered full ResNet-50 evaluation. Candidate and
+graph descriptions are independent factors. Ordering and filtering use
+runtime-blind schedule structure; the diversity filter differs from
+TpuGraphs' large-tile heuristic and is evaluated against filtered-pool Random
+and an oracle bound.
+
+- [x] Prepare the study configuration, offline cost-preflight workflow, and
+  explicit paid-execution commands.
+- [ ] Run free preflight on the Mac's real prepared artifacts and review the
+  actual token/input-cost forecast before purchasing credits.
+- [ ] Complete the small paid pilot and calibrate the remaining token estimate.
+- [ ] Complete all seven small-stage conditions and the full-stage condition,
+  with three fresh repeats each.
+- [ ] Review the raw results, paired comparisons, filter baselines, and usage;
+  share the experiment archive with Jonghu and incorporate the findings.
+
+This is newly prepared follow-up tooling. It does not change the completion
+status or numerical results of the previously audited TenSet experiments, and
+no new ablation result is claimed until the runs and review are complete.
