@@ -6,6 +6,18 @@ question; the top ``advance_per_question`` candidates of every group advance
 to the next round until one question holds every remaining candidate. All
 questions of a round that fit the token budget share one request, so the
 workload state is sent once per request.
+
+Optional presentation settings, used by context-engineering ablations:
+
+- ``candidate_order``: ``shuffled`` (default), ``size_ascending``, or
+  ``size_descending``. Size orders sort the seeded shuffled order stably, so
+  candidates of equal size keep their shuffled order.
+- ``keep_largest``: before any question, keep only this many candidates with
+  the largest size. Filtered candidates are never shown to Jev; they rank
+  after every shown candidate, largest first.
+
+A candidate's size is the product of every integer in its ``size_fields``
+configuration entries; a missing entry counts as one.
 """
 
 import json
@@ -24,6 +36,7 @@ from jev_compiler_eval.models.jev import DECISION_INSTRUCTIONS, parse_choice_ans
 from jev_compiler_eval.types import Candidate, DecisionResult, Workload
 
 CANDIDATE_ID_MODES = ("opaque", "original")
+CANDIDATE_ORDERS = ("shuffled", "size_ascending", "size_descending")
 REQUIRED_CONFIG_KEYS = frozenset(
     {
         "model",
@@ -41,13 +54,38 @@ REQUIRED_CONFIG_KEYS = frozenset(
         "max_tokens_per_second",
     }
 )
-OPTIONAL_CONFIG_KEYS = frozenset({"include_context", "long_context"})
+OPTIONAL_CONFIG_KEYS = frozenset(
+    {
+        "include_context",
+        "long_context",
+        "candidate_order",
+        "keep_largest",
+        "size_fields",
+    }
+)
 # Fixed allowance for JSON framing and per-question fields in token estimates.
 QUESTION_OVERHEAD_TOKENS = 40
 
 
 def _compact_json_length(value: object) -> int:
     return len(json.dumps(value, ensure_ascii=False, separators=(",", ":")))
+
+
+def candidate_size(candidate: Candidate, size_fields: Sequence[str]) -> int:
+    """Return the product of every integer in the candidate's size fields."""
+
+    size = 1
+    for name in size_fields:
+        value = candidate.configuration.get(name, 1)
+        values = value if isinstance(value, list) else [value]
+        for item in values:
+            if isinstance(item, bool) or not isinstance(item, int):
+                raise ValueError(
+                    f'candidate "{candidate.candidate_id}" field "{name}" must '
+                    "contain integers"
+                )
+            size *= item
+    return size
 
 
 class RateLimiter:
@@ -210,6 +248,28 @@ class JevTournamentModel(BaseDecisionModel):
             raise ValueError("Jev tournament include_context must be a boolean")
         if not isinstance(self.config.get("long_context", False), bool):
             raise ValueError("Jev tournament long_context must be a boolean")
+        order = self.config.get("candidate_order", "shuffled")
+        if order not in CANDIDATE_ORDERS:
+            raise ValueError(
+                "Jev tournament candidate_order must be one of "
+                + ", ".join(CANDIDATE_ORDERS)
+            )
+        if "keep_largest" in self.config:
+            integer("keep_largest", 2)
+        needs_size = order != "shuffled" or "keep_largest" in self.config
+        size_fields = self.config.get("size_fields")
+        if needs_size and size_fields is None:
+            raise ValueError(
+                "Jev tournament size_fields is required by size orders and keep_largest"
+            )
+        if size_fields is not None and (
+            not isinstance(size_fields, list)
+            or not size_fields
+            or not all(isinstance(name, str) and name for name in size_fields)
+        ):
+            raise ValueError(
+                "Jev tournament size_fields must be a non-empty list of names"
+            )
 
     def close(self) -> None:
         """Close the shared Jev API client."""
@@ -293,6 +353,7 @@ class JevTournamentModel(BaseDecisionModel):
         list[str],
         dict[str, str],
         dict[str, Mapping[str, object]],
+        list[Candidate],
     ]:
         if len(candidates) < 2:
             raise ValueError("Jev tournament requires at least two candidates")
@@ -302,6 +363,20 @@ class JevTournamentModel(BaseDecisionModel):
 
         presented = list(candidates)
         Random(f"{self.config['order_seed']}:{workload.workload_id}").shuffle(presented)
+        size_fields = cast(list[str], self.config.get("size_fields", []))
+        sizes = {c.candidate_id: candidate_size(c, size_fields) for c in presented}
+        filtered: list[Candidate] = []
+        keep = self.config.get("keep_largest")
+        if isinstance(keep, int) and len(presented) > keep:
+            by_size = sorted(presented, key=lambda c: -sizes[c.candidate_id])
+            kept = {c.candidate_id for c in by_size[:keep]}
+            filtered = by_size[keep:]
+            presented = [c for c in presented if c.candidate_id in kept]
+        order = self.config.get("candidate_order", "shuffled")
+        if order == "size_ascending":
+            presented.sort(key=lambda c: sizes[c.candidate_id])
+        elif order == "size_descending":
+            presented.sort(key=lambda c: -sizes[c.candidate_id])
         if self.config["candidate_ids"] == "opaque":
             width = len(str(len(presented)))
             aliases = [f"c{index + 1:0{width}d}" for index in range(len(presented))]
@@ -318,7 +393,7 @@ class JevTournamentModel(BaseDecisionModel):
         state: dict[str, object] = {"workload_id": workload.workload_id}
         if self.config.get("include_context", True):
             state["context"] = workload.context
-        return state, presented, aliases, to_original, configurations
+        return state, presented, aliases, to_original, configurations, filtered
 
     def _assert_progress(self, pool: list[str], questions: list[_Question]) -> None:
         advance = cast(int, self.config["advance_per_question"])
@@ -346,7 +421,7 @@ class JevTournamentModel(BaseDecisionModel):
         """
         planner = cls.__new__(cls)
         BaseDecisionModel.__init__(planner, config)
-        state, _, aliases, _, configurations = planner._prepare_inputs(
+        state, _, aliases, _, configurations, filtered = planner._prepare_inputs(
             workload, candidates
         )
         state_tokens = planner._tokens(_compact_json_length(state))
@@ -360,6 +435,7 @@ class JevTournamentModel(BaseDecisionModel):
         return {
             "workload_id": workload.workload_id,
             "candidate_count": len(candidates),
+            "filtered_candidate_count": len(filtered),
             "include_context": planner.config.get("include_context", True),
             "long_context": planner.config.get("long_context", False),
             "estimated_state_tokens": state_tokens,
@@ -392,9 +468,14 @@ class JevTournamentModel(BaseDecisionModel):
     ) -> DecisionResult:
         started_at = time.perf_counter_ns()
         initial_wait_seconds = self._limiter.waited_seconds
-        state, presented, aliases, to_original, configurations = self._prepare_inputs(
-            workload, candidates
-        )
+        (
+            state,
+            presented,
+            aliases,
+            to_original,
+            configurations,
+            filtered,
+        ) = self._prepare_inputs(workload, candidates)
         presented_index = {alias: index for index, alias in enumerate(aliases)}
         state_tokens = self._tokens(_compact_json_length(state))
 
@@ -518,7 +599,10 @@ class JevTournamentModel(BaseDecisionModel):
                 eliminated[alias][2],
             ),
         )
-        ranking = tuple(to_original[alias] for alias in [*final_order, *losers])
+        ranking = (
+            *(to_original[alias] for alias in [*final_order, *losers]),
+            *(candidate.candidate_id for candidate in filtered),
+        )
         latency_ms = (time.perf_counter_ns() - started_at) / 1_000_000
         return DecisionResult(
             ranked_candidate_ids=ranking,
@@ -545,7 +629,10 @@ class JevTournamentModel(BaseDecisionModel):
                     for alias in losers
                 ],
                 "candidate_ids": self.config["candidate_ids"],
+                "candidate_order": self.config.get("candidate_order", "shuffled"),
                 "presented_candidate_ids": [c.candidate_id for c in presented],
+                # Never shown to Jev; ranked after every shown candidate.
+                "filtered_candidate_ids": [c.candidate_id for c in filtered],
                 "rounds": rounds,
                 **totals,
                 "api_latency_ms": api_latency_ms,

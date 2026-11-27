@@ -22,7 +22,7 @@ from jev_compiler_eval.types import (
 
 NANOSECONDS_PER_MILLISECOND = 1_000_000
 REQUIRED_CONFIG_KEYS = frozenset({"path", "max_candidates"})
-OPTIONAL_CONFIG_KEYS = frozenset({"describe_config_fields"})
+OPTIONAL_CONFIG_KEYS = frozenset({"describe_config_fields", "describe_graph_fields"})
 
 # Field descriptions added to the context when describe_config_fields is true.
 # They restate the official TpuGraphs README definitions and the task
@@ -47,6 +47,37 @@ CONFIG_FIELD_DESCRIPTIONS: dict[str, str] = {
         "Tile size selection chooses the shape of an output tile to maximize "
         "hardware compute efficiency while the required input, output, and "
         "intermediate data fit in local memory."
+    ),
+}
+# Graph field descriptions added to the context when describe_graph_fields is
+# true. They restate the meaning of the serialized node fields, which follow
+# the TpuGraphs README node features and XLA HLO instruction attributes. Like
+# the configuration descriptions, they state no performance preference.
+GRAPH_FIELD_DESCRIPTIONS: dict[str, str] = {
+    "nodes": (
+        "The XLA HLO operations of one fused kernel. Each node produces one "
+        "tensor; edges are given by operands."
+    ),
+    "id": "Node index within the kernel.",
+    "opcode": "HLO operation name.",
+    "dtype": "Element type of the node's output tensor.",
+    "shape": "Dimension sizes of the node's output tensor.",
+    "layout_minor_to_major": (
+        "Physical memory layout of the output tensor: dimension indexes listed "
+        "from the fastest-varying (minor) to the slowest-varying (major)."
+    ),
+    "operands": "IDs of the nodes whose outputs this node consumes, in order.",
+    "is_root": "Present on the node whose output is the kernel's output.",
+    "parameter_number": "Index of a kernel input; present on parameter nodes.",
+    "convolution": (
+        "Convolution dimension numbers: which dimensions of the input, kernel, "
+        "and output tensors are batch, feature, and spatial dimensions."
+    ),
+    "other_fields": (
+        "Remaining keys are HLO instruction attributes named as in XLA, for "
+        "example dimensions, window_size, window_stride, slice_dims_start, "
+        "slice_dims_limit, and padding_config_edge_padding_low. Zero-valued "
+        "attributes are omitted."
     ),
 }
 MAX_CONVOLUTION_SPATIAL_DIMS = 4
@@ -143,7 +174,9 @@ class TpuGraphsTileDataset(BaseDataset):
     into one candidate that keeps the fastest normalized runtime, and kernels
     with more distinct configurations than ``max_candidates`` are skipped.
     When ``describe_config_fields`` is true, the context also carries
-    ``CONFIG_FIELD_DESCRIPTIONS`` as ``configuration_fields``.
+    ``CONFIG_FIELD_DESCRIPTIONS`` as ``configuration_fields``; when
+    ``describe_graph_fields`` is true, it carries ``GRAPH_FIELD_DESCRIPTIONS``
+    as ``graph_fields``. Both precede ``nodes``.
     """
 
     @property
@@ -161,8 +194,9 @@ class TpuGraphsTileDataset(BaseDataset):
             raise ValueError(
                 f"unknown tpugraphs-tile dataset config keys: {sorted(unknown)}"
             )
-        if not isinstance(self.config.get("describe_config_fields", False), bool):
-            raise ValueError("tpugraphs-tile describe_config_fields must be a boolean")
+        for name in ("describe_config_fields", "describe_graph_fields"):
+            if not isinstance(self.config.get(name, False), bool):
+                raise ValueError(f"tpugraphs-tile {name} must be a boolean")
         path = self.config["path"]
         if not isinstance(path, str) or not path.strip():
             raise ValueError("tpugraphs-tile dataset path must be a non-empty string")
@@ -304,6 +338,8 @@ class TpuGraphsTileDataset(BaseDataset):
         }
         if self.config.get("describe_config_fields", False):
             context["configuration_fields"] = dict(CONFIG_FIELD_DESCRIPTIONS)
+        if self.config.get("describe_graph_fields", False):
+            context["graph_fields"] = dict(GRAPH_FIELD_DESCRIPTIONS)
         context.update(
             num_nodes=len(nodes),
             num_edges=int(arrays["edge_index"].shape[0]),

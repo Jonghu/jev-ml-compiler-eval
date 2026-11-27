@@ -377,6 +377,11 @@ def test_offline_plan_fails_for_oversized_context_without_client(
         ({"include_context": "yes"}, "include_context must be a boolean"),
         ({"long_context": "true"}, "long_context must be a boolean"),
         ({"temperature": 0}, "unknown Jev tournament config keys"),
+        ({"candidate_order": "sorted"}, "candidate_order must be one of"),
+        ({"candidate_order": "size_ascending"}, "size_fields is required"),
+        ({"keep_largest": 3}, "size_fields is required"),
+        ({"keep_largest": 1, "size_fields": ["tile"]}, "keep_largest must be at"),
+        ({"size_fields": "tile"}, "size_fields must be a non-empty list"),
     ],
 )
 def test_rejects_invalid_config(
@@ -386,6 +391,102 @@ def test_rejects_invalid_config(
 ) -> None:
     with pytest.raises(ValueError, match=message):
         JevTournamentModel(config(tmp_path, **overrides))
+
+
+def sized_candidates() -> tuple[Candidate, ...]:
+    # Sizes: config_0 = 6, config_1 = 2, config_2 = 12, config_3 = 1, config_4 = 6.
+    return (
+        Candidate("config_0", {"tile": 1, "bounds": [2, 3]}),
+        Candidate("config_1", {"tile": 2, "bounds": [2]}),
+        Candidate("config_2", {"tile": 3, "bounds": [3, 4]}),
+        Candidate("config_3", {"tile": 4, "bounds": [1, 1]}),
+        Candidate("config_4", {"tile": 5, "bounds": [6, 1]}),
+    )
+
+
+def presented_sizes(call: Mapping[str, object]) -> list[int]:
+    questions = cast(Mapping[str, Mapping[str, object]], call["questions"])
+    criteria = cast(Mapping[str, Mapping[str, object]], questions["r0_q0"]["criteria"])
+    sizes = []
+    for configuration in criteria.values():
+        size = 1
+        for value in cast(list[int], configuration.get("bounds", [])):
+            size *= value
+        sizes.append(size)
+    return sizes
+
+
+@pytest.mark.parametrize(
+    ("order", "expected"),
+    [("size_ascending", [1, 2, 6, 6, 12]), ("size_descending", [12, 6, 6, 2, 1])],
+)
+def test_size_orders_sort_presented_candidates(
+    tmp_path: Path, order: str, expected: list[int]
+) -> None:
+    model = JevTournamentModel(
+        config(tmp_path, candidate_order=order, size_fields=["bounds"])
+    )
+
+    result = model.rank(Workload("w", {}), sized_candidates())
+
+    (call,) = FakeJevClient.instances[0].calls
+    assert presented_sizes(call) == expected
+    assert result.metadata["candidate_order"] == order
+    assert result.metadata["filtered_candidate_ids"] == []
+
+
+def test_size_order_ties_keep_the_shuffled_order(tmp_path: Path) -> None:
+    shuffled = JevTournamentModel(config(tmp_path))
+    ordered = JevTournamentModel(
+        config(tmp_path, candidate_order="size_ascending", size_fields=["bounds"])
+    )
+
+    base = shuffled.rank(Workload("w", {}), sized_candidates())
+    result = ordered.rank(Workload("w", {}), sized_candidates())
+
+    base_order = cast(list[str], base.metadata["presented_candidate_ids"])
+    tied = [cid for cid in base_order if cid in {"config_0", "config_4"}]
+    presented = cast(list[str], result.metadata["presented_candidate_ids"])
+    assert presented[2:4] == tied
+
+
+def test_keep_largest_hides_small_candidates_and_ranks_them_last(
+    tmp_path: Path,
+) -> None:
+    model = JevTournamentModel(config(tmp_path, keep_largest=3, size_fields=["bounds"]))
+
+    result = model.rank(Workload("w", {}), sized_candidates())
+
+    (call,) = FakeJevClient.instances[0].calls
+    assert sorted(presented_sizes(call)) == [6, 6, 12]
+    assert result.metadata["filtered_candidate_ids"] == ["config_1", "config_3"]
+    assert set(result.ranked_candidate_ids[:3]) == {"config_0", "config_2", "config_4"}
+    assert result.ranked_candidate_ids[3:] == ("config_1", "config_3")
+    presented = set(cast(list[str], result.metadata["presented_candidate_ids"]))
+    assert presented == {"config_0", "config_2", "config_4"}
+
+
+def test_keep_largest_leaves_small_workloads_unchanged(tmp_path: Path) -> None:
+    unfiltered = JevTournamentModel(config(tmp_path))
+    filtered = JevTournamentModel(
+        config(tmp_path, keep_largest=5, size_fields=["bounds"])
+    )
+
+    unfiltered.rank(Workload("w", {}), sized_candidates())
+    filtered.rank(Workload("w", {}), sized_candidates())
+
+    first, second = FakeJevClient.instances
+    assert first.calls == second.calls
+
+
+def test_offline_plan_counts_filtered_candidates(tmp_path: Path) -> None:
+    values = config(tmp_path, keep_largest=3, size_fields=["bounds"])
+
+    plan = JevTournamentModel.plan(Workload("w", {}), sized_candidates(), values)
+
+    assert plan["filtered_candidate_count"] == 2
+    assert plan["first_round_question_sizes"] == [3]
+    assert FakeJevClient.instances == []
 
 
 def test_rejects_missing_config(tmp_path: Path) -> None:
